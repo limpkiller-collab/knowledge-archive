@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>반도체의 종류 — 시스템 vs 메모리</title>
+  <meta name="knowledge-id" content="semiconductor-basics">
+  <meta name="knowledge-tags" content="IT,반도체,개념정리">
+  <meta name="knowledge-difficulty" content="입문">
+  <meta name="knowledge-date" content="2026-04-01">
+  <meta name="knowledge-source" content="스티비 뉴스레터">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06);
+      --text: #EDEDED; --text-secondary: #888;
+      --accent: #3b82f6; --accent-secondary: #8b5cf6;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --info: #06b6d4;
+      --chip-blue: rgba(59,130,246,0.12); --chip-purple: rgba(139,92,246,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5;
+      --text: #1a1a1a; --text-secondary: #666;
+      --accent: #2563eb; --accent-secondary: #7c3aed;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --info: #0ea5e9;
+      --chip-blue: rgba(37,99,235,0.08); --chip-purple: rgba(124,58,237,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'Noto Sans KR', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%, color-mix(in srgb, var(--accent), transparent 90%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    .text-secondary { color: var(--text-secondary); }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+
+    /* Hero */
+    .hero { text-align: center; margin-bottom: 48px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--text-secondary); text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 14px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 480px; margin: 0 auto; line-height: 1.7; }
+
+    /* Meta bar */
+    .meta-bar {
+      display: flex; align-items: center; justify-content: center; gap: 16px;
+      flex-wrap: wrap; margin-bottom: 40px; font-size: 12px; color: var(--text-secondary);
+    }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+    .difficulty-badge {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      background: var(--chip-green); color: var(--positive); border: 1px solid var(--border);
+    }
+    .tag-chip {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500;
+      background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary);
+    }
+
+    /* Card */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 28px; transition: box-shadow 0.2s ease;
+    }
+    .theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    .theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .section-card { position: relative; overflow: hidden; }
+    .section-card .accent-line { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 14px 14px 0 0; }
+    .section-card.system .accent-line { background: var(--accent); }
+    .section-card.memory .accent-line { background: var(--accent-secondary); }
+    .section-label { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px; }
+    .section-label.blue { color: var(--accent); }
+    .section-label.purple { color: var(--accent-secondary); }
+    .section-card h2 { font-size: 1.35rem; margin-bottom: 6px; }
+    .section-card .desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 16px; }
+    .keyword-highlight { font-weight: 600; color: var(--text); }
+    .example-tag {
+      display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px;
+      border-radius: 6px; font-size: 12px; font-weight: 500; border: 1px solid var(--border);
+      background: var(--surface-hover); color: var(--text-secondary); margin-right: 4px; margin-bottom: 4px;
+    }
+
+    .memory-sub { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+    .mem-chip { border-radius: 10px; padding: 14px 16px; border: 1px solid var(--border); }
+    .mem-chip.nand { background: var(--chip-amber); }
+    .mem-chip.dram { background: var(--chip-blue); }
+    .mem-chip-label { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 6px; }
+    .mem-chip.nand .mem-chip-label { color: var(--warning); }
+    .mem-chip.dram .mem-chip-label { color: var(--accent); }
+    .mem-chip-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .mem-chip-desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+    .mem-chip-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .tag-small { padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .power-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; font-weight: 500; margin-top: 6px; }
+    .power-badge.persist { color: var(--positive); }
+    .power-badge.volatile { color: var(--negative); }
+
+    .vs-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 4px 0; }
+    .vs-line { flex: 1; height: 1px; background: var(--border); }
+    .vs-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--text-secondary); text-transform: uppercase; }
+
+    .company-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      padding: 22px 28px; display: flex; align-items: center; gap: 20px;
+    }
+    .company-icon {
+      width: 48px; height: 48px; border-radius: 12px; background: var(--chip-blue);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid var(--border);
+    }
+    .company-text { flex: 1; }
+    .company-text h3 { font-size: 15px; margin-bottom: 4px; }
+    .company-text p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+    .company-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+    .badge { padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 600; border: 1px solid var(--border); }
+    .badge.blue { background: var(--chip-blue); color: var(--accent); }
+    .badge.purple { background: var(--chip-purple); color: var(--accent-secondary); }
+
+    .summary-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+    .summary-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .summary-item .s-icon { font-size: 22px; margin-bottom: 8px; display: block; }
+    .summary-item .s-label { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 4px; }
+    .summary-item .s-value { font-size: 14px; font-weight: 600; }
+
+    /* Related & Navigation */
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 13px;
+      color: var(--accent); text-decoration: none; margin-bottom: 24px;
+      padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--surface); transition: background 0.15s;
+    }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-empty { font-size: 13px; color: var(--text-secondary); font-style: italic; }
+
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 16px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .delay-1 { animation-delay: 0.08s; } .delay-2 { animation-delay: 0.16s; }
+    .delay-3 { animation-delay: 0.24s; } .delay-4 { animation-delay: 0.32s; }
+    .delay-5 { animation-delay: 0.40s; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+    @media (max-width: 640px) {
+      .compare-grid { grid-template-columns: 1fr; }
+      .memory-sub { grid-template-columns: 1fr; }
+      .summary-row { grid-template-columns: 1fr; }
+      .company-card { flex-direction: column; align-items: flex-start; }
+      .container { padding: 48px 16px 60px; }
+      .meta-bar { gap: 8px; }
+    }
+    @media print {
+      body { background: white !important; } .viz-menu { display: none !important; }
+      .card { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--menu-border); background: var(--menu-bg);
+      color: var(--menu-text); cursor: pointer; display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: all 0.2s ease;
+    }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px;
+      background: var(--menu-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px;
+      opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button {
+      width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+      border: none; background: transparent; color: var(--menu-text); font-size: 14px;
+      font-family: inherit; cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left;
+    }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+  </style>
+</head>
+<body>
+  <a href="#main" style="position:absolute;left:-9999px" onfocus="this.style.cssText='position:fixed;left:16px;top:16px;z-index:10000;padding:8px 16px;background:var(--accent);color:white;text-decoration:none;border-radius:4px;'" onblur="this.style.left='-9999px'">콘텐츠로 바로가기</a>
+
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴 열기">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown" role="menu">
+      <button onclick="cycleTheme()" role="menuitem"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()" role="menuitem"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()" role="menuitem"><span>⎙</span><span>인쇄 / PDF 저장</span></button>
+    </div>
+  </div>
+
+  <main id="main" role="main">
+    <div class="container">
+
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        지식 Archive로 돌아가기
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          반도체 기초 지식
+        </div>
+        <h1>반도체의 종류</h1>
+        <p class="hero-sub">한국은 반도체 강국이지만, 모든 반도체를 동등하게 잘 만드는 것은 아닙니다. 크게 두 가지로 나뉩니다.</p>
+      </header>
+
+      <div class="meta-bar animate delay-1">
+        <span class="difficulty-badge">입문</span>
+        <span class="tag-chip">#IT</span>
+        <span class="tag-chip">#반도체</span>
+        <span class="tag-chip">#개념정리</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.01
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          스티비 뉴스레터
+        </span>
+      </div>
+
+      <div class="summary-row animate delay-1" role="region" aria-label="핵심 요약">
+        <div class="summary-item">
+          <span class="s-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+          <div class="s-label">대분류</div>
+          <div class="s-value">2가지 종류</div>
+        </div>
+        <div class="summary-item">
+          <span class="s-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" stroke-width="2" stroke-linecap="round"><path d="M4 4h16v16H4z M9 4v16 M4 9h16"/></svg></span>
+          <div class="s-label">메모리 세부</div>
+          <div class="s-value">낸드 + D램</div>
+        </div>
+        <div class="summary-item">
+          <span class="s-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--positive)" stroke-width="2" stroke-linecap="round"><path d="M3 17l4-8 4 4 4-6 4 6"/><path d="M3 20h18"/></svg></span>
+          <div class="s-label">한국 강점</div>
+          <div class="s-value">메모리 세계 1·2위</div>
+        </div>
+      </div>
+
+      <div class="compare-grid animate delay-2" role="region" aria-label="시스템반도체 vs 메모리반도체 비교">
+        <article class="card section-card system">
+          <div class="accent-line" aria-hidden="true"></div>
+          <div style="padding-top: 8px;">
+            <div class="section-label blue">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              System Semiconductor
+            </div>
+            <h2>시스템반도체</h2>
+            <p class="desc">데이터를 <span class="keyword-highlight">연산하고 처리</span>하는 반도체. 컴퓨터의 뇌 역할을 합니다.</p>
+            <div style="margin-bottom: 12px;">
+              <div style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.05em;">대표 제품</div>
+              <span class="example-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/></svg> CPU (컴퓨터)</span>
+              <span class="example-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="2" width="14" height="20" rx="2"/></svg> AP (스마트폰)</span>
+            </div>
+            <div style="padding: 12px 14px; border-radius: 10px; background: var(--chip-blue); border: 1px solid var(--border); font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
+              CPU는 컴퓨터의 중심에서 모든 데이터를 연산·처리합니다. 스마트폰에서는 AP가 같은 역할을 합니다.
+            </div>
+          </div>
+        </article>
+
+        <article class="card section-card memory">
+          <div class="accent-line" aria-hidden="true"></div>
+          <div style="padding-top: 8px;">
+            <div class="section-label purple">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+              Memory Semiconductor
+            </div>
+            <h2>메모리반도체</h2>
+            <p class="desc">데이터를 <span class="keyword-highlight">저장</span>하는 반도체. 두 가지 유형으로 나뉩니다.</p>
+            <div class="memory-sub" role="list" aria-label="메모리 종류">
+              <div class="mem-chip nand" role="listitem">
+                <div class="mem-chip-label">NAND Flash</div>
+                <div class="mem-chip-title">낸드플래시</div>
+                <div class="mem-chip-desc">속도는 비교적 느리지만, 전원이 꺼져도 데이터가 유지됩니다.</div>
+                <div class="mem-chip-tags"><span class="tag-small">USB</span><span class="tag-small">SD카드</span><span class="tag-small">SSD</span></div>
+                <div class="power-badge persist"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> 전원 OFF 후 데이터 유지</div>
+              </div>
+              <div class="mem-chip dram" role="listitem">
+                <div class="mem-chip-label">DRAM</div>
+                <div class="mem-chip-title">D램</div>
+                <div class="mem-chip-desc">속도가 빠른 임시저장장치. CPU와 저장소 사이 완충 역할을 합니다.</div>
+                <div class="mem-chip-tags"><span class="tag-small">컴퓨터 RAM</span><span class="tag-small">HBM</span></div>
+                <div class="power-badge volatile"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> 전원 OFF 시 데이터 삭제</div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="vs-row animate delay-3" aria-hidden="true">
+        <div class="vs-line"></div><span class="vs-label">한국 기업 현황</span><div class="vs-line"></div>
+      </div>
+
+      <div class="company-card animate delay-4" role="region" aria-label="한국 기업 현황">
+        <div class="company-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <div class="company-text">
+          <h3>한국의 반도체 강점 영역</h3>
+          <p>삼성전자·SK하이닉스는 <strong>D램</strong>과 <strong>낸드플래시</strong> 분야에서 세계 1·2위를 다투며 메모리 반도체 시장을 주도합니다. 다만 시스템반도체(CPU·GPU 등) 분야는 인텔·퀄컴·엔비디아 등 해외 기업이 강세입니다.</p>
+          <div class="company-badges">
+            <span class="badge blue">D램 세계 1·2위</span>
+            <span class="badge blue">낸드플래시 강자</span>
+            <span class="badge purple">HBM(AI메모리) 선두</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="related-section animate delay-5" role="region" aria-label="연관 지식">
+        <h3>연관 지식</h3>
+        <p class="related-empty" id="relatedList">아직 연관된 지식 카드가 없습니다. 지식이 쌓이면 여기에 링크가 표시됩니다.</p>
+      </div>
+
+      <div class="footer-note animate delay-5">출처: 스티비 뉴스레터 · 2026년 4월 1일 기준 정보</div>
+    </div>
+  </main>
+
+  <script>
+    function toggleMenu() { document.getElementById('vizMenuDropdown').classList.toggle('open'); }
+    document.addEventListener('click', function(e) { if (!e.target.closest('.viz-menu')) document.getElementById('vizMenuDropdown').classList.remove('open'); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') document.getElementById('vizMenuDropdown').classList.remove('open'); });
+
+    var currentTheme = 'dark';
+    function applyTheme(t) {
+      document.documentElement.className = 'theme-' + t;
+      document.getElementById('themeLabel').textContent = t === 'dark' ? 'Dark' : 'Light';
+      localStorage.setItem('viz-theme', t); currentTheme = t;
+    }
+    function cycleTheme() { applyTheme(currentTheme === 'dark' ? 'light' : 'dark'); }
+    var saved = localStorage.getItem('viz-theme');
+    applyTheme(saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+
+    async function downloadImage() {
+      var menu = document.querySelector('.viz-menu'); menu.style.display = 'none';
+      try {
+        var url = await htmlToImage.toPng(document.body, { quality: 1, pixelRatio: 2, cacheBust: true, filter: function(n) { return !n.classList || !n.classList.contains('viz-menu'); } });
+        var a = document.createElement('a'); a.href = url; a.download = '반도체종류_원페이지카드.png'; a.click();
+      } catch(e) { console.error(e); }
+      menu.style.display = '';
+    }
+  </script>
+</body>
+</html>

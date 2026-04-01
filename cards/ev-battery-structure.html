@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>전기차 배터리 구조 — 셀·모듈·팩과 3대 화학 조성</title>
+  <meta name="knowledge-id" content="ev-battery-structure">
+  <meta name="knowledge-tags" content="에너지,기술,개념정리,과학">
+  <meta name="knowledge-difficulty" content="입문">
+  <meta name="knowledge-date" content="2026-04-02">
+  <meta name="knowledge-source" content="공개 아티클">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #10b981; --accent2: #3b82f6;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(16,185,129,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #059669; --accent2: #2563eb;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(5,150,105,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%,
+        color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* 뷰 메뉴 */
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--menu-border); background: var(--menu-bg);
+      color: var(--menu-text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(12px); transition: all 0.2s;
+    }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px;
+      background: var(--menu-bg); backdrop-filter: blur(16px);
+      border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px;
+      opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border: none; background: transparent;
+      color: var(--menu-text); font-size: 14px; font-family: inherit;
+      cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left;
+    }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    /* 뒤로가기 */
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      margin-bottom: 24px; padding: 6px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface); transition: background 0.15s;
+    }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    /* 히어로 */
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--text-secondary);
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 500px; margin: 0 auto; line-height: 1.7; }
+
+    /* 메타 바 */
+    .meta-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 36px;
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .diff-badge {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      border: 1px solid var(--border);
+    }
+    .diff-beginner { background: var(--chip-green); color: var(--positive); }
+    .tag-chip {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500;
+      background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary);
+    }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+
+    /* 카드 */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease;
+    }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title {
+      font-size: 12px; font-weight: 700; color: var(--text-secondary);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px;
+    }
+
+    /* KPI 행 */
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    /* 하이라이트 박스 */
+    .highlight-box {
+      padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--chip-accent); font-size: 13.5px; line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .highlight-box strong { color: var(--accent); }
+
+    /* 타임라인 (계층 구조 표현) */
+    .timeline { display: flex; flex-direction: column; gap: 0; margin-bottom: 20px; }
+    .timeline-item { display: flex; gap: 16px; }
+    .timeline-left { display: flex; flex-direction: column; align-items: center; width: 32px; flex-shrink: 0; }
+    .timeline-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); flex-shrink: 0; margin-top: 4px; }
+    .timeline-line { width: 2px; flex: 1; background: var(--border); margin: 4px 0; min-height: 20px; }
+    .timeline-item:last-child .timeline-line { display: none; }
+    .timeline-right { padding-bottom: 20px; flex: 1; }
+    .timeline-year { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .timeline-content { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+    .timeline-content strong { color: var(--text); }
+
+    /* 배터리 타입 비교 그리드 (3열) */
+    .battery-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .battery-card {
+      border-radius: 12px; padding: 18px; border: 1px solid var(--border);
+      position: relative; overflow: hidden; background: var(--surface);
+    }
+    .battery-card .top-line { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+    .battery-type-label { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 6px; margin-top: 4px; }
+    .battery-name { font-size: 1rem; font-weight: 700; margin-bottom: 10px; }
+    .battery-item { display: flex; align-items: flex-start; gap: 6px; font-size: 12px; margin-bottom: 6px; color: var(--text-secondary); line-height: 1.5; }
+    .battery-item strong { color: var(--text); font-weight: 600; }
+    .b-dot { width: 5px; height: 5px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+    .battery-pros {
+      margin-top: 10px; padding: 8px 10px; border-radius: 8px;
+      font-size: 11px; font-weight: 600; text-align: center; letter-spacing: 0.03em;
+    }
+
+    /* 막대 차트 */
+    .bar-chart { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+    .bar-item { display: flex; flex-direction: column; gap: 5px; }
+    .bar-header { display: flex; justify-content: space-between; font-size: 13px; }
+    .bar-label { font-weight: 500; }
+    .bar-value { font-weight: 700; color: var(--accent); }
+    .bar-track { height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 99px; }
+
+    /* 관련 지식 */
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    /* 푸터 */
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    /* 애니메이션 */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+    /* 반응형 */
+    @media (max-width: 640px) {
+      .battery-grid { grid-template-columns: 1fr; }
+      .kpi-row { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+    }
+    @media print {
+      body { background: white !important; }
+      .viz-menu { display: none !important; }
+      .card { break-inside: avoid; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+
+    /* 구분선 섹션 간격 */
+    .section-gap { margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <!-- 뷰 메뉴 -->
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+
+      <!-- 뒤로가기 -->
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        지식 Archive
+      </a>
+
+      <!-- 히어로 -->
+      <header class="hero animate">
+        <div class="hero-badge">🔋 에너지 · 기술</div>
+        <h1>전기차 배터리 구조</h1>
+        <p class="hero-sub">셀 → 모듈 → 팩 계층 구조와 NCM·NCA·LFP 세 가지 화학 조성의 특성 비교</p>
+      </header>
+
+      <!-- 메타 바 -->
+      <div class="meta-bar animate d1">
+        <span class="diff-badge diff-beginner">입문</span>
+        <span class="tag-chip">#에너지</span>
+        <span class="tag-chip">#기술</span>
+        <span class="tag-chip">#개념정리</span>
+        <span class="tag-chip">#과학</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.02
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          공개 아티클
+        </span>
+      </div>
+
+      <!-- KPI 행 — 3계층 핵심 개념 -->
+      <div class="kpi-row animate d2" role="region" aria-label="배터리 3계층 구조">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">셀</div>
+          <div class="kpi-label">최소 전기화학 단위</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--text-secondary)">모듈</div>
+          <div class="kpi-label">셀 묶음 + 열관리</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--positive)">팩</div>
+          <div class="kpi-label">완성 전원 시스템</div>
+        </div>
+      </div>
+
+      <!-- 하이라이트 박스 -->
+      <div class="highlight-box animate d2">
+        전기차 배터리는 <strong>셀 → 모듈 → 팩</strong> 의 계층적 구조로 이루어진다. 셀이 에너지를 저장하는 최소 단위라면, 팩은 BMS·냉각 시스템·보호 하우징까지 통합한 완성 에너지 시스템이다. 배터리팩의 설계 방식이 전기차의 주행거리·충전 속도·안전성을 결정한다.
+      </div>
+
+      <!-- 계층 구조 타임라인 -->
+      <div class="card animate d3 section-gap">
+        <div class="section-title">🔋 배터리 3계층 구조 상세</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">1단계 — 셀 (Cell)</div>
+              <div class="timeline-content">
+                <strong>전기화학 반응의 최소 단위.</strong> 양극·음극·분리막·전해질로 구성되며, 리튬이온의 이동으로 충·방전이 이루어진다. 에너지 밀도·충전 속도·안정성에 직접 영향을 미친다.
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">2단계 — 모듈 (Module)</div>
+              <div class="timeline-content">
+                <strong>여러 셀을 직렬·병렬로 연결한 중간 단위.</strong> 전압·용량 조정이 가능하고, 기계적 고정과 기본 열관리 경로가 포함된다. 이상 발생 시 모듈 단위로 교체·관리 가능해 유지보수가 용이하다.
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">3단계 — 팩 (Pack)</div>
+              <div class="timeline-content">
+                <strong>차량 전체에 전력을 공급하는 완성 에너지 시스템.</strong> BMS(배터리 관리 시스템)·열관리 시스템·보호용 하우징·고전압 인터페이스가 통합된다. 차량 하부 플로어에 배치해 무게 중심을 낮추고 실내 공간을 확보한다.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BMS 역할 하이라이트 -->
+      <div class="highlight-box animate d3">
+        <strong>BMS(배터리 관리 시스템)</strong>은 셀 단위의 전압·전류·온도를 실시간 모니터링하고, 셀 간 밸런싱 및 과충전·과방전을 방지한다. 열관리 시스템은 배터리의 성능과 수명을 좌우하는 온도 제어를 담당한다.
+      </div>
+
+      <!-- 배터리 종류 비교 -->
+      <div class="card animate d4 section-gap">
+        <div class="section-title">⚗️ 주요 배터리 화학 조성 비교</div>
+        <div class="battery-grid">
+          <!-- NCM -->
+          <div class="battery-card">
+            <div class="top-line" style="background:#8b5cf6;"></div>
+            <div style="padding-top:8px">
+              <div class="battery-type-label" style="color:#8b5cf6;">NCM</div>
+              <div class="battery-name">니켈·코발트·망간</div>
+              <div class="battery-item"><div class="b-dot" style="background:#8b5cf6;"></div><div><strong>에너지 밀도:</strong> 높음</div></div>
+              <div class="battery-item"><div class="b-dot" style="background:#8b5cf6;"></div><div><strong>열 안정성:</strong> 중간</div></div>
+              <div class="battery-item"><div class="b-dot" style="background:#8b5cf6;"></div><div><strong>니켈 비중:</strong> 높을수록 밀도↑</div></div>
+              <div class="battery-item"><div class="b-dot" style="background:#8b5cf6;"></div><div><strong>용도:</strong> 프리미엄·고출력 EV</div></div>
+              <div class="battery-pros" style="background:rgba(139,92,246,0.1); color:#8b5cf6;">높은 에너지 밀도 + 우수한 출력</div>
+            </div>
+          </div>
+          <!-- NCA -->
+          <div class="battery-card">
+            <div class="top-line" style="background:#f59e0b;"></div>
+            <div style="padding-top:8px">
+              <div class="battery-type-label" style="color:#f59e0b;">NCA</div>
+              <div class="battery-name">니켈·코발트·알루미늄</div>
+              <div class="battery-item"><div class="b-dot" style="background:#f59e0b;"></div><div><strong>에너지 밀도:</strong> NCM보다 높음</div></div>
+              <div class="battery-item"><div class="b-dot" style="background:#f59e0b;"></div><div><strong>열 안정성:</strong> 낮음 (정밀 냉각 필요)</div></div>
+              <div class="battery-item"><div class="b-dot" style="background:#f59e0b;"></div><div><strong>특징:</strong> 망간 대신 알루미늄</div></div>
+              <div class="battery-item"><div class="b-dot" style="background:#f59e0b;"></div><div><strong>용도:</strong> 장거리 주행 EV</div></div>
+              <div class="battery-pros" style="background:rgba(245,158,11,0.1); color:#f59e0b;">최고 에너지 밀도</div>
+            </div>
+          </div>
+          <!-- LFP -->
+          <div class="battery-card">
+            <div class="top-line" style="background:#10b981;"></div>
+            <div style="padding-top:8px">
+              <div class="battery-type-label" style="color:#10b981;">LFP</div>
+              <div class="battery-name">리튬·인산철</div>
+              <div class="battery-item"><div class="b-dot" style="background:#10b981;"></div><div><strong>에너지 밀도:</strong> 낮음</div></div>
+              <div class="battery-item"><div class="b-dot" style="background:#10b981;"></div><div><strong>열 안정성:</strong> 매우 높음</div></div>
+              <div class="battery-item"><div class="b-dot" style="background:#10b981;"></div><div><strong>특징:</strong> 코발트 미사용 → 저렴</div></div>
+              <div class="battery-item"><div class="b-dot" style="background:#10b981;"></div><div><strong>용도:</strong> 대중형·보급형 EV</div></div>
+              <div class="battery-pros" style="background:rgba(16,185,129,0.1); color:#10b981;">열폭주 강함 + 긴 수명</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 에너지 밀도 비교 막대 차트 -->
+      <div class="card animate d4 section-gap">
+        <div class="section-title">📊 배터리 특성 비교 (상대 지표)</div>
+        <div class="bar-chart">
+          <div style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.04em;">에너지 밀도</div>
+          <div class="bar-item">
+            <div class="bar-header"><span class="bar-label">NCA</span><span class="bar-value" style="color:#f59e0b;">★★★★★</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:95%; background:#f59e0b;"></div></div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-header"><span class="bar-label">NCM</span><span class="bar-value" style="color:#8b5cf6;">★★★★☆</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:80%; background:#8b5cf6;"></div></div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-header"><span class="bar-label">LFP</span><span class="bar-value" style="color:#10b981;">★★★☆☆</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:55%; background:#10b981;"></div></div>
+          </div>
+
+          <div style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-top:16px; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.04em;">열 안정성</div>
+          <div class="bar-item">
+            <div class="bar-header"><span class="bar-label">LFP</span><span class="bar-value" style="color:#10b981;">★★★★★</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:95%; background:#10b981;"></div></div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-header"><span class="bar-label">NCM</span><span class="bar-value" style="color:#8b5cf6;">★★★☆☆</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:55%; background:#8b5cf6;"></div></div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-header"><span class="bar-label">NCA</span><span class="bar-value" style="color:#f43f5e;">★★☆☆☆</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:35%; background:#f43f5e;"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 관련 지식 없음 (현재 아카이브에 연관 카드 없음) -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <div class="related-card" style="opacity:0.5; cursor:default;">
+            <div class="r-label">→ 추후 추가 예정</div>
+            <div class="r-title">전고체 배터리 · 배터리 재활용 등</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">출처: 공개 아티클 — 전기차 배터리 구조 안내 (2026.04.02 아카이브)</p>
+
+    </div>
+  </main>
+
+  <script>
+    var THEMES = ['theme-dark', 'theme-light'];
+    var THEME_LABELS = { 'theme-dark': 'Dark', 'theme-light': 'Light' };
+
+    (function() {
+      var saved = localStorage.getItem('ka-theme') || 'theme-dark';
+      document.documentElement.className = saved;
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[saved];
+    })();
+
+    function cycleTheme() {
+      var cur = document.documentElement.className;
+      var next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+      document.documentElement.className = next;
+      localStorage.setItem('ka-theme', next);
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[next];
+      closeMenu();
+    }
+
+    function toggleMenu() {
+      document.getElementById('vizMenuDropdown').classList.toggle('open');
+    }
+    function closeMenu() {
+      document.getElementById('vizMenuDropdown').classList.remove('open');
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.viz-menu')) closeMenu();
+    });
+
+    function downloadImage() {
+      closeMenu();
+      if (typeof htmlToImage === 'undefined') { alert('라이브러리 로딩 중...'); return; }
+      htmlToImage.toPng(document.getElementById('main'), { pixelRatio: 2 })
+        .then(function(dataUrl) {
+          var a = document.createElement('a');
+          a.download = 'ev-battery-structure.png';
+          a.href = dataUrl;
+          a.click();
+        });
+    }
+  </script>
+</body>
+</html>

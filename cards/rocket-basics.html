@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로켓 과학 기초 — 어떻게 우주로 가나</title>
+  <meta name="knowledge-id" content="rocket-basics">
+  <meta name="knowledge-tags" content="우주산업,개념정리,과학">
+  <meta name="knowledge-difficulty" content="입문">
+  <meta name="knowledge-date" content="2026-04-01">
+  <meta name="knowledge-source" content="미래에셋증권 박광남 애널리스트 · 스티비 뉴스레터">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    html.theme-dark { --bg:#0A0A0A; --surface:#141414; --surface-hover:#1C1C1C; --border:rgba(255,255,255,0.06); --text:#EDEDED; --text-secondary:#888; --accent:#f59e0b; --accent2:#3b82f6; --positive:#10b981; --negative:#f43f5e; --warning:#f59e0b; --chip-amber:rgba(245,158,11,0.12); --chip-blue:rgba(59,130,246,0.12); --chip-green:rgba(16,185,129,0.12); --menu-bg:rgba(10,10,10,0.85); --menu-border:rgba(255,255,255,0.08); --menu-text:#EDEDED; --menu-item-hover:rgba(255,255,255,0.06); }
+    html.theme-light { --bg:#FAFAF9; --surface:#FFFFFF; --surface-hover:#F5F5F4; --border:#e5e5e5; --text:#1a1a1a; --text-secondary:#666; --accent:#d97706; --accent2:#2563eb; --positive:#059669; --negative:#e11d48; --warning:#d97706; --chip-amber:rgba(217,119,6,0.08); --chip-blue:rgba(37,99,235,0.08); --chip-green:rgba(5,150,105,0.08); --menu-bg:rgba(255,255,255,0.92); --menu-border:rgba(0,0,0,0.08); --menu-text:#1a1a1a; --menu-item-hover:rgba(0,0,0,0.04); }
+    body { font-family:'Noto Sans KR','Inter',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; -webkit-font-smoothing:antialiased; letter-spacing:-0.011em; transition:background 0.3s,color 0.3s; min-height:100vh; }
+    body::before { content:''; position:fixed; inset:0; z-index:-1; pointer-events:none; background:radial-gradient(ellipse 70% 50% at 50% 10%, color-mix(in srgb, var(--accent), transparent 88%), transparent); }
+    h1 { font-weight:700; letter-spacing:-0.03em; line-height:1.08; }
+    h2 { font-weight:600; letter-spacing:-0.02em; }
+    h3 { font-weight:600; letter-spacing:-0.02em; }
+    .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+    *:focus-visible { outline:2px solid var(--accent); outline-offset:2px; border-radius:4px; }
+    .container { max-width:860px; margin:0 auto; padding:64px 24px 80px; }
+    .nav-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--accent); text-decoration:none; margin-bottom:24px; padding:6px 14px; border-radius:8px; border:1px solid var(--border); background:var(--surface); transition:background 0.15s; }
+    .nav-back:hover { background:var(--surface-hover); }
+    .hero { text-align:center; margin-bottom:32px; }
+    .hero-badge { display:inline-flex; align-items:center; gap:6px; padding:5px 14px; border-radius:99px; border:1px solid var(--border); background:var(--surface); font-size:12px; font-weight:500; letter-spacing:0.04em; color:var(--text-secondary); text-transform:uppercase; margin-bottom:20px; }
+    .hero h1 { font-size:clamp(1.8rem,4.5vw,2.8rem); margin-bottom:12px; }
+    .hero-sub { font-size:15px; color:var(--text-secondary); max-width:500px; margin:0 auto; line-height:1.7; }
+    .meta-bar { display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:36px; font-size:12px; color:var(--text-secondary); }
+    .diff-badge { padding:2px 10px; border-radius:99px; font-size:11px; font-weight:600; background:var(--chip-green); color:var(--positive); border:1px solid var(--border); }
+    .tag-chip { padding:2px 10px; border-radius:99px; font-size:11px; font-weight:500; background:var(--surface); border:1px solid var(--border); color:var(--text-secondary); }
+    .meta-item { display:inline-flex; align-items:center; gap:4px; }
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:26px; transition:box-shadow 0.2s; }
+    .theme-dark .card { box-shadow:0 0 0 1px var(--border); }
+    .theme-light .card { box-shadow:0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow:0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+
+    .kpi-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:20px; }
+    .kpi-item { text-align:center; padding:18px 12px; border-radius:12px; background:var(--surface); border:1px solid var(--border); }
+    .kpi-value { font-size:1.6rem; font-weight:700; letter-spacing:-0.03em; }
+    .kpi-label { font-size:11px; color:var(--text-secondary); font-weight:500; margin-top:4px; text-transform:uppercase; letter-spacing:0.04em; }
+
+    .principle-list { display:flex; flex-direction:column; gap:14px; margin-bottom:20px; }
+    .principle-item { display:flex; gap:14px; align-items:flex-start; padding:16px 18px; border-radius:12px; background:var(--surface); border:1px solid var(--border); }
+    .principle-icon { width:36px; height:36px; border-radius:10px; background:var(--chip-amber); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .principle-title { font-size:14px; font-weight:600; margin-bottom:4px; }
+    .principle-desc { font-size:13px; color:var(--text-secondary); line-height:1.65; }
+
+    .weight-bar { margin-bottom:20px; }
+    .weight-bar h3 { font-size:13px; font-weight:600; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:14px; }
+    .bar-row { margin-bottom:10px; }
+    .bar-label { display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:4px; }
+    .bar-track { height:10px; border-radius:99px; background:var(--surface-hover); overflow:hidden; }
+    .bar-fill { height:100%; border-radius:99px; transition:width 1s ease; }
+
+    .highlight-box { padding:14px 18px; border-radius:10px; border:1px solid var(--border); background:var(--chip-amber); font-size:13.5px; line-height:1.7; margin-bottom:16px; }
+    .highlight-box strong { color:var(--accent); }
+
+    .stage-diagram { display:flex; gap:12px; margin-bottom:20px; }
+    .stage-box { flex:1; padding:16px; border-radius:12px; border:1px solid var(--border); text-align:center; }
+    .stage-box.s1 { background:var(--chip-amber); }
+    .stage-box.s2 { background:var(--chip-blue); }
+    .stage-num { font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:6px; }
+    .stage-box.s1 .stage-num { color:var(--warning); }
+    .stage-box.s2 .stage-num { color:var(--accent2); }
+    .stage-title { font-size:14px; font-weight:600; margin-bottom:6px; }
+    .stage-desc { font-size:12px; color:var(--text-secondary); line-height:1.6; }
+    .stage-arrow { display:flex; align-items:center; color:var(--text-secondary); font-size:20px; }
+
+    .related-section { margin-top:32px; padding-top:20px; border-top:1px solid var(--border); }
+    .related-section h3 { font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:12px; text-transform:uppercase; letter-spacing:0.05em; }
+    .related-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; }
+    .related-card { display:block; text-decoration:none; padding:12px 14px; border-radius:10px; border:1px solid var(--border); background:var(--surface); transition:background 0.15s; }
+    .related-card:hover { background:var(--surface-hover); }
+    .related-card .r-label { font-size:11px; color:var(--accent); font-weight:600; margin-bottom:3px; }
+    .related-card .r-title { font-size:13px; font-weight:500; color:var(--text); line-height:1.4; }
+
+    .footer-note { text-align:center; font-size:12px; color:var(--text-secondary); margin-top:20px; }
+    @keyframes fadeInUp { from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);} }
+    .animate { animation:fadeInUp 0.6s ease-out both; }
+    .d1{animation-delay:0.06s;}.d2{animation-delay:0.12s;}.d3{animation-delay:0.18s;}.d4{animation-delay:0.24s;}.d5{animation-delay:0.30s;}
+    @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;}}
+    @media (max-width:640px){.kpi-row,.stage-diagram{flex-direction:column;}.stage-arrow{transform:rotate(90deg);width:100%;justify-content:center;}.kpi-row{grid-template-columns:1fr;}.container{padding:48px 16px 60px;}}
+    @media print{body{background:white!important;}.viz-menu{display:none!important;}*{print-color-adjust:exact;}}
+    .viz-menu{position:fixed;top:16px;right:16px;z-index:9999;}
+    .viz-menu-toggle{width:40px;height:40px;border-radius:10px;border:1px solid var(--menu-border);background:var(--menu-bg);color:var(--menu-text);cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px);transition:all 0.2s;}
+    .viz-menu-toggle:hover{background:var(--menu-item-hover);}
+    .viz-menu-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:196px;background:var(--menu-bg);backdrop-filter:blur(16px);border:1px solid var(--menu-border);border-radius:12px;padding:6px;opacity:0;visibility:hidden;transform:translateY(-8px) scale(0.96);transition:all 0.2s cubic-bezier(0.4,0,0.2,1);box-shadow:0 8px 32px rgba(0,0,0,0.25);}
+    .viz-menu-dropdown.open{opacity:1;visibility:visible;transform:translateY(0) scale(1);}
+    .viz-menu-dropdown button{width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;border:none;background:transparent;color:var(--menu-text);font-size:14px;font-family:inherit;cursor:pointer;border-radius:8px;transition:background 0.15s;text-align:left;}
+    .viz-menu-dropdown button:hover{background:var(--menu-item-hover);}
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/></svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">🚀 우주 산업 시리즈 2/4</div>
+        <h1>로켓 과학 기초</h1>
+        <p class="hero-sub">뉴턴의 제3법칙부터 치올코프스키 방정식까지 — 거대한 빌딩이 우주로 가는 원리</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="diff-badge">입문</span>
+        <span class="tag-chip">#우주산업</span>
+        <span class="tag-chip">#개념정리</span>
+        <span class="tag-chip">#과학</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.01
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          박광남 (미래에셋증권)
+        </span>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-row animate d2">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">5,000t</div>
+          <div class="kpi-label">스타십 연료 포함 무게</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--text-secondary)">121m</div>
+          <div class="kpi-label">스타십 높이 (롯데타워 1/4)</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--positive)">1~4%</div>
+          <div class="kpi-label">전체 무게 중 화물 비중</div>
+        </div>
+      </div>
+
+      <!-- 핵심 원리 -->
+      <div class="principle-list animate d3">
+        <div class="principle-item">
+          <div class="principle-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2.5" stroke-linecap="round"><path d="M12 2l3 7h7l-6 4 2 7-6-4-6 4 2-7-6-4h7z"/></svg>
+          </div>
+          <div>
+            <div class="principle-title">뉴턴 제3법칙 — 작용·반작용</div>
+            <div class="principle-desc">연료를 태워 고온·고압 가스를 아래로 뿜어내면(작용), 그 반발력(추력)으로 로켓이 위로 올라갑니다. 풍선을 놓으면 반대 방향으로 날아가는 원리와 동일합니다.</div>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2.5" stroke-linecap="round"><path d="M9 19V6l12-3v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          </div>
+          <div>
+            <div class="principle-title">치올코프스키 방정식 — 연료의 딜레마</div>
+            <div class="principle-desc">연료를 많이 실을수록 로켓이 무거워지고 → 더 많은 연료가 필요해지는 악순환. 결국 전체 무게의 96% 이상이 연료와 탱크입니다. 화물(페이로드) 비중은 고작 1~4%.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 무게 구성 바 -->
+      <div class="card animate d3" style="margin-bottom:20px;">
+        <div class="weight-bar">
+          <h3>로켓 무게 구성</h3>
+          <div class="bar-row">
+            <div class="bar-label"><span>연료 + 탱크</span><span style="font-weight:600">96~99%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:97%;background:var(--warning);"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label"><span>구조체·엔진</span><span style="font-weight:600">~2%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:2%;background:var(--accent2);"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label"><span style="color:var(--positive);font-weight:600">화물(페이로드)</span><span style="font-weight:600;color:var(--positive)">1~4%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:2.5%;background:var(--positive);"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 다단 구조 -->
+      <div class="card animate d4" style="margin-bottom:16px;">
+        <h3 style="font-size:13px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:14px;">해결책: 다단(Multi-Stage) 구조</h3>
+        <div class="stage-diagram">
+          <div class="stage-box s1">
+            <div class="stage-num">1단 로켓</div>
+            <div class="stage-title">대기권 돌파</div>
+            <div class="stage-desc">가장 힘든 구간을 담당. 임무 완료 후 분리·낙하</div>
+          </div>
+          <div class="stage-arrow">→</div>
+          <div class="stage-box s2">
+            <div class="stage-num">2단 로켓</div>
+            <div class="stage-title">우주 궤도 진입</div>
+            <div class="stage-desc">가벼워진 상태로 효율적으로 궤도까지 도달</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="highlight-box animate d4">
+        이 <strong>"무게와의 싸움"</strong>이 우주 산업의 기술적 난이도를 높이는 근본 원인입니다. 발사 비용을 낮추려면 이 물리적 제약을 기술로 극복해야 합니다. → 재사용 발사체가 등장한 이유
+      </div>
+
+      <!-- 연관 지식 -->
+      <div class="related-section animate d5">
+        <h3>같은 시리즈 지식</h3>
+        <div class="related-grid">
+          <a href="space-old-vs-new.html" class="related-card">
+            <div class="r-label">🚀 시리즈 1/4</div>
+            <div class="r-title">올드스페이스 vs 뉴스페이스 — 패러다임 전환</div>
+          </a>
+          <a href="reusable-rocket.html" class="related-card">
+            <div class="r-label">♻️ 시리즈 3/4</div>
+            <div class="r-title">재사용 발사체 혁명 — 비용 구조와 핵심 기술</div>
+          </a>
+          <a href="leo-satellite-comms.html" class="related-card">
+            <div class="r-label">🛰️ 시리즈 4/4</div>
+            <div class="r-title">저궤도 위성 통신과 레이턴시 혁명</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-note animate d5">출처: 미래에셋증권 박광남 애널리스트 · 스티비 뉴스레터 · 2026.04.01</div>
+    </div>
+  </main>
+
+  <script>
+    function toggleMenu(){document.getElementById('vizMenuDropdown').classList.toggle('open');}
+    document.addEventListener('click',function(e){if(!e.target.closest('.viz-menu'))document.getElementById('vizMenuDropdown').classList.remove('open');});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')document.getElementById('vizMenuDropdown').classList.remove('open');});
+    var currentTheme='dark';
+    function applyTheme(t){document.documentElement.className='theme-'+t;document.getElementById('themeLabel').textContent=t==='dark'?'Dark':'Light';localStorage.setItem('viz-theme',t);currentTheme=t;}
+    function cycleTheme(){applyTheme(currentTheme==='dark'?'light':'dark');}
+    var saved=localStorage.getItem('viz-theme');
+    applyTheme(saved||(window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'));
+    async function downloadImage(){var menu=document.querySelector('.viz-menu');menu.style.display='none';try{var url=await htmlToImage.toPng(document.body,{quality:1,pixelRatio:2,cacheBust:true});var a=document.createElement('a');a.href=url;a.download='로켓과학기초.png';a.click();}catch(e){console.error(e);}menu.style.display='';}
+  </script>
+</body>
+</html>

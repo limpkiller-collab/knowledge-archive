@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>저궤도 위성 통신과 레이턴시 혁명</title>
+  <meta name="knowledge-id" content="leo-satellite-comms">
+  <meta name="knowledge-tags" content="우주산업,통신,개념정리,투자">
+  <meta name="knowledge-difficulty" content="입문">
+  <meta name="knowledge-date" content="2026-04-01">
+  <meta name="knowledge-source" content="미래에셋증권 박광남 애널리스트 · 스티비 뉴스레터">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html.theme-dark{--bg:#0A0A0A;--surface:#141414;--surface-hover:#1C1C1C;--border:rgba(255,255,255,0.06);--text:#EDEDED;--text-secondary:#888;--accent:#06b6d4;--accent2:#8b5cf6;--positive:#10b981;--negative:#f43f5e;--warning:#f59e0b;--chip-cyan:rgba(6,182,212,0.12);--chip-purple:rgba(139,92,246,0.12);--chip-green:rgba(16,185,129,0.12);--chip-blue:rgba(59,130,246,0.12);--menu-bg:rgba(10,10,10,0.85);--menu-border:rgba(255,255,255,0.08);--menu-text:#EDEDED;--menu-item-hover:rgba(255,255,255,0.06);}
+    html.theme-light{--bg:#FAFAF9;--surface:#FFFFFF;--surface-hover:#F5F5F4;--border:#e5e5e5;--text:#1a1a1a;--text-secondary:#666;--accent:#0e7490;--accent2:#7c3aed;--positive:#059669;--negative:#e11d48;--warning:#d97706;--chip-cyan:rgba(14,116,144,0.08);--chip-purple:rgba(124,58,237,0.08);--chip-green:rgba(5,150,105,0.08);--chip-blue:rgba(37,99,235,0.08);--menu-bg:rgba(255,255,255,0.92);--menu-border:rgba(0,0,0,0.08);--menu-text:#1a1a1a;--menu-item-hover:rgba(0,0,0,0.04);}
+    body{font-family:'Noto Sans KR','Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:-0.011em;transition:background 0.3s,color 0.3s;min-height:100vh;}
+    body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 70% 50% at 50% 10%,color-mix(in srgb,var(--accent),transparent 88%),transparent);}
+    h1{font-weight:700;letter-spacing:-0.03em;line-height:1.08;}h2{font-weight:600;letter-spacing:-0.02em;}h3{font-weight:600;letter-spacing:-0.02em;}
+    *:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px;}
+    .container{max-width:860px;margin:0 auto;padding:64px 24px 80px;}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--accent);text-decoration:none;margin-bottom:24px;padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface);transition:background 0.15s;}
+    .nav-back:hover{background:var(--surface-hover);}
+    .hero{text-align:center;margin-bottom:32px;}
+    .hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:500;letter-spacing:0.04em;color:var(--text-secondary);text-transform:uppercase;margin-bottom:20px;}
+    .hero h1{font-size:clamp(1.8rem,4.5vw,2.8rem);margin-bottom:12px;}
+    .hero-sub{font-size:15px;color:var(--text-secondary);max-width:520px;margin:0 auto;line-height:1.7;}
+    .meta-bar{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:36px;font-size:12px;color:var(--text-secondary);}
+    .diff-badge{padding:2px 10px;border-radius:99px;font-size:11px;font-weight:600;background:var(--chip-green);color:var(--positive);border:1px solid var(--border);}
+    .tag-chip{padding:2px 10px;border-radius:99px;font-size:11px;font-weight:500;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);}
+    .meta-item{display:inline-flex;align-items:center;gap:4px;}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;transition:box-shadow 0.2s;}
+    .theme-dark .card{box-shadow:0 0 0 1px var(--border);}
+    .theme-light .card{box-shadow:0 1px 3px rgba(0,0,0,0.05);}
+    .card:hover{box-shadow:0 0 0 1px var(--border),0 8px 24px rgba(0,0,0,0.1);}
+
+    /* Orbit compare */
+    .orbit-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+    .orbit-card{padding:22px;border-radius:12px;border:1px solid var(--border);position:relative;overflow:hidden;}
+    .orbit-card .top-line{position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;}
+    .orbit-card.geo .top-line{background:#64748b;}
+    .orbit-card.leo .top-line{background:var(--accent);}
+    .orbit-label{font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:8px;margin-top:4px;}
+    .orbit-card.geo .orbit-label{color:#64748b;}
+    .orbit-card.leo .orbit-label{color:var(--accent);}
+    .orbit-title{font-size:1.1rem;font-weight:700;margin-bottom:12px;}
+    .orbit-spec{display:flex;flex-direction:column;gap:6px;}
+    .orbit-row{display:flex;justify-content:space-between;font-size:13px;}
+    .orbit-key{color:var(--text-secondary);}
+    .orbit-val{font-weight:600;}
+    .orbit-card.leo .latency-val{color:var(--accent);font-size:1.1rem;}
+    .orbit-card.geo .latency-val{color:var(--negative);font-size:1.1rem;}
+
+    /* latency bar */
+    .latency-section{margin-bottom:20px;}
+    .latency-section h3{font-size:13px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:14px;}
+    .lat-row{margin-bottom:12px;}
+    .lat-header{display:flex;justify-content:space-between;font-size:13px;font-weight:500;margin-bottom:4px;}
+    .lat-bar{height:12px;border-radius:99px;background:var(--surface-hover);overflow:hidden;}
+    .lat-fill{height:100%;border-radius:99px;}
+
+    .use-case-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+    .use-item{padding:14px 16px;border-radius:10px;border:1px solid var(--border);background:var(--surface);}
+    .use-icon{font-size:18px;margin-bottom:6px;}
+    .use-title{font-size:13px;font-weight:600;margin-bottom:3px;}
+    .use-desc{font-size:12px;color:var(--text-secondary);line-height:1.5;}
+
+    .highlight-box{padding:14px 18px;border-radius:10px;border:1px solid var(--border);background:var(--chip-cyan);font-size:13.5px;line-height:1.7;margin-bottom:16px;}
+    .highlight-box strong{color:var(--accent);}
+
+    .laser-box{padding:18px 20px;border-radius:12px;border:1px solid var(--border);background:var(--surface);margin-bottom:16px;}
+    .laser-box h3{font-size:13px;font-weight:600;margin-bottom:10px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.04em;}
+    .laser-fact{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text-secondary);margin-bottom:6px;}
+    .laser-fact strong{color:var(--text);}
+
+    .related-section{margin-top:32px;padding-top:20px;border-top:1px solid var(--border);}
+    .related-section h3{font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.05em;}
+    .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+    .related-card{display:block;text-decoration:none;padding:12px 14px;border-radius:10px;border:1px solid var(--border);background:var(--surface);transition:background 0.15s;}
+    .related-card:hover{background:var(--surface-hover);}
+    .related-card .r-label{font-size:11px;color:var(--accent);font-weight:600;margin-bottom:3px;}
+    .related-card .r-title{font-size:13px;font-weight:500;color:var(--text);line-height:1.4;}
+    .footer-note{text-align:center;font-size:12px;color:var(--text-secondary);margin-top:20px;}
+
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+    .animate{animation:fadeInUp 0.6s ease-out both;}
+    .d1{animation-delay:0.06s;}.d2{animation-delay:0.12s;}.d3{animation-delay:0.18s;}.d4{animation-delay:0.24s;}.d5{animation-delay:0.30s;}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;}}
+    @media(max-width:640px){.orbit-grid,.use-case-grid{grid-template-columns:1fr;}.container{padding:48px 16px 60px;}}
+    @media print{body{background:white!important;}.viz-menu{display:none!important;}*{print-color-adjust:exact;}}
+    .viz-menu{position:fixed;top:16px;right:16px;z-index:9999;}
+    .viz-menu-toggle{width:40px;height:40px;border-radius:10px;border:1px solid var(--menu-border);background:var(--menu-bg);color:var(--menu-text);cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px);transition:all 0.2s;}
+    .viz-menu-toggle:hover{background:var(--menu-item-hover);}
+    .viz-menu-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:196px;background:var(--menu-bg);backdrop-filter:blur(16px);border:1px solid var(--menu-border);border-radius:12px;padding:6px;opacity:0;visibility:hidden;transform:translateY(-8px) scale(0.96);transition:all 0.2s cubic-bezier(0.4,0,0.2,1);box-shadow:0 8px 32px rgba(0,0,0,0.25);}
+    .viz-menu-dropdown.open{opacity:1;visibility:visible;transform:translateY(0) scale(1);}
+    .viz-menu-dropdown button{width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;border:none;background:transparent;color:var(--menu-text);font-size:14px;font-family:inherit;cursor:pointer;border-radius:8px;transition:background 0.15s;text-align:left;}
+    .viz-menu-dropdown button:hover{background:var(--menu-item-hover);}
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/></svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">🛰️ 우주 산업 시리즈 4/4</div>
+        <h1>저궤도 위성 통신과<br>레이턴시 혁명</h1>
+        <p class="hero-sub">GEO vs LEO — 0.5초 딜레이가 왜 문제인가, 그리고 레이저 통신이 가져올 변화</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="diff-badge">입문</span>
+        <span class="tag-chip">#우주산업</span>
+        <span class="tag-chip">#통신</span>
+        <span class="tag-chip">#개념정리</span>
+        <span class="tag-chip">#투자</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.01
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          박광남 (미래에셋증권)
+        </span>
+      </div>
+
+      <!-- 궤도 비교 -->
+      <div class="orbit-grid animate d2" role="region" aria-label="정지궤도 vs 저궤도 비교">
+        <div class="orbit-card geo card">
+          <div class="top-line"></div>
+          <div style="padding-top:8px">
+            <div class="orbit-label">GEO · 정지궤도</div>
+            <div class="orbit-title">기존 위성 통신</div>
+            <div class="orbit-spec">
+              <div class="orbit-row"><span class="orbit-key">고도</span><span class="orbit-val">35,786 km</span></div>
+              <div class="orbit-row"><span class="orbit-key">레이턴시</span><span class="orbit-val latency-val">~500 ms</span></div>
+              <div class="orbit-row"><span class="orbit-key">위성 수</span><span class="orbit-val">소수 (수십 기)</span></div>
+              <div class="orbit-row"><span class="orbit-key">특징</span><span class="orbit-val">항상 같은 위치</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="orbit-card leo card">
+          <div class="top-line"></div>
+          <div style="padding-top:8px">
+            <div class="orbit-label">LEO · 저궤도</div>
+            <div class="orbit-title">차세대 위성 통신</div>
+            <div class="orbit-spec">
+              <div class="orbit-row"><span class="orbit-key">고도</span><span class="orbit-val">250~2,000 km</span></div>
+              <div class="orbit-row"><span class="orbit-key">레이턴시</span><span class="orbit-val latency-val">~20 ms</span></div>
+              <div class="orbit-row"><span class="orbit-key">위성 수</span><span class="orbit-val">수천~수만 기</span></div>
+              <div class="orbit-row"><span class="orbit-key">특징</span><span class="orbit-val">군집 위성(Constellation)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 레이턴시 시각화 -->
+      <div class="card animate d3" style="margin-bottom:20px;">
+        <div class="latency-section">
+          <h3>레이턴시 비교</h3>
+          <div class="lat-row">
+            <div class="lat-header"><span style="color:var(--negative)">GEO 위성 통신</span><span style="color:var(--negative);font-weight:700">500 ms</span></div>
+            <div class="lat-bar"><div class="lat-fill" style="width:100%;background:var(--negative);"></div></div>
+          </div>
+          <div class="lat-row">
+            <div class="lat-header"><span style="color:var(--warning)">4G LTE</span><span style="color:var(--warning);font-weight:700">30~50 ms</span></div>
+            <div class="lat-bar"><div class="lat-fill" style="width:9%;background:var(--warning);"></div></div>
+          </div>
+          <div class="lat-row">
+            <div class="lat-header"><span style="color:var(--accent)">LEO 위성 통신</span><span style="color:var(--accent);font-weight:700">~20 ms</span></div>
+            <div class="lat-bar"><div class="lat-fill" style="width:4%;background:var(--accent);"></div></div>
+          </div>
+          <div class="lat-row">
+            <div class="lat-header"><span style="color:var(--positive)">5G</span><span style="color:var(--positive);font-weight:700">1~10 ms</span></div>
+            <div class="lat-bar"><div class="lat-fill" style="width:2%;background:var(--positive);"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 레이저 통신 -->
+      <div class="laser-box animate d3">
+        <h3>⚡ 레이저 통신(Optical Link) — 광케이블보다 빠른 이유</h3>
+        <div class="laser-fact">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0;margin-top:2px"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          <div><strong>진공 속 빛 속도 > 광섬유 속 빛 속도.</strong> 유리(광섬유)는 굴절로 빛을 늦추지만, 진공(우주)에는 방해물이 없습니다. 약 <strong>47% 더 빠름</strong>.</div>
+        </div>
+        <div class="laser-fact">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" style="flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+          <div>뉴욕 → 런던 데이터 전송 시, <strong>해저 광케이블보다 우주 레이저 통신이 물리적으로 더 빠를 수 있음</strong>. 금융 HFT에서 직접적인 경쟁 우위.</div>
+        </div>
+      </div>
+
+      <!-- 활용 사례 -->
+      <div class="use-case-grid animate d4">
+        <div class="use-item">
+          <div class="use-icon">🏥</div>
+          <div class="use-title">원격 수술</div>
+          <div class="use-desc">0.5초 딜레이로는 생명 위험. 20ms 수준의 LEO로 실시간 로봇 수술 가능</div>
+        </div>
+        <div class="use-item">
+          <div class="use-icon">📈</div>
+          <div class="use-title">초고빈도매매(HFT)</div>
+          <div class="use-desc">0.001초 차이로 수익이 갈리는 금융 시장에서 속도 = 돈</div>
+        </div>
+        <div class="use-item">
+          <div class="use-icon">🌍</div>
+          <div class="use-title">디지털 격차 해소</div>
+          <div class="use-desc">인터넷 미연결 30억 명을 산간·오지·바다 어디서나 연결</div>
+        </div>
+        <div class="use-item">
+          <div class="use-icon">🚗</div>
+          <div class="use-title">미래 모빌리티</div>
+          <div class="use-desc">자율주행, UAM, IoT — 6G 시대에 지상망+위성망 3차원 통신망 표준화</div>
+        </div>
+      </div>
+
+      <div class="highlight-box animate d4">
+        <strong>군집 위성(Constellation)</strong>이 필요한 이유: LEO 위성은 빠른 속도(초속 7.35km)로 지구를 돌기 때문에 한 위성이 항상 특정 지역 위에 있지 않습니다. 끊김 없는 서비스를 위해 수천~수만 기를 촘촘히 배치해야 하며, 이를 가능하게 한 것이 바로 재사용 로켓의 비용 혁명입니다.
+      </div>
+
+      <!-- 연관 지식 -->
+      <div class="related-section animate d5">
+        <h3>같은 시리즈 지식</h3>
+        <div class="related-grid">
+          <a href="space-old-vs-new.html" class="related-card">
+            <div class="r-label">🚀 시리즈 1/4</div>
+            <div class="r-title">올드스페이스 vs 뉴스페이스 — 패러다임 전환</div>
+          </a>
+          <a href="rocket-basics.html" class="related-card">
+            <div class="r-label">⚙️ 시리즈 2/4</div>
+            <div class="r-title">로켓 과학 기초 — 어떻게 우주로 가나</div>
+          </a>
+          <a href="reusable-rocket.html" class="related-card">
+            <div class="r-label">♻️ 시리즈 3/4</div>
+            <div class="r-title">재사용 발사체 혁명 — 비용 구조와 핵심 기술</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-note animate d5">출처: 미래에셋증권 박광남 애널리스트 · 스티비 뉴스레터 · 2026.04.01</div>
+    </div>
+  </main>
+
+  <script>
+    function toggleMenu(){document.getElementById('vizMenuDropdown').classList.toggle('open');}
+    document.addEventListener('click',function(e){if(!e.target.closest('.viz-menu'))document.getElementById('vizMenuDropdown').classList.remove('open');});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')document.getElementById('vizMenuDropdown').classList.remove('open');});
+    var currentTheme='dark';
+    function applyTheme(t){document.documentElement.className='theme-'+t;document.getElementById('themeLabel').textContent=t==='dark'?'Dark':'Light';localStorage.setItem('viz-theme',t);currentTheme=t;}
+    function cycleTheme(){applyTheme(currentTheme==='dark'?'light':'dark');}
+    var saved=localStorage.getItem('viz-theme');
+    applyTheme(saved||(window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'));
+    async function downloadImage(){var menu=document.querySelector('.viz-menu');menu.style.display='none';try{var url=await htmlToImage.toPng(document.body,{quality:1,pixelRatio:2,cacheBust:true});var a=document.createElement('a');a.href=url;a.download='저궤도위성통신.png';a.click();}catch(e){console.error(e);}menu.style.display='';}
+  </script>
+</body>
+</html>

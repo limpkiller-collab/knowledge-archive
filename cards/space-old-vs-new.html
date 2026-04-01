@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>올드스페이스 vs 뉴스페이스 — 우주 패러다임 전환</title>
+  <meta name="knowledge-id" content="space-old-vs-new">
+  <meta name="knowledge-tags" content="우주산업,트렌드,비교분석,투자">
+  <meta name="knowledge-difficulty" content="입문">
+  <meta name="knowledge-date" content="2026-04-01">
+  <meta name="knowledge-source" content="미래에셋증권 박광남 애널리스트 · 스티비 뉴스레터">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #8b5cf6; --accent2: #3b82f6;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-purple: rgba(139,92,246,0.12); --chip-blue: rgba(59,130,246,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #7c3aed; --accent2: #2563eb;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-purple: rgba(124,58,237,0.08); --chip-blue: rgba(37,99,235,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+    body { font-family: 'Noto Sans KR','Inter',sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; letter-spacing: -0.011em; transition: background 0.3s, color 0.3s; min-height: 100vh; }
+    body::before { content:''; position:fixed; inset:0; z-index:-1; pointer-events:none; background: radial-gradient(ellipse 70% 50% at 50% 10%, color-mix(in srgb, var(--accent), transparent 88%), transparent); }
+    h1 { font-weight:700; letter-spacing:-0.03em; line-height:1.08; }
+    h2 { font-weight:600; letter-spacing:-0.02em; line-height:1.1; }
+    h3 { font-weight:600; letter-spacing:-0.02em; }
+    .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+    *:focus-visible { outline:2px solid var(--accent); outline-offset:2px; border-radius:4px; }
+    .container { max-width:860px; margin:0 auto; padding:64px 24px 80px; }
+
+    .nav-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--accent); text-decoration:none; margin-bottom:24px; padding:6px 14px; border-radius:8px; border:1px solid var(--border); background:var(--surface); transition:background 0.15s; }
+    .nav-back:hover { background:var(--surface-hover); }
+
+    .hero { text-align:center; margin-bottom:32px; }
+    .hero-badge { display:inline-flex; align-items:center; gap:6px; padding:5px 14px; border-radius:99px; border:1px solid var(--border); background:var(--surface); font-size:12px; font-weight:500; letter-spacing:0.04em; color:var(--text-secondary); text-transform:uppercase; margin-bottom:20px; }
+    .hero h1 { font-size:clamp(1.8rem,4.5vw,2.8rem); margin-bottom:12px; }
+    .hero-sub { font-size:15px; color:var(--text-secondary); max-width:500px; margin:0 auto; line-height:1.7; }
+
+    .meta-bar { display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:36px; font-size:12px; color:var(--text-secondary); }
+    .diff-badge { padding:2px 10px; border-radius:99px; font-size:11px; font-weight:600; background:var(--chip-green); color:var(--positive); border:1px solid var(--border); }
+    .tag-chip { padding:2px 10px; border-radius:99px; font-size:11px; font-weight:500; background:var(--surface); border:1px solid var(--border); color:var(--text-secondary); }
+    .meta-item { display:inline-flex; align-items:center; gap:4px; }
+
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:26px; transition:box-shadow 0.2s ease; }
+    .theme-dark .card { box-shadow:0 0 0 1px var(--border); }
+    .theme-light .card { box-shadow:0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow:0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+
+    /* Key number */
+    .kpi-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:20px; }
+    .kpi-item { text-align:center; padding:18px 12px; border-radius:12px; background:var(--surface); border:1px solid var(--border); }
+    .kpi-value { font-size:1.6rem; font-weight:700; letter-spacing:-0.03em; }
+    .kpi-label { font-size:11px; color:var(--text-secondary); font-weight:500; margin-top:4px; text-transform:uppercase; letter-spacing:0.04em; }
+
+    /* Compare table */
+    .compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px; }
+    .era-card { border-radius:12px; padding:22px; border:1px solid var(--border); position:relative; overflow:hidden; }
+    .era-card .top-line { position:absolute; top:0; left:0; right:0; height:3px; border-radius:12px 12px 0 0; }
+    .era-card.old .top-line { background:#64748b; }
+    .era-card.new .top-line { background:var(--accent); }
+    .era-label { font-size:11px; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; margin-bottom:10px; margin-top:4px; }
+    .era-card.old .era-label { color:#64748b; }
+    .era-card.new .era-label { color:var(--accent); }
+    .era-title { font-size:1.2rem; font-weight:700; margin-bottom:12px; }
+    .era-item { display:flex; align-items:flex-start; gap:8px; font-size:13px; margin-bottom:8px; color:var(--text-secondary); }
+    .era-item strong { color:var(--text); font-weight:600; }
+    .era-dot { width:6px; height:6px; border-radius:50%; margin-top:6px; flex-shrink:0; }
+    .era-card.old .era-dot { background:#64748b; }
+    .era-card.new .era-dot { background:var(--accent); }
+
+    .highlight-box { padding:14px 18px; border-radius:10px; border:1px solid var(--border); background:var(--chip-purple); font-size:13.5px; line-height:1.7; margin-bottom:16px; }
+    .highlight-box strong { color:var(--accent); }
+
+    .quote-box { padding:16px 20px; border-radius:10px; border-left:3px solid var(--accent); background:var(--surface); font-size:13px; line-height:1.7; color:var(--text-secondary); margin-bottom:16px; font-style:italic; }
+    .quote-box cite { display:block; margin-top:6px; font-style:normal; font-weight:600; font-size:12px; color:var(--accent); }
+
+    /* Related */
+    .related-section { margin-top:32px; padding-top:20px; border-top:1px solid var(--border); }
+    .related-section h3 { font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:12px; text-transform:uppercase; letter-spacing:0.05em; }
+    .related-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; }
+    .related-card { display:block; text-decoration:none; padding:12px 14px; border-radius:10px; border:1px solid var(--border); background:var(--surface); transition:background 0.15s; }
+    .related-card:hover { background:var(--surface-hover); }
+    .related-card .r-label { font-size:11px; color:var(--accent); font-weight:600; margin-bottom:3px; }
+    .related-card .r-title { font-size:13px; font-weight:500; color:var(--text); line-height:1.4; }
+
+    .footer-note { text-align:center; font-size:12px; color:var(--text-secondary); margin-top:20px; }
+
+    @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    .animate { animation:fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay:0.06s; } .d2 { animation-delay:0.12s; } .d3 { animation-delay:0.18s; } .d4 { animation-delay:0.24s; } .d5 { animation-delay:0.30s; }
+    @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; } }
+    @media (max-width:640px) { .compare-grid,.kpi-row { grid-template-columns:1fr; } .container { padding:48px 16px 60px; } }
+    @media print { body { background:white!important; } .viz-menu { display:none!important; } .card { break-inside:avoid; } * { print-color-adjust:exact; } }
+
+    .viz-menu { position:fixed; top:16px; right:16px; z-index:9999; }
+    .viz-menu-toggle { width:40px; height:40px; border-radius:10px; border:1px solid var(--menu-border); background:var(--menu-bg); color:var(--menu-text); cursor:pointer; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(12px); transition:all 0.2s; }
+    .viz-menu-toggle:hover { background:var(--menu-item-hover); }
+    .viz-menu-dropdown { position:absolute; top:calc(100% + 8px); right:0; min-width:196px; background:var(--menu-bg); backdrop-filter:blur(16px); border:1px solid var(--menu-border); border-radius:12px; padding:6px; opacity:0; visibility:hidden; transform:translateY(-8px) scale(0.96); transition:all 0.2s cubic-bezier(0.4,0,0.2,1); box-shadow:0 8px 32px rgba(0,0,0,0.25); }
+    .viz-menu-dropdown.open { opacity:1; visibility:visible; transform:translateY(0) scale(1); }
+    .viz-menu-dropdown button { width:100%; display:flex; align-items:center; gap:10px; padding:10px 14px; border:none; background:transparent; color:var(--menu-text); font-size:14px; font-family:inherit; cursor:pointer; border-radius:8px; transition:background 0.15s; text-align:left; }
+    .viz-menu-dropdown button:hover { background:var(--menu-item-hover); }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/></svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">🚀 우주 산업 시리즈 1/4</div>
+        <h1>올드스페이스 vs 뉴스페이스</h1>
+        <p class="hero-sub">냉전 시대의 국가 주도 우주 개발은 어떻게 민간 중심의 비용 혁명으로 바뀌었는가</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="diff-badge">입문</span>
+        <span class="tag-chip">#우주산업</span>
+        <span class="tag-chip">#트렌드</span>
+        <span class="tag-chip">#비교분석</span>
+        <span class="tag-chip">#투자</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.01
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          박광남 (미래에셋증권)
+        </span>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-row animate d2" role="region" aria-label="핵심 수치">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">1/10</div>
+          <div class="kpi-label">SpaceX의 비용 절감</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--text-secondary)">$40억</div>
+          <div class="kpi-label">NASA 자체 예상 비용</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--positive)">$4억</div>
+          <div class="kpi-label">SpaceX 실제 개발비</div>
+        </div>
+      </div>
+
+      <!-- 핵심 요약 -->
+      <div class="highlight-box animate d2">
+        우주 산업은 지금 <strong>0(Zero)에서 1(One)</strong>으로 넘어가는 변곡점에 서 있습니다. 페이팔·팔란티어를 창립한 피터 틸의 말처럼, 세상에 없던 새로운 시장이 열리고 있습니다.
+      </div>
+
+      <!-- 비교 카드 -->
+      <div class="compare-grid animate d3" role="region" aria-label="올드스페이스 vs 뉴스페이스 비교">
+        <div class="era-card old card">
+          <div class="top-line"></div>
+          <div style="padding-top:8px">
+            <div class="era-label">Old Space · 냉전~1990s</div>
+            <div class="era-title">올드스페이스</div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>목표:</strong> 안보·체제 선전</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>주체:</strong> 국가 (미국·소련)</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>계약:</strong> 비용가산 (Cost-Plus) — 쓴 만큼 이윤 추가 지급</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>원가 절감 유인:</strong> 없음. 실패 안 하는 것이 최우선</div></div>
+          </div>
+        </div>
+
+        <div class="era-card new card">
+          <div class="top-line"></div>
+          <div style="padding-top:8px">
+            <div class="era-label">New Space · 2000s~현재</div>
+            <div class="era-title">뉴스페이스</div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>목표:</strong> 비즈니스·수익</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>주체:</strong> 민간 (SpaceX, Blue Origin 등)</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>계약:</strong> 고정가격 (Fixed-Price) — 성과에 따라 정해진 금액만</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>원가 절감 유인:</strong> 강함. 절감할수록 이익 증가</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 전환점 -->
+      <div class="card animate d4" style="margin-bottom:16px">
+        <h3 style="font-size:14px; font-weight:600; margin-bottom:14px; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.04em;">전환의 계기</h3>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; gap:12px; align-items:flex-start;">
+            <div style="width:32px; height:32px; border-radius:8px; background:var(--chip-amber); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px; font-weight:700; color:var(--warning);">①</div>
+            <div><div style="font-size:13.5px; font-weight:600; margin-bottom:2px;">1984년 — 상업 우주발사법 제정</div><div style="font-size:13px; color:var(--text-secondary);">미국이 민간 기업의 우주 개발 진입을 허용하는 법률 마련</div></div>
+          </div>
+          <div style="display:flex; gap:12px; align-items:flex-start;">
+            <div style="width:32px; height:32px; border-radius:8px; background:var(--chip-purple); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px; font-weight:700; color:var(--accent);">②</div>
+            <div><div style="font-size:13.5px; font-weight:600; margin-bottom:2px;">NASA의 역할 전환 — "고객"으로</div><div style="font-size:13px; color:var(--text-secondary);">로켓을 직접 만들지 않고, 민간 기업에 맡겨 성과 기준 고정가격으로 구매하는 방식으로 전환</div></div>
+          </div>
+          <div style="display:flex; gap:12px; align-items:flex-start;">
+            <div style="width:32px; height:32px; border-radius:8px; background:var(--chip-green); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px; font-weight:700; color:var(--positive);">③</div>
+            <div><div style="font-size:13.5px; font-weight:600; margin-bottom:2px;">SpaceX의 충격 — 10분의 1 비용 실현</div><div style="font-size:13px; color:var(--text-secondary);">NASA가 40억 달러 예상한 팔콘 9을, SpaceX는 4억 달러에 개발 완료</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quote-box animate d4">
+        "비용은 낮아지고, 연결은 빨라진다." 이 두 문장이 현재 우주 산업이 투자 기회로 떠오른 핵심 이유입니다.
+        <cite>— 박광남, 미래에셋증권 애널리스트</cite>
+      </div>
+
+      <!-- 연관 지식 -->
+      <div class="related-section animate d5">
+        <h3>같은 시리즈 지식</h3>
+        <div class="related-grid">
+          <a href="rocket-basics.html" class="related-card">
+            <div class="r-label">🚀 시리즈 2/4</div>
+            <div class="r-title">로켓 과학 기초 — 어떻게 우주로 가나</div>
+          </a>
+          <a href="reusable-rocket.html" class="related-card">
+            <div class="r-label">♻️ 시리즈 3/4</div>
+            <div class="r-title">재사용 발사체 혁명 — 비용 구조와 핵심 기술</div>
+          </a>
+          <a href="leo-satellite-comms.html" class="related-card">
+            <div class="r-label">🛰️ 시리즈 4/4</div>
+            <div class="r-title">저궤도 위성 통신과 레이턴시 혁명</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-note animate d5">출처: 미래에셋증권 박광남 애널리스트 · 스티비 뉴스레터 · 2026.04.01</div>
+    </div>
+  </main>
+
+  <script>
+    function toggleMenu() { document.getElementById('vizMenuDropdown').classList.toggle('open'); }
+    document.addEventListener('click', function(e) { if (!e.target.closest('.viz-menu')) document.getElementById('vizMenuDropdown').classList.remove('open'); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') document.getElementById('vizMenuDropdown').classList.remove('open'); });
+    var currentTheme = 'dark';
+    function applyTheme(t) { document.documentElement.className = 'theme-' + t; document.getElementById('themeLabel').textContent = t === 'dark' ? 'Dark' : 'Light'; localStorage.setItem('viz-theme', t); currentTheme = t; }
+    function cycleTheme() { applyTheme(currentTheme === 'dark' ? 'light' : 'dark'); }
+    var saved = localStorage.getItem('viz-theme');
+    applyTheme(saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+    async function downloadImage() {
+      var menu = document.querySelector('.viz-menu'); menu.style.display = 'none';
+      try { var url = await htmlToImage.toPng(document.body, { quality:1, pixelRatio:2, cacheBust:true }); var a = document.createElement('a'); a.href = url; a.download = '올드스페이스vs뉴스페이스.png'; a.click(); } catch(e) { console.error(e); }
+      menu.style.display = '';
+    }
+  </script>
+</body>
+</html>
