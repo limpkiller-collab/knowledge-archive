@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>양자컴퓨터 핵심 원리 — 중첩·얽힘·큐비트</title>
+  <meta name="knowledge-id" content="quantum-basics">
+  <meta name="knowledge-tags" content="양자컴퓨터,과학,기술,투자">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-03">
+  <meta name="knowledge-source" content="어스플러스 · 월텍남의 실전투자클럽">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #8b5cf6; --accent2: #a78bfa;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(139,92,246,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #7c3aed; --accent2: #6d28d9;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(124,58,237,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%,
+        color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--menu-border); background: var(--menu-bg);
+      color: var(--menu-text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(12px); transition: all 0.2s;
+    }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px;
+      background: var(--menu-bg); backdrop-filter: blur(16px);
+      border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px;
+      opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border: none; background: transparent;
+      color: var(--menu-text); font-size: 14px; font-family: inherit;
+      cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left;
+    }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      margin-bottom: 24px; padding: 6px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface); transition: background 0.15s;
+    }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--text-secondary);
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 500px; margin: 0 auto; line-height: 1.7; }
+
+    .meta-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 36px;
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .diff-badge {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      border: 1px solid var(--border);
+    }
+    .diff-intermediate { background: var(--chip-amber); color: var(--warning); }
+    .tag-chip {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500;
+      background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary);
+    }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease;
+      margin-bottom: 20px;
+    }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .section-title {
+      font-size: 12px; font-weight: 700; color: var(--text-secondary);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px;
+    }
+
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    .highlight-box {
+      padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--chip-accent); font-size: 13.5px; line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .highlight-box strong { color: var(--accent); }
+
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+    .era-card { border-radius: 12px; padding: 22px; border: 1px solid var(--border); position: relative; overflow: hidden; background: var(--surface); }
+    .era-card .top-line { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+    .era-card.old .top-line { background: #64748b; }
+    .era-card.new .top-line { background: var(--accent); }
+    .era-label { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 10px; margin-top: 4px; }
+    .era-card.old .era-label { color: #64748b; }
+    .era-card.new .era-label { color: var(--accent); }
+    .era-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; }
+    .era-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; margin-bottom: 8px; color: var(--text-secondary); }
+    .era-item strong { color: var(--text); font-weight: 600; }
+    .era-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+    .era-card.old .era-dot { background: #64748b; }
+    .era-card.new .era-dot { background: var(--accent); }
+
+    .bar-chart { display: flex; flex-direction: column; gap: 14px; margin-bottom: 4px; }
+    .bar-item { display: flex; flex-direction: column; gap: 5px; }
+    .bar-header { display: flex; justify-content: space-between; font-size: 13px; }
+    .bar-label { font-weight: 500; }
+    .bar-value { font-weight: 700; color: var(--accent); }
+    .bar-track { height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 99px; }
+
+    /* 원리 카드 그리드 */
+    .principle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+    .principle-card {
+      border-radius: 12px; padding: 22px; border: 1px solid var(--border);
+      background: var(--surface); position: relative; overflow: hidden;
+    }
+    .principle-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--accent); border-radius: 12px 12px 0 0;
+    }
+    .p-icon { font-size: 2rem; margin-bottom: 10px; margin-top: 4px; }
+    .p-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+    .p-ko { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .p-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+    .p-desc strong { color: var(--text); }
+
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .timeline-item { display: flex; gap: 16px; }
+    .timeline-left { display: flex; flex-direction: column; align-items: center; width: 32px; flex-shrink: 0; }
+    .timeline-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); flex-shrink: 0; margin-top: 4px; }
+    .timeline-line { width: 2px; flex: 1; background: var(--border); margin: 4px 0; min-height: 20px; }
+    .timeline-item:last-child .timeline-line { display: none; }
+    .timeline-right { padding-bottom: 20px; flex: 1; }
+    .timeline-year { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .timeline-content { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+    .timeline-content strong { color: var(--text); }
+
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+    @media (max-width: 640px) {
+      .compare-grid, .kpi-row, .principle-grid { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+    }
+    @media print {
+      body { background: white !important; }
+      .viz-menu { display: none !important; }
+      .card { break-inside: avoid; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">⚛️ 양자컴퓨터 시리즈 1/3</div>
+        <h1>양자컴퓨터 핵심 원리</h1>
+        <p class="hero-sub">중첩·얽힘·큐비트로 이해하는 양자 세계 — 고전 컴퓨터가 풀지 못하는 문제를 어떻게 푸는가</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="tag-chip">#양자컴퓨터</span>
+        <span class="tag-chip">#과학</span>
+        <span class="tag-chip">#기술</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.03
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          어스플러스 · 월텍남의 실전투자클럽
+        </span>
+      </div>
+
+      <!-- KPI 행 -->
+      <div class="kpi-row animate d2" role="region" aria-label="핵심 수치">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">60조원</div>
+          <div class="kpi-label">2031년 시장 전망</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--text-secondary)">CAGR 21%</div>
+          <div class="kpi-label">연평균 성장률</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--positive)">8조원</div>
+          <div class="kpi-label">2022년 현재 규모</div>
+        </div>
+      </div>
+
+      <!-- 핵심 인사이트 -->
+      <div class="highlight-box animate d2">
+        양자컴퓨터는 단순히 빠른 컴퓨터가 아니다. <strong>계산 방식 자체가 다르다</strong> — 고전 컴퓨터가 0 또는 1만 처리할 때, 양자컴퓨터는 중첩 상태로 두 값을 동시에 처리해 특정 문제에서 지수적 우위를 가진다.
+      </div>
+
+      <!-- 2대 핵심 원리 -->
+      <div class="principle-grid animate d3">
+        <div class="principle-card">
+          <div class="p-icon">🌊</div>
+          <div class="p-ko">Superposition</div>
+          <div class="p-title">중첩</div>
+          <div class="p-desc">
+            고전 비트는 0 또는 1이지만, <strong>큐비트는 측정 전까지 0과 1이 동시에 존재</strong>한다.
+            동전을 공중에 던진 상태처럼, 앞면·뒷면 확률이 공존하다가 바닥에 떨어지는 순간 결과가 확정된다.
+            n큐비트는 2ⁿ개 상태를 동시에 처리 가능.
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="p-icon">🔗</div>
+          <div class="p-ko">Entanglement</div>
+          <div class="p-title">얽힘</div>
+          <div class="p-desc">
+            두 큐비트가 얽히면 <strong>아무리 멀리 떨어져도 한쪽을 측정하는 순간 다른 쪽 상태가 즉시 결정</strong>된다.
+            아인슈타인이 "유령 같은 원격 작용"이라 불렀던 현상.
+            이를 통해 큐비트 간 상관관계를 활용해 효율적 연산이 가능해진다.
+          </div>
+        </div>
+      </div>
+
+      <!-- 고전 vs 양자 비교 -->
+      <div class="compare-grid animate d3" role="region" aria-label="고전 컴퓨터 vs 양자컴퓨터">
+        <div class="era-card old">
+          <div class="top-line"></div>
+          <div style="padding-top:8px">
+            <div class="era-label">Classical</div>
+            <div class="era-title">고전 컴퓨터</div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>연산 단위:</strong> 비트 (0 또는 1)</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>처리 방식:</strong> 순차적·확정적 연산</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>병렬성:</strong> 코어 수만큼 제한</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>강점:</strong> 범용 작업, 안정성, 프로그래밍 편의</div></div>
+          </div>
+        </div>
+        <div class="era-card new">
+          <div class="top-line"></div>
+          <div style="padding-top:8px">
+            <div class="era-label">Quantum</div>
+            <div class="era-title">양자컴퓨터</div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>연산 단위:</strong> 큐비트 (0+1 중첩)</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>처리 방식:</strong> 확률론적·병렬 연산</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>병렬성:</strong> 2ⁿ 상태 동시 처리</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>강점:</strong> 최적화·시뮬레이션·암호 해독</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 시장 구조 막대 차트 -->
+      <div class="card animate d4">
+        <div class="section-title">양자 기술 시장 3대 분야 구성 (2031년 전망)</div>
+        <div class="bar-chart">
+          <div class="bar-item">
+            <div class="bar-header">
+              <span class="bar-label">⚛️ 양자컴퓨터</span>
+              <span class="bar-value">60%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:60%; background:var(--accent)"></div></div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-header">
+              <span class="bar-label">📡 양자통신</span>
+              <span class="bar-value">30%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:30%; background:var(--accent2)"></div></div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-header">
+              <span class="bar-label">🔬 양자센싱</span>
+              <span class="bar-value">10%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:10%; background:#64748b"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NISQ → FTQC 여정 타임라인 -->
+      <div class="card animate d4">
+        <div class="section-title">실용화 여정 — NISQ에서 FTQC로</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">현재 — NISQ 시대</div>
+              <div class="timeline-content">
+                <strong>노이즈가 있는 중간 규모 양자(50~수백 큐비트)</strong> — 오류를 완전히 정정하지 못하고 "완화(mitigation)"만 가능.
+                양자 우위를 일부 특수 문제에서 시연했으나 범용 활용은 제한적.
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">핵심 과제 — 오류 정정</div>
+              <div class="timeline-content">
+                <strong>게이트 충실도 ≥ 99.9%가 NISQ 유용성의 최소 기준.</strong>
+                표면 코드(Surface Code) 기반 논리적 큐비트 구현 시 물리적 큐비트 수백~수천 개 필요.
+                Google Willow는 오류율이 큐비트를 늘릴수록 감소하는 임계값 이하 첫 달성.
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">목표 — FTQC (내성 오류 양자)</div>
+              <div class="timeline-content">
+                <strong>완전한 오류 정정으로 논리적 큐비트가 실제 계산에 활용되는 단계.</strong>
+                IBM 목표: 2029년 Starling(200 논리 큐비트).
+                대부분 기업 예측: 2030년 이후 도달 전망.
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">응용 분야</div>
+              <div class="timeline-content">
+                <strong>금융</strong>(포트폴리오 최적화·리스크 분석), <strong>제약</strong>(신약 분자 시뮬레이션),
+                <strong>물류</strong>(경로 최적화), <strong>AI</strong>(머신러닝 가속), <strong>신소재</strong>(배터리·촉매 설계).
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 관련 지식 -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="qubit-technologies.html" class="related-card">
+            <div class="r-label">→ 시리즈 2/3</div>
+            <div class="r-title">5대 큐비트 기술 경쟁</div>
+          </a>
+          <a href="quantum-companies.html" class="related-card">
+            <div class="r-label">→ 시리즈 3/3</div>
+            <div class="r-title">양자컴퓨터 주요 기업 분석</div>
+          </a>
+          <a href="nvlink-fusion.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">NVLink Fusion — NVIDIA의 양자-GPU 연결 전략</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">출처: 어스플러스 · 월텍남의 실전투자클럽 알파 테크 리포트 (2026.04)</p>
+
+    </div>
+  </main>
+
+  <script>
+    var THEMES = ['theme-dark', 'theme-light'];
+    var THEME_LABELS = { 'theme-dark': 'Dark', 'theme-light': 'Light' };
+
+    (function() {
+      var saved = localStorage.getItem('ka-theme') || 'theme-dark';
+      document.documentElement.className = saved;
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[saved];
+    })();
+
+    function cycleTheme() {
+      var cur = document.documentElement.className;
+      var next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+      document.documentElement.className = next;
+      localStorage.setItem('ka-theme', next);
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[next];
+      closeMenu();
+    }
+
+    function toggleMenu() {
+      document.getElementById('vizMenuDropdown').classList.toggle('open');
+    }
+    function closeMenu() {
+      document.getElementById('vizMenuDropdown').classList.remove('open');
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.viz-menu')) closeMenu();
+    });
+
+    function downloadImage() {
+      closeMenu();
+      if (typeof htmlToImage === 'undefined') { alert('라이브러리 로딩 중...'); return; }
+      htmlToImage.toPng(document.getElementById('main'), { pixelRatio: 2 })
+        .then(function(dataUrl) {
+          var a = document.createElement('a');
+          a.download = 'quantum-basics.png';
+          a.href = dataUrl;
+          a.click();
+        });
+    }
+  </script>
+</body>
+</html>

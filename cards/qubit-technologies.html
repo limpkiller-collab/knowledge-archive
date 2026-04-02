@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>5대 큐비트 기술 경쟁 — 초전도·이온트랩·중성원자·광자·위상</title>
+  <meta name="knowledge-id" content="qubit-technologies">
+  <meta name="knowledge-tags" content="양자컴퓨터,기술,반도체,과학">
+  <meta name="knowledge-difficulty" content="고급">
+  <meta name="knowledge-date" content="2026-04-03">
+  <meta name="knowledge-source" content="어스플러스 · 월텍남의 실전투자클럽">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #06b6d4; --accent2: #0ea5e9;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(6,182,212,0.10);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #0891b2; --accent2: #0284c7;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(8,145,178,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%,
+        color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2 { font-weight: 600; letter-spacing: -0.02em; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--menu-border); background: var(--menu-bg);
+      color: var(--menu-text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(12px); transition: all 0.2s;
+    }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px;
+      background: var(--menu-bg); backdrop-filter: blur(16px);
+      border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px;
+      opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border: none; background: transparent;
+      color: var(--menu-text); font-size: 14px; font-family: inherit;
+      cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left;
+    }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      margin-bottom: 24px; padding: 6px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface); transition: background 0.15s;
+    }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--text-secondary);
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 520px; margin: 0 auto; line-height: 1.7; }
+
+    .meta-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 36px;
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-advanced { background: rgba(244,63,94,0.12); color: var(--negative); }
+    .tag-chip {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500;
+      background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary);
+    }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease;
+      margin-bottom: 20px;
+    }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .section-title {
+      font-size: 12px; font-weight: 700; color: var(--text-secondary);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px;
+    }
+
+    .highlight-box {
+      padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--chip-accent); font-size: 13.5px; line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .highlight-box strong { color: var(--accent); }
+
+    /* 성능 비교 테이블 */
+    .perf-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 4px; }
+    .perf-table th {
+      text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 700;
+      color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border);
+    }
+    .perf-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text-secondary); vertical-align: top; }
+    .perf-table td:first-child { color: var(--text); font-weight: 600; }
+    .perf-table tr:last-child td { border-bottom: none; }
+    .perf-table tr:hover td { background: var(--surface-hover); }
+    .badge {
+      display: inline-block; padding: 1px 8px; border-radius: 99px; font-size: 10px;
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .badge-green { background: var(--chip-green); color: var(--positive); }
+    .badge-amber { background: var(--chip-amber); color: var(--warning); }
+    .badge-blue { background: var(--chip-accent); color: var(--accent); }
+    .badge-gray { background: rgba(100,116,139,0.12); color: #64748b; }
+
+    /* 기술 카드 그리드 */
+    .tech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+    .tech-card {
+      border-radius: 12px; padding: 20px; border: 1px solid var(--border);
+      background: var(--surface); position: relative;
+    }
+    .tech-no {
+      position: absolute; top: 14px; right: 16px;
+      font-size: 11px; font-weight: 700; color: var(--accent); opacity: 0.6;
+      font-family: 'Inter', sans-serif;
+    }
+    .tech-icon { font-size: 1.6rem; margin-bottom: 8px; }
+    .tech-name { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+    .tech-en { font-size: 11px; color: var(--text-secondary); margin-bottom: 10px; }
+    .tech-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px; }
+    .tech-key { color: var(--text-secondary); }
+    .tech-val { color: var(--text); font-weight: 500; text-align: right; }
+    .tech-players { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-secondary); }
+    .tech-players strong { color: var(--accent); }
+
+    /* 성능 지표 박스 */
+    .metric-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+    .metric-item {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 16px; text-align: center;
+    }
+    .metric-icon { font-size: 1.4rem; margin-bottom: 6px; }
+    .metric-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .metric-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+    @media (max-width: 640px) {
+      .tech-grid, .metric-row { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+      .perf-table { font-size: 12px; }
+    }
+    @media print {
+      body { background: white !important; }
+      .viz-menu { display: none !important; }
+      .card { break-inside: avoid; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">⚛️ 양자컴퓨터 시리즈 2/3</div>
+        <h1>5대 큐비트 기술 경쟁</h1>
+        <p class="hero-sub">초전도 · 이온트랩 · 중성원자 · 광자 · 위상 — 각 방식의 원리, 한계, 선두 기업 한눈에 비교</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="diff-badge diff-advanced">고급</span>
+        <span class="tag-chip">#양자컴퓨터</span>
+        <span class="tag-chip">#기술</span>
+        <span class="tag-chip">#반도체</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.03
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          어스플러스 · 월텍남의 실전투자클럽
+        </span>
+      </div>
+
+      <!-- 핵심 인사이트 -->
+      <div class="highlight-box animate d2">
+        큐비트 구현 방식은 하나가 아니다. <strong>어떤 방식이 FTQC를 먼저 달성하느냐가 양자컴퓨터 시장의 승자를 결정</strong>할 것이다. 현재 초전도가 가장 앞서 있으나, 이온트랩의 정밀도와 위상 큐비트의 잠재력도 무시할 수 없다.
+      </div>
+
+      <!-- 5대 기술 카드 그리드 -->
+      <div class="tech-grid animate d2">
+        <div class="tech-card">
+          <div class="tech-no">01</div>
+          <div class="tech-icon">🧊</div>
+          <div class="tech-name">초전도 큐비트</div>
+          <div class="tech-en">Superconducting</div>
+          <div class="tech-row"><span class="tech-key">동작 온도</span><span class="tech-val">~15mK (절대영도 근방)</span></div>
+          <div class="tech-row"><span class="tech-key">결맞음 시간</span><span class="tech-val">수백 μs</span></div>
+          <div class="tech-row"><span class="tech-key">게이트 속도</span><span class="tech-val">매우 빠름 (~10ns)</span></div>
+          <div class="tech-row"><span class="tech-key">확장성</span><span class="tech-val"><span class="badge badge-green">높음</span></span></div>
+          <div class="tech-players"><strong>선두:</strong> IBM, Google, Rigetti</div>
+        </div>
+        <div class="tech-card">
+          <div class="tech-no">02</div>
+          <div class="tech-icon">⚡</div>
+          <div class="tech-name">이온 트랩</div>
+          <div class="tech-en">Trapped Ion</div>
+          <div class="tech-row"><span class="tech-key">동작 온도</span><span class="tech-val">상온 (진공 필요)</span></div>
+          <div class="tech-row"><span class="tech-key">결맞음 시간</span><span class="tech-val">수분~수시간</span></div>
+          <div class="tech-row"><span class="tech-key">게이트 속도</span><span class="tech-val">느림 (~1ms)</span></div>
+          <div class="tech-row"><span class="tech-key">정밀도</span><span class="tech-val"><span class="badge badge-green">최고 수준</span></span></div>
+          <div class="tech-players"><strong>선두:</strong> IonQ, Quantinuum</div>
+        </div>
+        <div class="tech-card">
+          <div class="tech-no">03</div>
+          <div class="tech-icon">🌐</div>
+          <div class="tech-name">중성 원자</div>
+          <div class="tech-en">Neutral Atom</div>
+          <div class="tech-row"><span class="tech-key">동작 온도</span><span class="tech-val">상온 (광학 트랩)</span></div>
+          <div class="tech-row"><span class="tech-key">큐비트 연결</span><span class="tech-val">재배치 가능 (유연)</span></div>
+          <div class="tech-row"><span class="tech-key">확장성</span><span class="tech-val"><span class="badge badge-amber">잠재력 높음</span></span></div>
+          <div class="tech-row"><span class="tech-key">성숙도</span><span class="tech-val"><span class="badge badge-amber">개발 중</span></span></div>
+          <div class="tech-players"><strong>선두:</strong> Pasqal, QuEra (Harvard)</div>
+        </div>
+        <div class="tech-card">
+          <div class="tech-no">04</div>
+          <div class="tech-icon">💡</div>
+          <div class="tech-name">광자 큐비트</div>
+          <div class="tech-en">Photonic</div>
+          <div class="tech-row"><span class="tech-key">동작 온도</span><span class="tech-val">상온</span></div>
+          <div class="tech-row"><span class="tech-key">장점</span><span class="tech-val">통신 친화, 저잡음</span></div>
+          <div class="tech-row"><span class="tech-key">한계</span><span class="tech-val">광자 손실 · 간섭 어려움</span></div>
+          <div class="tech-row"><span class="tech-key">용도 전망</span><span class="tech-val"><span class="badge badge-blue">양자통신 특화</span></span></div>
+          <div class="tech-players"><strong>선두:</strong> PsiQuantum, Xanadu</div>
+        </div>
+      </div>
+
+      <!-- 위상 큐비트 별도 강조 -->
+      <div class="card animate d3">
+        <div class="section-title">와일드카드 — 위상 큐비트 (Topological)</div>
+        <div style="display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap;">
+          <div style="font-size:2.5rem">🔮</div>
+          <div style="flex:1; min-width:200px;">
+            <div style="font-size:16px; font-weight:700; margin-bottom:8px;">마이크로소프트의 도박</div>
+            <p style="font-size:13px; color:var(--text-secondary); line-height:1.7; margin-bottom:10px;">
+              마요라나 입자를 활용해 <strong style="color:var(--text)">오류 자체가 구조적으로 억제</strong>되는 큐비트.
+              이론상 다른 방식보다 오류 정정에 훨씬 적은 물리 큐비트가 필요하다.
+            </p>
+            <p style="font-size:13px; color:var(--text-secondary); line-height:1.7;">
+              MS는 2025년 마요라나 1 칩을 발표해 원리 증명에 성공했으나, <strong style="color:var(--warning)">실용 수준의 큐비트 구현까지는 수년이 더 필요</strong>하다는 평가.
+              성공 시 게임 체인저가 될 수 있으나 현재로선 가장 불확실한 방식.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 성능 비교 테이블 -->
+      <div class="card animate d3">
+        <div class="section-title">5대 기술 성능 비교 한눈에</div>
+        <table class="perf-table">
+          <thead>
+            <tr>
+              <th>방식</th>
+              <th>결맞음 시간</th>
+              <th>게이트 속도</th>
+              <th>충실도</th>
+              <th>FTQC 경쟁력</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>초전도</td>
+              <td>수백 μs</td>
+              <td>⚡ 매우 빠름</td>
+              <td>99.5~99.9%</td>
+              <td><span class="badge badge-green">현재 선도</span></td>
+            </tr>
+            <tr>
+              <td>이온트랩</td>
+              <td>수분 이상</td>
+              <td>🐢 느림</td>
+              <td>99.9%+</td>
+              <td><span class="badge badge-green">정밀도 최고</span></td>
+            </tr>
+            <tr>
+              <td>중성원자</td>
+              <td>수 ms</td>
+              <td>중간</td>
+              <td>99%+</td>
+              <td><span class="badge badge-amber">급성장 중</span></td>
+            </tr>
+            <tr>
+              <td>광자</td>
+              <td>높은 손실률</td>
+              <td>빛의 속도</td>
+              <td>낮음</td>
+              <td><span class="badge badge-blue">통신 특화</span></td>
+            </tr>
+            <tr>
+              <td>위상</td>
+              <td>이론상 매우 길다</td>
+              <td>미정</td>
+              <td>미정</td>
+              <td><span class="badge badge-gray">연구 단계</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 3대 성능 지표 -->
+      <div class="card animate d4">
+        <div class="section-title">큐비트 품질을 결정하는 3대 지표</div>
+        <div class="metric-row">
+          <div class="metric-item">
+            <div class="metric-icon">⏱️</div>
+            <div class="metric-name">결맞음 시간</div>
+            <div class="metric-desc" style="color:var(--accent); font-weight:600; font-size:13px; margin-bottom:4px;">Coherence Time</div>
+            <div class="metric-desc">큐비트가 양자 상태를 유지하는 시간. <strong style="color:var(--text)">길수록 더 많은 게이트 연산 가능</strong>. 이온트랩이 가장 길고, 초전도가 짧다.</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-icon">⚡</div>
+            <div class="metric-name">게이트 시간</div>
+            <div class="metric-desc" style="color:var(--accent); font-weight:600; font-size:13px; margin-bottom:4px;">Gate Time</div>
+            <div class="metric-desc">연산 1회에 소요되는 시간. <strong style="color:var(--text)">짧을수록 결맞음 시간 내에 더 많은 연산</strong>. 초전도(~10ns) vs 이온트랩(~1ms).</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-icon">🎯</div>
+            <div class="metric-name">게이트 충실도</div>
+            <div class="metric-desc" style="color:var(--accent); font-weight:600; font-size:13px; margin-bottom:4px;">Gate Fidelity</div>
+            <div class="metric-desc">게이트 연산의 정확도. <strong style="color:var(--text)">NISQ 유용성을 위해 2큐비트 게이트 ≥ 99.9% 필요</strong>. 현재 최고: Quantinuum H2.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 관련 지식 -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="quantum-basics.html" class="related-card">
+            <div class="r-label">→ 시리즈 1/3</div>
+            <div class="r-title">양자컴퓨터 핵심 원리</div>
+          </a>
+          <a href="quantum-companies.html" class="related-card">
+            <div class="r-label">→ 시리즈 3/3</div>
+            <div class="r-title">양자컴퓨터 주요 기업 분석</div>
+          </a>
+          <a href="silicon-photonics.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">실리콘 포토닉스 — 광자 기술의 현재</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">출처: 어스플러스 · 월텍남의 실전투자클럽 알파 테크 리포트 (2026.04)</p>
+
+    </div>
+  </main>
+
+  <script>
+    var THEMES = ['theme-dark', 'theme-light'];
+    var THEME_LABELS = { 'theme-dark': 'Dark', 'theme-light': 'Light' };
+
+    (function() {
+      var saved = localStorage.getItem('ka-theme') || 'theme-dark';
+      document.documentElement.className = saved;
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[saved];
+    })();
+
+    function cycleTheme() {
+      var cur = document.documentElement.className;
+      var next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+      document.documentElement.className = next;
+      localStorage.setItem('ka-theme', next);
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[next];
+      closeMenu();
+    }
+
+    function toggleMenu() {
+      document.getElementById('vizMenuDropdown').classList.toggle('open');
+    }
+    function closeMenu() {
+      document.getElementById('vizMenuDropdown').classList.remove('open');
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.viz-menu')) closeMenu();
+    });
+
+    function downloadImage() {
+      closeMenu();
+      if (typeof htmlToImage === 'undefined') { alert('라이브러리 로딩 중...'); return; }
+      htmlToImage.toPng(document.getElementById('main'), { pixelRatio: 2 })
+        .then(function(dataUrl) {
+          var a = document.createElement('a');
+          a.download = 'qubit-technologies.png';
+          a.href = dataUrl;
+          a.click();
+        });
+    }
+  </script>
+</body>
+</html>

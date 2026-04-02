@@ -92,9 +92,6 @@
     }
     .filter-chip:hover { background: var(--surface-hover); color: var(--text); }
     .filter-chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-    .filter-chip.active-diff-beginner { background: var(--positive); color: #fff; border-color: var(--positive); }
-    .filter-chip.active-diff-intermediate { background: var(--warning); color: #fff; border-color: var(--warning); }
-    .filter-chip.active-diff-advanced { background: var(--negative); color: #fff; border-color: var(--negative); }
 
     /* === Results count === */
     .results-info {
@@ -125,12 +122,12 @@
     .knowledge-card .card-meta {
       display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px;
     }
-    .knowledge-card .diff-badge {
-      padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border);
+    .knowledge-card .card-subtitle {
+      font-size: 12px; font-weight: 700;
+      color: var(--card-color, var(--accent));
+      letter-spacing: 0.03em; text-transform: uppercase;
+      margin-top: -2px;
     }
-    .diff-beginner { background: color-mix(in srgb, var(--positive), transparent 85%); color: var(--positive); }
-    .diff-intermediate { background: color-mix(in srgb, var(--warning), transparent 85%); color: var(--warning); }
-    .diff-advanced { background: color-mix(in srgb, var(--negative), transparent 85%); color: var(--negative); }
     .knowledge-card .card-tag {
       padding: 2px 8px; border-radius: 4px; font-size: 11px;
       background: var(--surface-hover); border: 1px solid var(--border);
@@ -138,6 +135,97 @@
     }
     .knowledge-card .card-date { font-size: 11px; color: var(--text-secondary); margin-left: auto; }
     .knowledge-card .card-source { font-size: 11px; color: var(--text-secondary); }
+
+    /* === Random Swipe View === */
+    .swipe-overlay {
+      display: none; position: fixed; inset: 0; z-index: 10000;
+      background: rgba(0,0,0,0.96); backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      flex-direction: column; align-items: center; justify-content: center;
+      padding: 56px 12px 16px;
+    }
+    .swipe-overlay.active { display: flex; }
+    .swipe-top-bar {
+      position: absolute; top: 0; left: 0; right: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px;
+    }
+    .swipe-counter { font-size: 13px; color: rgba(255,255,255,0.45); font-weight: 600; font-family: 'Inter',sans-serif; }
+    .swipe-close {
+      width: 36px; height: 36px; border-radius: 9px;
+      border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.7); cursor: pointer; font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+    }
+    .swipe-close:hover { background: rgba(255,255,255,0.14); color: #fff; }
+
+    /* iframe stage */
+    .swipe-stage {
+      width: min(860px, 96vw);
+      flex: 1; min-height: 0;
+      display: flex; flex-direction: column; align-items: center; gap: 0;
+    }
+    .swipe-card-wrap {
+      flex: 1; width: 100%; min-height: 0;
+      position: relative; border-radius: 16px; overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+      transition: transform 0.28s cubic-bezier(0.4,0,0.2,1), opacity 0.28s;
+      will-change: transform, opacity;
+    }
+    .swipe-frame {
+      width: 100%; height: 100%; border: none; display: block;
+      background: #0a0a0a;
+    }
+    /* 투명 드래그 캡처 레이어 — iframe 위에 올라가 터치/마우스 스와이프 감지 */
+    .swipe-drag-overlay {
+      position: absolute; inset: 0; z-index: 10;
+      cursor: grab; touch-action: none; user-select: none;
+    }
+    .swipe-drag-overlay.is-dragging { cursor: grabbing; }
+    /* 탭 시 일시적으로 iframe에 이벤트 통과 */
+    .swipe-drag-overlay.pass-through { pointer-events: none; }
+    /* 로딩 스피너 */
+    .swipe-loading {
+      position: absolute; inset: 0; z-index: 5;
+      display: flex; align-items: center; justify-content: center;
+      background: #0a0a0a; gap: 10px;
+      color: rgba(255,255,255,0.35); font-size: 14px;
+      transition: opacity 0.2s;
+    }
+    @keyframes swipeSpin { to { transform: rotate(360deg); } }
+    .swipe-spinner {
+      width: 22px; height: 22px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.1);
+      border-top-color: rgba(255,255,255,0.55);
+      animation: swipeSpin 0.75s linear infinite;
+    }
+
+    .swipe-nav {
+      display: flex; align-items: center; gap: 16px; margin-top: 14px; flex-shrink: 0;
+    }
+    .swipe-btn {
+      width: 48px; height: 48px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.7); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .swipe-btn:hover { background: rgba(255,255,255,0.14); color: #fff; transform: scale(1.06); }
+    .swipe-btn:disabled { opacity: 0.25; cursor: default; transform: none !important; }
+    .swipe-dots { display: flex; gap: 6px; align-items: center; }
+    .swipe-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: all 0.2s; }
+    .swipe-dot.active { width: 20px; border-radius: 3px; background: rgba(255,255,255,0.7); }
+    .swipe-hint { font-size: 11px; color: rgba(255,255,255,0.22); margin-top: 10px; text-align: center; flex-shrink: 0; }
+
+    /* === Random button === */
+    .btn-random {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+      background: transparent; color: var(--text-secondary); font-size: 13px;
+      font-family: inherit; cursor: pointer; transition: all 0.15s; font-weight: 500;
+    }
+    .btn-random:hover { background: var(--surface-hover); color: var(--text); }
 
     /* === Empty state === */
     .empty-state {
@@ -213,18 +301,14 @@
           <span class="filter-label">태그</span>
           <!-- 동적 생성 -->
         </div>
-        <div class="filter-row" role="group" aria-label="난이도 필터">
-          <span class="filter-label">난이도</span>
-          <button class="filter-chip" data-diff="all" onclick="filterDifficulty('all')">전체</button>
-          <button class="filter-chip" data-diff="입문" onclick="filterDifficulty('입문')">입문</button>
-          <button class="filter-chip" data-diff="중급" onclick="filterDifficulty('중급')">중급</button>
-          <button class="filter-chip" data-diff="심화" onclick="filterDifficulty('심화')">심화</button>
-        </div>
       </div>
 
       <div class="results-info animate delay-3">
         <span id="resultsCount">0개 지식 표시 중</span>
-        <span id="activeFilters"></span>
+        <button class="btn-random" onclick="openSwipeView()" title="랜덤 순서로 스와이프 보기">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+          랜덤보기
+        </button>
       </div>
 
       <div class="card-grid" id="cardGrid" role="list" aria-label="지식 카드 목록">
@@ -238,6 +322,39 @@
 
     </div>
   </main>
+
+  <!-- ===== SWIPE OVERLAY ===== -->
+  <div class="swipe-overlay" id="swipeOverlay" role="dialog" aria-modal="true" aria-label="랜덤 카드 보기">
+    <div class="swipe-top-bar">
+      <span class="swipe-counter" id="swipeCounter">1 / 1</span>
+      <button class="swipe-close" onclick="closeSwipeView()" aria-label="닫기">✕</button>
+    </div>
+
+    <div class="swipe-stage">
+      <div class="swipe-card-wrap" id="swipeCardWrap">
+        <!-- 로딩 스피너 -->
+        <div class="swipe-loading" id="swipeLoading">
+          <div class="swipe-spinner"></div>
+          <span>불러오는 중…</span>
+        </div>
+        <!-- 실제 상세 페이지를 iframe으로 표시 -->
+        <iframe class="swipe-frame" id="swipeFrame" src="" title="지식 카드 상세"></iframe>
+        <!-- 드래그 감지용 투명 오버레이 (iframe 위에 위치) -->
+        <div class="swipe-drag-overlay" id="swipeDragOverlay"></div>
+      </div>
+
+      <div class="swipe-nav">
+        <button class="swipe-btn" id="swipePrevBtn" onclick="swipePrev()" aria-label="이전">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div class="swipe-dots" id="swipeDots"></div>
+        <button class="swipe-btn" id="swipeNextBtn" onclick="swipeNext()" aria-label="다음">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+      <p class="swipe-hint">드래그·스와이프로 넘기기 &nbsp;·&nbsp; 탭하면 스크롤/링크 클릭 가능 &nbsp;·&nbsp; ← → 키보드</p>
+    </div>
+  </div>
 
   <script>
     // ==========================================
@@ -322,13 +439,77 @@
         summary: "셀→모듈→팩 계층 구조와 NCM·NCA·LFP 세 가지 배터리 종류의 특성 비교",
         related: [],
         color: "#10b981"
+      },
+      {
+        id: "nvlink-fusion",
+        title: "NVLink Fusion — 엔비디아의 AI 인터커넥트 개방 전략",
+        file: "cards/nvlink-fusion.html",
+        date: "2026-04-03",
+        source: "한국경제",
+        sourceUrl: "https://n.news.naver.com/mnews/article/015/0005269387?sid=101",
+        tags: ["IT", "반도체", "AI", "기술"],
+        difficulty: "중급",
+        summary: "GPU만 연결하던 NVLink를 서드파티 XPU까지 개방 — 마벨 3조원 투자로 AI 팩토리 표준 인프라 선점",
+        related: ["silicon-photonics", "semiconductor-basics"],
+        color: "#3b82f6"
+      },
+      {
+        id: "silicon-photonics",
+        title: "실리콘 포토닉스 — 빛으로 데이터를 전송하는 기술",
+        file: "cards/silicon-photonics.html",
+        date: "2026-04-03",
+        source: "한국경제 · NVIDIA Technical Blog · Counterpoint Research",
+        sourceUrl: "https://n.news.naver.com/mnews/article/015/0005269387?sid=101",
+        tags: ["반도체", "기술", "AI", "과학", "통신"],
+        difficulty: "중급",
+        summary: "전자 대신 광자로 데이터 전송 — 전력 3.5배 절감·대역폭 10~50배 향상, 2030년 60억달러 시장 전망",
+        related: ["nvlink-fusion", "semiconductor-basics", "leo-satellite-comms"],
+        color: "#06b6d4"
+      },
+      {
+        id: "quantum-basics",
+        title: "양자컴퓨터 핵심 원리 — 중첩·얽힘·큐비트",
+        file: "cards/quantum-basics.html",
+        date: "2026-04-03",
+        source: "어스플러스 · 월텍남의 실전투자클럽",
+        sourceUrl: "https://us-insight.com/secrets/16803",
+        tags: ["양자컴퓨터", "과학", "기술", "투자"],
+        difficulty: "중급",
+        summary: "중첩·얽힘으로 2ⁿ 상태 동시 처리 — 8조→60조원 시장(CAGR 21%), NISQ에서 FTQC로 가는 실용화 여정",
+        related: ["qubit-technologies", "quantum-companies", "nvlink-fusion"],
+        color: "#8b5cf6"
+      },
+      {
+        id: "qubit-technologies",
+        title: "5대 큐비트 기술 경쟁 — 초전도·이온트랩·중성원자·광자·위상",
+        file: "cards/qubit-technologies.html",
+        date: "2026-04-03",
+        source: "어스플러스 · 월텍남의 실전투자클럽",
+        sourceUrl: "https://us-insight.com/secrets/16803",
+        tags: ["양자컴퓨터", "기술", "반도체", "과학"],
+        difficulty: "고급",
+        summary: "결맞음 시간·게이트 속도·충실도로 가르는 5대 큐비트 방식 — 어떤 기술이 FTQC를 먼저 달성하느냐가 시장 승자 결정",
+        related: ["quantum-basics", "quantum-companies", "silicon-photonics"],
+        color: "#06b6d4"
+      },
+      {
+        id: "quantum-companies",
+        title: "양자컴퓨터 주요 기업 분석 — IonQ·Quantinuum·IBM·Google·Rigetti",
+        file: "cards/quantum-companies.html",
+        date: "2026-04-03",
+        source: "어스플러스 · 월텍남의 실전투자클럽",
+        sourceUrl: "https://us-insight.com/secrets/16803",
+        tags: ["양자컴퓨터", "투자", "기업분석", "기술"],
+        difficulty: "중급",
+        summary: "순수 양자컴퓨팅 상장사(IonQ·Rigetti)는 마일스톤이 주가 드라이버 — IBM 2029년 FTQC, Google은 로드맵 불확실성 최고",
+        related: ["quantum-basics", "qubit-technologies", "nvlink-fusion"],
+        color: "#f59e0b"
       }
     ];
     // ==========================================
 
     // State
     var activeTag = 'all';
-    var activeDifficulty = 'all';
     var searchQuery = '';
 
     // === Render ===
@@ -349,17 +530,16 @@
       container.innerHTML = html;
     }
 
-    function getDiffClass(diff) {
-      if (diff === '입문') return 'diff-beginner';
-      if (diff === '중급') return 'diff-intermediate';
-      if (diff === '심화') return 'diff-advanced';
-      return '';
+    function splitTitle(title) {
+      var sep = title.indexOf(' — ');
+      if (sep === -1) sep = title.indexOf(' \u2014 ');
+      if (sep === -1) return { main: title, sub: '' };
+      return { main: title.slice(0, sep), sub: title.slice(sep + 3) };
     }
 
     function filterCards() {
       return KNOWLEDGE_DB.filter(function(k) {
         var matchTag = activeTag === 'all' || k.tags.indexOf(activeTag) !== -1;
-        var matchDiff = activeDifficulty === 'all' || k.difficulty === activeDifficulty;
         var matchSearch = true;
         if (searchQuery) {
           var q = searchQuery.toLowerCase();
@@ -368,7 +548,7 @@
             || k.tags.join(' ').toLowerCase().indexOf(q) !== -1
             || k.source.toLowerCase().indexOf(q) !== -1;
         }
-        return matchTag && matchDiff && matchSearch;
+        return matchTag && matchSearch;
       });
     }
 
@@ -385,12 +565,14 @@
         var html = '';
         filtered.forEach(function(k, i) {
           var tagsHtml = k.tags.map(function(t) { return '<span class="card-tag">#' + t + '</span>'; }).join('');
-          html += '<a href="' + k.file + '" class="knowledge-card" role="listitem" style="animation-delay:' + (i * 0.05) + 's">'
+          var t = splitTitle(k.title);
+          var titleHtml = '<div class="card-title">' + t.main + '</div>'
+            + (t.sub ? '<div class="card-subtitle">' + t.sub + '</div>' : '');
+          html += '<a href="' + k.file + '" class="knowledge-card" role="listitem" style="animation-delay:' + (i * 0.05) + 's; --card-color:' + k.color + '">'
             + '<div class="color-accent" style="background:' + k.color + '"></div>'
-            + '<div class="card-title">' + k.title + '</div>'
+            + titleHtml
             + '<div class="card-summary">' + k.summary + '</div>'
             + '<div class="card-meta">'
-            + '  <span class="diff-badge ' + getDiffClass(k.difficulty) + '">' + k.difficulty + '</span>'
             + '  ' + tagsHtml
             + '  <span class="card-date">' + k.date + '</span>'
             + '</div>'
@@ -403,7 +585,6 @@
 
       var filterDesc = [];
       if (activeTag !== 'all') filterDesc.push('#' + activeTag);
-      if (activeDifficulty !== 'all') filterDesc.push(activeDifficulty);
       if (searchQuery) filterDesc.push('"' + searchQuery + '"');
       document.getElementById('activeFilters').textContent = filterDesc.length ? filterDesc.join(' · ') : '';
     }
@@ -420,20 +601,6 @@
     function filterTag(tag) {
       activeTag = tag;
       renderTagFilters();
-      renderCards();
-    }
-
-    function filterDifficulty(diff) {
-      activeDifficulty = diff;
-      document.querySelectorAll('[data-diff]').forEach(function(btn) {
-        btn.className = 'filter-chip';
-        if (btn.getAttribute('data-diff') === diff) {
-          if (diff === '입문') btn.classList.add('active-diff-beginner');
-          else if (diff === '중급') btn.classList.add('active-diff-intermediate');
-          else if (diff === '심화') btn.classList.add('active-diff-advanced');
-          else btn.classList.add('active');
-        }
-      });
       renderCards();
     }
 
@@ -458,10 +625,241 @@
     var saved = localStorage.getItem('viz-theme');
     applyTheme(saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
 
+    // ==========================================
+    // 🎲 SWIPE / RANDOM VIEW  (iframe 상세 페이지 모드)
+    // ==========================================
+    var swipeCards = [];
+    var swipeIndex = 0;
+    var swipeAnimating = false;
+
+    function openSwipeView() {
+      var filtered = filterCards();
+      if (filtered.length === 0) return;
+      swipeCards = filtered.slice().sort(function() { return Math.random() - 0.5; });
+      swipeIndex = 0;
+      document.getElementById('swipeOverlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      renderSwipeDots();
+      loadSwipeFrame(null);
+      initSwipeDrag();
+    }
+
+    function closeSwipeView() {
+      var frame = document.getElementById('swipeFrame');
+      frame.src = '';                                   // iframe 언로드
+      document.getElementById('swipeOverlay').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // iframe에 현재 카드의 상세 페이지를 로드
+    function loadSwipeFrame(enterDir) {
+      var k     = swipeCards[swipeIndex];
+      var wrap  = document.getElementById('swipeCardWrap');
+      var frame = document.getElementById('swipeFrame');
+      var loader = document.getElementById('swipeLoading');
+      var total = swipeCards.length;
+
+      // 로딩 표시
+      loader.style.display = 'flex';
+      frame.style.opacity  = '0';
+
+      // 입장 애니메이션
+      if (enterDir) {
+        wrap.style.transition = 'none';
+        wrap.style.transform  = enterDir === 'next' ? 'translateX(80%) rotate(5deg)' : 'translateX(-80%) rotate(-5deg)';
+        wrap.style.opacity    = '0';
+        void wrap.offsetWidth;
+        wrap.style.transition = '';
+        wrap.style.transform  = '';
+        wrap.style.opacity    = '1';
+      }
+
+      // iframe 로드
+      frame.onload = function() {
+        loader.style.display = 'none';
+        frame.style.opacity  = '1';
+        // 테마 동기화: 부모 페이지의 테마를 iframe에도 적용
+        try {
+          var iDoc = frame.contentDocument || frame.contentWindow.document;
+          var theme = localStorage.getItem('ka-theme') || 'theme-dark';
+          iDoc.documentElement.className = theme;
+          localStorage.setItem('ka-theme', theme);     // iframe 내 로컬스토리지도 이미 읽으나 재확인
+        } catch(e) { /* 동일 출처이므로 일반적으로 문제 없음 */ }
+      };
+      frame.src = k.file;
+
+      // UI 업데이트
+      document.getElementById('swipeCounter').textContent = (swipeIndex + 1) + ' / ' + total;
+      document.getElementById('swipePrevBtn').disabled = swipeIndex === 0;
+      document.getElementById('swipeNextBtn').disabled = swipeIndex === total - 1;
+      updateSwipeDots();
+    }
+
+    function renderSwipeDots() {
+      var dots = document.getElementById('swipeDots');
+      var max  = Math.min(swipeCards.length, 9);
+      var html = '';
+      for (var i = 0; i < max; i++) {
+        html += '<div class="swipe-dot' + (i === 0 ? ' active' : '') + '" id="dot-' + i + '"></div>';
+      }
+      if (swipeCards.length > 9) html += '<div class="swipe-dot" style="opacity:0.35;width:4px">…</div>';
+      dots.innerHTML = html;
+    }
+
+    function updateSwipeDots() {
+      var max = Math.min(swipeCards.length, 9);
+      for (var i = 0; i < max; i++) {
+        var d = document.getElementById('dot-' + i);
+        if (d) d.className = 'swipe-dot' + (i === swipeIndex ? ' active' : '');
+      }
+    }
+
+    function swipeNext() {
+      if (swipeAnimating || swipeIndex >= swipeCards.length - 1) return;
+      swipeAnimating = true;
+      var wrap = document.getElementById('swipeCardWrap');
+      wrap.style.transform = 'translateX(-105%) rotate(-7deg)';
+      wrap.style.opacity   = '0';
+      setTimeout(function() {
+        swipeIndex++;
+        loadSwipeFrame('next');
+        swipeAnimating = false;
+      }, 240);
+    }
+
+    function swipePrev() {
+      if (swipeAnimating || swipeIndex <= 0) return;
+      swipeAnimating = true;
+      var wrap = document.getElementById('swipeCardWrap');
+      wrap.style.transform = 'translateX(105%) rotate(7deg)';
+      wrap.style.opacity   = '0';
+      setTimeout(function() {
+        swipeIndex--;
+        loadSwipeFrame('prev');
+        swipeAnimating = false;
+      }, 240);
+    }
+
+    // === 드래그 오버레이 초기화 (한 번만 실행) ===
+    var swipeDragInited = false;
+    function initSwipeDrag() {
+      if (swipeDragInited) return;
+      swipeDragInited = true;
+
+      var overlay = document.getElementById('swipeDragOverlay');
+      var wrap    = document.getElementById('swipeCardWrap');
+
+      var startX = 0, startY = 0, prevY = 0;
+      var dragDeltaX = 0;
+      var dragging   = false;
+      var dirLocked  = null;   // null | 'h' | 'v'
+      var LOCK_THRESHOLD  = 8;
+      var SWIPE_THRESHOLD = 65;
+      var TAP_LIMIT       = 10;
+
+      function getFrame() { return document.getElementById('swipeFrame'); }
+
+      function onStart(x, y) {
+        startX = x; startY = y; prevY = y;
+        dragging = true; dragDeltaX = 0; dirLocked = null;
+        overlay.classList.add('is-dragging');
+        wrap.style.transition = 'none';
+      }
+
+      function onMove(x, y) {
+        if (!dragging) return;
+        var dy = y - prevY;   // 직전 프레임 대비 이동량
+        prevY  = y;
+        dragDeltaX = x - startX;
+
+        // 방향 미결정 시 임계값 도달 시점에 방향 고정
+        if (!dirLocked) {
+          var totalDx = Math.abs(dragDeltaX);
+          var totalDy = Math.abs(y - startY);
+          if (totalDx > LOCK_THRESHOLD || totalDy > LOCK_THRESHOLD) {
+            dirLocked = (totalDx >= totalDy) ? 'h' : 'v';
+          }
+        }
+
+        if (dirLocked === 'h') {
+          // 좌우 스와이프 — 카드 이동 애니메이션
+          var rot = dragDeltaX * 0.022;
+          wrap.style.transform = 'translateX(' + (dragDeltaX * 0.55) + 'px) rotate(' + rot + 'deg)';
+        } else if (dirLocked === 'v') {
+          // 상하 스크롤 — iframe 내부로 직접 전달 (same-origin이므로 가능)
+          var frame = getFrame();
+          if (frame && frame.contentWindow) {
+            try { frame.contentWindow.scrollBy(0, -dy); } catch(e) {}
+          }
+        }
+      }
+
+      function onEnd() {
+        if (!dragging) return;
+        dragging = false;
+        overlay.classList.remove('is-dragging');
+        wrap.style.transition = '';
+
+        var locked = dirLocked;
+        var delta  = dragDeltaX;
+        dirLocked  = null;
+
+        if (locked === 'h') {
+          wrap.style.transform = '';
+          if (Math.abs(delta) < TAP_LIMIT) {
+            overlay.classList.add('pass-through');
+            setTimeout(function() { overlay.classList.remove('pass-through'); }, 700);
+          } else if (delta < -SWIPE_THRESHOLD) {
+            swipeNext();
+          } else if (delta > SWIPE_THRESHOLD) {
+            swipePrev();
+          }
+        } else if (!locked) {
+          // 아주 짧은 탭
+          wrap.style.transform = '';
+          overlay.classList.add('pass-through');
+          setTimeout(function() { overlay.classList.remove('pass-through'); }, 700);
+        }
+        // locked === 'v' : wrap transform 없음, 정리만
+      }
+
+      // 터치 이벤트
+      overlay.addEventListener('touchstart', function(e) {
+        onStart(e.touches[0].clientX, e.touches[0].clientY);
+      }, { passive: true });
+      overlay.addEventListener('touchmove', function(e) {
+        if (!dragging) return;
+        if (dirLocked === 'h') e.preventDefault(); // 수평 스와이프 시에만 페이지 스크롤 차단
+        onMove(e.touches[0].clientX, e.touches[0].clientY);
+      }, { passive: false });
+      overlay.addEventListener('touchend', onEnd);
+
+      // 마우스 이벤트
+      overlay.addEventListener('mousedown', function(e) {
+        onStart(e.clientX, e.clientY); e.preventDefault();
+      });
+      document.addEventListener('mousemove', function(e) { onMove(e.clientX, e.clientY); });
+      document.addEventListener('mouseup',   onEnd);
+    }
+
+    // === 키보드 네비게이션 ===
+    document.addEventListener('keydown', function(e) {
+      var overlay = document.getElementById('swipeOverlay');
+      if (!overlay || !overlay.classList.contains('active')) return;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); swipeNext(); }
+      if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { e.preventDefault(); swipePrev(); }
+      if (e.key === 'Escape') closeSwipeView();
+    });
+
+    // 배경 클릭 시 닫기
+    document.getElementById('swipeOverlay').addEventListener('click', function(e) {
+      if (e.target === this) closeSwipeView();
+    });
+
     // === Init ===
     renderTagFilters();
     renderStats();
-    filterDifficulty('all');
+    renderCards();
   </script>
 </body>
 </html>

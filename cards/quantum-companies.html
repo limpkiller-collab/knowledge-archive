@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>양자컴퓨터 주요 기업 분석 — IonQ·Quantinuum·IBM·Google·Rigetti</title>
+  <meta name="knowledge-id" content="quantum-companies">
+  <meta name="knowledge-tags" content="양자컴퓨터,투자,기업분석,기술">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-03">
+  <meta name="knowledge-source" content="어스플러스 · 월텍남의 실전투자클럽">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #f59e0b; --accent2: #fbbf24;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(245,158,11,0.10);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #d97706; --accent2: #b45309;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(217,119,6,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%,
+        color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--menu-border); background: var(--menu-bg);
+      color: var(--menu-text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(12px); transition: all 0.2s;
+    }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px;
+      background: var(--menu-bg); backdrop-filter: blur(16px);
+      border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px;
+      opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border: none; background: transparent;
+      color: var(--menu-text); font-size: 14px; font-family: inherit;
+      cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left;
+    }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      margin-bottom: 24px; padding: 6px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface); transition: background 0.15s;
+    }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--text-secondary);
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 520px; margin: 0 auto; line-height: 1.7; }
+
+    .meta-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 36px;
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-intermediate { background: var(--chip-amber); color: var(--warning); }
+    .tag-chip {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500;
+      background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary);
+    }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease;
+      margin-bottom: 20px;
+    }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .section-title {
+      font-size: 12px; font-weight: 700; color: var(--text-secondary);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px;
+    }
+
+    .highlight-box {
+      padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--chip-accent); font-size: 13.5px; line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .highlight-box strong { color: var(--accent); }
+
+    /* 기업 카드 */
+    .company-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 0; overflow: hidden;
+      margin-bottom: 16px; transition: box-shadow 0.2s;
+    }
+    .company-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+    .company-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 14px;
+    }
+    .company-logo {
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; flex-shrink: 0;
+      border: 1px solid var(--border);
+    }
+    .company-info { flex: 1; }
+    .company-name { font-size: 17px; font-weight: 700; margin-bottom: 2px; }
+    .company-sub { font-size: 12px; color: var(--text-secondary); }
+    .company-type {
+      padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      flex-shrink: 0;
+    }
+    .type-pure { background: rgba(139,92,246,0.12); color: #a78bfa; }
+    .type-big { background: rgba(59,130,246,0.12); color: #60a5fa; }
+
+    .company-body { padding: 20px 24px; }
+    .specs-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+    .spec-item { text-align: center; }
+    .spec-val { font-size: 1.1rem; font-weight: 700; color: var(--accent); letter-spacing: -0.02em; }
+    .spec-key { font-size: 10px; color: var(--text-secondary); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .col-section { }
+    .col-title { font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+    .bullet-list { list-style: none; }
+    .bullet-list li {
+      font-size: 13px; color: var(--text-secondary); line-height: 1.5;
+      padding: 3px 0; padding-left: 14px; position: relative;
+    }
+    .bullet-list li::before { content: '·'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+    .bullet-list li strong { color: var(--text); }
+
+    .verdict-box {
+      margin-top: 14px; padding: 12px 16px; border-radius: 8px;
+      border-left: 3px solid var(--accent);
+      background: var(--chip-accent); font-size: 13px; line-height: 1.6;
+      color: var(--text-secondary);
+    }
+    .verdict-box strong { color: var(--text); }
+
+    /* 로드맵 타임라인 */
+    .roadmap-row { display: flex; gap: 0; overflow-x: auto; padding-bottom: 8px; margin-bottom: 4px; }
+    .rm-step {
+      min-width: 150px; flex: 1; padding: 14px 16px;
+      border-right: 1px solid var(--border); position: relative;
+    }
+    .rm-step:last-child { border-right: none; }
+    .rm-year { font-size: 11px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+    .rm-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .rm-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+    @media (max-width: 640px) {
+      .two-col, .specs-row { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+      .roadmap-row { flex-direction: column; }
+      .rm-step { border-right: none; border-bottom: 1px solid var(--border); }
+    }
+    @media print {
+      body { background: white !important; }
+      .viz-menu { display: none !important; }
+      .card, .company-card { break-inside: avoid; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">⚛️ 양자컴퓨터 시리즈 3/3</div>
+        <h1>양자컴퓨터 주요 기업 분석</h1>
+        <p class="hero-sub">IonQ · Quantinuum · IBM · Google · Rigetti — 기술력과 로드맵, 투자 포인트와 리스크 비교</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="tag-chip">#양자컴퓨터</span>
+        <span class="tag-chip">#투자</span>
+        <span class="tag-chip">#기업분석</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.03
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          어스플러스 · 월텍남의 실전투자클럽
+        </span>
+      </div>
+
+      <!-- 핵심 인사이트 -->
+      <div class="highlight-box animate d1">
+        현재 순수 양자컴퓨팅 상장사(IonQ, Rigetti)는 <strong>수익보다 마일스톤이 주가를 좌우</strong>한다. IBM·Google은 자금력은 풍부하나 양자 비중이 낮다. <strong>어떤 기업이 FTQC에 먼저 도달하느냐</strong>가 핵심 투자 명제다.
+      </div>
+
+      <!-- IonQ -->
+      <div class="company-card animate d2">
+        <div class="company-header">
+          <div class="company-logo" style="background:rgba(16,185,129,0.1);">⚡</div>
+          <div class="company-info">
+            <div class="company-name">IonQ</div>
+            <div class="company-sub">이온트랩 · 나스닥 상장 (IONQ) · 순수 양자컴퓨팅</div>
+          </div>
+          <div class="company-type type-pure">Pure Play</div>
+        </div>
+        <div class="company-body">
+          <div class="specs-row">
+            <div class="spec-item">
+              <div class="spec-val">#AQ 64</div>
+              <div class="spec-key">알고리즈믹 큐비트</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-val">20,000</div>
+              <div class="spec-key">2028 목표 큐비트</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-val">EQC</div>
+              <div class="spec-key">핵심 기술</div>
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="col-section">
+              <div class="col-title">강점</div>
+              <ul class="bullet-list">
+                <li><strong>EQC(Error-corrected Qubits)</strong> 기술 — Oxford Ionics 인수로 확보</li>
+                <li>이온트랩 특유의 높은 게이트 충실도</li>
+                <li>AWS·MS·Google 클라우드 전 플랫폼 공급</li>
+                <li>미 국방부(DARPA) 계약 수주</li>
+              </ul>
+            </div>
+            <div class="col-section">
+              <div class="col-title">리스크</div>
+              <ul class="bullet-list">
+                <li>이온트랩 특성상 <strong>게이트 속도가 느림</strong></li>
+                <li>아직 매출보다 투자 단계 — 현금 소진 속도 주의</li>
+                <li>2028년 20,000 큐비트 목표의 실현 가능성 불확실</li>
+              </ul>
+            </div>
+          </div>
+          <div class="verdict-box">💡 <strong>투자 관점:</strong> 이온트랩 방식의 상장 대표주. 클라우드 접근성이 넓고 EQC 기술이 차별점. 단, 매출 성장보다 마일스톤 달성 여부가 주가 드라이버.</div>
+        </div>
+      </div>
+
+      <!-- Quantinuum -->
+      <div class="company-card animate d2">
+        <div class="company-header">
+          <div class="company-logo" style="background:rgba(139,92,246,0.1);">🔬</div>
+          <div class="company-info">
+            <div class="company-name">Quantinuum</div>
+            <div class="company-sub">Honeywell + Cambridge Quantum · 비상장 · QCCD 아키텍처</div>
+          </div>
+          <div class="company-type type-pure">Pure Play</div>
+        </div>
+        <div class="company-body">
+          <div class="specs-row">
+            <div class="spec-item">
+              <div class="spec-val">H2</div>
+              <div class="spec-key">현재 시스템 (56 큐비트)</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-val">99.9%+</div>
+              <div class="spec-key">2큐비트 게이트 충실도</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-val">Apollo</div>
+              <div class="spec-key">2030+ 목표 시스템</div>
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="col-section">
+              <div class="col-title">강점</div>
+              <ul class="bullet-list">
+                <li><strong>현존 최고 수준의 게이트 충실도</strong> (업계 최고)</li>
+                <li>QCCD 아키텍처 — 이온 셔틀로 큐비트 재배치 가능</li>
+                <li>Honeywell의 제조 역량 + Cambridge의 소프트웨어</li>
+                <li>금융·제약 고객 실제 활용 사례 보유</li>
+              </ul>
+            </div>
+            <div class="col-section">
+              <div class="col-title">리스크</div>
+              <ul class="bullet-list">
+                <li>비상장 — 일반 투자자 직접 접근 어려움</li>
+                <li>이온트랩 속도 한계 (초전도 대비)</li>
+                <li>Apollo(2030+) 로드맵 장기화 가능성</li>
+              </ul>
+            </div>
+          </div>
+          <div class="verdict-box">💡 <strong>투자 관점:</strong> 현재 실용 수준에 가장 근접한 이온트랩. 비상장이라 간접 투자(Honeywell 지분 경유)만 가능. 기술 신뢰도는 5사 중 최고 수준.</div>
+        </div>
+      </div>
+
+      <!-- IBM -->
+      <div class="company-card animate d3">
+        <div class="company-header">
+          <div class="company-logo" style="background:rgba(59,130,246,0.1);">🔷</div>
+          <div class="company-info">
+            <div class="company-name">IBM</div>
+            <div class="company-sub">초전도 · 나스닥 상장 (IBM) · Quantum Network 생태계</div>
+          </div>
+          <div class="company-type type-big">Big Tech</div>
+        </div>
+        <div class="company-body">
+          <!-- 로드맵 -->
+          <div style="margin-bottom: 16px;">
+            <div class="col-title" style="margin-bottom:10px;">로드맵</div>
+            <div class="roadmap-row">
+              <div class="rm-step">
+                <div class="rm-year">2025</div>
+                <div class="rm-name">Nighthawk</div>
+                <div class="rm-desc">120 큐비트, 5,000 게이트</div>
+              </div>
+              <div class="rm-step">
+                <div class="rm-year">2026</div>
+                <div class="rm-name">Flamingo</div>
+                <div class="rm-desc">156 큐비트, 7,500 게이트</div>
+              </div>
+              <div class="rm-step">
+                <div class="rm-year">2029</div>
+                <div class="rm-name">Starling</div>
+                <div class="rm-desc">200 논리 큐비트 (FTQC)</div>
+              </div>
+              <div class="rm-step">
+                <div class="rm-year">2033</div>
+                <div class="rm-name">Blue Jay</div>
+                <div class="rm-desc">2,000 논리 큐비트</div>
+              </div>
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="col-section">
+              <div class="col-title">강점</div>
+              <ul class="bullet-list">
+                <li>가장 구체적이고 상세한 <strong>공개 로드맵</strong></li>
+                <li>IBM Quantum Network — 200개+ 파트너 생태계</li>
+                <li>Qiskit 오픈소스로 개발자 생태계 선도</li>
+                <li>클라우드(IBM Quantum)로 실제 활용 가능</li>
+              </ul>
+            </div>
+            <div class="col-section">
+              <div class="col-title">리스크</div>
+              <ul class="bullet-list">
+                <li>양자컴퓨팅은 <strong>전체 매출의 극히 일부</strong></li>
+                <li>초전도 방식의 오류율 개선 속도</li>
+                <li>Starling(2029) FTQC 일정 지연 가능성</li>
+              </ul>
+            </div>
+          </div>
+          <div class="verdict-box">💡 <strong>투자 관점:</strong> 양자 비중은 낮으나 생태계 주도권 보유. IBM 주식은 양자 순수 플레이가 아니라 안정적 인프라 투자에 가깝다. 로드맵 신뢰도는 업계 최고 수준.</div>
+        </div>
+      </div>
+
+      <!-- Google -->
+      <div class="company-card animate d3">
+        <div class="company-header">
+          <div class="company-logo" style="background:rgba(234,179,8,0.1);">🔴</div>
+          <div class="company-info">
+            <div class="company-name">Google (Alphabet)</div>
+            <div class="company-sub">초전도 · 나스닥 상장 (GOOGL) · Sycamore → Willow 계보</div>
+          </div>
+          <div class="company-type type-big">Big Tech</div>
+        </div>
+        <div class="company-body">
+          <div class="specs-row">
+            <div class="spec-item">
+              <div class="spec-val">105</div>
+              <div class="spec-key">Willow 물리 큐비트</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-val">임계값</div>
+              <div class="spec-key">오류율 최초 돌파 (2024)</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-val">연구소</div>
+              <div class="spec-key">운영 성격</div>
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="col-section">
+              <div class="col-title">강점</div>
+              <ul class="bullet-list">
+                <li>Sycamore(양자우위), <strong>Willow(임계 오류율)</strong> 등 기념비적 성과</li>
+                <li>반도체 공정 기술 성숙도</li>
+                <li>Alphabet의 막대한 자본 지원</li>
+              </ul>
+            </div>
+            <div class="col-section">
+              <div class="col-title">리스크</div>
+              <ul class="bullet-list">
+                <li>"연구소 마인드" — <strong>상업적 성공보다 과학 돌파 집중</strong></li>
+                <li>Willow 논리 큐비트 단 1개 생성에 불과</li>
+                <li>로드맵 불확실성 (달성 시점 삭제)</li>
+                <li>양자 비중 전체 매출의 0.1% 미만</li>
+              </ul>
+            </div>
+          </div>
+          <div class="verdict-box">💡 <strong>투자 관점:</strong> 기술력은 최고이나 로드맵 불확실성 높음. Google 주식은 AI·클라우드가 주 동력이며 양자는 부가적 옵션. 초전도 방식 믿는다면 IBM이 더 투명한 로드맵 제공.</div>
+        </div>
+      </div>
+
+      <!-- Rigetti -->
+      <div class="company-card animate d4">
+        <div class="company-header">
+          <div class="company-logo" style="background:rgba(244,63,94,0.1);">🔩</div>
+          <div class="company-info">
+            <div class="company-name">Rigetti</div>
+            <div class="company-sub">초전도 · 나스닥 상장 (RGTI) · 모듈형 아키텍처</div>
+          </div>
+          <div class="company-type type-pure">Pure Play</div>
+        </div>
+        <div class="company-body">
+          <div class="specs-row">
+            <div class="spec-item">
+              <div class="spec-val">Cepheus</div>
+              <div class="spec-key">최신 칩 (36Q, 2024)</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-val">99.5%</div>
+              <div class="spec-key">2큐비트 게이트 충실도</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-val">Novera</div>
+              <div class="spec-key">QPU 직접 판매</div>
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="col-section">
+              <div class="col-title">강점</div>
+              <ul class="bullet-list">
+                <li>모듈형 아키텍처 — <strong>9큐비트 칩 4개 연결</strong>로 확장</li>
+                <li>Novera QPU 직접 판매 — 단기 매출 창출</li>
+                <li>정부·연구기관 대상 온프레미스 시장 개척</li>
+              </ul>
+            </div>
+            <div class="col-section">
+              <div class="col-title">리스크</div>
+              <ul class="bullet-list">
+                <li>충실도 <strong>99.5%로 IBM·Google 대비 낮음</strong></li>
+                <li>명확한 연도별 로드맵 부재</li>
+                <li>FTQC 2030년 이후로 가장 먼 전망</li>
+                <li>Lyra 칩 미출시 등 과거 로드맵 실패 이력</li>
+              </ul>
+            </div>
+          </div>
+          <div class="verdict-box">💡 <strong>투자 관점:</strong> 초전도 순수 플레이지만 경쟁사 대비 기술 열위. 모듈형+직접판매 전략이 차별점. 리스크 감수 가능한 투자자에게만 적합.</div>
+        </div>
+      </div>
+
+      <!-- 기업 비교 요약 -->
+      <div class="card animate d4">
+        <div class="section-title">5개 기업 한눈에 비교</div>
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:13px;">
+            <thead>
+              <tr>
+                <th style="text-align:left; padding:8px 12px; font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; border-bottom:1px solid var(--border);">기업</th>
+                <th style="text-align:center; padding:8px 12px; font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; border-bottom:1px solid var(--border);">방식</th>
+                <th style="text-align:center; padding:8px 12px; font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; border-bottom:1px solid var(--border);">상장</th>
+                <th style="text-align:center; padding:8px 12px; font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; border-bottom:1px solid var(--border);">FTQC 목표</th>
+                <th style="text-align:center; padding:8px 12px; font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; border-bottom:1px solid var(--border);">투자 성격</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="padding:10px 12px; border-bottom:1px solid var(--border); font-weight:600;">IonQ</td><td style="text-align:center; padding:10px 12px; border-bottom:1px solid var(--border); color:var(--text-secondary);">이온트랩</td><td style="text-align:center; padding:10px 12px; border-bottom:1px solid var(--border); color:var(--positive);">✓ IONQ</td><td style="text-align:center; padding:10px 12px; border-bottom:1px solid var(--border); color:var(--text-secondary);">2027~2028</td><td style="text-align:center; padding:10px 12px; border-bottom:1px solid var(--border);"><span style="background:rgba(244,63,94,0.12);color:var(--negative);padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;">고위험 성장</span></td></tr>
+              <tr><td style="padding:10px 12px; border-bottom:1px solid var(--border); font-weight:600;">Quantinuum</td><td style="text-align:center; padding:10px 12px; border-bottom:1px solid var(--border); color:var(--text-secondary);">이온트랩</td><td style="text-align:center; padding:10px 12px; border-bottom:1px solid var(--border); color:var(--text-secondary);">✗ 비상장</td><td style="text-align:center; padding:10px 12px; border-bottom:1px solid var(--border); color:var(--text-secondary);">2030+</td><td style="text-align:center; padding:10px 12px; border-bottom:1px solid var(--border);"><span style="background:rgba(139,92,246,0.12);color:#a78bfa;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;">간접 투자</span></td></tr>
+              <tr><td style="padding:10px 12px; border-bottom:1px solid var(--border); font-weight:600;">IBM</td><td style="text-align:center; padding:10px 12px; border-bottom:1px solid var(--border); color:var(--text-secondary);">초전도</td><td style="text-align:center; padding:10px 12px; border-bottom:1px solid var(--border); color:var(--positive);">✓ IBM</td><td style="text-align:center; padding:10px 12px; border-bottom:1px solid var(--border); color:var(--text-secondary);">2029 Starling</td><td style="text-align:center; padding:10px 12px; border-bottom:1px solid var(--border);"><span style="background:rgba(59,130,246,0.12);color:#60a5fa;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;">안정 성장</span></td></tr>
+              <tr><td style="padding:10px 12px; border-bottom:1px solid var(--border); font-weight:600;">Google</td><td style="text-align:center; padding:10px 12px; border-bottom:1px solid var(--border); color:var(--text-secondary);">초전도</td><td style="text-align:center; padding:10px 12px; border-bottom:1px solid var(--border); color:var(--positive);">✓ GOOGL</td><td style="text-align:center; padding:10px 12px; border-bottom:1px solid var(--border); color:var(--text-secondary);">불확실</td><td style="text-align:center; padding:10px 12px; border-bottom:1px solid var(--border);"><span style="background:var(--chip-amber);color:var(--warning);padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;">AI/클라우드 부가</span></td></tr>
+              <tr><td style="padding:10px 12px; font-weight:600;">Rigetti</td><td style="text-align:center; padding:10px 12px; color:var(--text-secondary);">초전도</td><td style="text-align:center; padding:10px 12px; color:var(--positive);">✓ RGTI</td><td style="text-align:center; padding:10px 12px; color:var(--text-secondary);">2030 이후</td><td style="text-align:center; padding:10px 12px;"><span style="background:rgba(244,63,94,0.12);color:var(--negative);padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;">투기적 성격</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 관련 지식 -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="quantum-basics.html" class="related-card">
+            <div class="r-label">→ 시리즈 1/3</div>
+            <div class="r-title">양자컴퓨터 핵심 원리</div>
+          </a>
+          <a href="qubit-technologies.html" class="related-card">
+            <div class="r-label">→ 시리즈 2/3</div>
+            <div class="r-title">5대 큐비트 기술 경쟁</div>
+          </a>
+          <a href="nvlink-fusion.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">NVLink Fusion — GPU-QPU 연결 전략</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">출처: 어스플러스 · 월텍남의 실전투자클럽 알파 테크 리포트 (2026.04) | 투자 정보 참고용이며 투자 판단은 본인 책임</p>
+
+    </div>
+  </main>
+
+  <script>
+    var THEMES = ['theme-dark', 'theme-light'];
+    var THEME_LABELS = { 'theme-dark': 'Dark', 'theme-light': 'Light' };
+
+    (function() {
+      var saved = localStorage.getItem('ka-theme') || 'theme-dark';
+      document.documentElement.className = saved;
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[saved];
+    })();
+
+    function cycleTheme() {
+      var cur = document.documentElement.className;
+      var next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+      document.documentElement.className = next;
+      localStorage.setItem('ka-theme', next);
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[next];
+      closeMenu();
+    }
+
+    function toggleMenu() {
+      document.getElementById('vizMenuDropdown').classList.toggle('open');
+    }
+    function closeMenu() {
+      document.getElementById('vizMenuDropdown').classList.remove('open');
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.viz-menu')) closeMenu();
+    });
+
+    function downloadImage() {
+      closeMenu();
+      if (typeof htmlToImage === 'undefined') { alert('라이브러리 로딩 중...'); return; }
+      htmlToImage.toPng(document.getElementById('main'), { pixelRatio: 2 })
+        .then(function(dataUrl) {
+          var a = document.createElement('a');
+          a.download = 'quantum-companies.png';
+          a.href = dataUrl;
+          a.click();
+        });
+    }
+  </script>
+</body>
+</html>
