@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>네오클라우드 — 생성형 AI 전용 클라우드 인프라</title>
+  <meta name="knowledge-id" content="neocloud-ai-infrastructure">
+  <meta name="knowledge-tags" content="AI,클라우드,기술,트렌드,인프라">
+  <meta name="knowledge-difficulty" content="입문">
+  <meta name="knowledge-date" content="2026-04-03">
+  <meta name="knowledge-source" content="elice.io 블로그">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #3b82f6; --accent2: #06b6d4;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(59,130,246,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #2563eb; --accent2: #0891b2;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(37,99,235,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%,
+        color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* 뷰 메뉴 */
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--menu-border); background: var(--menu-bg);
+      color: var(--menu-text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(12px); transition: all 0.2s;
+    }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px;
+      background: var(--menu-bg); backdrop-filter: blur(16px);
+      border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px;
+      opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border: none; background: transparent;
+      color: var(--menu-text); font-size: 14px; font-family: inherit;
+      cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left;
+    }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    /* 뒤로가기 */
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      margin-bottom: 24px; padding: 6px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface); transition: background 0.15s;
+    }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    /* 히어로 */
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--text-secondary);
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 500px; margin: 0 auto; line-height: 1.7; }
+
+    /* 메타 바 */
+    .meta-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 36px;
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .diff-badge {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      border: 1px solid var(--border);
+    }
+    .diff-beginner { background: var(--chip-green); color: var(--positive); }
+    .diff-intermediate { background: var(--chip-amber); color: var(--warning); }
+    .diff-advanced { background: rgba(244,63,94,0.12); color: var(--negative); }
+    .tag-chip {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500;
+      background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary);
+    }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+
+    /* 카드 */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease;
+    }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title {
+      font-size: 12px; font-weight: 700; color: var(--text-secondary);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px;
+    }
+
+    /* KPI 행 */
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    /* 비교 그리드 */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+    .era-card { border-radius: 12px; padding: 22px; border: 1px solid var(--border); position: relative; overflow: hidden; background: var(--surface); }
+    .era-card .top-line { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+    .era-card.old .top-line { background: #64748b; }
+    .era-card.new .top-line { background: var(--accent); }
+    .era-label { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 10px; margin-top: 4px; }
+    .era-card.old .era-label { color: #64748b; }
+    .era-card.new .era-label { color: var(--accent); }
+    .era-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; }
+    .era-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; margin-bottom: 8px; color: var(--text-secondary); }
+    .era-item strong { color: var(--text); font-weight: 600; }
+    .era-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+    .era-card.old .era-dot { background: #64748b; }
+    .era-card.new .era-dot { background: var(--accent); }
+
+    /* 하이라이트 박스 */
+    .highlight-box {
+      padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--chip-accent); font-size: 13.5px; line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .highlight-box strong { color: var(--accent); }
+
+    /* 내부 카드 그리드 */
+    .card-grid-inner { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 12px; margin-bottom: 20px; }
+    .inner-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+    .inner-card-icon { font-size: 1.4rem; margin-bottom: 8px; }
+    .inner-card-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    .inner-card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+    /* FAQ 섹션 */
+    .faq-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; }
+    .faq-q { font-size: 13.5px; font-weight: 600; color: var(--text); margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px; }
+    .faq-q::before { content: 'Q'; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+    .faq-a { font-size: 13px; color: var(--text-secondary); line-height: 1.7; padding-left: 18px; }
+
+    /* 기업 리스트 */
+    .company-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 0; }
+    .company-card { border-radius: 10px; padding: 16px 18px; border: 1px solid var(--border); background: var(--surface); }
+    .company-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; color: var(--accent); }
+    .company-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .company-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+    /* 관련 지식 */
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    /* 푸터 */
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    /* 애니메이션 */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+    /* 반응형 */
+    @media (max-width: 640px) {
+      .compare-grid, .kpi-row, .company-grid { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+    }
+    @media print {
+      body { background: white !important; }
+      .viz-menu { display: none !important; }
+      .card { break-inside: avoid; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 뷰 메뉴 -->
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+
+      <!-- 뒤로가기 -->
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        지식 Archive
+      </a>
+
+      <!-- 히어로 -->
+      <header class="hero animate">
+        <div class="hero-badge">☁️ AI 인프라</div>
+        <h1>네오클라우드<br>— 생성형 AI 전용 클라우드 인프라</h1>
+        <p class="hero-sub">CPU 범용 클라우드의 한계를 넘어, GPU·고속 네트워크·병렬 스토리지로 재설계된 AI 시대의 새로운 인프라 패러다임</p>
+      </header>
+
+      <!-- 메타 바 -->
+      <div class="meta-bar animate d1">
+        <span class="diff-badge diff-beginner">입문</span>
+        <span class="tag-chip">#AI</span>
+        <span class="tag-chip">#클라우드</span>
+        <span class="tag-chip">#기술</span>
+        <span class="tag-chip">#트렌드</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.03
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          elice.io 블로그
+        </span>
+      </div>
+
+      <!-- KPI 행 -->
+      <div class="kpi-row animate d2" role="region" aria-label="핵심 수치">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--negative)">1/3</div>
+          <div class="kpi-label">AI 기업 GPU 대기<br>2~4주 이상 경험</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">$142억</div>
+          <div class="kpi-label">CoreWeave ·<br>Meta 인프라 계약</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--positive)">$15억</div>
+          <div class="kpi-label">Lambda 2025년<br>자금 조달 규모</div>
+        </div>
+      </div>
+
+      <!-- 핵심 개념 하이라이트 -->
+      <div class="highlight-box animate d2">
+        네오클라우드는 <strong>생성형 AI 학습과 추론을 중심으로 설계된 클라우드 인프라</strong>입니다. 기존 클라우드가 웹서비스·스트리밍 등 다양한 범용 워크로드를 처리하도록 설계됐다면, 네오클라우드는 GPU 중심·고속 네트워크 중심·대규모 데이터 처리 중심이라는 명확한 목적으로 구성됩니다. NVIDIA 젠슨 황 CEO가 GTC 2024에서 "AI 인프라가 기존 클라우드와는 다른 방식으로 재편될 것"이라고 밝히며 주목받기 시작했습니다.
+      </div>
+
+      <!-- 기존 클라우드 vs 네오클라우드 비교 -->
+      <div class="compare-grid animate d3" role="region" aria-label="기존 클라우드 vs 네오클라우드">
+        <div class="era-card old">
+          <div class="top-line"></div>
+          <div style="padding-top:8px">
+            <div class="era-label">기존 클라우드</div>
+            <div class="era-title">범용 클라우드</div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>목적:</strong> 범용 워크로드 처리</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>GPU 확보:</strong> 대기 발생 잦음 (2~4주+)</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>네트워크:</strong> 일반 이더넷 기반</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>비용:</strong> 복잡·변동 폭 큼·예측 어려움</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>성능:</strong> 분산 학습 시 병목 발생</div></div>
+          </div>
+        </div>
+        <div class="era-card new">
+          <div class="top-line"></div>
+          <div style="padding-top:8px">
+            <div class="era-label">네오클라우드</div>
+            <div class="era-title">생성형 AI 전용</div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>목적:</strong> AI 학습·추론 전용 설계</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>GPU 확보:</strong> 가용성 높음, 즉시 활용</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>네트워크:</strong> NVLink · InfiniBand 고속 연결</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>비용:</strong> GPU 중심 단순 구조·예측 용이</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>성능:</strong> AI 학습·추론 최적화, 병목 최소</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 네오클라우드 등장 배경 -->
+      <div class="card animate d3" style="margin-bottom:20px">
+        <div class="section-title">등장 배경 — 기존 클라우드의 3가지 한계</div>
+        <div class="faq-list" style="margin-bottom:0">
+          <div class="faq-item">
+            <div class="faq-q">GPU 확보 지연</div>
+            <div class="faq-a">AI 기업의 약 1/3이 GPU 확보에 2~4주, 일부는 3개월 이상 대기. GPU가 없으면 실험·개발 일정 전체가 지연됩니다.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">모델 규모의 폭발적 확대</div>
+            <div class="faq-a">GPT·Claude·Gemini 등 최신 모델은 매년 파라미터 수가 늘고 멀티모달 기능이 확장되면서 필요한 연산량도 함께 증가. 일반 네트워크에서는 분산 학습 시 GPU 간 통신 지연이 발생합니다.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">비용 예측의 어려움</div>
+            <div class="faq-a">기존 클라우드의 GPU 요금 구조는 복잡하고 변동 폭이 커 장기 비용 관리가 어렵습니다. 네오클라우드는 GPU 중심의 단순 요금 구조로 비용 예측이 수월합니다.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 대표 기업 -->
+      <div class="card animate d4" style="margin-bottom:20px">
+        <div class="section-title">대표 기업</div>
+        <div class="company-grid">
+          <div class="company-card">
+            <div class="company-badge">🌐 해외</div>
+            <div class="company-name">CoreWeave</div>
+            <div class="company-desc">2024년 11억 달러 투자 유치. Meta와 142억 달러 규모 AI 인프라 계약 체결</div>
+          </div>
+          <div class="company-card">
+            <div class="company-badge">🌐 해외</div>
+            <div class="company-name">Lambda</div>
+            <div class="company-desc">2025년 15억 달러 자금 조달. Microsoft와 대형 AI 인프라 계약 체결</div>
+          </div>
+          <div class="company-card">
+            <div class="company-badge">🇰🇷 국내</div>
+            <div class="company-name">엘리스클라우드</div>
+            <div class="company-desc">온디맨드 GPU · 멀티노드 LLM 학습 인프라 제공. AI 연구·기업 실험 수요 지원</div>
+          </div>
+          <div class="company-card">
+            <div class="company-badge">🇰🇷 국내</div>
+            <div class="company-name">네이버·KT 클라우드</div>
+            <div class="company-desc">기존 대형 국내 클라우드 업체들도 AI 인프라 확장 중</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 네오클라우드가 필요한 조직 -->
+      <div class="card animate d4" style="margin-bottom:20px">
+        <div class="section-title">네오클라우드가 가장 효과적인 조직</div>
+        <div class="card-grid-inner" style="margin-bottom:0">
+          <div class="inner-card">
+            <div class="inner-card-icon">🧠</div>
+            <div class="inner-card-title">자체 모델 학습·파인튜닝</div>
+            <div class="inner-card-desc">AI 모델을 반복적으로 학습하거나 파인튜닝해야 하는 기업</div>
+          </div>
+          <div class="inner-card">
+            <div class="inner-card-icon">🔗</div>
+            <div class="inner-card-title">멀티노드 분산 학습</div>
+            <div class="inner-card-desc">대규모 분산 학습을 수행하는 AI 연구 조직</div>
+          </div>
+          <div class="inner-card">
+            <div class="inner-card-icon">💰</div>
+            <div class="inner-card-title">비용 예측 중요 스타트업</div>
+            <div class="inner-card-desc">인프라 비용을 예측 가능하게 관리해야 하는 초기 기업</div>
+          </div>
+          <div class="inner-card">
+            <div class="inner-card-icon">⚡</div>
+            <div class="inner-card-title">실시간 추론 서비스</div>
+            <div class="inner-card-desc">추론 속도·지연시간·트래픽 안정성이 중요한 AI 서비스 팀</div>
+          </div>
+          <div class="inner-card">
+            <div class="inner-card-icon">🚀</div>
+            <div class="inner-card-title">빠른 실험 주기 팀</div>
+            <div class="inner-card-desc">기능 실험과 개선 주기가 빠른 제품 중심 팀</div>
+          </div>
+          <div class="inner-card">
+            <div class="inner-card-icon">⏳</div>
+            <div class="inner-card-title">GPU 확보 병목 경험 팀</div>
+            <div class="inner-card-desc">GPU 확보 지연으로 프로젝트 흐름이 자주 끊기는 팀</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 시장 전망 및 FAQ -->
+      <div class="card animate d5" style="margin-bottom:20px">
+        <div class="section-title">시장 전망 & 자주 묻는 질문</div>
+        <div class="faq-list" style="margin-bottom:0">
+          <div class="faq-item">
+            <div class="faq-q">GPUaaS와 네오클라우드의 차이</div>
+            <div class="faq-a">GPUaaS는 GPU를 빌려 쓰는 서비스 모델. 네오클라우드는 GPUaaS + 고속 네트워크(NVLink·InfiniBand) + 병렬 스토리지 + AI 학습·추론 소프트웨어 스택까지 포함하는 더 넓은 개념입니다.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">기존 클라우드를 완전히 대체할까?</div>
+            <div class="faq-a">가능성 낮음. 범용 업무는 기존 클라우드, 고성능 AI 연산은 네오클라우드가 담당하는 공존 구조로 발전할 전망. 두 인프라를 병행하는 하이브리드 전략이 일반화될 것입니다.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">비용이 더 효율적인가?</div>
+            <div class="faq-a">장기간 모델 학습·대규모 반복 연산이 많은 조직은 체감 효율 높음. GPU 활용률이 높을수록 단위 비용이 낮아지는 구조. 단, 모든 기업에 무조건 절감되지는 않습니다.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 관련 지식 -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="nvlink-fusion.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">NVLink Fusion — 엔비디아의 AI 인터커넥트 개방 전략</div>
+          </a>
+          <a href="silicon-photonics.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">실리콘 포토닉스 — 빛으로 데이터를 전송하는 기술</div>
+          </a>
+          <a href="semiconductor-basics.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">반도체의 종류: 시스템 vs 메모리</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">출처: elice.io 블로그 · "네오클라우드(Neocloud), 생성형 AI 시대의 필수 클라우드" (2025.12.01 발행) · <a href="https://elice.io/ko/resources/blog/neocloud" target="_blank" style="color:var(--accent)">원문 보기</a></p>
+
+    </div>
+  </main>
+
+  <script>
+    var THEMES = ['theme-dark', 'theme-light'];
+    var THEME_LABELS = { 'theme-dark': 'Dark', 'theme-light': 'Light' };
+
+    (function() {
+      var saved = localStorage.getItem('ka-theme') || 'theme-dark';
+      document.documentElement.className = saved;
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[saved];
+    })();
+
+    function cycleTheme() {
+      var cur = document.documentElement.className;
+      var next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+      document.documentElement.className = next;
+      localStorage.setItem('ka-theme', next);
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[next];
+      closeMenu();
+    }
+
+    function toggleMenu() {
+      document.getElementById('vizMenuDropdown').classList.toggle('open');
+    }
+    function closeMenu() {
+      document.getElementById('vizMenuDropdown').classList.remove('open');
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.viz-menu')) closeMenu();
+    });
+
+    function downloadImage() {
+      closeMenu();
+      if (typeof htmlToImage === 'undefined') { alert('라이브러리 로딩 중...'); return; }
+      htmlToImage.toPng(document.getElementById('main'), { pixelRatio: 2 })
+        .then(function(dataUrl) {
+          var a = document.createElement('a');
+          a.download = 'neocloud-ai-infrastructure.png';
+          a.href = dataUrl;
+          a.click();
+        });
+    }
+  </script>
+</body>
+</html>
