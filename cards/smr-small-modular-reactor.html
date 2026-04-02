@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SMR (소형모듈원자로) — AI 시대 차세대 무탄소 전력</title>
+  <meta name="knowledge-id" content="smr-small-modular-reactor">
+  <meta name="knowledge-tags" content="에너지,기술,과학,투자,트렌드">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-03">
+  <meta name="knowledge-source" content="IAEA, Research and Markets, Westinghouse, NuScale, 종합">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #f97316; --accent2: #3b82f6;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(249,115,22,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #ea6c0a; --accent2: #2563eb;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(234,108,10,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%,
+        color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* 뷰 메뉴 */
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--menu-border); background: var(--menu-bg);
+      color: var(--menu-text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(12px); transition: all 0.2s;
+    }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px;
+      background: var(--menu-bg); backdrop-filter: blur(16px);
+      border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px;
+      opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border: none; background: transparent;
+      color: var(--menu-text); font-size: 14px; font-family: inherit;
+      cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left;
+    }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    /* 뒤로가기 */
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      margin-bottom: 24px; padding: 6px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface); transition: background 0.15s;
+    }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    /* 히어로 */
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--text-secondary);
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 520px; margin: 0 auto; line-height: 1.7; }
+
+    /* 메타 바 */
+    .meta-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 36px;
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-intermediate { background: var(--chip-amber); color: var(--warning); }
+    .tag-chip { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+
+    /* 카드 */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease;
+      margin-bottom: 16px;
+    }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title {
+      font-size: 12px; font-weight: 700; color: var(--text-secondary);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px;
+    }
+
+    /* KPI 행 */
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    /* 비교 그리드 */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+    .era-card { border-radius: 12px; padding: 22px; border: 1px solid var(--border); position: relative; overflow: hidden; background: var(--surface); }
+    .era-card .top-line { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+    .era-card.old .top-line { background: #64748b; }
+    .era-card.new .top-line { background: var(--accent); }
+    .era-label { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 10px; margin-top: 4px; }
+    .era-card.old .era-label { color: #64748b; }
+    .era-card.new .era-label { color: var(--accent); }
+    .era-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; }
+    .era-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; margin-bottom: 8px; color: var(--text-secondary); }
+    .era-item strong { color: var(--text); font-weight: 600; }
+    .era-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+    .era-card.old .era-dot { background: #64748b; }
+    .era-card.new .era-dot { background: var(--accent); }
+
+    /* 하이라이트 박스 */
+    .highlight-box {
+      padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--chip-accent); font-size: 13.5px; line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .highlight-box strong { color: var(--accent); }
+
+    /* 내부 카드 그리드 */
+    .card-grid-inner { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 12px; margin-bottom: 16px; }
+    .inner-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+    .inner-card-icon { font-size: 1.3rem; margin-bottom: 8px; }
+    .inner-card-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .inner-card-subtitle { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 6px; }
+    .inner-card-desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.6; }
+    .inner-card-tag { display: inline-block; margin-top: 8px; font-size: 10px; padding: 2px 8px; border-radius: 99px; background: var(--chip-accent); color: var(--accent); font-weight: 600; }
+
+    /* 타임라인 */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .timeline-item { display: flex; gap: 16px; }
+    .timeline-left { display: flex; flex-direction: column; align-items: center; width: 32px; flex-shrink: 0; }
+    .timeline-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); flex-shrink: 0; margin-top: 4px; }
+    .timeline-dot.future { background: var(--text-secondary); }
+    .timeline-line { width: 2px; flex: 1; background: var(--border); margin: 4px 0; min-height: 20px; }
+    .timeline-item:last-child .timeline-line { display: none; }
+    .timeline-right { padding-bottom: 20px; flex: 1; }
+    .timeline-year { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .timeline-year.future { color: var(--text-secondary); }
+    .timeline-content { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+    .timeline-content strong { color: var(--text); }
+
+    /* 막대 차트 */
+    .bar-chart { display: flex; flex-direction: column; gap: 12px; }
+    .bar-item { display: flex; flex-direction: column; gap: 5px; }
+    .bar-header { display: flex; justify-content: space-between; font-size: 13px; }
+    .bar-label { font-weight: 500; }
+    .bar-value { font-weight: 700; color: var(--accent); }
+    .bar-track { height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 99px; }
+
+    /* 인용 박스 */
+    .quote-box {
+      padding: 16px 20px; border-radius: 10px; border-left: 3px solid var(--accent);
+      background: var(--surface); font-size: 13px; line-height: 1.7;
+      color: var(--text-secondary); margin-bottom: 16px;
+    }
+    .quote-box strong { color: var(--text); font-weight: 600; }
+
+    /* 안전 특성 리스트 */
+    .feature-list { display: flex; flex-direction: column; gap: 10px; }
+    .feature-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); }
+    .feature-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+    .feature-text { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+    .feature-text strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 2px; }
+
+    /* 관련 지식 */
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    /* 섹션 간격 */
+    .section-gap { margin-bottom: 16px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+    @media (max-width: 640px) {
+      .compare-grid, .kpi-row { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+      .card-grid-inner { grid-template-columns: 1fr; }
+    }
+    @media print {
+      body { background: white !important; }
+      .viz-menu { display: none !important; }
+      .card { break-inside: avoid; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 뷰 메뉴 -->
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+
+      <!-- 뒤로가기 -->
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        지식 Archive
+      </a>
+
+      <!-- 히어로 -->
+      <header class="hero animate">
+        <div class="hero-badge">⚛️ 에너지 · 원자력</div>
+        <h1>SMR — 소형모듈원자로</h1>
+        <p class="hero-sub">AI 데이터센터 전력 수요가 불붙인 차세대 무탄소 전력 솔루션. 공장에서 만들고 현장에서 조립하는 모듈형 원자로의 모든 것</p>
+      </header>
+
+      <!-- 메타 바 -->
+      <div class="meta-bar animate d1">
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="tag-chip">#에너지</span>
+        <span class="tag-chip">#기술</span>
+        <span class="tag-chip">#투자</span>
+        <span class="tag-chip">#트렌드</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.03
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          IAEA · Research and Markets
+        </span>
+      </div>
+
+      <!-- KPI 행 -->
+      <div class="kpi-row animate d2" role="region" aria-label="핵심 수치">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">$51.7B</div>
+          <div class="kpi-label">2035 시장 전망</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--text-secondary)">42%</div>
+          <div class="kpi-label">연평균 성장률 (CAGR)</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--positive)">80+</div>
+          <div class="kpi-label">전 세계 개발 중 설계</div>
+        </div>
+      </div>
+
+      <!-- 핵심 인사이트 -->
+      <div class="highlight-box animate d2">
+        SMR은 <strong>출력 300MW 이하의 소형 원자로</strong>로, 공장에서 모듈 단위로 제작해 현장에 운송·설치한다.
+        기존 원전의 1/3 규모지만 수동 안전 시스템으로 <strong>후쿠시마급 사고 위험을 근본 차단</strong>하며,
+        AI 데이터센터의 폭증하는 무탄소 전력 수요와 맞물려 에너지 투자의 핵심 테마로 부상했다.
+      </div>
+
+      <!-- 기술 개요: SMR vs 기존 원전 비교 -->
+      <div class="section-gap animate d3">
+        <div class="compare-grid" role="region" aria-label="기존 원전 vs SMR 비교">
+          <div class="era-card old">
+            <div class="top-line"></div>
+            <div style="padding-top:8px">
+              <div class="era-label">기존 대형 원전</div>
+              <div class="era-title">Large Nuclear Plant</div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>출력:</strong> 1,000MW 이상</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>건설 기간:</strong> 10~20년, 현장 맞춤 설계</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>안전:</strong> 능동 시스템(펌프·전력 필요)</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>비용:</strong> 초기 자본 100억달러 이상</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>입지:</strong> 대규모 부지·냉각수 필요</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>재급유:</strong> 12~18개월마다</div></div>
+            </div>
+          </div>
+          <div class="era-card new">
+            <div class="top-line"></div>
+            <div style="padding-top:8px">
+              <div class="era-label">SMR 소형모듈원자로</div>
+              <div class="era-title">Small Modular Reactor</div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>출력:</strong> 최대 300MW (마이크로: 10MW 이하)</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>건설 기간:</strong> 3~5년, 공장 제작 후 현장 조립</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>안전:</strong> 수동 시스템(자연순환·중력·대류)</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>비용:</strong> 유닛당 수억~수십억달러</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>입지:</strong> 원격지·폐광 부지·데이터센터 인근</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>재급유:</strong> 3~30년 (일부 무급유 설계)</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SMR 작동 원리 & 안전 특성 -->
+      <div class="card animate d3 section-gap">
+        <div class="section-title">⚙️ 작동 원리 & 핵심 안전 특성</div>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-icon">⚛️</div>
+            <div class="feature-text">
+              <strong>핵분열 → 열 → 전기</strong>
+              우라늄 원자핵이 분열할 때 발생하는 열로 증기를 만들고, 터빈을 돌려 전기를 생산한다. 냉각재로 경수(일반 물), 액체금속(나트륨), 용융염 등을 사용하는 다양한 설계가 존재한다.
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🛡️</div>
+            <div class="feature-text">
+              <strong>수동 안전 시스템 (Passive Safety)</strong>
+              전력·펌프 없이도 물리 법칙(자연순환, 중력, 대류)만으로 냉각·정지. 후쿠시마 사고의 핵심 원인인 능동 냉각 전원 의존도를 제거했다.
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🏭</div>
+            <div class="feature-text">
+              <strong>공장 제작·모듈 조립 (Factory-Built)</strong>
+              원자로 핵심 부품을 공장에서 표준화 제작 → 트럭·선박으로 운송 → 현장 조립. 건설 기간 단축과 비용 절감이 핵심 경쟁력이다.
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">📍</div>
+            <div class="feature-text">
+              <strong>유연한 입지 선택</strong>
+              대규모 냉각수가 필요 없어 사막·내륙·폐광 지역에도 설치 가능. 그리드 미연결 지역, 데이터센터 인근, 폐석탄발전소 부지 재활용에 최적.
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-text">
+              <strong>복합 에너지 활용</strong>
+              전기 생산 외에도 수소 생산, 해수 담수화, 지역 난방, 산업 공정 열 공급 등 다목적 활용이 가능하다.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 주요 미국 기업 -->
+      <div class="card animate d4 section-gap">
+        <div class="section-title">🇺🇸 주요 미국 SMR 기업 6선</div>
+        <div class="card-grid-inner">
+          <div class="inner-card">
+            <div class="inner-card-icon">🔵</div>
+            <div class="inner-card-title">NuScale Power</div>
+            <div class="inner-card-subtitle">세계 유일 NRC 설계 승인 획득</div>
+            <div class="inner-card-desc">77MWe VOYGR™ 모듈. 세계 최초로 미국 원자력규제위원회(NRC) 표준설계 승인을 받은 유일한 SMR. ENTRA1 Energy와 독점 파트너십, TVA와 6GW 초대형 프로그램 추진 중.</div>
+            <span class="inner-card-tag">경수로 · PWR</span>
+          </div>
+          <div class="inner-card">
+            <div class="inner-card-icon">🟠</div>
+            <div class="inner-card-title">TerraPower</div>
+            <div class="inner-card-subtitle">빌 게이츠 설립, 와이오밍 건설 중</div>
+            <div class="inner-card-desc">Natrium™ 반응로 345MWe. 나트륨 냉각 고속로(SFR)에 용융염 에너지 저장 결합. 와이오밍주 케머러 폐탄광 부지에 건설 진행 중. 부하 추종 유연운전 가능.</div>
+            <span class="inner-card-tag">나트륨 냉각 고속로</span>
+          </div>
+          <div class="inner-card">
+            <div class="inner-card-icon">🟡</div>
+            <div class="inner-card-title">X-energy</div>
+            <div class="inner-card-subtitle">아마존 대규모 투자 유치</div>
+            <div class="inner-card-desc">Xe-100 고온가스로(HTGR) 80MWe. 흑연 감속·헬륨 냉각, 핵연료를 세라믹으로 코팅해 물리적으로 멜트다운 불가. 아마존이 지분 투자, 두산에너빌리티와 16기 주기기 계약.</div>
+            <span class="inner-card-tag">고온가스로 · HTGR</span>
+          </div>
+          <div class="inner-card">
+            <div class="inner-card-icon">🟢</div>
+            <div class="inner-card-title">Kairos Power</div>
+            <div class="inner-card-subtitle">구글과 2030년 전력 공급 계약</div>
+            <div class="inner-card-desc">KP-FHR 50MWe. 불화용융염 냉각 고온로. 저압 운전으로 파이프 폭발 위험 제로. 구글이 2030년까지 전력 구매 계약 체결, 빅테크-SMR 협력의 첫 사례.</div>
+            <span class="inner-card-tag">용융염 냉각로</span>
+          </div>
+          <div class="inner-card">
+            <div class="inner-card-icon">🔴</div>
+            <div class="inner-card-title">Oklo</div>
+            <div class="inner-card-subtitle">샘 올트먼 의장, 2026년 가동 목표</div>
+            <div class="inner-card-desc">Aurora 마이크로리액터 1.5~15MWe. 금속 핵연료 나트륨 냉각 고속로. 사용후 핵연료를 재활용하는 '클로즈드 연료 사이클'. 2026년 첫 상업 가동시 데이터센터 직접 전력 공급.</div>
+            <span class="inner-card-tag">마이크로리액터</span>
+          </div>
+          <div class="inner-card">
+            <div class="inner-card-icon">⚪</div>
+            <div class="inner-card-title">Westinghouse AP300</div>
+            <div class="inner-card-subtitle">검증된 AP1000 기술 기반 330MWe</div>
+            <div class="inner-card-desc">AP300™ 330MWe. 이미 중국·미국에서 운전 중인 AP1000 기술을 소형화. 수십만 시간의 AP1000 개발 실적 기반, 80년 수명 사이클, 4년 재급유 주기.</div>
+            <span class="inner-card-tag">경수로 · PWR</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 글로벌 SMR 타임라인 -->
+      <div class="card animate d4 section-gap">
+        <div class="section-title">📅 글로벌 SMR 전개 타임라인</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">2020</div>
+              <div class="timeline-content"><strong>러시아 Akademik Lomonosov 가동</strong> — 35MWe 부유식 원자력 발전소 2기. 세계 최초 상업용 SMR 상업 운전 개시.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">2021</div>
+              <div class="timeline-content"><strong>중국 HTR-PM 가동</strong> — 고온가스로 기반 상용 SMR 첫 연계. 중국의 독자 원전 기술 상용화 실증.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">2023</div>
+              <div class="timeline-content"><strong>NuScale NRC 표준설계 승인</strong> — 미국 최초 SMR 표준설계인가. 동시에 UAMPS(유타주 자치전력) 프로젝트는 비용 상승으로 취소. 비용 경쟁력 과제 노출.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">2024~2025</div>
+              <div class="timeline-content"><strong>빅테크-SMR 동맹 가속화</strong> — Microsoft(TMI 재가동), Google(Kairos Power 전력 계약), Amazon(X-energy 투자). AI 데이터센터 무탄소 전력 확보 경쟁 점화.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot future"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year future">2026 (목표)</div>
+              <div class="timeline-content"><strong>Oklo Aurora 첫 상업 가동 목표</strong> — 마이크로리액터 최초 상업 사례 도전. 성공 시 데이터센터 직접 공급 첫 사례. 한국 i-SMR 표준설계인가 규정 완료 목표.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot future"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year future">2030 (목표)</div>
+              <div class="timeline-content"><strong>TerraPower Natrium·Kairos Power 가동 목표</strong> — 미국 주요 SMR의 상업화 원년. EU는 2030년대 초 첫 가동 목표로 European SMR Industrial Alliance 운영 중.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot future"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year future">2035~2050</div>
+              <div class="timeline-content"><strong>SMR 시장 $51.7B 전망·EU 최대 53GW 목표</strong> — 탈탄소 에너지 믹스의 핵심 기저 부하 전원으로 본격 확산. 수소·담수화·지역난방 등 비전력 활용 확대.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 시장 전망: 응용 분야별 드라이버 -->
+      <div class="card animate d5 section-gap">
+        <div class="section-title">📊 SMR 수요 드라이버 분석</div>
+        <div class="bar-chart">
+          <div class="bar-item">
+            <div class="bar-header">
+              <span class="bar-label">🤖 AI 데이터센터 전력</span>
+              <span class="bar-value" style="color:#f97316">최고 우선순위</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:92%; background:#f97316"></div></div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-header">
+              <span class="bar-label">🏭 산업 공정열·수소 생산</span>
+              <span class="bar-value" style="color:#f59e0b">높음</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:72%; background:#f59e0b"></div></div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-header">
+              <span class="bar-label">🌿 신재생 에너지 보완 (기저 부하)</span>
+              <span class="bar-value" style="color:#10b981">높음</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:68%; background:#10b981"></div></div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-header">
+              <span class="bar-label">🌍 개도국·원격지 전력 보급</span>
+              <span class="bar-value" style="color:#3b82f6">중간</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:52%; background:#3b82f6"></div></div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-header">
+              <span class="bar-label">⚓ 군사·선박용 전력</span>
+              <span class="bar-value" style="color:#8b5cf6">중간</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:40%; background:#8b5cf6"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 투자 관점 요약 -->
+      <div class="card animate d5 section-gap">
+        <div class="section-title">💡 투자·산업 관점 핵심 체크포인트</div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div class="quote-box">
+            <strong>🟢 강점</strong> — 탈탄소 압력 + AI 전력 수요 폭증이 동시 작용. 수동 안전으로 규제 장벽 하향. 공장 제작으로 건설 리스크 분산. 빅테크(MS·Google·Amazon)의 장기 전력 구매 계약이 수익성 가시화.
+          </div>
+          <div class="quote-box">
+            <strong>🟡 과제</strong> — NuScale UAMPS 취소(2023)에서 드러난 비용 경쟁력 불확실성. 대규모 제작 시 실제 경제성 검증 필요('nth-of-a-kind' 문제). 폐연료 처리 및 여론 수용성 과제 잔존.
+          </div>
+          <div class="quote-box">
+            <strong>🔵 한국 연결 고리</strong> — 두산에너빌리티: 창원 SMR 전용 공장 착공(2026년 1Q), NuScale·X-energy와 주기기 제작 계약. KEPCO·KHNP: 체코 두코바니 원전 본계약 체결, 동유럽 확산 모멘텀. i-SMR 표준설계인가 규정 2026년 완료 목표.
+          </div>
+        </div>
+      </div>
+
+      <!-- 관련 지식 -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="ev-battery-structure.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">전기차 배터리 구조 — 셀·모듈·팩과 3대 화학 조성</div>
+          </a>
+          <a href="space-old-vs-new.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">올드스페이스 vs 뉴스페이스 — 우주 패러다임 전환</div>
+          </a>
+          <a href="reusable-rocket.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">재사용 발사체 혁명 — 우주 비용의 게임 체인저</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">출처: IAEA (iaea.org), Research and Markets SMR Report 2025-2035, NuScale Power, Westinghouse AP300, European Commission Energy, Wikidocs/zsnote (2026)</p>
+
+    </div>
+  </main>
+
+  <script>
+    var THEMES = ['theme-dark', 'theme-light'];
+    var THEME_LABELS = { 'theme-dark': 'Dark', 'theme-light': 'Light' };
+
+    (function() {
+      var saved = localStorage.getItem('ka-theme') || 'theme-dark';
+      document.documentElement.className = saved;
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[saved];
+    })();
+
+    function cycleTheme() {
+      var cur = document.documentElement.className;
+      var next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+      document.documentElement.className = next;
+      localStorage.setItem('ka-theme', next);
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[next];
+      closeMenu();
+    }
+
+    function toggleMenu() {
+      document.getElementById('vizMenuDropdown').classList.toggle('open');
+    }
+    function closeMenu() {
+      document.getElementById('vizMenuDropdown').classList.remove('open');
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.viz-menu')) closeMenu();
+    });
+
+    function downloadImage() {
+      closeMenu();
+      if (typeof htmlToImage === 'undefined') { alert('라이브러리 로딩 중...'); return; }
+      htmlToImage.toPng(document.getElementById('main'), { pixelRatio: 2 })
+        .then(function(dataUrl) {
+          var a = document.createElement('a');
+          a.download = 'smr-small-modular-reactor.png';
+          a.href = dataUrl;
+          a.click();
+        });
+    }
+  </script>
+</body>
+</html>

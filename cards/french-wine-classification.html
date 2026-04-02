@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>프랑스 와인 등급 체계 완전 가이드</title>
+  <meta name="knowledge-id" content="french-wine-classification">
+  <meta name="knowledge-tags" content="와인,프랑스,음식,문화,여행">
+  <meta name="knowledge-difficulty" content="입문">
+  <meta name="knowledge-date" content="2026-04-03">
+  <meta name="knowledge-source" content="brunch.co.kr · Wine Scholar Guild · CIVB">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #a855f7; --accent2: #ec4899;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(168,85,247,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #7c3aed; --accent2: #db2777;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(124,58,237,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%,
+        color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2 { font-weight: 600; letter-spacing: -0.02em; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--menu-border); background: var(--menu-bg);
+      color: var(--menu-text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(12px); transition: all 0.2s;
+    }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px;
+      background: var(--menu-bg); backdrop-filter: blur(16px);
+      border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px;
+      opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border: none; background: transparent;
+      color: var(--menu-text); font-size: 14px; font-family: inherit;
+      cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left;
+    }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      margin-bottom: 24px; padding: 6px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface); transition: background 0.15s;
+    }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--text-secondary);
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 560px; margin: 0 auto; line-height: 1.7; }
+
+    .meta-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 36px;
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-beginner { background: var(--chip-green); color: var(--positive); }
+    .tag-chip {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500;
+      background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary);
+    }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease;
+    }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .section-title {
+      font-size: 12px; font-weight: 700; color: var(--text-secondary);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px;
+    }
+
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    .highlight-box {
+      padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--chip-accent); font-size: 13.5px; line-height: 1.7; margin-bottom: 16px;
+    }
+    .highlight-box strong { color: var(--accent); }
+
+    /* 등급 피라미드 */
+    .pyramid-stack { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+    .pyramid-tier {
+      border-radius: 12px; padding: 18px 22px; border: 1px solid var(--border);
+      display: flex; align-items: center; gap: 16px;
+    }
+    .pyramid-tier.tier-top { background: var(--chip-accent); border-color: var(--accent); }
+    .pyramid-tier.tier-mid { background: rgba(251,191,36,0.08); border-color: rgba(251,191,36,0.3); }
+    .pyramid-tier.tier-base { background: var(--surface); }
+    .tier-badge { font-size: 1.5rem; flex-shrink: 0; }
+    .tier-info { flex: 1; }
+    .tier-name { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+    .tier-sub { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+    .tier-pct { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px; white-space: nowrap; }
+    .tier-pct.top { background: var(--chip-accent); color: var(--accent); }
+    .tier-pct.mid { background: rgba(251,191,36,0.12); color: #fbbf24; }
+    .tier-pct.base { background: var(--chip-green); color: var(--positive); }
+
+    /* 지역 카드 그리드 */
+    .region-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 12px; margin-bottom: 20px; }
+    .region-card {
+      border-radius: 12px; padding: 18px; border: 1px solid var(--border);
+      background: var(--surface); position: relative; overflow: hidden;
+    }
+    .region-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--region-color, var(--accent));
+    }
+    .region-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; padding-top: 8px; }
+    .region-grape { font-size: 12px; color: var(--accent); font-weight: 600; margin-bottom: 8px; }
+    .region-desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.55; }
+    .region-tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 6px; background: var(--chip-accent); color: var(--accent); margin-top: 6px; }
+
+    /* 보르도 vs 부르고뉴 */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+    .era-card { border-radius: 12px; padding: 22px; border: 1px solid var(--border); position: relative; overflow: hidden; background: var(--surface); }
+    .era-card .top-line { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+    .era-label { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 10px; margin-top: 4px; }
+    .era-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; }
+    .era-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; margin-bottom: 8px; color: var(--text-secondary); }
+    .era-item strong { color: var(--text); font-weight: 600; }
+    .era-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+
+    .quote-box {
+      padding: 16px 20px; border-radius: 10px; border-left: 3px solid var(--accent);
+      background: var(--surface); font-size: 13px; line-height: 1.7;
+      color: var(--text-secondary); margin-bottom: 12px;
+    }
+    .quote-box strong { color: var(--text); }
+
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+
+    @media (max-width: 640px) {
+      .compare-grid, .kpi-row { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+    }
+    @media print {
+      body { background: white !important; }
+      .viz-menu { display: none !important; }
+      .card { break-inside: avoid; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">🍷 프랑스 · 와인 문화</div>
+        <h1>프랑스 와인<br>등급 체계 완전 가이드</h1>
+        <p class="hero-sub">AOC·AOP·IGP 3단계 등급부터 보르도·부르고뉴·샹파뉴까지 — 와인 라벨이 술술 읽히는 핵심 지식</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="diff-badge diff-beginner">입문</span>
+        <span class="tag-chip">#와인</span>
+        <span class="tag-chip">#프랑스</span>
+        <span class="tag-chip">#음식</span>
+        <span class="tag-chip">#문화</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.03
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          brunch.co.kr · CIVB
+        </span>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-row animate d2">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">3단계</div>
+          <div class="kpi-label">프랑스 와인 등급</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--text-secondary)">AOP 50%</div>
+          <div class="kpi-label">전체 생산 비중</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--positive)">13개</div>
+          <div class="kpi-label">주요 와인 산지</div>
+        </div>
+      </div>
+
+      <div class="highlight-box animate d2">
+        프랑스 와인은 <strong>떼루아(Terroir)</strong> — 토양·기후·지형·인간의 손길 — 을 중심으로 분류된다.
+        등급이 높을수록 원산지·품종·양조법에 대한 규제가 엄격하며, 라벨에서 지역명이 세부적일수록 더 좋은 와인일 가능성이 높다.
+      </div>
+
+      <!-- 등급 피라미드 -->
+      <div class="card animate d2">
+        <div class="section-title">🏆 프랑스 와인 3단계 등급 체계</div>
+        <div class="pyramid-stack">
+          <div class="pyramid-tier tier-top">
+            <div class="tier-badge">👑</div>
+            <div class="tier-info">
+              <div class="tier-name">AOP / AOC — 원산지 명칭 보호</div>
+              <div class="tier-sub">
+                <strong>Appellation d'Origine Protégée (보호 원산지 명칭)</strong><br>
+                가장 엄격한 규제. 포도 품종·양조법·최소 알코올 도수·수확량 한도 모두 법으로 규정.
+                AOC는 프랑스 내부 명칭, AOP는 EU 통합 명칭 (동일 등급, 혼용 가능).
+                예: Bordeaux AOC, Champagne AOC, Bourgogne AOC
+              </div>
+            </div>
+            <div class="tier-pct top">전체의 약 50%</div>
+          </div>
+          <div class="pyramid-tier tier-mid">
+            <div class="tier-badge">🌿</div>
+            <div class="tier-info">
+              <div class="tier-name">IGP — 지리적 표시 보호</div>
+              <div class="tier-sub">
+                <strong>Indication Géographique Protégée (지리적 표시 보호)</strong><br>
+                구 Vin de Pays(뱅 드 페이)에 해당. AOP보다 규정 완화.
+                품종 표기 가능(AOP는 지역명만 표기). 남프랑스·랑그도크 산지가 많다.
+                예: IGP Pays d'Oc, IGP Var
+              </div>
+            </div>
+            <div class="tier-pct mid">전체의 약 28%</div>
+          </div>
+          <div class="pyramid-tier tier-base">
+            <div class="tier-badge">🍇</div>
+            <div class="tier-info">
+              <div class="tier-name">Vin de France — 테이블 와인</div>
+              <div class="tier-sub">
+                <strong>프랑스 와인 (구 Vin de Table)</strong><br>
+                원산지 규제 없음. 프랑스 전역 포도 블렌딩 가능.
+                품종 및 빈티지 표기 가능. 가장 자유롭고 실험적인 와인 생산 가능.
+              </div>
+            </div>
+            <div class="tier-pct base">전체의 약 22%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 핵심 와인 산지 -->
+      <div class="card animate d3" style="margin-top:16px">
+        <div class="section-title">🗺️ 5대 주요 와인 산지</div>
+        <div class="region-grid">
+          <div class="region-card" style="--region-color:#722f37">
+            <div class="region-name">🏰 보르도 (Bordeaux)</div>
+            <div class="region-grape">까베르네 소비뇽 · 메를로 · 소비뇽 블랑</div>
+            <div class="region-desc">
+              <strong>좌안(Left Bank):</strong> 까베르네 소비뇽 중심. 메독·그라브 지역. 묵직하고 장기 숙성형.<br>
+              <strong>우안(Right Bank):</strong> 메를로 중심. 생테밀리옹·포므롤. 부드럽고 과실향 풍부.
+            </div>
+            <div class="region-tag">5대 샤토 / 1855 등급</div>
+          </div>
+          <div class="region-card" style="--region-color:#4a0e8f">
+            <div class="region-name">🏡 부르고뉴 (Bourgogne)</div>
+            <div class="region-grape">피노 누아(레드) · 샤르도네(화이트)</div>
+            <div class="region-desc">
+              <strong>레드:</strong> 피노 누아 단일 품종. 코트 드 뉘·코트 드 본. 우아하고 복잡한 향.<br>
+              <strong>화이트:</strong> 샤르도네. 샤블리·뫼르소·몽라쉐. 세계 최고 화이트 산지.
+            </div>
+            <div class="region-tag">그랑 크뤼 33개</div>
+          </div>
+          <div class="region-card" style="--region-color:#c0a060">
+            <div class="region-name">🥂 샹파뉴 (Champagne)</div>
+            <div class="region-grape">샤르도네 · 피노 누아 · 피노 뫼니에</div>
+            <div class="region-desc">
+              세계 유일 '샴페인' 명칭 사용 권한 보유 지역.
+              전통 방식(Méthode Champenoise) 2차 발효로 기포 생성.
+              블랑 드 블랑(샤르도네만), 블랑 드 누아(레드 품종만)
+            </div>
+            <div class="region-tag">NV · 빈티지 구분</div>
+          </div>
+          <div class="region-card" style="--region-color:#c0392b">
+            <div class="region-name">☀️ 론 (Rhône)</div>
+            <div class="region-grape">시라 · 그르나슈 · 비오니에</div>
+            <div class="region-desc">
+              <strong>북론:</strong> 시라 단독. 에르미타주·코트 로티. 풍부하고 후추향.<br>
+              <strong>남론:</strong> 그르나슈 블렌드. 샤토뇌프뒤파프. 알코올 높고 풀바디.
+            </div>
+            <div class="region-tag">그르나슈 블렌딩</div>
+          </div>
+          <div class="region-card" style="--region-color:#3d7a3a">
+            <div class="region-name">🌹 알자스 (Alsace)</div>
+            <div class="region-grape">리슬링 · 게뷔르츠트라미너 · 피노 그리</div>
+            <div class="region-desc">
+              독일 국경 인접, 독일계 품종 사용하나 AOC로 프랑스 방식 생산.
+              라벨에 품종명 표기 (프랑스에서 예외적). 화이트 와인 특화.
+              그랑 크뤼 51개.
+            </div>
+            <div class="region-tag">품종명 라벨 표기</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 보르도 vs 부르고뉴 등급 차이 -->
+      <div class="compare-grid animate d3">
+        <div class="era-card old">
+          <div class="top-line" style="background:#722f37"></div>
+          <div style="padding-top:8px">
+            <div class="era-label" style="color:#722f37">보르도 등급</div>
+            <div class="era-title">1855 Classification</div>
+            <div class="era-item"><div class="era-dot" style="background:#722f37"></div><div><strong>방식:</strong> 샤토(생산자) 단위 등급</div></div>
+            <div class="era-item"><div class="era-dot" style="background:#722f37"></div><div><strong>1등급:</strong> 라피트·라투르·무통·마르고·오브리옹</div></div>
+            <div class="era-item"><div class="era-dot" style="background:#722f37"></div><div><strong>총 5등급:</strong> 그랑 크뤼 클라세 61개</div></div>
+            <div class="era-item"><div class="era-dot" style="background:#722f37"></div><div><strong>특징:</strong> 1855년 한 번 지정, 거의 변경 없음</div></div>
+          </div>
+        </div>
+        <div class="era-card new">
+          <div class="top-line" style="background:#4a0e8f"></div>
+          <div style="padding-top:8px">
+            <div class="era-label" style="color:#4a0e8f">부르고뉴 등급</div>
+            <div class="era-title">크뤼 (Cru) 시스템</div>
+            <div class="era-item"><div class="era-dot" style="background:#4a0e8f"></div><div><strong>방식:</strong> 밭(포도원) 단위 등급</div></div>
+            <div class="era-item"><div class="era-dot" style="background:#4a0e8f"></div><div><strong>최상위:</strong> 그랑 크뤼(Grand Cru) — 33개 밭</div></div>
+            <div class="era-item"><div class="era-dot" style="background:#4a0e8f"></div><div><strong>2단계:</strong> 프르미에 크뤼(1er Cru) — 640여 개 밭</div></div>
+            <div class="era-item"><div class="era-dot" style="background:#4a0e8f"></div><div><strong>특징:</strong> 동일 밭도 생산자(도멘)마다 품질 차이 큼</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 라벨 읽는 법 -->
+      <div class="card animate d4">
+        <div class="section-title">🏷️ 와인 라벨 읽는 법 — 핵심 원칙</div>
+        <div class="quote-box">
+          <strong>지역명이 좁을수록 품질이 높다:</strong> 'Bordeaux AOC' < 'Médoc AOC' < 'Pauillac AOC' 순으로 좁아질수록 엄격한 기준 적용. 라벨에 마을 이름이 쓰여 있으면 더 좋은 와인일 가능성이 높다.
+        </div>
+        <div class="quote-box">
+          <strong>프랑스 와인은 품종명 표기 없는 경우가 많다:</strong> AOC 체계에서 지역명이 포도 품종을 대표함. 예: 부르고뉴 레드 = 피노 누아, 샹파뉴 = 샤르도네+피노 계열 블렌드
+        </div>
+        <div class="quote-box">
+          <strong>빈티지(수확연도):</strong> 기후 변화가 큰 유럽에서 빈티지는 중요. 특히 보르도·부르고뉴는 빈티지 차트 참고 권장. 샴페인 NV(Non-Vintage)는 여러 해 블렌딩.
+        </div>
+        <div class="quote-box">
+          <strong>미슐랭 레스토랑과의 연계:</strong> 고급 레스토랑에서 소믈리에가 권하는 와인은 대부분 AOP 등급 이상. 음식과의 마리아주(궁합)가 핵심 — 화이트는 생선, 레드는 육류 기본 원칙.
+        </div>
+      </div>
+
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="french-restaurant-types.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">프랑스 식당 완전 가이드</div>
+          </a>
+          <a href="michelin-guide-system.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">미슐랭 가이드 시스템</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note">출처: brunch.co.kr · Wine Scholar Guild · CIVB(보르도 와인 협의회) | 2026.04.03</p>
+    </div>
+  </main>
+
+  <script>
+    const themes = ['dark','light'];
+    let ti = 0;
+    function cycleTheme() {
+      ti = (ti + 1) % themes.length;
+      document.documentElement.className = 'theme-' + themes[ti];
+      document.getElementById('themeLabel').textContent = themes[ti].charAt(0).toUpperCase() + themes[ti].slice(1);
+    }
+    function toggleMenu() {
+      document.getElementById('vizMenuDropdown').classList.toggle('open');
+    }
+    document.addEventListener('click', e => {
+      const menu = document.querySelector('.viz-menu');
+      if (!menu.contains(e.target)) document.getElementById('vizMenuDropdown').classList.remove('open');
+    });
+    async function downloadImage() {
+      const node = document.getElementById('main');
+      const blob = await htmlToImage.toBlob(node, { pixelRatio: 2 });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'french-wine-classification.png';
+      a.click();
+    }
+  </script>
+</body>
+</html>

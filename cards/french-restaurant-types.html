@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>프랑스 식당 완전 가이드 — 종류·에티켓·팁</title>
+  <meta name="knowledge-id" content="french-restaurant-types">
+  <meta name="knowledge-tags" content="개념정리,비교분석,트렌드,사례분석">
+  <meta name="knowledge-difficulty" content="입문">
+  <meta name="knowledge-date" content="2026-04-03">
+  <meta name="knowledge-source" content="Claude 대화 + Paris Unlocked">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #8b5cf6; --accent2: #3b82f6;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(139,92,246,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #7c3aed; --accent2: #2563eb;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(124,58,237,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%,
+        color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+
+    /* 뷰 메뉴 */
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--menu-border); background: var(--menu-bg);
+      color: var(--menu-text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(12px); transition: all 0.2s;
+    }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px;
+      background: var(--menu-bg); backdrop-filter: blur(16px);
+      border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px;
+      opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border: none; background: transparent;
+      color: var(--menu-text); font-size: 14px; font-family: inherit;
+      cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left;
+    }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    /* 뒤로가기 */
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      margin-bottom: 24px; padding: 6px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface); transition: background 0.15s;
+    }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    /* 히어로 */
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--text-secondary);
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 520px; margin: 0 auto; line-height: 1.7; }
+
+    /* 메타 바 */
+    .meta-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 36px;
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-beginner { background: var(--chip-green); color: var(--positive); }
+    .tag-chip { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+
+    /* 카드 */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease;
+      margin-bottom: 16px;
+    }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title {
+      font-size: 12px; font-weight: 700; color: var(--text-secondary);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px;
+    }
+
+    /* KPI 행 */
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    /* 하이라이트 박스 */
+    .highlight-box {
+      padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--chip-accent); font-size: 13.5px; line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .highlight-box strong { color: var(--accent); }
+
+    /* 식당 유형 테이블 */
+    .type-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .type-table th {
+      text-align: left; padding: 10px 12px; font-size: 11px; font-weight: 700;
+      color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border);
+    }
+    .type-table td { padding: 11px 12px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; }
+    .type-table tr:last-child td { border-bottom: none; }
+    .type-table tr:hover td { background: var(--surface-hover); }
+    .type-name { font-weight: 700; color: var(--text); }
+    .type-fr { font-size: 11px; color: var(--accent); font-style: italic; display: block; margin-top: 2px; }
+    .price-dot { display: inline-flex; gap: 3px; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+    .dot.fill { background: var(--accent); }
+
+    /* 상세 카드 그리드 */
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+    .detail-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; position: relative; overflow: hidden; }
+    .detail-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; background: var(--accent); }
+    .detail-card.alt::before { background: #64748b; }
+    .detail-card.green::before { background: var(--positive); }
+    .detail-card.amber::before { background: var(--warning); }
+    .detail-card.rose::before { background: var(--negative); }
+    .detail-card.blue::before { background: var(--accent2); }
+    .detail-icon { font-size: 1.4rem; margin-bottom: 8px; margin-top: 6px; }
+    .detail-name { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+    .detail-fr { font-size: 11px; color: var(--accent); font-style: italic; margin-bottom: 8px; }
+    .detail-desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.65; }
+    .detail-tag { display: inline-block; margin-top: 8px; font-size: 10px; padding: 2px 8px; border-radius: 99px; background: var(--chip-accent); color: var(--accent); font-weight: 600; }
+    .detail-tag.green { background: var(--chip-green); color: var(--positive); }
+    .detail-tag.amber { background: var(--chip-amber); color: var(--warning); }
+    .detail-tag.rose { background: rgba(244,63,94,0.12); color: var(--negative); }
+    .detail-tag.blue { background: rgba(59,130,246,0.12); color: var(--accent2); }
+
+    /* 에티켓 리스트 */
+    .etiquette-list { display: flex; flex-direction: column; gap: 10px; }
+    .etiquette-item { display: flex; gap: 12px; align-items: flex-start; padding: 13px 16px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); }
+    .etiquette-icon { font-size: 1.2rem; flex-shrink: 0; }
+    .etiquette-text { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+    .etiquette-text strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 2px; }
+
+    /* 지역 특색 */
+    .region-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 12px; }
+    .region-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+    .region-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; color: var(--accent); }
+    .region-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.55; }
+
+    /* 인용 박스 */
+    .quote-box {
+      padding: 14px 18px; border-radius: 10px; border-left: 3px solid var(--accent);
+      background: var(--surface); font-size: 13px; line-height: 1.7;
+      color: var(--text-secondary); margin-bottom: 12px;
+    }
+    .quote-box strong { color: var(--text); font-weight: 600; }
+
+    /* 관련 지식 */
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+    @media (max-width: 640px) {
+      .kpi-row, .detail-grid { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+    }
+    @media print {
+      body { background: white !important; }
+      .viz-menu { display: none !important; }
+      .card { break-inside: avoid; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">🥐 음식 문화 · 여행</div>
+        <h1>프랑스 식당 완전 가이드</h1>
+        <p class="hero-sub">비스트로·브라세리·가스트로노미크의 차이부터 주문 에티켓·팁 문화까지 — 파리 여행 전 꼭 알아야 할 식당 분류 바이블</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="diff-badge diff-beginner">입문</span>
+        <span class="tag-chip">#개념정리</span>
+        <span class="tag-chip">#비교분석</span>
+        <span class="tag-chip">#여행</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.03
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Claude · Paris Unlocked
+        </span>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-row animate d2">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">40,000+</div>
+          <div class="kpi-label">파리 식당 수</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--text-secondary)">5~10%</div>
+          <div class="kpi-label">팁 문화 (선택)</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--positive)">12~14h</div>
+          <div class="kpi-label">점심 · 7~22h 저녁</div>
+        </div>
+      </div>
+
+      <!-- 핵심 포인트 -->
+      <div class="highlight-box animate d2">
+        프랑스는 식당 유형을 엄격하게 구분한다. <strong>브라세리</strong>는 종일 영업(service continu)하고,
+        <strong>비스트로</strong>는 점심·저녁 정해진 시간에만 운영한다.
+        고급 레스토랑은 점심 때 <strong>prix fixe 메뉴</strong>를 이용하면 절반 가격에 경험 가능하다.
+      </div>
+
+      <!-- 식당 유형 한눈에 보기 -->
+      <div class="card animate d2">
+        <div class="section-title">🗺️ 식당 유형 한눈에 보기</div>
+        <div style="overflow-x:auto;">
+          <table class="type-table">
+            <thead>
+              <tr>
+                <th style="min-width:140px">유형</th>
+                <th>분위기</th>
+                <th>영업 시간</th>
+                <th>가격대</th>
+                <th>특징</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <span class="type-name">브라세리</span>
+                  <span class="type-fr">Brasserie</span>
+                </td>
+                <td>캐주얼~세미포멀</td>
+                <td>종일 (service continu)</td>
+                <td>
+                  <span class="price-dot">
+                    <span class="dot fill"></span><span class="dot fill"></span><span class="dot"></span><span class="dot"></span>
+                  </span>
+                </td>
+                <td>맥주 중심, 알자스 요리 기원, 긴 영업시간</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="type-name">비스트로</span>
+                  <span class="type-fr">Bistrot / Bistro</span>
+                </td>
+                <td>캐주얼, 소규모 친밀</td>
+                <td>점심 12~14h / 저녁 19~22h</td>
+                <td>
+                  <span class="price-dot">
+                    <span class="dot fill"></span><span class="dot fill"></span><span class="dot"></span><span class="dot"></span>
+                  </span>
+                </td>
+                <td>가정식·시장 메뉴, 예약 필수, 칠판 메뉴</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="type-name">가스트로노미크</span>
+                  <span class="type-fr">Restaurant Gastronomique</span>
+                </td>
+                <td>포멀, 화이트 테이블클로스</td>
+                <td>점심·저녁 (예약 필수)</td>
+                <td>
+                  <span class="price-dot">
+                    <span class="dot fill"></span><span class="dot fill"></span><span class="dot fill"></span><span class="dot fill"></span>
+                  </span>
+                </td>
+                <td>미슐랭급, 1인 €100+, 테이스팅 메뉴</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="type-name">카페</span>
+                  <span class="type-fr">Café</span>
+                </td>
+                <td>매우 캐주얼</td>
+                <td>아침~오후</td>
+                <td>
+                  <span class="price-dot">
+                    <span class="dot fill"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                  </span>
+                </td>
+                <td>커피·크루아상·샌드위치, 테라스 필수</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="type-name">바 아 뱅</span>
+                  <span class="type-fr">Bar à Vin (Wine Bar)</span>
+                </td>
+                <td>캐주얼~힙스터</td>
+                <td>저녁 중심</td>
+                <td>
+                  <span class="price-dot">
+                    <span class="dot fill"></span><span class="dot fill"></span><span class="dot"></span><span class="dot"></span>
+                  </span>
+                </td>
+                <td>내추럴 와인, 치즈·샤퀴테리 플레이트</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="type-name">타블 도트</span>
+                  <span class="type-fr">Table d'Hôte</span>
+                </td>
+                <td>세미포멀</td>
+                <td>1~2부제</td>
+                <td>
+                  <span class="price-dot">
+                    <span class="dot fill"></span><span class="dot fill"></span><span class="dot"></span><span class="dot"></span>
+                  </span>
+                </td>
+                <td>고정 메뉴만, 여관·오베르쥬 부속, 선택 불가</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="type-name">크레프리</span>
+                  <span class="type-fr">Crêperie</span>
+                </td>
+                <td>캐주얼</td>
+                <td>유연</td>
+                <td>
+                  <span class="price-dot">
+                    <span class="dot fill"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                  </span>
+                </td>
+                <td>브르타뉴 갈레트·크레페 전문, 사이다 페어링</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 핵심 6종 상세 -->
+      <div class="card animate d3">
+        <div class="section-title">🔍 핵심 6종 상세 해설</div>
+        <div class="detail-grid">
+          <div class="detail-card">
+            <div class="detail-icon">🍺</div>
+            <div class="detail-name">브라세리 (Brasserie)</div>
+            <div class="detail-fr">동사 brasser(양조하다)에서 유래</div>
+            <div class="detail-desc">
+              알자스 지방에서 맥주와 슈크루트(소시지 사우어크라우트)를 팔던 데서 기원. 지금은 맥주를 직접 양조하지 않아도 브라세리라 불린다.
+              <br><br><strong>핵심 특징:</strong> service continu(종일 서비스). 점심·저녁 사이 오후에도 식사 가능해 관광객에 최적.
+              <br><br>역사적 브라세리(Lipp, La Coupole, 부용 샤르티에)는 벨에포크 아르데코 인테리어로 유명. 예약 필수.
+            </div>
+            <span class="detail-tag blue">종일 영업</span>
+          </div>
+
+          <div class="detail-card alt">
+            <div class="detail-icon">🍷</div>
+            <div class="detail-name">비스트로 (Bistrot)</div>
+            <div class="detail-fr">어원설: 러시아어 быстро(빨리)에서</div>
+            <div class="detail-desc">
+              소규모·친밀한 분위기. 칠판 메뉴, 낮은 조명, 빈티지 아트, 오픈 키친이 특징. 예약은 필수(특히 인기 맛집).
+              <br><br><strong>비스트로노미(Bistronomie):</strong> 최근 트렌드. 미슐랭 스타급 요리를 편안한 비스트로 세팅에서 제공. Paul Bert, Frenchie 등이 대표.
+              <br><br>리옹의 <strong>부숑(Bouchon)</strong>은 비스트로의 지역 변형. 파이크 덤플링, 핑크 프랄린 타르트 등 향토 요리.
+            </div>
+            <span class="detail-tag">예약 필수</span>
+          </div>
+
+          <div class="detail-card rose">
+            <div class="detail-icon">👨‍🍳</div>
+            <div class="detail-name">가스트로노미크</div>
+            <div class="detail-fr">Restaurant Gastronomique</div>
+            <div class="detail-desc">
+              미슐랭 스타 또는 그에 준하는 파인다이닝. 화이트 테이블클로스, 정복 차림 직원, 엄격한 서비스 프로토콜.
+              <br><br>파리는 1인 €100+ 기본. <strong>단, 점심 prix fixe 메뉴</strong>를 이용하면 같은 셰프의 요리를 절반 가격에 경험 가능.
+              <br><br>테이스팅 메뉴(7~12코스 + 와인 페어링)는 가장 비싸지만 셰프의 역량을 가장 깊이 경험하는 방식.
+            </div>
+            <span class="detail-tag rose">드레스 코드 필수</span>
+          </div>
+
+          <div class="detail-card green">
+            <div class="detail-icon">🍾</div>
+            <div class="detail-name">바 아 뱅 (Wine Bar)</div>
+            <div class="detail-fr">Bar à Vin</div>
+            <div class="detail-desc">
+              자연주의 와인(내추럴 와인) 중심으로 부활한 카테고리. 치즈·샤퀴테리 플레이트에서 미슐랭급 소 플레이트까지.
+              <br><br>파리의 Frenchie Bar à Vin, Le Verre Volé가 대표 주소. 드레스 코드 없음, 편안한 스툴 좌석.
+              <br><br><strong>절약 팁:</strong> 글라스로 주문, 소 플레이트보다 셰어링 플레이트가 가성비 좋음.
+            </div>
+            <span class="detail-tag green">드레스코드 없음</span>
+          </div>
+
+          <div class="detail-card amber">
+            <div class="detail-icon">🥞</div>
+            <div class="detail-name">크레프리 (Crêperie)</div>
+            <div class="detail-fr">브르타뉴 지방 기원</div>
+            <div class="detail-desc">
+              브르타뉴 지방의 갈레트(메밀 반죽·짭짤한 필링)와 크레페(밀가루 반죽·달콤한 필링)를 파는 전문점.
+              <br><br><strong>갈레트(Galette):</strong> 햄·치즈·달걀 등 속 재료. 브르타뉴 사이다(cidre)와 페어링.
+              <br>크레페: 버터·설탕·레몬, 또는 초콜릿·딸기 등 디저트 스타일.
+              <br><br>파리 몽파르나스 구역에 크레프리가 밀집해 있다.
+            </div>
+            <span class="detail-tag amber">브르타뉴 향토</span>
+          </div>
+
+          <div class="detail-card blue">
+            <div class="detail-icon">🏡</div>
+            <div class="detail-name">타블 도트 / 오베르쥬</div>
+            <div class="detail-fr">Table d'Hôte / Auberge</div>
+            <div class="detail-desc">
+              '주인의 식탁'이라는 뜻. 고정 메뉴(선택 불가)를 정해진 시간에 제공. 보통 농가 여관(gîte)이나 B&B에 부속.
+              <br><br>소박한 시골 다이닝부터 샤토 내 고급 다이닝까지 편차가 크다.
+              <br><br><strong>주의:</strong> 식이 제한(채식·알레르기)은 반드시 사전 고지 필요. "c'est pas possible"(불가)이라는 답변이 나올 수 있으니 미리 확인.
+            </div>
+            <span class="detail-tag blue">사전 식이 고지 필수</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 프랑스 식당 에티켓 -->
+      <div class="card animate d4">
+        <div class="section-title">🎩 알아두면 좋은 프랑스 식당 에티켓</div>
+        <div class="etiquette-list">
+          <div class="etiquette-item">
+            <div class="etiquette-icon">📋</div>
+            <div class="etiquette-text">
+              <strong>주문하는 법</strong>
+              메뉴판을 덮고 서버와 눈을 마주친다. 눈이 마주쳤을 때 메뉴판을 다시 열면 서버가 온다. 손을 흔들거나 큰 소리로 부르는 것은 실례.
+            </div>
+          </div>
+          <div class="etiquette-item">
+            <div class="etiquette-icon">🕐</div>
+            <div class="etiquette-text">
+              <strong>식사 시간대 (브라세리 제외)</strong>
+              점심: 12:00~14:00, 저녁: 19:00~22:00. 이 시간대를 벗어난 주문은 거절당할 수 있다. service continu(종일 서비스) 브라세리에서는 예외.
+            </div>
+          </div>
+          <div class="etiquette-item">
+            <div class="etiquette-icon">💸</div>
+            <div class="etiquette-text">
+              <strong>팁 (Pourboire)</strong>
+              프랑스에서 팁은 의무가 아니다. 서비스가 좋았다면 총 금액의 5~10%를 남기는 것이 관례. 파인다이닝에서는 10~15%까지도. 바 카운터에서는 팁 불필요.
+            </div>
+          </div>
+          <div class="etiquette-item">
+            <div class="etiquette-icon">🥖</div>
+            <div class="etiquette-text">
+              <strong>빵 (Pain)과 물 (Eau)</strong>
+              빵은 대부분 무료 제공. 별도 빵 접시가 없으면 테이블 위에 직접 올려두는 것이 프랑스식. 물은 무료 수돗물(carafe d'eau)을 요청 가능. 생수(minérale)는 유료.
+            </div>
+          </div>
+          <div class="etiquette-item">
+            <div class="etiquette-icon">☕</div>
+            <div class="etiquette-text">
+              <strong>커피 타이밍</strong>
+              프랑스에서 커피는 식사 후에 마신다. 식사 중 카페 오 레(café au lait)는 아침에나 마시는 것. 저녁 식사 후에는 에스프레소(café)가 정석.
+            </div>
+          </div>
+          <div class="etiquette-item">
+            <div class="etiquette-icon">👗</div>
+            <div class="etiquette-text">
+              <strong>드레스 코드</strong>
+              브라세리·비스트로: 캐주얼~세미포멀. 가스트로노미크: 청바지+티셔츠는 피할 것, 비즈니스 캐주얼 이상 권장. 와인 바: 드레스 코드 없음.
+            </div>
+          </div>
+          <div class="etiquette-item">
+            <div class="etiquette-icon">📅</div>
+            <div class="etiquette-text">
+              <strong>예약 (Réservation)</strong>
+              인기 비스트로와 파인다이닝은 수주 전 예약 필수. 브라세리는 예약 없이도 가능하나 성수기엔 예약 권장. 전화 또는 The Fork(레스토랑 예약 앱) 활용.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 지역별 특색 식당 -->
+      <div class="card animate d4">
+        <div class="section-title">🗺️ 지역별 특색 식당 유형</div>
+        <div class="region-grid">
+          <div class="region-card">
+            <div class="region-name">🦁 리옹 — 부숑 (Bouchon)</div>
+            <div class="region-desc">가족 운영 소규모 식당. 퀴넬(생선 덤플링), 리옹 소시지, 핑크 프랄린 타르트 등 향토 요리 특화. 프랑스 미식의 수도답게 높은 밀도.
+            </div>
+          </div>
+          <div class="region-card">
+            <div class="region-name">🥨 알자스 — 윈스튜브 (Winstub)</div>
+            <div class="region-desc">와인 주점. 리슬링 와인 + 슈크루트(절인 양배추+소시지), 타르트 플람베(알자스 피자)를 파는 소박한 와인 식당. 스트라스부르 특화.
+            </div>
+          </div>
+          <div class="region-card">
+            <div class="region-name">🧇 브르타뉴 — 크레프리 (Crêperie)</div>
+            <div class="region-desc">갈레트(메밀·짭짤)와 크레페(단맛). 브르타뉴 사이다(cidre)와 짝꿍. 파리 몽파르나스에 브르타뉴 이민자들이 크레프리 밀집 지역 형성.
+            </div>
+          </div>
+          <div class="region-card">
+            <div class="region-name">🐟 파리 — 부용 (Bouillon)</div>
+            <div class="region-desc">19세기 노동자 계층을 위해 만들어진 저렴한 전통 레스토랑. 벨에포크 인테리어 유지. 부용 샤르티에가 대표. 저렴하지만 퀄리티 준수.
+            </div>
+          </div>
+          <div class="region-card">
+            <div class="region-name">🍷 보르도 — 바쇼 (Bar à Vins)</div>
+            <div class="region-desc">와인의 도시답게 와인 바가 특히 발달. Le Flacon 등이 유명. 보르도 AOC 와인을 잔술로 합리적인 가격에 경험 가능.
+            </div>
+          </div>
+          <div class="region-card">
+            <div class="region-name">🌊 노르망디 — 오베르쥬 (Auberge)</div>
+            <div class="region-desc">시골 여관 부속 식당. 노르망디 사이다·칼바도스, 카망베르 치즈, 무엘 오리 지방색 요리. 도로변 오베르쥬는 드라이브 식도락의 상징.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 실전 팁: 비용 절감 -->
+      <div class="card animate d5">
+        <div class="section-title">💡 실전 팁 — 비용 절감 & 스마트 식사</div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div class="quote-box">
+            <strong>🌞 점심 prix fixe 활용</strong> — 가스트로노미크와 인기 비스트로는 점심 정식 메뉴(2~3코스)를 €20~45 선에 제공. 저녁 같은 셰프의 à la carte 가격의 절반 이하.
+          </div>
+          <div class="quote-box">
+            <strong>🍞 부용 식당 (Bouillon)</strong> — 부용 샤르티에, 부용 필립 등 전통 부용 레스토랑에서 €15 내외로 3코스 프랑스 정통 요리 가능. 줄 서는 것이 단점.
+          </div>
+          <div class="quote-box">
+            <strong>🥐 볼랑제리 카페 (Boulangerie-Café)</strong> — 아침·점심은 빵집 겸 카페에서. 크루아상+카페 €4, 샌드위치+커피 €8~10 선. 현지인이 가장 자주 이용하는 포맷.
+          </div>
+          <div class="quote-box">
+            <strong>📱 예약 앱</strong> — TheFork(구 LaFourchette)으로 예약 시 최대 50% 할인 행사 상시 진행. 미슐랭 가이드 앱으로 스타 레스토랑 검색·예약 가능.
+          </div>
+        </div>
+      </div>
+
+      <!-- 관련 지식 -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="space-old-vs-new.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">올드스페이스 vs 뉴스페이스 — 우주 패러다임 전환</div>
+          </a>
+          <a href="semiconductor-basics.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">반도체의 종류: 시스템 vs 메모리</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">출처: Claude 대화 공유 (2026-03-29) + Paris Unlocked "Decrypting French Restaurant Types" (2026-01-22 업데이트)</p>
+    </div>
+  </main>
+
+  <script>
+    var THEMES = ['theme-dark', 'theme-light'];
+    var THEME_LABELS = { 'theme-dark': 'Dark', 'theme-light': 'Light' };
+    (function() {
+      var saved = localStorage.getItem('ka-theme') || 'theme-dark';
+      document.documentElement.className = saved;
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[saved];
+    })();
+    function cycleTheme() {
+      var cur = document.documentElement.className;
+      var next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+      document.documentElement.className = next;
+      localStorage.setItem('ka-theme', next);
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[next];
+      closeMenu();
+    }
+    function toggleMenu() { document.getElementById('vizMenuDropdown').classList.toggle('open'); }
+    function closeMenu() { document.getElementById('vizMenuDropdown').classList.remove('open'); }
+    document.addEventListener('click', function(e) { if (!e.target.closest('.viz-menu')) closeMenu(); });
+    function downloadImage() {
+      closeMenu();
+      if (typeof htmlToImage === 'undefined') { alert('라이브러리 로딩 중...'); return; }
+      htmlToImage.toPng(document.getElementById('main'), { pixelRatio: 2 })
+        .then(function(dataUrl) {
+          var a = document.createElement('a');
+          a.download = 'french-restaurant-types.png';
+          a.href = dataUrl; a.click();
+        });
+    }
+  </script>
+</body>
+</html>

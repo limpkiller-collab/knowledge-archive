@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>미슐랭 가이드 시스템 완전 가이드</title>
+  <meta name="knowledge-id" content="michelin-guide-system">
+  <meta name="knowledge-tags" content="맛집,프랑스,음식,여행,문화">
+  <meta name="knowledge-difficulty" content="입문">
+  <meta name="knowledge-date" content="2026-04-03">
+  <meta name="knowledge-source" content="Michelin Guide · 나무위키 · 미슐랭 공식 사이트">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #ef4444; --accent2: #f97316;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(239,68,68,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #dc2626; --accent2: #ea580c;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(220,38,38,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%,
+        color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--menu-border); background: var(--menu-bg);
+      color: var(--menu-text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(12px); transition: all 0.2s;
+    }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px;
+      background: var(--menu-bg); backdrop-filter: blur(16px);
+      border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px;
+      opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border: none; background: transparent;
+      color: var(--menu-text); font-size: 14px; font-family: inherit;
+      cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left;
+    }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      margin-bottom: 24px; padding: 6px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface); transition: background 0.15s;
+    }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--text-secondary);
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 540px; margin: 0 auto; line-height: 1.7; }
+
+    .meta-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 36px;
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-beginner { background: var(--chip-green); color: var(--positive); }
+    .tag-chip {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500;
+      background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary);
+    }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease;
+    }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .section-title {
+      font-size: 12px; font-weight: 700; color: var(--text-secondary);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px;
+    }
+
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    .highlight-box {
+      padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--chip-accent); font-size: 13.5px; line-height: 1.7; margin-bottom: 16px;
+    }
+    .highlight-box strong { color: var(--accent); }
+
+    /* 별점 카드 */
+    .star-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+    .star-item {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 18px 20px; border-radius: 12px; border: 1px solid var(--border);
+      background: var(--surface); transition: box-shadow 0.2s;
+    }
+    .star-item:hover { box-shadow: 0 4px 16px rgba(239,68,68,0.1); }
+    .star-item.star-3 { border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.04); }
+    .star-item.star-2 { border-color: rgba(239,68,68,0.18); }
+    .star-item.star-1 { border-color: rgba(239,68,68,0.10); }
+    .star-emoji { font-size: 1.6rem; flex-shrink: 0; min-width: 56px; text-align: center; }
+    .star-body { flex: 1; }
+    .star-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .star-quote { font-size: 13px; color: var(--accent); font-weight: 600; margin-bottom: 6px; font-style: italic; }
+    .star-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+    .star-count { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 99px; background: var(--chip-accent); color: var(--accent); white-space: nowrap; }
+
+    /* 마크 그리드 */
+    .mark-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 12px; margin-bottom: 20px; }
+    .mark-card { border-radius: 12px; padding: 18px; border: 1px solid var(--border); background: var(--surface); }
+    .mark-icon { font-size: 1.6rem; margin-bottom: 8px; }
+    .mark-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .mark-desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.55; }
+    .mark-since { font-size: 11px; color: var(--accent); font-weight: 600; margin-top: 6px; }
+
+    /* 타임라인 */
+    .timeline { display: flex; flex-direction: column; gap: 0; margin-bottom: 20px; }
+    .timeline-item { display: flex; gap: 16px; }
+    .timeline-left { display: flex; flex-direction: column; align-items: center; width: 32px; flex-shrink: 0; }
+    .timeline-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); flex-shrink: 0; margin-top: 4px; }
+    .timeline-line { width: 2px; flex: 1; background: var(--border); margin: 4px 0; min-height: 20px; }
+    .timeline-item:last-child .timeline-line { display: none; }
+    .timeline-right { padding-bottom: 20px; flex: 1; }
+    .timeline-year { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .timeline-content { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+    .timeline-content strong { color: var(--text); }
+
+    /* 평가 기준 */
+    .criteria-list { display: flex; flex-direction: column; gap: 10px; }
+    .criteria-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 10px; background: var(--surface-hover); border: 1px solid var(--border); }
+    .criteria-num { font-size: 13px; font-weight: 700; color: var(--accent); background: var(--chip-accent); padding: 2px 9px; border-radius: 6px; white-space: nowrap; flex-shrink: 0; margin-top: 1px; }
+    .criteria-text { font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
+    .criteria-text strong { color: var(--text); }
+
+    .quote-box {
+      padding: 16px 20px; border-radius: 10px; border-left: 3px solid var(--accent);
+      background: var(--surface); font-size: 13px; line-height: 1.7;
+      color: var(--text-secondary); margin-bottom: 12px;
+    }
+    .quote-box strong { color: var(--text); }
+
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+
+    @media (max-width: 640px) {
+      .kpi-row { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+    }
+    @media print {
+      body { background: white !important; }
+      .viz-menu { display: none !important; }
+      .card { break-inside: avoid; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">⭐ 미식 · 레스토랑 가이드</div>
+        <h1>미슐랭 가이드<br>시스템 완전 가이드</h1>
+        <p class="hero-sub">별 하나의 무게 — 1900년 타이어 회사의 책자에서 시작된 세계 최고 권위 레스토랑 평가 시스템</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="diff-badge diff-beginner">입문</span>
+        <span class="tag-chip">#미슐랭</span>
+        <span class="tag-chip">#맛집</span>
+        <span class="tag-chip">#음식</span>
+        <span class="tag-chip">#프랑스</span>
+        <span class="tag-chip">#여행</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.03
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Michelin Guide 공식
+        </span>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-row animate d2">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">1900년</div>
+          <div class="kpi-label">미슐랭 가이드 창간</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--text-secondary)">⭐⭐⭐</div>
+          <div class="kpi-label">최고 등급 (3스타)</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--positive)">30+개국</div>
+          <div class="kpi-label">발간 국가 수</div>
+        </div>
+      </div>
+
+      <div class="highlight-box animate d2">
+        미슐랭 가이드는 <strong>타이어 회사 미슐랭(Michelin)</strong>이 자동차 여행 장려를 위해 1900년 무료 배포한 여행 안내서에서 시작됐다.
+        별점 제도는 1926년 도입됐고, 현재의 <strong>1~3스타 체계는 1933년</strong>부터 유지되고 있다.
+        전 세계 레스토랑 업계에서 별 하나를 얻는 것은 셰프 인생을 바꾸는 사건이다.
+      </div>
+
+      <!-- 별점 기준 -->
+      <div class="card animate d2">
+        <div class="section-title">⭐ 미슐랭 별점 — 3단계 기준</div>
+        <div class="star-grid">
+          <div class="star-item star-3">
+            <div class="star-emoji">⭐⭐⭐</div>
+            <div class="star-body">
+              <div class="star-title">3스타 — 세계 최고 수준</div>
+              <div class="star-quote">"이 레스토랑을 위해 여행할 가치가 있다 (Worth a special journey)"</div>
+              <div class="star-desc">
+                탁월한 요리 — 이 레스토랑을 목적지로 여행할 가치가 있다.
+                전 세계 약 150개 내외 (연간 변동). 별을 유지하는 압박이 극심해 반납하는 사례도 있음.
+                셰프 개인의 철학과 일관성이 핵심 평가 요소.
+              </div>
+            </div>
+            <div class="star-count">전 세계 ~150개</div>
+          </div>
+          <div class="star-item star-2">
+            <div class="star-emoji">⭐⭐</div>
+            <div class="star-body">
+              <div class="star-title">2스타 — 탁월한 요리</div>
+              <div class="star-quote">"일부러 찾아갈 가치가 있다 (Worth a detour)"</div>
+              <div class="star-desc">
+                훌륭한 요리 — 일부러 찾아갈 만한 가치가 있다.
+                전 세계 약 400~500개 수준. 1스타에서 2스타로의 도약이 가장 어렵다고 여겨짐.
+                요리의 일관성과 창의성 모두 요구됨.
+              </div>
+            </div>
+            <div class="star-count">전 세계 ~500개</div>
+          </div>
+          <div class="star-item star-1">
+            <div class="star-emoji">⭐</div>
+            <div class="star-body">
+              <div class="star-title">1스타 — 매우 좋은 레스토랑</div>
+              <div class="star-quote">"들를 만한 가치가 있다 (A very good restaurant)"</div>
+              <div class="star-desc">
+                해당 카테고리에서 매우 좋은 레스토랑.
+                전 세계 약 2,000~3,000개 수준. 별 하나만으로도 레스토랑 운명이 바뀜 — 예약 대기 6개월 이상 사례 빈번.
+                미슐랭 이노베이터 상도 1스타급에서 다수 배출.
+              </div>
+            </div>
+            <div class="star-count">전 세계 ~3,000개</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 별점 외 마크 -->
+      <div class="card animate d3" style="margin-top:16px">
+        <div class="section-title">🔖 별점 외 미슐랭 마크 & 어워드</div>
+        <div class="mark-grid">
+          <div class="mark-card">
+            <div class="mark-icon">😊</div>
+            <div class="mark-name">빕 구르망 (Bib Gourmand)</div>
+            <div class="mark-desc">합리적인 가격에 훌륭한 음식. 기준은 국가마다 상이하나 통상 €35~40 이하 코스 기준. 별보다 접근하기 쉬운 맛집 추천.</div>
+            <div class="mark-since">1997년 도입</div>
+          </div>
+          <div class="mark-card">
+            <div class="mark-icon">🍴</div>
+            <div class="mark-name">포크 & 스푼 (The Plate)</div>
+            <div class="mark-desc">좋은 품질의 식재료와 편안한 요리를 제공하는 레스토랑. 1~5개로 편안함과 서비스 수준을 나타냄 (별점과 별개).</div>
+            <div class="mark-since">편의 등급</div>
+          </div>
+          <div class="mark-card">
+            <div class="mark-icon">🌱</div>
+            <div class="mark-name">그린 스타 (Green Star)</div>
+            <div class="mark-desc">지속가능한 미식을 실천하는 레스토랑. 로컬 식재료 사용, 음식물 쓰레기 최소화, 유기농 등 친환경 경영 기준 평가.</div>
+            <div class="mark-since">2020년 도입 (신설)</div>
+          </div>
+          <div class="mark-card">
+            <div class="mark-icon">👩‍🍳</div>
+            <div class="mark-name">영 셰프 어워드</div>
+            <div class="mark-desc">각 국가 가이드별로 선정하는 유망 젊은 셰프 상. 미래 미슐랭 별을 기대할 수 있는 셰프를 조기 발굴하는 시상.</div>
+            <div class="mark-since">국가별 운영</div>
+          </div>
+          <div class="mark-card">
+            <div class="mark-icon">🍸</div>
+            <div class="mark-name">소믈리에 어워드</div>
+            <div class="mark-desc">탁월한 와인 서비스를 제공하는 소믈리에에게 수여. 미슐랭 레스토랑에서 와인 페어링은 별점에도 영향을 미치는 중요한 요소.</div>
+            <div class="mark-since">국가별 운영</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 평가 기준 5가지 -->
+      <div class="card animate d3" style="margin-top:16px">
+        <div class="section-title">📊 미슐랭 평가 기준 — 5가지 원칙</div>
+        <div class="criteria-list">
+          <div class="criteria-item">
+            <div class="criteria-num">기준 1</div>
+            <div class="criteria-text"><strong>식재료의 질 (Quality of ingredients):</strong> 신선도, 출처, 계절성. 최고급 식재료 사용 여부와 식재료 본연의 맛을 살리는 능력</div>
+          </div>
+          <div class="criteria-item">
+            <div class="criteria-num">기준 2</div>
+            <div class="criteria-text"><strong>조리 기술의 숙련도 (Mastery of cooking techniques):</strong> 불 조절, 칼질, 플레이팅 등 기술적 완성도. 고전 기법과 현대 기법의 조화</div>
+          </div>
+          <div class="criteria-item">
+            <div class="criteria-num">기준 3</div>
+            <div class="criteria-text"><strong>조화로운 맛 (Harmony of flavours):</strong> 재료 간 균형과 조화. 창의적인 맛의 조합이 이치에 맞아야 함. '맛있는가'가 핵심</div>
+          </div>
+          <div class="criteria-item">
+            <div class="criteria-num">기준 4</div>
+            <div class="criteria-text"><strong>셰프의 개성 (Chef's personality in cuisine):</strong> 단순 기술 재현이 아닌 셰프만의 철학과 스타일. 창의성과 정체성이 음식에 녹아있어야 함</div>
+          </div>
+          <div class="criteria-item">
+            <div class="criteria-num">기준 5</div>
+            <div class="criteria-text"><strong>일관성 (Consistency):</strong> 매번 방문할 때마다 동일한 수준 유지. 특히 복수 방문 기준으로 평가. 흔들리는 품질은 감점 요인</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 역사 타임라인 -->
+      <div class="card animate d4" style="margin-top:16px">
+        <div class="section-title">📅 미슐랭 가이드 역사</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">1900년</div>
+              <div class="timeline-content"><strong>미슐랭 가이드 창간</strong> — 앙드레·에두아르 미슐랭 형제가 자동차 여행자를 위해 무료 배포. 주유소, 식당, 숙박 정보 수록</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">1920년</div>
+              <div class="timeline-content"><strong>유료화 시작</strong> — "사람들은 무료로 받은 것을 소중히 여기지 않는다"는 앙드레의 말과 함께 유료 판매 전환</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">1926년</div>
+              <div class="timeline-content"><strong>별점 제도 도입</strong> — 특별히 좋은 레스토랑에 별 1개 부여 시작. 음식만을 기준으로 한 평가 원칙 확립</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">1933년</div>
+              <div class="timeline-content"><strong>3스타 체계 확립</strong> — 현재까지 이어지는 1·2·3스타 등급 체계 도입. 각 별점의 공식 정의 확정</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">1997년</div>
+              <div class="timeline-content"><strong>빕 구르망 도입</strong> — 가성비 레스토랑 별도 인정. 미슐랭 접근성 확대 첫 시도</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">2007년</div>
+              <div class="timeline-content"><strong>아시아 진출</strong> — 도쿄 가이드 발간. 도쿄는 첫 해 3스타 8개 획득으로 세계 최다 3스타 도시 등극</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">2016년</div>
+              <div class="timeline-content"><strong>서울 가이드 발간</strong> — 한국 레스토랑 최초 미슐랭 평가. 가온·라연·권숙수 등 3스타 포함</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">2020년</div>
+              <div class="timeline-content"><strong>그린 스타 도입</strong> — 지속가능한 미식 실천 레스토랑 별도 인정. 환경·윤리 기준을 공식 평가에 포함</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 미슐랭 얽힌 이야기 -->
+      <div class="card animate d4" style="margin-top:16px">
+        <div class="section-title">💡 알아두면 재미있는 미슐랭 이야기</div>
+        <div class="quote-box">
+          <strong>익명의 평가원(Inspector):</strong> 미슐랭 평가원은 신분을 철저히 숨기고 일반 손님으로 방문한다. 연간 수백 곳을 방문하며, 같은 레스토랑을 여러 번 재방문해 일관성을 검증한다. 국적도 다양하게 구성.
+        </div>
+        <div class="quote-box">
+          <strong>별을 반납한 셰프들:</strong> 세바스티앙 브라(프랑스), 마르코 피에르 화이트(영국) 등 일부 셰프는 스스로 별을 반납. 이유는 "극도의 스트레스", "순수한 요리로 돌아가고 싶다" 등. 별 유지를 위한 압박이 얼마나 큰지 보여주는 사례.
+        </div>
+        <div class="quote-box">
+          <strong>한국 미슐랭:</strong> 서울 가이드는 현재 부산까지 확대. 양식뿐 아니라 한식·일식도 높은 평가. '밍글스', '정식당', '스와니예' 등 한국 레스토랑도 다수 수상. 특히 한식의 글로벌 위상 상승에 기여.
+        </div>
+        <div class="quote-box">
+          <strong>미슐랭 3스타의 경제효과:</strong> 3스타 획득 시 예약 대기가 수개월로 늘어나고 식재료 원가 상승 허용 폭도 넓어짐. 반면 별 박탈 시 매출 급감 사례도 있어 '미슐랭 저주'라는 말도 존재.
+        </div>
+      </div>
+
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="french-restaurant-types.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">프랑스 식당 완전 가이드</div>
+          </a>
+          <a href="french-wine-classification.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">프랑스 와인 등급 체계</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note">출처: Michelin Guide 공식 사이트 · 나무위키 · 미슐랭 코리아 | 2026.04.03</p>
+    </div>
+  </main>
+
+  <script>
+    const themes = ['dark','light'];
+    let ti = 0;
+    function cycleTheme() {
+      ti = (ti + 1) % themes.length;
+      document.documentElement.className = 'theme-' + themes[ti];
+      document.getElementById('themeLabel').textContent = themes[ti].charAt(0).toUpperCase() + themes[ti].slice(1);
+    }
+    function toggleMenu() {
+      document.getElementById('vizMenuDropdown').classList.toggle('open');
+    }
+    document.addEventListener('click', e => {
+      const menu = document.querySelector('.viz-menu');
+      if (!menu.contains(e.target)) document.getElementById('vizMenuDropdown').classList.remove('open');
+    });
+    async function downloadImage() {
+      const node = document.getElementById('main');
+      const blob = await htmlToImage.toBlob(node, { pixelRatio: 2 });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'michelin-guide-system.png';
+      a.click();
+    }
+  </script>
+</body>
+</html>
