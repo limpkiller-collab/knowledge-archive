@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>시아파 vs 수니파 — 이슬람의 두 줄기</title>
+  <meta name="knowledge-id" content="shia-sunni-islam">
+  <meta name="knowledge-tags" content="종교,이슬람,중동,비교분석,개념정리">
+  <meta name="knowledge-difficulty" content="입문">
+  <meta name="knowledge-date" content="2026-04-03">
+  <meta name="knowledge-source" content="역사·종교 정리">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    html.theme-dark {
+      --bg:#0A0A0A; --surface:#141414; --surface-hover:#1C1C1C;
+      --border:rgba(255,255,255,0.06); --text:#EDEDED; --text-secondary:#888;
+      --accent:#8b5cf6; --accent2:#06b6d4;
+      --positive:#10b981; --negative:#f43f5e; --warning:#f59e0b;
+      --chip-accent:rgba(139,92,246,0.12); --chip-green:rgba(16,185,129,0.12); --chip-amber:rgba(245,158,11,0.12);
+      --menu-bg:rgba(10,10,10,0.85); --menu-border:rgba(255,255,255,0.08);
+      --menu-text:#EDEDED; --menu-item-hover:rgba(255,255,255,0.06);
+      --sunni:#3b82f6; --sunni-bg:rgba(59,130,246,0.1);
+      --shia:#f43f5e; --shia-bg:rgba(244,63,94,0.1);
+    }
+    html.theme-light {
+      --bg:#FAFAF9; --surface:#FFFFFF; --surface-hover:#F5F5F4;
+      --border:#e5e5e5; --text:#1a1a1a; --text-secondary:#666;
+      --accent:#7c3aed; --accent2:#0891b2;
+      --positive:#059669; --negative:#e11d48; --warning:#d97706;
+      --chip-accent:rgba(124,58,237,0.08); --chip-green:rgba(5,150,105,0.08); --chip-amber:rgba(217,119,6,0.08);
+      --menu-bg:rgba(255,255,255,0.92); --menu-border:rgba(0,0,0,0.08);
+      --menu-text:#1a1a1a; --menu-item-hover:rgba(0,0,0,0.04);
+      --sunni:#2563eb; --sunni-bg:rgba(37,99,235,0.08);
+      --shia:#e11d48; --shia-bg:rgba(225,29,72,0.08);
+    }
+    body { font-family:'Noto Sans KR','Inter',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; -webkit-font-smoothing:antialiased; letter-spacing:-0.011em; transition:background 0.3s,color 0.3s; min-height:100vh; }
+    body::before { content:''; position:fixed; inset:0; z-index:-1; pointer-events:none; background:radial-gradient(ellipse 70% 50% at 50% 10%, color-mix(in srgb, var(--accent), transparent 88%), transparent); }
+    h1,h2,h3 { letter-spacing:-0.02em; }
+    *:focus-visible { outline:2px solid var(--accent); outline-offset:2px; border-radius:4px; }
+    .container { max-width:900px; margin:0 auto; padding:64px 24px 80px; }
+
+    .viz-menu { position:fixed; top:16px; right:16px; z-index:9999; }
+    .viz-menu-toggle { width:40px; height:40px; border-radius:10px; border:1px solid var(--menu-border); background:var(--menu-bg); color:var(--menu-text); cursor:pointer; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(12px); transition:all 0.2s; }
+    .viz-menu-toggle:hover { background:var(--menu-item-hover); }
+    .viz-menu-dropdown { position:absolute; top:calc(100% + 8px); right:0; min-width:196px; background:var(--menu-bg); backdrop-filter:blur(16px); border:1px solid var(--menu-border); border-radius:12px; padding:6px; opacity:0; visibility:hidden; transform:translateY(-8px) scale(0.96); transition:all 0.2s cubic-bezier(0.4,0,0.2,1); box-shadow:0 8px 32px rgba(0,0,0,0.25); }
+    .viz-menu-dropdown.open { opacity:1; visibility:visible; transform:translateY(0) scale(1); }
+    .viz-menu-dropdown button { width:100%; display:flex; align-items:center; gap:10px; padding:10px 14px; border:none; background:transparent; color:var(--menu-text); font-size:14px; font-family:inherit; cursor:pointer; border-radius:8px; transition:background 0.15s; text-align:left; }
+    .viz-menu-dropdown button:hover { background:var(--menu-item-hover); }
+
+    .nav-back { display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--accent); text-decoration:none; margin-bottom:24px; padding:6px 14px; border-radius:8px; border:1px solid var(--border); background:var(--surface); transition:background 0.15s; }
+    .nav-back:hover { background:var(--surface-hover); }
+
+    .hero { text-align:center; margin-bottom:32px; }
+    .hero-badge { display:inline-flex; align-items:center; gap:6px; padding:5px 14px; border-radius:99px; border:1px solid var(--border); background:var(--surface); font-size:12px; font-weight:500; letter-spacing:0.04em; color:var(--text-secondary); text-transform:uppercase; margin-bottom:20px; }
+    .hero h1 { font-size:clamp(1.8rem,4.5vw,2.8rem); margin-bottom:12px; font-weight:700; line-height:1.1; }
+    .hero-sub { font-size:15px; color:var(--text-secondary); max-width:520px; margin:0 auto; line-height:1.7; }
+
+    .meta-bar { display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:36px; font-size:12px; color:var(--text-secondary); }
+    .diff-badge { padding:2px 10px; border-radius:99px; font-size:11px; font-weight:600; border:1px solid var(--border); }
+    .diff-beginner { background:var(--chip-green); color:var(--positive); }
+    .tag-chip { padding:2px 10px; border-radius:99px; font-size:11px; font-weight:500; background:var(--surface); border:1px solid var(--border); color:var(--text-secondary); }
+    .meta-item { display:inline-flex; align-items:center; gap:4px; }
+
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:26px; transition:box-shadow 0.2s ease; margin-bottom:20px; }
+    html.theme-dark .card { box-shadow:0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow:0 1px 3px rgba(0,0,0,0.05); }
+    .section-title { font-size:12px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:16px; }
+
+    /* KPI */
+    .kpi-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:20px; }
+    .kpi-item { text-align:center; padding:18px 12px; border-radius:12px; background:var(--surface); border:1px solid var(--border); }
+    .kpi-value { font-size:1.55rem; font-weight:700; letter-spacing:-0.03em; }
+    .kpi-label { font-size:11px; color:var(--text-secondary); font-weight:500; margin-top:4px; text-transform:uppercase; letter-spacing:0.04em; line-height:1.4; }
+
+    /* 분열 기원 박스 */
+    .origin-box { background:var(--chip-accent); border:1px solid var(--border); border-radius:12px; padding:20px 22px; margin-bottom:20px; }
+    .origin-title { font-size:13px; font-weight:700; color:var(--accent); margin-bottom:10px; }
+    .origin-text { font-size:13.5px; color:var(--text-secondary); line-height:1.75; }
+    .origin-text strong { color:var(--text); }
+
+    /* 비교 그리드 */
+    .compare-header { display:grid; grid-template-columns:160px 1fr 1fr; gap:0; margin-bottom:0; }
+    .compare-label { padding:10px 14px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-secondary); display:flex; align-items:center; }
+    .compare-sunni-head { padding:12px 16px; background:var(--sunni-bg); border-radius:10px 10px 0 0; text-align:center; border:1px solid var(--border); border-bottom:none; }
+    .compare-shia-head { padding:12px 16px; background:var(--shia-bg); border-radius:10px 10px 0 0; text-align:center; border:1px solid var(--border); border-bottom:none; margin-left:8px; }
+    .compare-sect-name { font-size:17px; font-weight:800; }
+    .compare-sect-name.sunni { color:var(--sunni); }
+    .compare-sect-name.shia { color:var(--shia); }
+    .compare-sect-sub { font-size:11px; color:var(--text-secondary); margin-top:2px; }
+
+    .compare-rows { display:flex; flex-direction:column; gap:0; }
+    .compare-row { display:grid; grid-template-columns:160px 1fr 1fr; border-bottom:1px solid var(--border); }
+    .compare-row:last-child { border-bottom:none; }
+    .compare-row-label { padding:13px 14px; font-size:12px; font-weight:600; color:var(--text-secondary); display:flex; align-items:center; border-right:1px solid var(--border); }
+    .compare-sunni-cell { padding:13px 16px; font-size:13px; color:var(--text-secondary); line-height:1.55; background:var(--sunni-bg); border-right:1px solid var(--border); }
+    .compare-shia-cell { padding:13px 16px; font-size:13px; color:var(--text-secondary); line-height:1.55; background:var(--shia-bg); }
+    .compare-sunni-cell strong, .compare-shia-cell strong { font-weight:600; }
+    .compare-sunni-cell strong { color:var(--sunni); }
+    .compare-shia-cell strong { color:var(--shia); }
+    .compare-wrap { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; margin-bottom:20px; }
+
+    /* 지리 분포 지도 */
+    .map-wrap { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:20px; }
+    .map-title { font-size:12px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:14px; text-align:center; }
+    .map-legend { display:flex; flex-wrap:wrap; gap:14px; justify-content:center; margin-top:14px; }
+    .legend-item { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text-secondary); }
+    .legend-color { width:14px; height:14px; border-radius:3px; flex-shrink:0; }
+
+    /* 핵심 현대 갈등 카드 */
+    .conflict-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:0; }
+    .conflict-card { background:var(--surface-hover); border:1px solid var(--border); border-radius:12px; padding:16px; }
+    .conflict-card-title { font-size:13px; font-weight:700; margin-bottom:6px; }
+    .conflict-card-desc { font-size:12px; color:var(--text-secondary); line-height:1.6; }
+
+    .highlight-box { padding:14px 18px; border-radius:10px; border:1px solid var(--border); background:var(--chip-accent); font-size:13.5px; line-height:1.7; margin-bottom:16px; }
+    .highlight-box strong { color:var(--accent); }
+
+    .related-section { margin-top:32px; padding-top:20px; border-top:1px solid var(--border); }
+    .related-section h3 { font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:12px; text-transform:uppercase; letter-spacing:0.05em; }
+    .related-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; }
+    .related-card { display:block; text-decoration:none; padding:12px 14px; border-radius:10px; border:1px solid var(--border); background:var(--surface); transition:background 0.15s; }
+    .related-card:hover { background:var(--surface-hover); }
+    .related-card .r-label { font-size:11px; color:var(--accent); font-weight:600; margin-bottom:3px; }
+    .related-card .r-title { font-size:13px; font-weight:500; color:var(--text); line-height:1.4; }
+    .footer-note { text-align:center; font-size:12px; color:var(--text-secondary); margin-top:20px; }
+
+    @keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .animate { animation:fadeInUp 0.6s ease-out both; }
+    .d1{animation-delay:0.06s}.d2{animation-delay:0.12s}.d3{animation-delay:0.18s}.d4{animation-delay:0.24s}.d5{animation-delay:0.30s}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+    @media(max-width:640px){.kpi-row,.conflict-grid{grid-template-columns:1fr 1fr}.compare-header,.compare-row{grid-template-columns:100px 1fr 1fr}.container{padding:48px 16px 60px}}
+    @media(max-width:480px){.compare-header,.compare-row{grid-template-columns:1fr}.compare-row-label{border-right:none;border-bottom:1px solid var(--border);background:var(--surface-hover)}}
+    @media print{body{background:white!important}.viz-menu{display:none!important}.card{break-inside:avoid}*{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/></svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">☪️ 종교·역사</div>
+        <h1>시아파 vs 수니파<br>— 이슬람의 두 줄기</h1>
+        <p class="hero-sub">632년 예언자 무함마드 사후 후계 분쟁에서 비롯된 이슬람 최대 종파 갈등 — 교리·지도자·의례의 차이와 현대 중동 분쟁에 미치는 영향</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="diff-badge diff-beginner">입문</span>
+        <span class="tag-chip">#종교</span>
+        <span class="tag-chip">#이슬람</span>
+        <span class="tag-chip">#중동</span>
+        <span class="tag-chip">#비교분석</span>
+        <span class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>2026.04.03</span>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-row animate d2">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--sunni)">85~87%</div>
+          <div class="kpi-label">수니파<br>전 세계 무슬림</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--shia)">10~15%</div>
+          <div class="kpi-label">시아파<br>전 세계 무슬림</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">632년</div>
+          <div class="kpi-label">분열의 기원<br>무함마드 사망</div>
+        </div>
+      </div>
+
+      <!-- 분열 기원 -->
+      <div class="origin-box animate d2">
+        <div class="origin-title">⚡ 분열의 기원 — 632년, 후계자 선출 문제</div>
+        <div class="origin-text">
+          예언자 무함마드가 후계자를 지명하지 않고 사망하자, 이슬람 공동체는 갈라졌습니다.<br><br>
+          <strong>수니파(Sunni)</strong>: "공동체 합의로 선출된 지도자(칼리파)가 정통 후계자." → 아부 바크르를 초대 칼리파로 선출. '수니'는 순나(예언자의 언행 전통)를 따르는 자들.<br><br>
+          <strong>시아파(Shia)</strong>: "무함마드의 혈육·사위인 <strong>알리(Ali)만이 정통 후계자.</strong>" 알리가 네 번째 칼리파가 됐지만 암살당하고, 그 아들 후세인이 680년 카르발라 전투에서 전사 → 시아파의 신앙적 트라우마(아슈라 추모).  '시아'는 시아트 알리(알리의 추종자들)의 줄임말.
+        </div>
+      </div>
+
+      <!-- 핵심 비교 테이블 -->
+      <div class="compare-wrap animate d3">
+        <div class="compare-header">
+          <div class="compare-label">구분</div>
+          <div class="compare-sunni-head">
+            <div class="compare-sect-name sunni">수니파 (Sunni)</div>
+            <div class="compare-sect-sub">اهل السنة والجماعة</div>
+          </div>
+          <div class="compare-shia-head">
+            <div class="compare-sect-name shia">시아파 (Shia)</div>
+            <div class="compare-sect-sub">شيعة علي</div>
+          </div>
+        </div>
+        <div class="compare-rows">
+          <div class="compare-row">
+            <div class="compare-row-label">정통 후계자</div>
+            <div class="compare-sunni-cell"><strong>칼리파</strong> — 공동체 합의로 선출된 지도자. 아부 바크르→우마르→우스만→알리 순</div>
+            <div class="compare-shia-cell"><strong>이맘</strong> — 반드시 무함마드 혈통(알리 가문). 이맘은 무오류의 신성한 권위를 가짐</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-row-label">종교 지도자</div>
+            <div class="compare-sunni-cell">이슬람 학자(울라마)의 합의. 특별히 신성시되는 지도자 계층 없음</div>
+            <div class="compare-shia-cell">아야톨라(대법학자)가 이맘 대리인 역할. <strong>이란의 최고 지도자</strong>(하메네이)가 대표적</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-row-label">경전·전통</div>
+            <div class="compare-sunni-cell">쿠란 + <strong>6대 하디스 정전</strong>(사히 알부하리 등). 사하바(교우)들 전승 광범위 인정</div>
+            <div class="compare-shia-cell">쿠란 + <strong>알리·이맘 가문 중심 하디스</strong>. 알리 가문 외 사하바 전승은 부분 불신</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-row-label">기도·의례</div>
+            <div class="compare-sunni-cell">하루 <strong>5번 기도</strong>를 각각 구분. 모스크 양식이 단순·대칭적인 편</div>
+            <div class="compare-shia-cell">5번 기도를 <strong>3번으로 통합</strong> 가능. 아슈라(카르발라 순교 추모) 의례, 성지순례(카르발라·나자프) 중시</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-row-label">이맘관</div>
+            <div class="compare-sunni-cell">이맘 = 단순히 <strong>예배 인도자</strong>. 평범한 종교 지도자</div>
+            <div class="compare-shia-cell">이맘 = <strong>신성한 권위와 무오류성</strong> 지닌 존재. 12대 이맘이 '은폐(가이바)'되어 재림 예정 (12이맘파 기준)</div>
+          </div>
+          <div class="compare-row">
+            <div class="compare-row-label">주요 분파</div>
+            <div class="compare-sunni-cell">하나피·말리키·샤피이·한발리 <strong>4대 법학파</strong>. 와하비즘(살라피즘) - 사우디 기반 엄격 분파</div>
+            <div class="compare-shia-cell"><strong>12이맘파</strong>(이란·이라크·레바논 다수), 7이맘파(이스마일리), 5이맘파(자이디·예멘)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 지리적 분포 지도 -->
+      <div class="map-wrap animate d3">
+        <div class="map-title">주요 이슬람 국가 종파 분포</div>
+        <svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;font-family:'Noto Sans KR','Inter',sans-serif">
+          <!-- 배경 -->
+          <rect width="680" height="280" fill="none"/>
+
+          <!-- 지중해·아라비아해 표현 -->
+          <path d="M0,0 L680,0 L680,280 L0,280 Z" fill="none"/>
+
+          <!-- 튀르키예 (수니) -->
+          <rect x="220" y="20" width="110" height="55" rx="4" fill="#bfdbfe" opacity="0.7" stroke="#2563eb" stroke-width="1"/>
+          <text x="275" y="52" fill="#1e3a8a" font-size="11" text-anchor="middle" font-weight="600">튀르키예</text>
+          <text x="275" y="63" fill="#2563eb" font-size="9" text-anchor="middle">수니 99%</text>
+
+          <!-- 시리아 (수니 다수, 알라위파 지도층) -->
+          <rect x="330" y="20" width="90" height="55" rx="4" fill="#bfdbfe" opacity="0.5" stroke="#2563eb" stroke-width="1" stroke-dasharray="4,2"/>
+          <text x="375" y="48" fill="#1e3a8a" font-size="10" text-anchor="middle" font-weight="600">시리아</text>
+          <text x="375" y="59" fill="#2563eb" font-size="8.5" text-anchor="middle">수니 74%</text>
+          <text x="375" y="69" fill="#dc2626" font-size="8" text-anchor="middle">(알라위파 지도층)</text>
+
+          <!-- 레바논 (시아·수니·기독교 혼재) -->
+          <rect x="330" y="78" width="70" height="45" rx="4" fill="#f3e8ff" opacity="0.8" stroke="#8b5cf6" stroke-width="1"/>
+          <text x="365" y="102" fill="#4c1d95" font-size="9.5" text-anchor="middle" font-weight="600">레바논</text>
+          <text x="365" y="113" fill="#7c3aed" font-size="8" text-anchor="middle">혼재(헤즈볼라=시아)</text>
+
+          <!-- 이스라엘·팔레스타인 -->
+          <rect x="310" y="78" width="50" height="45" rx="4" fill="#e5e7eb" stroke="#6b7280" stroke-width="1"/>
+          <text x="335" y="102" fill="#374151" font-size="8.5" text-anchor="middle" font-weight="600">이스라엘</text>
+          <text x="335" y="113" fill="#6b7280" font-size="7.5" text-anchor="middle">팔레스타인(수니)</text>
+
+          <!-- 요르단 (수니) -->
+          <rect x="355" y="100" width="80" height="45" rx="4" fill="#bfdbfe" opacity="0.7" stroke="#2563eb" stroke-width="1"/>
+          <text x="395" y="126" fill="#1e3a8a" font-size="11" text-anchor="middle" font-weight="600">요르단</text>
+          <text x="395" y="137" fill="#2563eb" font-size="9" text-anchor="middle">수니 ~97%</text>
+
+          <!-- 이라크 (시아 다수) -->
+          <rect x="400" y="55" width="105" height="70" rx="4" fill="#fecaca" opacity="0.7" stroke="#dc2626" stroke-width="1.5"/>
+          <text x="452" y="88" fill="#991b1b" font-size="12" text-anchor="middle" font-weight="700">이라크</text>
+          <text x="452" y="101" fill="#dc2626" font-size="9.5" text-anchor="middle">시아 65% / 수니 32%</text>
+          <text x="452" y="113" fill="#dc2626" font-size="8.5" text-anchor="middle">(쿠르드 수니 포함)</text>
+
+          <!-- 이란 (시아 강국) -->
+          <rect x="450" y="20" width="140" height="60" rx="4" fill="#fecaca" opacity="0.85" stroke="#dc2626" stroke-width="2"/>
+          <text x="520" y="50" fill="#991b1b" font-size="13" text-anchor="middle" font-weight="800">이란</text>
+          <text x="520" y="63" fill="#dc2626" font-size="10" text-anchor="middle">시아 95% (12이맘파)</text>
+          <text x="520" y="74" fill="#dc2626" font-size="8.5" text-anchor="middle">시아파 최대 강국</text>
+
+          <!-- 사우디아라비아 (수니·와하비) -->
+          <rect x="330" y="148" width="130" height="65" rx="4" fill="#bfdbfe" opacity="0.85" stroke="#2563eb" stroke-width="2"/>
+          <text x="395" y="175" fill="#1e3a8a" font-size="11" text-anchor="middle" font-weight="800">사우디아라비아</text>
+          <text x="395" y="188" fill="#2563eb" font-size="9.5" text-anchor="middle">수니 85%+ (와하비즘)</text>
+          <text x="395" y="200" fill="#2563eb" font-size="8.5" text-anchor="middle">수니 최대 강국</text>
+
+          <!-- 예멘 (내전: 시아 후티 vs 수니 정부) -->
+          <rect x="330" y="213" width="100" height="50" rx="4" fill="#fef3c7" opacity="0.8" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <text x="380" y="237" fill="#78350f" font-size="10" text-anchor="middle" font-weight="600">예멘</text>
+          <text x="380" y="249" fill="#92400e" font-size="8.5" text-anchor="middle">내전: 후티(시아) vs 수니정부</text>
+          <text x="380" y="259" fill="#92400e" font-size="8" text-anchor="middle">이란·사우디 대리전</text>
+
+          <!-- 쿠웨이트·UAE·바레인 -->
+          <rect x="460" y="148" width="80" height="45" rx="4" fill="#bfdbfe" opacity="0.6" stroke="#2563eb" stroke-width="1"/>
+          <text x="500" y="168" fill="#1e3a8a" font-size="9.5" text-anchor="middle" font-weight="600">걸프만 국가들</text>
+          <text x="500" y="180" fill="#2563eb" font-size="8.5" text-anchor="middle">수니 (바레인 시아 다수)</text>
+
+          <!-- 파키스탄 (수니) -->
+          <rect x="570" y="55" width="100" height="50" rx="4" fill="#bfdbfe" opacity="0.65" stroke="#2563eb" stroke-width="1"/>
+          <text x="620" y="78" fill="#1e3a8a" font-size="11" text-anchor="middle" font-weight="600">파키스탄</text>
+          <text x="620" y="91" fill="#2563eb" font-size="9" text-anchor="middle">수니 85~90%</text>
+
+          <!-- 아프가니스탄 (수니) -->
+          <rect x="570" y="20" width="100" height="35" rx="4" fill="#bfdbfe" opacity="0.55" stroke="#2563eb" stroke-width="1"/>
+          <text x="620" y="35" fill="#1e3a8a" font-size="9.5" text-anchor="middle" font-weight="600">아프가니스탄</text>
+          <text x="620" y="47" fill="#2563eb" font-size="8.5" text-anchor="middle">수니 ~80%</text>
+
+          <!-- 이집트 (수니) -->
+          <rect x="200" y="100" width="105" height="50" rx="4" fill="#bfdbfe" opacity="0.65" stroke="#2563eb" stroke-width="1"/>
+          <text x="252" y="123" fill="#1e3a8a" font-size="11" text-anchor="middle" font-weight="600">이집트</text>
+          <text x="252" y="136" fill="#2563eb" font-size="9" text-anchor="middle">수니 90%+</text>
+
+          <!-- 인도네시아·말레이시아 (수니) -->
+          <rect x="560" y="160" width="115" height="45" rx="4" fill="#bfdbfe" opacity="0.55" stroke="#2563eb" stroke-width="1"/>
+          <text x="617" y="180" fill="#1e3a8a" font-size="9.5" text-anchor="middle" font-weight="600">동남아시아</text>
+          <text x="617" y="192" fill="#2563eb" font-size="8.5" text-anchor="middle">인니·말레이 (수니)</text>
+
+          <!-- 마그레브 (수니) -->
+          <rect x="20" y="80" width="175" height="50" rx="4" fill="#bfdbfe" opacity="0.5" stroke="#2563eb" stroke-width="1"/>
+          <text x="108" y="103" fill="#1e3a8a" font-size="10" text-anchor="middle" font-weight="600">북아프리카 (모로코~리비아)</text>
+          <text x="108" y="115" fill="#2563eb" font-size="9" text-anchor="middle">수니 99%+</text>
+
+          <!-- 범례 -->
+          <rect x="20" y="220" width="16" height="16" rx="3" fill="#bfdbfe" stroke="#2563eb" stroke-width="1.5"/>
+          <text x="42" y="232" fill="var(--text-secondary)" font-size="11">수니파 다수</text>
+          <rect x="140" y="220" width="16" height="16" rx="3" fill="#fecaca" stroke="#dc2626" stroke-width="1.5"/>
+          <text x="162" y="232" fill="var(--text-secondary)" font-size="11">시아파 다수</text>
+          <rect x="255" y="220" width="16" height="16" rx="3" fill="#f3e8ff" stroke="#8b5cf6" stroke-width="1.5"/>
+          <text x="277" y="232" fill="var(--text-secondary)" font-size="11">혼재</text>
+          <rect x="340" y="220" width="16" height="16" rx="3" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5" style="stroke-dasharray:4,2"/>
+          <text x="362" y="232" fill="var(--text-secondary)" font-size="11">내전·분쟁 지역</text>
+        </svg>
+        <div class="map-legend">
+          <div class="legend-item" style="font-size:12px;color:var(--text-secondary)">
+            📍 시아파 벨트: <strong style="color:var(--shia)">이란 → 이라크 → 시리아(알라위) → 레바논(헤즈볼라)</strong> — 이란의 영향력 확장 축
+          </div>
+        </div>
+      </div>
+
+      <!-- 현대 정치·갈등과의 연결 -->
+      <div class="card animate d4">
+        <div class="section-title">현대 중동 분쟁과 종파 갈등의 연결</div>
+        <div class="conflict-grid">
+          <div class="conflict-card">
+            <div class="conflict-card-title" style="color:var(--shia)">🇮🇷 vs 🇸🇦<br>이란 vs 사우디</div>
+            <div class="conflict-card-desc">시아파 이란 vs 수니파 사우디. 중동 패권 대립. 예멘·이라크·시리아·레바논에서 대리전 양상. 2023년 중국 중재로 외교 복원</div>
+          </div>
+          <div class="conflict-card">
+            <div class="conflict-card-title" style="color:var(--warning)">🇾🇪 예멘 내전</div>
+            <div class="conflict-card-desc">후티반군(시아·이란 지원) vs 예멘 수니 정부(사우디 지원). 2015년 이후 내전 지속. 세계 최악의 인도주의 위기. 종파 + 지역 부족 갈등 복합</div>
+          </div>
+          <div class="conflict-card">
+            <div class="conflict-card-title" style="color:var(--accent)">🇮🇶 이라크 정치</div>
+            <div class="conflict-card-desc">2003년 미국 침공 후 수니(사담 후세인) 정권 붕괴 → 시아 정권 수립 → IS(수니 극단주의) 등장. 수니·시아·쿠르드 3자 권력 분점 갈등</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 핵심 인사이트 -->
+      <div class="highlight-box animate d4">
+        수니파와 시아파는 신앙의 핵심(알라, 쿠란, 무함마드, 5대 기둥)에서 <strong>동일한 무슬림</strong>입니다. 그러나 "누가 정통 지도자인가"라는 1,400년 전 분열이 오늘날 <strong>이란-사우디 패권 경쟁, 예멘·이라크 내전, 레바논 정치 위기</strong> 등 중동 지정학의 핵심 변수로 작동합니다. 종파 갈등만으로 중동을 설명하기는 어렵지만, 이 구도를 모르고는 중동 뉴스를 이해하기 어렵습니다.
+      </div>
+
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="middle-east-wars-overview.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">중동전쟁 1~4차 — 아랍-이스라엘 전쟁의 역사</div>
+          </a>
+          <a href="israel-palestine-conflict.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">이스라엘 건국과 팔레스타인 분쟁</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">역사·종교 정리 · 2026.04.03 · 시아파 vs 수니파 개념 정리</p>
+    </div>
+  </main>
+
+  <script>
+    var THEMES=['theme-dark','theme-light'];
+    var THEME_LABELS={'theme-dark':'Dark','theme-light':'Light'};
+    (function(){var s=localStorage.getItem('ka-theme')||'theme-dark';document.documentElement.className=s;var l=document.getElementById('themeLabel');if(l)l.textContent=THEME_LABELS[s];})();
+    function cycleTheme(){var c=document.documentElement.className;var n=THEMES[(THEMES.indexOf(c)+1)%THEMES.length];document.documentElement.className=n;localStorage.setItem('ka-theme',n);var l=document.getElementById('themeLabel');if(l)l.textContent=THEME_LABELS[n];closeMenu();}
+    function toggleMenu(){document.getElementById('vizMenuDropdown').classList.toggle('open');}
+    function closeMenu(){document.getElementById('vizMenuDropdown').classList.remove('open');}
+    document.addEventListener('click',function(e){if(!e.target.closest('.viz-menu'))closeMenu();});
+    function downloadImage(){closeMenu();if(typeof htmlToImage==='undefined'){alert('로딩 중...');return;}htmlToImage.toPng(document.getElementById('main'),{pixelRatio:2}).then(function(d){var a=document.createElement('a');a.download='shia-sunni-islam.png';a.href=d;a.click();});}
+  </script>
+</body>
+</html>
