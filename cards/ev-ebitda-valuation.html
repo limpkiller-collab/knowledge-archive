@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EV/EBITDA 심화 — 기업 전체 가치를 보는 기관의 핵심 밸류에이션</title>
+  <meta name="knowledge-id" content="ev-ebitda-valuation">
+  <meta name="knowledge-tags" content="금융,투자,주식,비교분석">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-04">
+  <meta name="knowledge-source" content="기관 애널리스트 분석 기준">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #8b5cf6; --accent2: #3b82f6;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(139,92,246,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #7c3aed; --accent2: #2563eb;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(124,58,237,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+    body { font-family: 'Noto Sans KR','Inter',sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; letter-spacing: -0.011em; transition: background 0.3s, color 0.3s; min-height: 100vh; }
+    body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse 70% 50% at 50% 10%, color-mix(in srgb, var(--accent), transparent 88%), transparent); }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2, h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--menu-border); background: var(--menu-bg); color: var(--menu-text); cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(12px); transition: all 0.2s; }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px; background: var(--menu-bg); backdrop-filter: blur(16px); border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px; opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96); transition: all 0.2s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: none; background: transparent; color: var(--menu-text); font-size: 14px; font-family: inherit; cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left; }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    .nav-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent); text-decoration: none; margin-bottom: 24px; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 540px; margin: 0 auto; line-height: 1.7; }
+
+    .meta-bar { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 36px; font-size: 12px; color: var(--text-secondary); }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-intermediate { background: var(--chip-amber); color: var(--warning); }
+    .tag-chip { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease; margin-bottom: 16px; }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
+
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.45rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    .highlight-box { padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border); background: var(--chip-accent); font-size: 13.5px; line-height: 1.7; margin-bottom: 16px; }
+    .highlight-box strong { color: var(--accent); }
+
+    .code-box { background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; font-family: 'SF Mono','Fira Code',monospace; font-size: 13px; color: var(--accent); margin: 8px 0; letter-spacing: 0.02em; }
+    html.theme-light .code-box { background: #f4f4f4; }
+
+    /* EV 구성 분해 */
+    .ev-breakdown { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .ev-row { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); }
+    .ev-operator { font-size: 18px; font-weight: 700; color: var(--accent); width: 20px; flex-shrink: 0; text-align: center; }
+    .ev-label { font-weight: 600; font-size: 14px; flex: 1; }
+    .ev-desc { font-size: 12px; color: var(--text-secondary); }
+    .ev-result { background: var(--chip-accent); border-color: var(--accent); }
+    .ev-result .ev-label { color: var(--accent); }
+
+    /* 업종별 배수 */
+    .sector-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+    .sector-card { border-radius: 12px; padding: 16px; border: 1px solid var(--border); background: var(--surface); }
+    .sector-name { font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .sector-multiple { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.02em; }
+    .sector-note { font-size: 11px; color: var(--text-secondary); margin-top: 4px; line-height: 1.4; }
+
+    /* PER vs EV/EBITDA 비교 */
+    .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .compare-table th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-secondary); border-bottom: 1px solid var(--border); }
+    .compare-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: var(--surface-hover); }
+    .col-good { color: var(--positive); font-weight: 600; }
+    .col-bad { color: var(--text-secondary); }
+    .col-accent { color: var(--accent); font-weight: 600; }
+
+    /* 언제 쓰는가 타임라인 */
+    .use-list { display: flex; flex-direction: column; gap: 10px; }
+    .use-item { display: flex; gap: 12px; padding: 12px; border-radius: 10px; background: var(--surface-hover); }
+    .use-icon { font-size: 18px; flex-shrink: 0; }
+    .use-title { font-size: 13.5px; font-weight: 600; margin-bottom: 3px; }
+    .use-desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; }
+
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}.d4{animation-delay:.24s}.d5{animation-delay:.30s}
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after{animation:none!important;transition:none!important;} }
+    @media (max-width:640px) { .kpi-row,.sector-grid{grid-template-columns:1fr 1fr;} .container{padding:48px 16px 60px;} }
+    @media print { body{background:white!important;} .viz-menu{display:none!important;} .card{break-inside:avoid;} *{print-color-adjust:exact;-webkit-print-color-adjust:exact;} }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/></svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">🏢 밸류에이션 시리즈</div>
+        <h1>EV/EBITDA 심화 가이드</h1>
+        <p class="hero-sub">PER이 놓치는 부채와 감가상각까지 — 기업 전체 가치를 보는 기관의 핵심 지표</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="tag-chip">#금융</span>
+        <span class="tag-chip">#투자</span>
+        <span class="tag-chip">#주식</span>
+        <span class="tag-chip">#비교분석</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.04
+        </span>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-row animate d2">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">EV ÷ EBITDA</div>
+          <div class="kpi-label">핵심 공식</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--positive)">부채 중립</div>
+          <div class="kpi-label">PER 대비 장점</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--warning)">15–25x</div>
+          <div class="kpi-label">빅테크 적정 배수</div>
+        </div>
+      </div>
+
+      <!-- EV 분해 -->
+      <div class="card animate d2">
+        <div class="section-title">🏗️ Enterprise Value (EV) 구성 분해</div>
+        <div class="ev-breakdown">
+          <div class="ev-row">
+            <div class="ev-operator" style="color:var(--text-secondary);">　</div>
+            <div class="ev-label">시가총액 (Market Cap)</div>
+            <div class="ev-desc">주가 × 발행 주식수</div>
+          </div>
+          <div class="ev-row">
+            <div class="ev-operator">+</div>
+            <div class="ev-label">순부채 (Net Debt)</div>
+            <div class="ev-desc">총부채 – 현금 및 현금성 자산</div>
+          </div>
+          <div class="ev-row">
+            <div class="ev-operator">+</div>
+            <div class="ev-label">우선주 (Preferred Stock)</div>
+            <div class="ev-desc">일반주주보다 우선 상환 청구권</div>
+          </div>
+          <div class="ev-row">
+            <div class="ev-operator">–</div>
+            <div class="ev-label">비지배지분 관련 조정</div>
+            <div class="ev-desc">연결 자회사 중 외부 주주 지분</div>
+          </div>
+          <div class="ev-row ev-result">
+            <div class="ev-operator">=</div>
+            <div class="ev-label">Enterprise Value (EV)</div>
+            <div class="ev-desc">기업을 통째로 인수할 때의 실질 가격</div>
+          </div>
+        </div>
+        <div class="highlight-box">
+          EV는 <strong>부채까지 떠안는 인수자 관점의 가격</strong>이다. 현금이 많은 기업은 EV가 시총보다 낮고, 부채가 많은 기업은 EV가 시총보다 훨씬 높다.
+        </div>
+      </div>
+
+      <!-- EBITDA 분해 -->
+      <div class="card animate d3">
+        <div class="section-title">📊 EBITDA 구성과 의미</div>
+        <div class="code-box">EBITDA = 영업이익(EBIT) + 감가상각(D&A)</div>
+        <div class="code-box">또는: 순이익 + 이자비용 + 세금 + 감가상각 + 무형자산상각</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;">
+          <div style="padding:14px;border-radius:10px;border:1px solid var(--border);background:var(--surface-hover);">
+            <div style="font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em;">EBITDA가 제거하는 것</div>
+            <div style="font-size:13px;color:var(--text-secondary);line-height:1.7;">
+              • 이자 (자본 구조 영향 제거)<br>
+              • 세금 (국가별 세율 차이 제거)<br>
+              • 감가상각 (비현금 비용 제거)<br>
+              • 무형자산상각 (M&A 영향 제거)
+            </div>
+          </div>
+          <div style="padding:14px;border-radius:10px;border:1px solid var(--border);background:var(--surface-hover);">
+            <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em;">EBITDA가 보여주는 것</div>
+            <div style="font-size:13px;color:var(--text-secondary);line-height:1.7;">
+              • 순수한 사업 영업 능력<br>
+              • 국가·자본구조 무관 비교 가능<br>
+              • 현금흐름과 근접 (≈ 영업현금흐름)<br>
+              • M&A 시 핵심 평가 기준
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 업종별 적정 배수 -->
+      <div class="card animate d3">
+        <div class="section-title">🎯 업종별 EV/EBITDA 적정 배수 가이드</div>
+        <div class="sector-grid">
+          <div class="sector-card">
+            <div class="sector-name">빅테크 / AI</div>
+            <div class="sector-multiple" style="color:var(--accent);">20 – 35x</div>
+            <div class="sector-note">높은 성장 기대 · 낮은 CapEx 구조</div>
+          </div>
+          <div class="sector-card">
+            <div class="sector-name">SaaS / 클라우드</div>
+            <div class="sector-multiple" style="color:var(--accent);">15 – 30x</div>
+            <div class="sector-note">반복 수익 · 높은 마진 프리미엄</div>
+          </div>
+          <div class="sector-card">
+            <div class="sector-name">반도체</div>
+            <div class="sector-multiple" style="color:var(--positive);">12 – 25x</div>
+            <div class="sector-note">사이클 민감 · 팹리스 높고 파운드리 낮음</div>
+          </div>
+          <div class="sector-card">
+            <div class="sector-name">소비재 / 유통</div>
+            <div class="sector-multiple" style="color:var(--warning);">8 – 14x</div>
+            <div class="sector-note">안정적 수익 · 낮은 성장 프리미엄</div>
+          </div>
+          <div class="sector-card">
+            <div class="sector-name">제조업</div>
+            <div class="sector-multiple" style="color:var(--warning);">6 – 12x</div>
+            <div class="sector-note">자본집약 · 경기 민감도 높음</div>
+          </div>
+          <div class="sector-card">
+            <div class="sector-name">에너지 / 원자재</div>
+            <div class="sector-multiple" style="color:var(--text-secondary);">4 – 8x</div>
+            <div class="sector-note">원자재 가격 민감 · 성장성 낮음</div>
+          </div>
+        </div>
+        <div class="highlight-box">
+          배수가 업종 평균보다 낮으면 저평가 가능성, 높으면 <strong>성장 기대치 또는 고평가</strong>를 의심해야 한다. 같은 업종 내 비교가 원칙.
+        </div>
+      </div>
+
+      <!-- EV/EBITDA vs PER 비교 -->
+      <div class="card animate d4">
+        <div class="section-title">⚖️ EV/EBITDA vs PER — 언제 무엇을 쓰는가</div>
+        <div style="overflow-x:auto;">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>비교 항목</th>
+                <th>PER</th>
+                <th>EV/EBITDA</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight:600;">부채 반영</td>
+                <td class="col-bad">❌ 반영 안 됨 (지분 가치만)</td>
+                <td class="col-good">✅ EV에 부채 포함</td>
+              </tr>
+              <tr>
+                <td style="font-weight:600;">감가상각 영향</td>
+                <td class="col-bad">있음 (이익 감소)</td>
+                <td class="col-good">제거 (업종 간 비교 가능)</td>
+              </tr>
+              <tr>
+                <td style="font-weight:600;">국가 간 비교</td>
+                <td class="col-bad">어려움 (세율 차이)</td>
+                <td class="col-good">가능 (세금 제거)</td>
+              </tr>
+              <tr>
+                <td style="font-weight:600;">최적 사용 상황</td>
+                <td class="col-bad">부채 없는 기업 · 빠른 스크리닝</td>
+                <td class="col-good">M&A · 레버리지 기업 · 업종 간 비교</td>
+              </tr>
+              <tr>
+                <td style="font-weight:600;">금융주 적용</td>
+                <td class="col-accent">PBR/PER 사용</td>
+                <td class="col-bad">부적합 (EBITDA 개념 모호)</td>
+              </tr>
+              <tr>
+                <td style="font-weight:600;">데이터 접근성</td>
+                <td class="col-good">즉시 확인 가능 (Yahoo Finance 등)</td>
+                <td class="col-bad">직접 계산 필요</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- EV/EBIT vs EV/EBITDA -->
+      <div class="card animate d4">
+        <div class="section-title">🔍 EV/EBIT vs EV/EBITDA — 미세 구분</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div style="padding:16px;border-radius:10px;border:1px solid var(--border);">
+            <div style="font-size:12px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">EV/EBIT</div>
+            <div style="font-size:13.5px;font-weight:600;margin-bottom:8px;">감가상각 포함</div>
+            <div style="font-size:12.5px;color:var(--text-secondary);line-height:1.6;">
+              실물 자산(공장·설비) 투자가 많은 제조업·통신업에서 더 정확하다.
+              D&A가 실제 자산 마모를 반영하므로 이를 제거하지 않는 게 현실적.
+            </div>
+          </div>
+          <div style="padding:16px;border-radius:10px;border:1px solid var(--accent);background:var(--chip-accent);">
+            <div style="font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">EV/EBITDA ★</div>
+            <div style="font-size:13.5px;font-weight:600;margin-bottom:8px;">감가상각 제거</div>
+            <div style="font-size:12.5px;color:var(--text-secondary);line-height:1.6;">
+              업종 간 비교, M&A, 소프트웨어·팹리스 등 무형자산 비중 높은 기업에 적합.
+              기관투자자들이 가장 많이 사용하는 표준 지표.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 실전 활용 -->
+      <div class="card animate d5">
+        <div class="section-title">💡 실전 활용 상황별 가이드</div>
+        <div class="use-list">
+          <div class="use-item">
+            <div class="use-icon">🤝</div>
+            <div>
+              <div class="use-title">M&A·인수합병 가치 평가</div>
+              <div class="use-desc">인수자는 대상 기업의 부채까지 떠안으므로 EV가 실제 인수 비용이다. EV/EBITDA로 업종 내 유사 거래 배수와 비교해 적정 인수 가격 산정.</div>
+            </div>
+          </div>
+          <div class="use-item">
+            <div class="use-icon">🌏</div>
+            <div>
+              <div class="use-title">글로벌 기업 간 비교</div>
+              <div class="use-desc">미국·유럽·일본 기업을 PER로 비교하면 법인세율 차이가 결과를 왜곡한다. EV/EBITDA는 세금 영향을 제거해 국가 간 비교에 적합.</div>
+            </div>
+          </div>
+          <div class="use-item">
+            <div class="use-icon">📉</div>
+            <div>
+              <div class="use-title">레버리지(부채) 높은 기업 분석</div>
+              <div class="use-desc">부채 많은 기업은 이자비용으로 순이익이 낮아 PER이 높게 나온다. EV/EBITDA는 부채를 EV에 반영하므로 실질 수익성 비교가 가능.</div>
+            </div>
+          </div>
+          <div class="use-item">
+            <div class="use-icon">⚠️</div>
+            <div>
+              <div class="use-title">사용 주의: 금융주·부동산</div>
+              <div class="use-desc">은행·보험은 대출이 '부채'가 아닌 핵심 사업이므로 EV 개념 자체가 맞지 않는다. 금융주는 PBR·PER·ROE로 분석할 것.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="analyst-investment-framework.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">기관 투자자 분석 프레임워크 — ROIC·FCF·Top 10</div>
+          </a>
+          <a href="price-fcf-vs-per.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">PER보다 Price/FCF를 봐야 하는 이유</div>
+          </a>
+          <a href="dcf-valuation.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">DCF 밸류에이션 — 현금흐름 할인법 완전 가이드</div>
+          </a>
+          <a href="financial-statements-3core.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">재무제표 3종 완전 가이드</div>
+          </a>
+        </div>
+      </div>
+      <p class="footer-note animate d5">출처: 기관 애널리스트 분석 기준 · CFA Institute 밸류에이션 원칙</p>
+    </div>
+  </main>
+
+  <script>
+    var THEMES=['theme-dark','theme-light'];
+    var THEME_LABELS={'theme-dark':'Dark','theme-light':'Light'};
+    (function(){ var s=localStorage.getItem('ka-theme')||'theme-dark'; document.documentElement.className=s; var l=document.getElementById('themeLabel'); if(l) l.textContent=THEME_LABELS[s]; })();
+    function cycleTheme(){ var c=document.documentElement.className; var n=THEMES[(THEMES.indexOf(c)+1)%THEMES.length]; document.documentElement.className=n; localStorage.setItem('ka-theme',n); var l=document.getElementById('themeLabel'); if(l) l.textContent=THEME_LABELS[n]; closeMenu(); }
+    function toggleMenu(){ document.getElementById('vizMenuDropdown').classList.toggle('open'); }
+    function closeMenu(){ document.getElementById('vizMenuDropdown').classList.remove('open'); }
+    document.addEventListener('click',function(e){ if(!e.target.closest('.viz-menu')) closeMenu(); });
+    function downloadImage(){ closeMenu(); if(typeof htmlToImage==='undefined'){alert('로딩 중...');return;} htmlToImage.toPng(document.getElementById('main'),{pixelRatio:2}).then(function(d){ var a=document.createElement('a'); a.download='ev-ebitda-valuation.png'; a.href=d; a.click(); }); }
+  </script>
+</body>
+</html>

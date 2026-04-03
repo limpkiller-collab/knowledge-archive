@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>투자 분석 가이드 순서도 — 매크로부터 밸류에이션까지 완전 로드맵</title>
+  <meta name="knowledge-id" content="investment-analysis-roadmap">
+  <meta name="knowledge-tags" content="금융,투자,주식,개념정리">
+  <meta name="knowledge-difficulty" content="입문">
+  <meta name="knowledge-date" content="2026-04-04">
+  <meta name="knowledge-source" content="지식 Archive 투자 시리즈 종합">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #3b82f6; --accent2: #8b5cf6;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(59,130,246,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #2563eb; --accent2: #7c3aed;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(37,99,235,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+    body { font-family: 'Noto Sans KR','Inter',sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; letter-spacing: -0.011em; transition: background 0.3s, color 0.3s; min-height: 100vh; }
+    body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse 70% 50% at 50% 10%, color-mix(in srgb, var(--accent), transparent 88%), transparent); }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2, h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--menu-border); background: var(--menu-bg); color: var(--menu-text); cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(12px); transition: all 0.2s; }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px; background: var(--menu-bg); backdrop-filter: blur(16px); border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px; opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96); transition: all 0.2s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: none; background: transparent; color: var(--menu-text); font-size: 14px; font-family: inherit; cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left; }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    .nav-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent); text-decoration: none; margin-bottom: 24px; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 540px; margin: 0 auto; line-height: 1.7; }
+
+    .meta-bar { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 36px; font-size: 12px; color: var(--text-secondary); }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-beginner { background: var(--chip-green); color: var(--positive); }
+    .tag-chip { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease; margin-bottom: 16px; }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
+
+    /* 로드맵 단계 */
+    .roadmap { display: flex; flex-direction: column; gap: 0; }
+    .roadmap-step { display: flex; gap: 0; margin-bottom: 0; }
+    .roadmap-left { display: flex; flex-direction: column; align-items: center; width: 60px; flex-shrink: 0; }
+    .step-circle { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; flex-shrink: 0; border: 2px solid; }
+    .roadmap-line { width: 2px; flex: 1; min-height: 16px; margin: 0 auto; }
+    .roadmap-step:last-child .roadmap-line { display: none; }
+    .roadmap-right { flex: 1; padding-bottom: 24px; padding-left: 16px; }
+    .step-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding-top: 8px; }
+    .step-title { font-size: 16px; font-weight: 700; }
+    .step-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; }
+    .step-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 12px; }
+
+    /* 단계별 카드 링크 그리드 */
+    .step-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(185px,1fr)); gap: 8px; }
+    .step-card-link { display: block; text-decoration: none; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .step-card-link:hover { background: var(--surface-hover); }
+    .step-card-label { font-size: 10px; font-weight: 700; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .step-card-title { font-size: 12px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    /* 색상별 단계 */
+    .step1 .step-circle { background: rgba(6,182,212,0.12); border-color: #06b6d4; color: #06b6d4; }
+    .step1 .roadmap-line { background: rgba(6,182,212,0.3); }
+    .step1 .step-badge { background: rgba(6,182,212,0.12); color: #06b6d4; }
+    .step1 .step-card-label { color: #06b6d4; }
+
+    .step2 .step-circle { background: rgba(59,130,246,0.12); border-color: #3b82f6; color: #3b82f6; }
+    .step2 .roadmap-line { background: rgba(59,130,246,0.3); }
+    .step2 .step-badge { background: rgba(59,130,246,0.12); color: #3b82f6; }
+    .step2 .step-card-label { color: #3b82f6; }
+
+    .step3 .step-circle { background: rgba(16,185,129,0.12); border-color: #10b981; color: #10b981; }
+    .step3 .roadmap-line { background: rgba(16,185,129,0.3); }
+    .step3 .step-badge { background: rgba(16,185,129,0.12); color: #10b981; }
+    .step3 .step-card-label { color: #10b981; }
+
+    .step4 .step-circle { background: rgba(139,92,246,0.12); border-color: #8b5cf6; color: #8b5cf6; }
+    .step4 .roadmap-line { background: rgba(139,92,246,0.3); }
+    .step4 .step-badge { background: rgba(139,92,246,0.12); color: #8b5cf6; }
+    .step4 .step-card-label { color: #8b5cf6; }
+
+    .step5 .step-circle { background: rgba(245,158,11,0.12); border-color: #f59e0b; color: #f59e0b; }
+    .step5 .roadmap-line { background: rgba(245,158,11,0.3); }
+    .step5 .step-badge { background: rgba(245,158,11,0.12); color: #f59e0b; }
+    .step5 .step-card-label { color: #f59e0b; }
+
+    /* 전체 시리즈 카드 목록 */
+    .series-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 10px; margin-bottom: 16px; }
+    .series-item { display: flex; align-items: flex-start; gap: 10px; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); text-decoration: none; transition: background 0.15s; }
+    .series-item:hover { background: var(--surface-hover); }
+    .series-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+    .series-title { font-size: 12.5px; font-weight: 500; color: var(--text); line-height: 1.4; }
+    .series-diff { font-size: 10px; color: var(--text-secondary); margin-top: 2px; }
+
+    /* 분석 철학 */
+    .philosophy-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 16px; }
+    .phil-card { padding: 16px; border-radius: 10px; border: 1px solid var(--border); text-align: center; }
+    .phil-num { font-size: 1.6rem; font-weight: 700; margin-bottom: 6px; }
+    .phil-label { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+    .phil-desc { font-size: 11.5px; color: var(--text-secondary); line-height: 1.5; }
+
+    .highlight-box { padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border); background: var(--chip-accent); font-size: 13.5px; line-height: 1.7; margin-bottom: 16px; }
+    .highlight-box strong { color: var(--accent); }
+
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}.d4{animation-delay:.24s}.d5{animation-delay:.30s}.d6{animation-delay:.36s}
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after{animation:none!important;transition:none!important;} }
+    @media (max-width:640px) { .philosophy-grid{grid-template-columns:1fr;} .container{padding:48px 16px 60px;} .roadmap-left{width:40px;} .step-circle{width:36px;height:36px;font-size:14px;} }
+    @media print { body{background:white!important;} .viz-menu{display:none!important;} .card{break-inside:avoid;} *{print-color-adjust:exact;-webkit-print-color-adjust:exact;} }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/></svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">🗺️ 투자 시리즈 인덱스</div>
+        <h1>투자 분석 가이드 순서도</h1>
+        <p class="hero-sub">매크로 환경 파악부터 밸류에이션·실적 모니터링까지 — 기관 애널리스트가 따르는 5단계 분석 흐름과 단계별 참조 카드</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="diff-badge diff-beginner">입문</span>
+        <span class="tag-chip">#금융</span>
+        <span class="tag-chip">#투자</span>
+        <span class="tag-chip">#주식</span>
+        <span class="tag-chip">#개념정리</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.04
+        </span>
+      </div>
+
+      <!-- 핵심 원칙 -->
+      <div class="highlight-box animate d2">
+        <strong>탑다운(Top-down) 분석 원칙:</strong> 매크로 → 산업 → 기업 순으로 분석 범위를 좁혀가라.
+        금리·경기 국면을 모르고 개별 주식을 분석하는 것은 지도 없이 항해하는 것과 같다.
+      </div>
+
+      <!-- 5단계 로드맵 -->
+      <div class="card animate d2">
+        <div class="section-title">🗺️ 5단계 투자 분석 순서도</div>
+        <div class="roadmap">
+
+          <!-- STEP 1 -->
+          <div class="roadmap-step step1">
+            <div class="roadmap-left">
+              <div class="step-circle">1</div>
+              <div class="roadmap-line"></div>
+            </div>
+            <div class="roadmap-right">
+              <div class="step-header">
+                <div class="step-title">매크로 환경 파악</div>
+                <span class="step-badge">시장 방향성</span>
+              </div>
+              <div class="step-desc">금리, 인플레이션, 경기 사이클을 먼저 파악한다. 금리 방향성이 성장주·가치주 선택을 결정하고, CPI/PCE 추세가 연준의 다음 행보를 알려준다. 채권-주식 상관관계로 전체 포트폴리오 방향을 잡는다.</div>
+              <div class="step-cards">
+                <a href="macro-economic-indicators.html" class="step-card-link">
+                  <div class="step-card-label">→ 필수 참조</div>
+                  <div class="step-card-title">거시경제지표 읽는 법</div>
+                </a>
+                <a href="fed-rate-mechanism.html" class="step-card-link">
+                  <div class="step-card-label">→ 필수 참조</div>
+                  <div class="step-card-title">연준 금리 메커니즘</div>
+                </a>
+                <a href="cpi-pce-indicators.html" class="step-card-link">
+                  <div class="step-card-label">→ 참조</div>
+                  <div class="step-card-title">CPI·PCE 인플레이션 지표</div>
+                </a>
+                <a href="us-treasury-yield-curve.html" class="step-card-link">
+                  <div class="step-card-label">→ 참조</div>
+                  <div class="step-card-title">미국 국채 수익률 곡선</div>
+                </a>
+                <a href="bonds-vs-stocks.html" class="step-card-link">
+                  <div class="step-card-label">→ 참조</div>
+                  <div class="step-card-title">채권 vs 주식 선택법</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 2 -->
+          <div class="roadmap-step step2">
+            <div class="roadmap-left">
+              <div class="step-circle">2</div>
+              <div class="roadmap-line"></div>
+            </div>
+            <div class="roadmap-right">
+              <div class="step-header">
+                <div class="step-title">재무제표 분석</div>
+                <span class="step-badge">기업 건전성</span>
+              </div>
+              <div class="step-desc">관심 기업의 손익계산서·재무상태표·현금흐름표 3종을 연결해 읽는다. 매출 성장, 마진 추세, D/E 비율, FCF 창출 능력을 확인한다. FCF 마진율은 동종업계 기준과 비교한다.</div>
+              <div class="step-cards">
+                <a href="financial-statements-3core.html" class="step-card-link">
+                  <div class="step-card-label">→ 핵심</div>
+                  <div class="step-card-title">재무제표 3종 완전 가이드</div>
+                </a>
+                <a href="fcf-margin.html" class="step-card-link">
+                  <div class="step-card-label">→ 핵심</div>
+                  <div class="step-card-title">FCF 마진율 — 업종별 벤치마크</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 3 -->
+          <div class="roadmap-step step3">
+            <div class="roadmap-left">
+              <div class="step-circle">3</div>
+              <div class="roadmap-line"></div>
+            </div>
+            <div class="roadmap-right">
+              <div class="step-header">
+                <div class="step-title">수익성·효율성 분석</div>
+                <span class="step-badge">경쟁 우위</span>
+              </div>
+              <div class="step-desc">ROIC와 ROE로 자본 효율성을 검증한다. ROIC &gt; WACC이면 가치를 창출하는 기업이다. 경제적 해자(가격결정력, 브랜드, 네트워크효과, 전환비용)의 존재 여부를 확인한다. Rule of 40으로 성장-수익성 균형을 본다.</div>
+              <div class="step-cards">
+                <a href="analyst-investment-framework.html" class="step-card-link">
+                  <div class="step-card-label">→ 핵심</div>
+                  <div class="step-card-title">기관 투자자 분석 프레임워크 — ROIC·FCF</div>
+                </a>
+                <a href="price-fcf-vs-per.html" class="step-card-link">
+                  <div class="step-card-label">→ 참조</div>
+                  <div class="step-card-title">PER보다 Price/FCF를 봐야 하는 이유</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 4 -->
+          <div class="roadmap-step step4">
+            <div class="roadmap-left">
+              <div class="step-circle">4</div>
+              <div class="roadmap-line"></div>
+            </div>
+            <div class="roadmap-right">
+              <div class="step-header">
+                <div class="step-title">밸류에이션</div>
+                <span class="step-badge">적정 주가 판단</span>
+              </div>
+              <div class="step-desc">PER(보조)·Price/FCF(핵심)·EV/EBITDA를 병행한다. 부채가 있는 기업이나 M&A 분석은 EV/EBITDA를 우선 사용한다. 내재 가치 확인이 필요한 성숙 기업은 DCF를 쓰되, 민감도 분석으로 불확실성 범위를 함께 제시한다.</div>
+              <div class="step-cards">
+                <a href="stock-valuation-per-pbr.html" class="step-card-link">
+                  <div class="step-card-label">→ 기본</div>
+                  <div class="step-card-title">PER·PBR·EPS 개념 완전 정리</div>
+                </a>
+                <a href="price-fcf-vs-per.html" class="step-card-link">
+                  <div class="step-card-label">→ 핵심</div>
+                  <div class="step-card-title">Price/FCF vs PER 비교</div>
+                </a>
+                <a href="ev-ebitda-valuation.html" class="step-card-link">
+                  <div class="step-card-label">→ 심화</div>
+                  <div class="step-card-title">EV/EBITDA 심화 가이드</div>
+                </a>
+                <a href="dcf-valuation.html" class="step-card-link">
+                  <div class="step-card-label">→ 심화</div>
+                  <div class="step-card-title">DCF 밸류에이션 완전 가이드</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 5 -->
+          <div class="roadmap-step step5">
+            <div class="roadmap-left">
+              <div class="step-circle">5</div>
+              <div class="roadmap-line"></div>
+            </div>
+            <div class="roadmap-right">
+              <div class="step-header">
+                <div class="step-title">실적 모니터링</div>
+                <span class="step-badge">보유 중 점검</span>
+              </div>
+              <div class="step-desc">매 분기 실적 발표 시 EPS 컨센서스 대비 어닝서프라이즈 여부와 가이던스를 확인한다. 주가는 과거 실적보다 미래 가이던스에 더 크게 반응한다는 점을 기억한다. 투자 테제가 깨졌는지를 중심으로 모니터링한다.</div>
+              <div class="step-cards">
+                <a href="earnings-season-guide.html" class="step-card-link">
+                  <div class="step-card-label">→ 핵심</div>
+                  <div class="step-card-title">실적시즌 완전 가이드</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 분석 3원칙 -->
+      <div class="card animate d4">
+        <div class="section-title">⚡ 기관 애널리스트의 투자 분석 3원칙</div>
+        <div class="philosophy-grid">
+          <div class="phil-card">
+            <div class="phil-num" style="color:#06b6d4;">Top</div>
+            <div class="phil-label">탑다운 접근</div>
+            <div class="phil-desc">매크로 → 산업 → 기업 순서. 금리·경기를 모르면 개별 종목 분석은 의미 없다.</div>
+          </div>
+          <div class="phil-card">
+            <div class="phil-num" style="color:#10b981;">FCF</div>
+            <div class="phil-label">현금 중심 사고</div>
+            <div class="phil-desc">순이익보다 FCF를 우선한다. 현금이 왕(Cash is King) — 기업 생존과 주주환원의 원천.</div>
+          </div>
+          <div class="phil-card">
+            <div class="phil-num" style="color:#8b5cf6;">Multi</div>
+            <div class="phil-label">복수 지표 활용</div>
+            <div class="phil-desc">PER, Price/FCF, EV/EBITDA를 동시에 본다. 하나의 지표에만 의존하면 맹점이 생긴다.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 전체 투자 시리즈 카드 목록 -->
+      <div class="card animate d5">
+        <div class="section-title">📚 지식 Archive 투자 시리즈 전체 목록 (총 12장)</div>
+        <div class="series-grid">
+          <a href="macro-economic-indicators.html" class="series-item">
+            <div class="series-dot" style="background:#06b6d4;"></div>
+            <div>
+              <div class="series-title">거시경제지표 읽는 법</div>
+              <div class="series-diff">입문 · 매크로</div>
+            </div>
+          </a>
+          <a href="fed-rate-mechanism.html" class="series-item">
+            <div class="series-dot" style="background:#06b6d4;"></div>
+            <div>
+              <div class="series-title">연준 금리 메커니즘</div>
+              <div class="series-diff">중급 · 매크로</div>
+            </div>
+          </a>
+          <a href="cpi-pce-indicators.html" class="series-item">
+            <div class="series-dot" style="background:#06b6d4;"></div>
+            <div>
+              <div class="series-title">CPI·PCE 인플레이션 지표</div>
+              <div class="series-diff">입문 · 매크로</div>
+            </div>
+          </a>
+          <a href="us-treasury-yield-curve.html" class="series-item">
+            <div class="series-dot" style="background:#06b6d4;"></div>
+            <div>
+              <div class="series-title">미국 국채 수익률 곡선</div>
+              <div class="series-diff">중급 · 매크로</div>
+            </div>
+          </a>
+          <a href="bonds-vs-stocks.html" class="series-item">
+            <div class="series-dot" style="background:#06b6d4;"></div>
+            <div>
+              <div class="series-title">채권 vs 주식 선택법</div>
+              <div class="series-diff">입문 · 매크로</div>
+            </div>
+          </a>
+          <a href="financial-statements-3core.html" class="series-item">
+            <div class="series-dot" style="background:#3b82f6;"></div>
+            <div>
+              <div class="series-title">재무제표 3종 완전 가이드</div>
+              <div class="series-diff">중급 · 재무분석</div>
+            </div>
+          </a>
+          <a href="fcf-margin.html" class="series-item">
+            <div class="series-dot" style="background:#3b82f6;"></div>
+            <div>
+              <div class="series-title">FCF 마진율 — 업종별 벤치마크</div>
+              <div class="series-diff">중급 · 재무분석</div>
+            </div>
+          </a>
+          <a href="analyst-investment-framework.html" class="series-item">
+            <div class="series-dot" style="background:#10b981;"></div>
+            <div>
+              <div class="series-title">기관 투자자 프레임워크 — ROIC</div>
+              <div class="series-diff">심화 · 수익성</div>
+            </div>
+          </a>
+          <a href="stock-valuation-per-pbr.html" class="series-item">
+            <div class="series-dot" style="background:#8b5cf6;"></div>
+            <div>
+              <div class="series-title">PER·PBR·EPS 완전 정리</div>
+              <div class="series-diff">입문 · 밸류에이션</div>
+            </div>
+          </a>
+          <a href="price-fcf-vs-per.html" class="series-item">
+            <div class="series-dot" style="background:#8b5cf6;"></div>
+            <div>
+              <div class="series-title">PER보다 Price/FCF를 봐야 하는 이유</div>
+              <div class="series-diff">중급 · 밸류에이션</div>
+            </div>
+          </a>
+          <a href="ev-ebitda-valuation.html" class="series-item">
+            <div class="series-dot" style="background:#8b5cf6;"></div>
+            <div>
+              <div class="series-title">EV/EBITDA 심화 가이드</div>
+              <div class="series-diff">중급 · 밸류에이션</div>
+            </div>
+          </a>
+          <a href="dcf-valuation.html" class="series-item">
+            <div class="series-dot" style="background:#8b5cf6;"></div>
+            <div>
+              <div class="series-title">DCF 밸류에이션 완전 가이드</div>
+              <div class="series-diff">심화 · 밸류에이션</div>
+            </div>
+          </a>
+          <a href="earnings-season-guide.html" class="series-item">
+            <div class="series-dot" style="background:#f59e0b;"></div>
+            <div>
+              <div class="series-title">실적시즌 완전 가이드</div>
+              <div class="series-diff">입문 · 모니터링</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="related-section animate d5">
+        <h3>빠른 접근 — 단계별 시작점</h3>
+        <div class="related-grid">
+          <a href="macro-economic-indicators.html" class="related-card">
+            <div class="r-label">Step 1 → 시작</div>
+            <div class="r-title">거시경제지표부터 시작하기</div>
+          </a>
+          <a href="financial-statements-3core.html" class="related-card">
+            <div class="r-label">Step 2 → 시작</div>
+            <div class="r-title">재무제표 3종 읽는 법</div>
+          </a>
+          <a href="analyst-investment-framework.html" class="related-card">
+            <div class="r-label">Step 3 → 시작</div>
+            <div class="r-title">ROIC·FCF 수익성 분석</div>
+          </a>
+          <a href="ev-ebitda-valuation.html" class="related-card">
+            <div class="r-label">Step 4 → 시작</div>
+            <div class="r-title">EV/EBITDA 밸류에이션</div>
+          </a>
+        </div>
+      </div>
+      <p class="footer-note animate d5">지식 Archive 투자 시리즈 인덱스 · 2026년 4월 기준 총 12장</p>
+    </div>
+  </main>
+
+  <script>
+    var THEMES=['theme-dark','theme-light'];
+    var THEME_LABELS={'theme-dark':'Dark','theme-light':'Light'};
+    (function(){ var s=localStorage.getItem('ka-theme')||'theme-dark'; document.documentElement.className=s; var l=document.getElementById('themeLabel'); if(l) l.textContent=THEME_LABELS[s]; })();
+    function cycleTheme(){ var c=document.documentElement.className; var n=THEMES[(THEMES.indexOf(c)+1)%THEMES.length]; document.documentElement.className=n; localStorage.setItem('ka-theme',n); var l=document.getElementById('themeLabel'); if(l) l.textContent=THEME_LABELS[n]; closeMenu(); }
+    function toggleMenu(){ document.getElementById('vizMenuDropdown').classList.toggle('open'); }
+    function closeMenu(){ document.getElementById('vizMenuDropdown').classList.remove('open'); }
+    document.addEventListener('click',function(e){ if(!e.target.closest('.viz-menu')) closeMenu(); });
+    function downloadImage(){ closeMenu(); if(typeof htmlToImage==='undefined'){alert('로딩 중...');return;} htmlToImage.toPng(document.getElementById('main'),{pixelRatio:2}).then(function(d){ var a=document.createElement('a'); a.download='investment-analysis-roadmap.png'; a.href=d; a.click(); }); }
+  </script>
+</body>
+</html>
