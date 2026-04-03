@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PER보다 Price/FCF를 봐야 하는 이유 — 성장주 투자의 핵심 지표</title>
+  <meta name="knowledge-id" content="price-fcf-vs-per">
+  <meta name="knowledge-tags" content="금융,투자,주식,비교분석">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-04">
+  <meta name="knowledge-source" content="기관 애널리스트 분석 기준">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #f59e0b; --accent2: #3b82f6;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(245,158,11,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #d97706; --accent2: #2563eb;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(217,119,6,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%,
+        color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* 뷰 메뉴 */
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--menu-border); background: var(--menu-bg);
+      color: var(--menu-text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(12px); transition: all 0.2s;
+    }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px;
+      background: var(--menu-bg); backdrop-filter: blur(16px);
+      border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px;
+      opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border: none; background: transparent;
+      color: var(--menu-text); font-size: 14px; font-family: inherit;
+      cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left;
+    }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    /* 뒤로가기 */
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      margin-bottom: 24px; padding: 6px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface); transition: background 0.15s;
+    }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    /* 히어로 */
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--text-secondary);
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 540px; margin: 0 auto; line-height: 1.7; }
+
+    /* 메타 바 */
+    .meta-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 36px;
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-intermediate { background: var(--chip-amber); color: var(--warning); }
+    .tag-chip { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+
+    /* 카드 */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease;
+      margin-bottom: 16px;
+    }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title {
+      font-size: 12px; font-weight: 700; color: var(--text-secondary);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px;
+    }
+
+    /* KPI 행 */
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.55rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    /* 하이라이트 박스 */
+    .highlight-box {
+      padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--chip-accent); font-size: 13.5px; line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .highlight-box strong { color: var(--accent); }
+
+    /* 인용 박스 */
+    .quote-box {
+      padding: 16px 20px; border-radius: 10px; border-left: 3px solid var(--accent);
+      background: var(--surface); font-size: 14px; line-height: 1.7;
+      color: var(--text-secondary); margin-bottom: 16px; font-style: italic;
+    }
+    .quote-box cite { display: block; margin-top: 6px; font-style: normal; font-weight: 600; font-size: 12px; color: var(--accent); }
+
+    /* 코드 박스 */
+    .code-box {
+      background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px 16px; font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 13px; color: var(--accent); margin: 10px 0; letter-spacing: 0.02em;
+    }
+    html.theme-light .code-box { background: #f4f4f4; }
+
+    /* 비교 그리드 */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+    .era-card { border-radius: 12px; padding: 22px; border: 1px solid var(--border); position: relative; overflow: hidden; background: var(--surface); }
+    .era-card .top-line { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+    .era-card.old .top-line { background: #64748b; }
+    .era-card.new .top-line { background: var(--accent); }
+    .era-label { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 10px; margin-top: 4px; }
+    .era-card.old .era-label { color: #64748b; }
+    .era-card.new .era-label { color: var(--accent); }
+    .era-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 12px; }
+    .era-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; margin-bottom: 8px; color: var(--text-secondary); }
+    .era-item strong { color: var(--text); font-weight: 600; }
+    .era-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+    .era-card.old .era-dot { background: #64748b; }
+    .era-card.new .era-dot { background: var(--accent); }
+
+    /* 비교 테이블 */
+    .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .compare-table th {
+      padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: var(--surface-hover); }
+    .compare-table .col-metric { font-weight: 600; color: var(--text); }
+    .compare-table .col-old { color: var(--text-secondary); }
+    .compare-table .col-new { color: var(--accent); font-weight: 600; }
+    .compare-table .col-badge {
+      display: inline-block; padding: 1px 8px; border-radius: 99px; font-size: 11px; font-weight: 700;
+    }
+    .badge-bad { background: rgba(100,116,139,0.12); color: #94a3b8; }
+    .badge-good { background: var(--chip-amber); color: var(--accent); }
+
+    /* 기관 지표 그리드 */
+    .metric-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+    .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+    .metric-name { font-size: 15px; font-weight: 700; color: var(--accent); margin-bottom: 6px; font-family: 'SF Mono', 'Fira Code', monospace; }
+    .metric-formula { font-size: 11px; color: var(--text-secondary); margin-bottom: 10px; font-family: monospace; }
+    .metric-desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.55; }
+
+    /* 기업 예시 바 */
+    .company-bar-list { display: flex; flex-direction: column; gap: 10px; }
+    .company-bar-item { display: flex; flex-direction: column; gap: 5px; }
+    .company-bar-header { display: flex; justify-content: space-between; font-size: 13px; }
+    .company-bar-label { font-weight: 600; color: var(--text); }
+    .company-bar-value { font-weight: 700; color: var(--accent); }
+    .bar-track { height: 7px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 99px; }
+
+    /* PER 왜곡 요인 목록 */
+    .distort-list { display: flex; flex-direction: column; gap: 10px; }
+    .distort-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px; border-radius: 10px; background: var(--surface-hover); }
+    .distort-num { min-width: 26px; height: 26px; border-radius: 50%; background: var(--chip-accent); color: var(--accent); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .distort-content strong { font-size: 13.5px; font-weight: 600; display: block; margin-bottom: 2px; }
+    .distort-content span { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; }
+
+    /* 관련 지식 */
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+    .mb16 { margin-bottom: 16px; }
+    .mb20 { margin-bottom: 20px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+    @media (max-width: 640px) {
+      .compare-grid, .kpi-row, .metric-grid { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+    }
+    @media print {
+      body { background: white !important; }
+      .viz-menu { display: none !important; }
+      .card { break-inside: avoid; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">💰 투자 지표 시리즈</div>
+        <h1>PER보다 Price/FCF를 봐야 하는 이유</h1>
+        <p class="hero-sub">회계적 이익의 함정을 넘어 — 기관투자자들이 실제 현금으로 기업 가치를 보는 법</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="tag-chip">#금융</span>
+        <span class="tag-chip">#투자</span>
+        <span class="tag-chip">#주식</span>
+        <span class="tag-chip">#비교분석</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.04
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          기관 애널리스트 분석 기준
+        </span>
+      </div>
+
+      <!-- KPI 행 -->
+      <div class="kpi-row animate d2">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">~4%</div>
+          <div class="kpi-label">Apple FCF Yield</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--text-secondary)">$90B+</div>
+          <div class="kpi-label">Apple 연간 자사주 매입</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--positive)">실제 현금</div>
+          <div class="kpi-label">FCF의 본질</div>
+        </div>
+      </div>
+
+      <!-- 핵심 명제 -->
+      <div class="quote-box animate d2">
+        "현금이 왕이다 (Cash is King)" — PER은 회계사가 만든 숫자지만, FCF는 기업이 실제로 손에 쥔 돈이다.
+        <cite>— 월가 기관투자자 원칙</cite>
+      </div>
+
+      <!-- FCF 공식 -->
+      <div class="card animate d2">
+        <div class="section-title">📐 핵심 공식</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <div style="font-size:12px;color:var(--text-secondary);margin-bottom:6px;font-weight:600;">PER (주가수익비율)</div>
+            <div class="code-box">PER = Price / Earnings</div>
+            <div style="font-size:12px;color:var(--text-secondary);margin-top:6px;">Earnings = 순이익 (회계 기반)</div>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--accent);margin-bottom:6px;font-weight:600;">Price / FCF (주가현금흐름비율)</div>
+            <div class="code-box">FCF = 영업현금흐름 – CapEx</div>
+            <div style="font-size:12px;color:var(--text-secondary);margin-top:6px;">FCF = 실제로 벌어들인 현금</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PER의 한계 -->
+      <div class="card animate d3">
+        <div class="section-title">⚠️ PER이 성장주 분석에서 왜곡되는 5가지 이유</div>
+        <div class="distort-list">
+          <div class="distort-item">
+            <div class="distort-num">1</div>
+            <div class="distort-content">
+              <strong>감가상각 (D&A)</strong>
+              <span>실제 현금 지출 없이 이익을 줄인다. 특히 자산이 많은 제조/통신업에서 순이익을 크게 왜곡.</span>
+            </div>
+          </div>
+          <div class="distort-item">
+            <div class="distort-num">2</div>
+            <div class="distort-content">
+              <strong>스톡옵션 (Stock-based Compensation)</strong>
+              <span>R&D·개발자 보상을 스톡옵션으로 지급하면 비용 처리되어 순이익이 낮아진다. Amazon·Nvidia 초기가 대표 사례.</span>
+            </div>
+          </div>
+          <div class="distort-item">
+            <div class="distort-num">3</div>
+            <div class="distort-content">
+              <strong>회계 처리 방식</strong>
+              <span>수익 인식 시점, 재고 평가 방법(FIFO/LIFO), 리스 자산 처리 등에 따라 동일한 사업도 이익이 다르게 표시된다.</span>
+            </div>
+          </div>
+          <div class="distort-item">
+            <div class="distort-num">4</div>
+            <div class="distort-content">
+              <strong>세금 및 일회성 항목</strong>
+              <span>법인세 감면, 자산 매각 이익, 소송 합의금 등 비반복 항목이 순이익을 크게 출렁이게 한다.</span>
+            </div>
+          </div>
+          <div class="distort-item">
+            <div class="distort-num">5</div>
+            <div class="distort-content">
+              <strong>R&D 비용의 즉시 비용 처리</strong>
+              <span>미국 회계 기준(GAAP)에서 R&D는 발생 즉시 비용으로 처리된다. 연구 투자를 많이 하는 기술 기업일수록 순이익이 낮게 나타난다.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 성장주 초기 PER 사례 -->
+      <div class="card animate d3">
+        <div class="section-title">📊 성장주 초기 PER — 숫자는 높았지만 FCF는 성장했다</div>
+        <div style="overflow-x:auto;">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>기업</th>
+                <th>초기 PER</th>
+                <th>당시 해석</th>
+                <th>실제 FCF 추이</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="col-metric">Amazon</td>
+                <td>수백 배 이상</td>
+                <td>버블 논란</td>
+                <td style="color:var(--positive);font-weight:600;">클라우드(AWS) 전환 후 급성장</td>
+              </tr>
+              <tr>
+                <td class="col-metric">Tesla</td>
+                <td>수백 배 이상</td>
+                <td>과대평가 논란</td>
+                <td style="color:var(--positive);font-weight:600;">배터리 효율화 후 FCF 흑자 전환</td>
+              </tr>
+              <tr>
+                <td class="col-metric">Nvidia</td>
+                <td>매우 높음</td>
+                <td>게임칩 회사 프리미엄</td>
+                <td style="color:var(--positive);font-weight:600;">AI 수요 급증으로 FCF 폭발적 증가</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="highlight-box" style="margin-top:14px;">
+          이 기업들의 PER은 순이익이 낮아서 높았던 것이지, <strong>사업 자체가 나쁜 게 아니었다.</strong> FCF 성장률을 보면 미래를 예측할 수 있었다.
+        </div>
+      </div>
+
+      <!-- PER vs Price/FCF 비교 -->
+      <div class="compare-grid animate d3">
+        <div class="era-card old">
+          <div class="top-line"></div>
+          <div style="padding-top:8px">
+            <div class="era-label">한계 지표</div>
+            <div class="era-title">PER</div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>기반:</strong> 순이익 (회계적 이익)</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>조작 가능성:</strong> 높음 (회계 처리 방식 영향)</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>성장주 분석:</strong> 부정확 (스톡옵션·R&D 왜곡)</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>기관 활용도:</strong> 보조 지표</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>주주환원 연결:</strong> 직접 연결 불가</div></div>
+          </div>
+        </div>
+        <div class="era-card new">
+          <div class="top-line"></div>
+          <div style="padding-top:8px">
+            <div class="era-label">핵심 지표</div>
+            <div class="era-title">Price / FCF</div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>기반:</strong> 실제 현금 (Free Cash Flow)</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>조작 가능성:</strong> 낮음 (현금은 실제 수치)</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>성장주 분석:</strong> 정확 (현금 창출력 직접 확인)</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>기관 활용도:</strong> 핵심 지표</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>주주환원 연결:</strong> 직접 연결 (자사주·배당 재원)</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 자사주 매입과 FCF 연결 -->
+      <div class="card animate d4">
+        <div class="section-title">💎 자사주 매입은 FCF로 이루어진다</div>
+        <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.7;margin-bottom:16px;">
+          배당과 자사주 매입 — 주주에게 돌아가는 수익의 핵심 두 가지는 모두 <strong style="color:var(--text);">Free Cash Flow</strong>에서 나온다. FCF가 충분해야만 지속적인 주주환원이 가능하다.
+        </p>
+        <div class="company-bar-list">
+          <div class="company-bar-item">
+            <div class="company-bar-header">
+              <span class="company-bar-label">Apple (AAPL)</span>
+              <span class="company-bar-value">$90B+ 연간 자사주 매입</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--accent);"></div></div>
+          </div>
+          <div class="company-bar-item">
+            <div class="company-bar-header">
+              <span class="company-bar-label">Microsoft (MSFT)</span>
+              <span class="company-bar-value">$30B+ 연간 자사주 매입</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:60%;background:#10b981;"></div></div>
+          </div>
+          <div class="company-bar-item">
+            <div class="company-bar-header">
+              <span class="company-bar-label">Alphabet (GOOGL)</span>
+              <span class="company-bar-value">$60B+ 연간 자사주 매입</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:75%;background:#8b5cf6;"></div></div>
+          </div>
+        </div>
+        <div class="highlight-box" style="margin-top:14px;">
+          세 기업 모두 막대한 자사주 매입의 재원은 <strong>잉여현금흐름(FCF)</strong>이다. PER 기반으로는 이 힘을 볼 수 없다.
+        </div>
+      </div>
+
+      <!-- 기관투자자 FCF 지표 3종 -->
+      <div class="card animate d4">
+        <div class="section-title">🏦 기관투자자들이 실제로 보는 FCF 기반 지표 3종</div>
+        <div class="metric-grid">
+          <div class="metric-card">
+            <div class="metric-name">Price / FCF</div>
+            <div class="metric-formula">= 주가 ÷ 주당FCF</div>
+            <div class="metric-desc">기업의 실제 현금 창출력 대비 주가 수준. 낮을수록 저평가 가능성. 성장주의 핵심 밸류에이션 지표.</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-name">EV / FCF</div>
+            <div class="metric-formula">= 기업가치 ÷ FCF</div>
+            <div class="metric-desc">부채까지 포함한 기업 전체 가치 기준. M&A 분석, 레버리지 기업 비교 시 Price/FCF보다 더 정확.</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-name">FCF Yield</div>
+            <div class="metric-formula">= FCF ÷ 시가총액</div>
+            <div class="metric-desc">채권 수익률과 직접 비교 가능. Yield가 높을수록 주식이 채권 대비 매력적임을 의미.</div>
+          </div>
+        </div>
+        <div style="overflow-x:auto;margin-top:8px;">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>기업</th>
+                <th>FCF Yield (추정)</th>
+                <th>해석</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="col-metric">Apple</td>
+                <td class="col-new">~4%</td>
+                <td style="font-size:12.5px;color:var(--text-secondary);">미국 10년물 국채 수익률과 유사 — 성장 프리미엄 고려 시 매력적</td>
+              </tr>
+              <tr>
+                <td class="col-metric">Microsoft</td>
+                <td class="col-new">~3%</td>
+                <td style="font-size:12.5px;color:var(--text-secondary);">클라우드 성장 고려 시 합리적 수준</td>
+              </tr>
+              <tr>
+                <td class="col-metric">Tesla</td>
+                <td class="col-old">~1%</td>
+                <td style="font-size:12.5px;color:var(--text-secondary);">성장 기대치가 높아 Yield 낮음 — 모멘텀 의존</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 최종 정리 -->
+      <div class="card animate d5">
+        <div class="section-title">✅ 언제 PER, 언제 Price/FCF를 쓰는가</div>
+        <div style="overflow-x:auto;">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>상황</th>
+                <th>권장 지표</th>
+                <th>이유</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight:600;">미국 기술 성장주 분석</td>
+                <td><span class="col-badge badge-good">Price/FCF</span></td>
+                <td style="font-size:12.5px;color:var(--text-secondary);">스톡옵션·R&D 비용이 순이익 왜곡</td>
+              </tr>
+              <tr>
+                <td style="font-weight:600;">전통 은행·보험사</td>
+                <td><span class="col-badge badge-bad">PER / PBR</span></td>
+                <td style="font-size:12.5px;color:var(--text-secondary);">FCF 개념 적용이 구조적으로 어려움</td>
+              </tr>
+              <tr>
+                <td style="font-weight:600;">주주환원 분석</td>
+                <td><span class="col-badge badge-good">FCF Yield</span></td>
+                <td style="font-size:12.5px;color:var(--text-secondary);">배당·자사주 지속 가능성 판단에 최적</td>
+              </tr>
+              <tr>
+                <td style="font-weight:600;">M&A / 인수 가치 평가</td>
+                <td><span class="col-badge badge-good">EV/FCF</span></td>
+                <td style="font-size:12.5px;color:var(--text-secondary);">부채 포함 전체 기업가치 비교</td>
+              </tr>
+              <tr>
+                <td style="font-weight:600;">빠른 시장 비교·스크리닝</td>
+                <td><span class="col-badge badge-bad">PER</span></td>
+                <td style="font-size:12.5px;color:var(--text-secondary);">데이터가 즉시 구하기 쉽고 보편적</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 관련 지식 -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="analyst-investment-framework.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">기관 투자자 분석 프레임워크 — ROIC·FCF·밸류에이션 Top 10</div>
+          </a>
+          <a href="stock-valuation-per-pbr.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">PER·PBR·EPS 개념과 저평가 주식 발굴법</div>
+          </a>
+          <a href="financial-statements-3core.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">재무제표 3종 완전 가이드 — 손익·재무상태표·현금흐름표</div>
+          </a>
+          <a href="earnings-season-guide.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">실적시즌 완전 가이드 — 어닝서프라이즈·가이던스·주가 반응</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">출처: 기관 애널리스트 분석 기준 · 월가 가치평가 원칙</p>
+    </div>
+  </main>
+
+  <script>
+    var THEMES = ['theme-dark', 'theme-light'];
+    var THEME_LABELS = { 'theme-dark': 'Dark', 'theme-light': 'Light' };
+    (function() {
+      var saved = localStorage.getItem('ka-theme') || 'theme-dark';
+      document.documentElement.className = saved;
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[saved];
+    })();
+    function cycleTheme() {
+      var cur = document.documentElement.className;
+      var next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+      document.documentElement.className = next;
+      localStorage.setItem('ka-theme', next);
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[next];
+      closeMenu();
+    }
+    function toggleMenu() { document.getElementById('vizMenuDropdown').classList.toggle('open'); }
+    function closeMenu() { document.getElementById('vizMenuDropdown').classList.remove('open'); }
+    document.addEventListener('click', function(e) { if (!e.target.closest('.viz-menu')) closeMenu(); });
+    function downloadImage() {
+      closeMenu();
+      if (typeof htmlToImage === 'undefined') { alert('라이브러리 로딩 중...'); return; }
+      htmlToImage.toPng(document.getElementById('main'), { pixelRatio: 2 })
+        .then(function(dataUrl) {
+          var a = document.createElement('a');
+          a.download = 'price-fcf-vs-per.png';
+          a.href = dataUrl;
+          a.click();
+        });
+    }
+  </script>
+</body>
+</html>
