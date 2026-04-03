@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>기관 투자자 분석 프레임워크 — ROIC·FCF·밸류에이션 Top 10</title>
+  <meta name="knowledge-id" content="analyst-investment-framework">
+  <meta name="knowledge-tags" content="금융,투자,주식,비교분석">
+  <meta name="knowledge-difficulty" content="심화">
+  <meta name="knowledge-date" content="2026-04-04">
+  <meta name="knowledge-source" content="기관 애널리스트 분석 기준">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #10b981; --accent2: #3b82f6;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(16,185,129,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #059669; --accent2: #2563eb;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(5,150,105,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+    body { font-family: 'Noto Sans KR','Inter',sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; letter-spacing: -0.011em; transition: background 0.3s, color 0.3s; min-height: 100vh; }
+    body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse 70% 50% at 50% 10%, color-mix(in srgb, var(--accent), transparent 88%), transparent); }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--menu-border); background: var(--menu-bg); color: var(--menu-text); cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(12px); transition: all 0.2s; }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px; background: var(--menu-bg); backdrop-filter: blur(16px); border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px; opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96); transition: all 0.2s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: none; background: transparent; color: var(--menu-text); font-size: 14px; font-family: inherit; cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left; }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    .nav-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent); text-decoration: none; margin-bottom: 24px; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.6rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 560px; margin: 0 auto; line-height: 1.7; }
+
+    .meta-bar { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 36px; font-size: 12px; color: var(--text-secondary); }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-advanced { background: rgba(244,63,94,0.12); color: var(--negative); }
+    .tag-chip { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease; margin-bottom: 16px; }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
+
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    .highlight-box { padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border); background: var(--chip-accent); font-size: 13.5px; line-height: 1.7; margin-bottom: 16px; }
+    .highlight-box strong { color: var(--accent); }
+
+    /* ROIC 섹션 */
+    .roic-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+    .roic-card { border-radius: 12px; padding: 20px; border: 1px solid var(--border); background: var(--surface); position: relative; overflow: hidden; }
+    .roic-top { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+    .roic-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 8px; margin-bottom: 8px; }
+    .roic-val { font-size: 2rem; font-weight: 800; letter-spacing: -0.04em; margin-bottom: 4px; }
+    .roic-result { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    .roic-desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.6; }
+
+    /* 복리 차트 */
+    .compound-chart { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+    .compound-row { display: flex; align-items: center; gap: 12px; }
+    .compound-label { width: 80px; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+    .compound-bar-wrap { flex: 1; }
+    .compound-bar { height: 28px; border-radius: 8px; display: flex; align-items: center; padding: 0 12px; font-size: 12px; font-weight: 700; color: white; position: relative; min-width: 60px; }
+    .compound-val { margin-left: auto; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+
+    /* 해자 그리드 */
+    .moat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .moat-item { padding: 14px 16px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); }
+    .moat-icon { font-size: 1.2rem; margin-bottom: 6px; }
+    .moat-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .moat-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+    /* 지표 테이블 */
+    .metric-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .metric-table th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
+    .metric-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+    .metric-table tr:last-child td { border-bottom: none; }
+    .metric-table td:first-child { font-family: 'Inter', monospace; font-weight: 600; font-size: 12.5px; color: var(--accent); }
+
+    /* 밸류에이션 카드 */
+    .val-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .val-card { border-radius: 12px; padding: 18px; border: 1px solid var(--border); background: var(--surface); }
+    .val-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .val-formula { font-family: 'Inter', monospace; font-size: 11px; color: var(--text-secondary); background: var(--surface-hover); padding: 3px 8px; border-radius: 5px; margin-bottom: 8px; display: block; }
+    .val-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 10px; }
+    .val-bench { font-size: 11px; }
+    .val-bench-row { display: flex; justify-content: space-between; padding: 3px 0; border-bottom: 1px solid var(--border); }
+    .val-bench-row:last-child { border-bottom: none; }
+
+    /* Top 10 번호 목록 */
+    .top10-list { display: flex; flex-direction: column; gap: 8px; }
+    .top10-item { display: flex; align-items: center; gap: 14px; padding: 10px 14px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); }
+    .top10-num { font-size: 12px; font-weight: 800; color: var(--accent); width: 24px; flex-shrink: 0; }
+    .top10-name { font-size: 13px; font-weight: 600; flex: 1; }
+    .top10-badge { font-size: 11px; padding: 2px 8px; border-radius: 99px; background: var(--chip-accent); color: var(--accent); font-weight: 600; flex-shrink: 0; }
+
+    /* 체크리스트 */
+    .checklist { display: flex; flex-direction: column; gap: 10px; }
+    .check-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px; background: var(--chip-green); border: 1px solid rgba(16,185,129,0.2); }
+    .check-icon { font-size: 1rem; flex-shrink: 0; }
+    .check-text { font-size: 13.5px; font-weight: 500; }
+    .check-val { font-size: 13px; font-weight: 700; color: var(--positive); margin-left: auto; flex-shrink: 0; font-family: 'Inter', monospace; }
+
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+
+    @media (max-width: 640px) {
+      .val-grid, .roic-compare, .moat-grid, .kpi-row { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+    }
+    @media print { body { background: white !important; } .viz-menu { display: none !important; } * { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/></svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">🏦 기관 투자자 기준</div>
+        <h1>기관 투자자 분석 프레임워크</h1>
+        <p class="hero-sub">ROIC·FCF·밸류에이션 멀티플까지 — 애널리스트가 실제로 보는 Top 10 지표와 5가지 핵심 질문, 그리고 좋은 기업의 공통 조건을 정리했다.</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="diff-badge diff-advanced">심화</span>
+        <span class="tag-chip">#금융</span>
+        <span class="tag-chip">#투자</span>
+        <span class="tag-chip">#주식</span>
+        <span class="tag-chip">#비교분석</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.04
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          기관 애널리스트 분석 기준
+        </span>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-row animate d2">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">ROIC</div>
+          <div class="kpi-label">기관이 가장 중시하는 지표</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--warning)">Rule of 40</div>
+          <div class="kpi-label">SaaS 핵심 기준</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--positive)">Top 10</div>
+          <div class="kpi-label">애널리스트 핵심 지표</div>
+        </div>
+      </div>
+
+      <!-- ROIC: 가장 중요한 수익성 지표 -->
+      <div class="card animate d2">
+        <div class="section-title">⭐ ROIC — 기관 투자자가 가장 중요하게 보는 지표</div>
+
+        <div class="highlight-box">
+          <strong>ROIC = NOPAT ÷ Invested Capital</strong><br>
+          기업이 투자한 자본(부채+자본)으로 <strong>얼마의 수익을 창출하는가</strong>를 보여준다. 세금과 부채 구조를 모두 통제한 뒤의 진짜 자본 효율성 지표.
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:16px;">
+          <div>
+            <div class="section-title">ROE vs ROIC 차이</div>
+            <table class="metric-table">
+              <tr><th>지표</th><th>분모</th><th>한계</th></tr>
+              <tr><td>ROE</td><td>자기자본만</td><td>부채 레버리지로 왜곡 가능</td></tr>
+              <tr><td>ROIC</td><td>투하자본 전체</td><td>부채·자본 구조 중립적</td></tr>
+            </table>
+          </div>
+          <div>
+            <div class="section-title">기업별 ROIC 벤치마크</div>
+            <table class="metric-table">
+              <tr><th>기업</th><th>ROIC</th><th>평가</th></tr>
+              <tr><td>Apple</td><td>~60%</td><td style="color:var(--positive)">최상</td></tr>
+              <tr><td>Microsoft</td><td>~40%</td><td style="color:var(--positive)">최상</td></tr>
+              <tr><td>Visa</td><td>~45%</td><td style="color:var(--positive)">최상</td></tr>
+              <tr><td>Amazon</td><td>~15%</td><td style="color:var(--warning)">보통</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <table class="metric-table" style="margin-bottom:16px;">
+          <tr><th>ROIC 수준</th><th>평가</th><th>의미</th></tr>
+          <tr><td>&gt; 20%</td><td style="color:var(--positive); font-weight:700;">최고</td><td>강력한 경제적 해자 보유</td></tr>
+          <tr><td>15~20%</td><td style="color:var(--positive);">우수</td><td>안정적 경쟁우위</td></tr>
+          <tr><td>10~15%</td><td style="color:var(--warning);">보통</td><td>평균적인 자본 효율</td></tr>
+          <tr><td>&lt; 10%</td><td style="color:var(--negative);">낮음</td><td>자본 파괴 가능성</td></tr>
+        </table>
+      </div>
+
+      <!-- ROIC가 장기 주가 상승으로 이어지는 이유 -->
+      <div class="card animate d3">
+        <div class="section-title">왜 ROIC가 높은 기업이 장기적으로 주가가 오르는가</div>
+
+        <div style="display:flex; gap:14px; margin-bottom:16px; flex-wrap:wrap;">
+          <!-- 복리 효과 -->
+          <div style="flex:1; min-width:240px;">
+            <div style="font-size:13px; font-weight:700; margin-bottom:12px; color:var(--accent);">① 자본 복리 효과 (Capital Compounding)</div>
+            <div class="compound-chart">
+              <div class="compound-row">
+                <div class="compound-label" style="font-size:11px; color:var(--text-secondary);">기업 A<br>ROIC 10%</div>
+                <div class="compound-bar-wrap">
+                  <div class="compound-bar" style="width:40%; background:#64748b;">2.6배</div>
+                </div>
+                <div class="compound-val" style="color:var(--text-secondary);">10년 후</div>
+              </div>
+              <div class="compound-row">
+                <div class="compound-label" style="font-size:11px; color:var(--accent);">기업 B<br>ROIC 30%</div>
+                <div class="compound-bar-wrap">
+                  <div class="compound-bar" style="width:100%; background:var(--accent);">13.8배</div>
+                </div>
+                <div class="compound-val" style="color:var(--accent);">10년 후</div>
+              </div>
+            </div>
+            <div style="font-size:12px; color:var(--text-secondary); margin-top:8px; padding:10px; background:var(--chip-accent); border-radius:8px;">
+              ROIC 차이 → <strong style="color:var(--accent);">기업 가치 복리 차이</strong> → 장기 주가 상승률 차이
+            </div>
+          </div>
+        </div>
+
+        <!-- 경제적 해자 -->
+        <div style="font-size:13px; font-weight:700; margin-bottom:10px; color:var(--accent);">② 높은 ROIC = 경제적 해자(Moat)의 증거</div>
+        <div class="moat-grid">
+          <div class="moat-item">
+            <div class="moat-icon">💰</div>
+            <div class="moat-title">가격 결정력</div>
+            <div class="moat-desc">경쟁사가 쫓아와도 가격을 낮추지 않아도 되는 구조</div>
+          </div>
+          <div class="moat-item">
+            <div class="moat-icon">🏆</div>
+            <div class="moat-title">브랜드 파워</div>
+            <div class="moat-desc">소비자 충성도로 프리미엄 가격을 지속 유지</div>
+          </div>
+          <div class="moat-item">
+            <div class="moat-icon">🌐</div>
+            <div class="moat-title">네트워크 효과</div>
+            <div class="moat-desc">사용자가 늘수록 서비스 가치가 증가하는 플랫폼</div>
+          </div>
+          <div class="moat-item">
+            <div class="moat-icon">🔒</div>
+            <div class="moat-title">전환 비용</div>
+            <div class="moat-desc">고객이 다른 서비스로 이동할 때 드는 비용·불편함</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 성장성·효율성 지표 -->
+      <div class="card animate d3">
+        <div class="section-title">성장성 · 효율성 지표</div>
+        <table class="metric-table">
+          <tr><th>지표</th><th>공식</th><th>기준값</th><th>의미</th></tr>
+          <tr>
+            <td>Revenue Growth</td>
+            <td style="font-size:11px; color:var(--text-secondary);">YoY</td>
+            <td><span style="color:var(--positive); font-size:12px;">30%+ 초고성장<br>20~30% 고성장</span></td>
+            <td style="font-size:12px;">기술주 기준 — 10년 EPS CAGR이 더 중요</td>
+          </tr>
+          <tr>
+            <td>ROE</td>
+            <td style="font-size:11px; color:var(--text-secondary);">Net Income ÷ Equity</td>
+            <td><span style="color:var(--positive); font-size:12px;">20%+ 매우 우수</span></td>
+            <td style="font-size:12px;">레버리지 왜곡 가능 → ROIC와 함께 확인</td>
+          </tr>
+          <tr>
+            <td>Asset Turnover</td>
+            <td style="font-size:11px; color:var(--text-secondary);">Revenue ÷ Assets</td>
+            <td style="font-size:12px; color:var(--text-secondary);">업종별 상이</td>
+            <td style="font-size:12px;">자산을 얼마나 효율적으로 활용하는가</td>
+          </tr>
+          <tr>
+            <td>Inventory Turnover</td>
+            <td style="font-size:11px; color:var(--text-secondary);">COGS ÷ Inventory</td>
+            <td style="font-size:12px; color:var(--text-secondary);">높을수록 좋음</td>
+            <td style="font-size:12px;">유통·제조업 분석의 핵심</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- 밸류에이션 지표 -->
+      <div class="card animate d4">
+        <div class="section-title">밸류에이션 멀티플 3종</div>
+        <div class="val-grid">
+          <div class="val-card">
+            <div class="val-name">PER</div>
+            <code class="val-formula">Price ÷ Earnings</code>
+            <div class="val-desc">가장 널리 쓰이나 순이익 왜곡에 취약</div>
+            <div class="val-bench">
+              <div class="val-bench-row"><span style="color:var(--text-secondary);">Tech</span><span style="font-weight:600;">25~35배</span></div>
+              <div class="val-bench-row"><span style="color:var(--text-secondary);">AI</span><span style="font-weight:600;">40~100배</span></div>
+              <div class="val-bench-row"><span style="color:var(--text-secondary);">은행</span><span style="font-weight:600;">8~12배</span></div>
+            </div>
+          </div>
+          <div class="val-card">
+            <div class="val-name">EV / EBITDA</div>
+            <code class="val-formula">Enterprise Value ÷ EBITDA</code>
+            <div class="val-desc">부채 고려 + 세금·감가상각 제거 → M&A 시 선호</div>
+            <div class="val-bench">
+              <div class="val-bench-row"><span style="color:var(--text-secondary);">장점</span><span style="font-weight:600;">부채 구조 중립</span></div>
+              <div class="val-bench-row"><span style="color:var(--text-secondary);">활용</span><span style="font-weight:600;">인수합병 가치평가</span></div>
+              <div class="val-bench-row"><span style="color:var(--text-secondary);">Tech 평균</span><span style="font-weight:600;">20~30배</span></div>
+            </div>
+          </div>
+          <div class="val-card">
+            <div class="val-name">P / FCF</div>
+            <code class="val-formula">Price ÷ Free Cash Flow</code>
+            <div class="val-desc">기관이 PER보다 더 중시하는 경우 많음. 현금 기반이라 조작 어렵다.</div>
+            <div class="val-bench">
+              <div class="val-bench-row"><span style="color:var(--text-secondary);">장점</span><span style="font-weight:600;">회계 왜곡 무관</span></div>
+              <div class="val-bench-row"><span style="color:var(--text-secondary);">적정 수준</span><span style="font-weight:600;">20~30배</span></div>
+              <div class="val-bench-row"><span style="color:var(--text-secondary);">성장주</span><span style="font-weight:600;">30~50배 용인</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:4px; padding:16px; border-radius:12px; background:var(--chip-accent); border:1px solid rgba(16,185,129,0.15);">
+          <div style="font-size:13px; font-weight:700; color:var(--accent); margin-bottom:8px;">Rule of 40 — SaaS · 성장주 전용</div>
+          <div style="font-family:'Inter',monospace; font-size:13px; font-weight:600; margin-bottom:8px;">Revenue Growth(%) + FCF Margin(%) ≥ 40</div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <span style="font-size:11px; font-weight:600; padding:2px 10px; border-radius:99px; background:var(--chip-amber); color:var(--warning);">40+ · 우수</span>
+            <span style="font-size:11px; font-weight:600; padding:2px 10px; border-radius:99px; background:var(--chip-green); color:var(--positive);">60+ · 매우 우수</span>
+            <span style="font-size:11px; font-weight:600; padding:2px 10px; border-radius:99px; background:rgba(16,185,129,0.2); color:var(--positive);">80+ · 최고</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top 10 지표 -->
+      <div class="card animate d4">
+        <div class="section-title">애널리스트가 보는 Top 10 지표</div>
+        <div class="top10-list">
+          <div class="top10-item"><div class="top10-num">1</div><div class="top10-name">Revenue Growth</div><div class="top10-badge">성장성</div></div>
+          <div class="top10-item"><div class="top10-num">2</div><div class="top10-name">Gross Margin</div><div class="top10-badge">수익성</div></div>
+          <div class="top10-item"><div class="top10-num">3</div><div class="top10-name">Operating Margin</div><div class="top10-badge">수익성</div></div>
+          <div class="top10-item"><div class="top10-num">4</div><div class="top10-name">Free Cash Flow</div><div class="top10-badge">현금흐름</div></div>
+          <div class="top10-item"><div class="top10-num">5</div><div class="top10-name">ROIC</div><div class="top10-badge" style="background:rgba(16,185,129,0.2);">★ 핵심</div></div>
+          <div class="top10-item"><div class="top10-num">6</div><div class="top10-name">Debt / Equity</div><div class="top10-badge">안정성</div></div>
+          <div class="top10-item"><div class="top10-num">7</div><div class="top10-name">EPS Growth</div><div class="top10-badge">성장성</div></div>
+          <div class="top10-item"><div class="top10-num">8</div><div class="top10-name">Price / FCF</div><div class="top10-badge">밸류에이션</div></div>
+          <div class="top10-item"><div class="top10-num">9</div><div class="top10-name">EV / EBITDA</div><div class="top10-badge">밸류에이션</div></div>
+          <div class="top10-item"><div class="top10-num">10</div><div class="top10-name">Rule of 40</div><div class="top10-badge">성장주 전용</div></div>
+        </div>
+      </div>
+
+      <!-- 좋은 기업 체크리스트 -->
+      <div class="card animate d5">
+        <div class="section-title">장기 우량 기업 체크리스트</div>
+        <div class="checklist">
+          <div class="check-item"><div class="check-icon">📈</div><div class="check-text">매출 성장률</div><div class="check-val">&gt; 20%</div></div>
+          <div class="check-item"><div class="check-icon">💎</div><div class="check-text">Gross Margin</div><div class="check-val">&gt; 50%</div></div>
+          <div class="check-item"><div class="check-icon">⭐</div><div class="check-text">ROIC</div><div class="check-val">&gt; 20%</div></div>
+          <div class="check-item"><div class="check-icon">💵</div><div class="check-text">FCF Margin</div><div class="check-val">&gt; 20%</div></div>
+          <div class="check-item"><div class="check-icon">🛡️</div><div class="check-text">부채 수준</div><div class="check-val">D/E &lt; 1</div></div>
+        </div>
+        <div style="margin-top:14px; padding:12px 16px; border-radius:10px; background:var(--chip-accent); font-size:13px; line-height:1.7;">
+          이 5가지가 동시에 충족되는 기업은 <strong style="color:var(--accent);">장기적으로 주가가 크게 상승할 가능성이 높다.</strong> 단, 현재 밸류에이션(P/FCF, EV/EBITDA)이 이미 너무 높지 않은지도 반드시 확인할 것.
+        </div>
+      </div>
+
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="financial-statements-3core.html" class="related-card">
+            <div class="r-label">→ 기초</div>
+            <div class="r-title">재무제표 3종 완전 가이드 — 손익·재무상태·현금흐름</div>
+          </a>
+          <a href="stock-valuation-per-pbr.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">PER·PBR·EPS — 주식 밸류에이션 핵심 3지표</div>
+          </a>
+          <a href="earnings-season-guide.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">실적시즌 완전 가이드 — 어닝서프라이즈·가이던스</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">기관 애널리스트 실무 분석 기준 정리 (2026.04.04)</p>
+    </div>
+  </main>
+
+  <script>
+    var THEMES = ['theme-dark', 'theme-light'];
+    var THEME_LABELS = { 'theme-dark': 'Dark', 'theme-light': 'Light' };
+    (function() {
+      var saved = localStorage.getItem('ka-theme') || 'theme-dark';
+      document.documentElement.className = saved;
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[saved];
+    })();
+    function cycleTheme() {
+      var cur = document.documentElement.className;
+      var next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+      document.documentElement.className = next;
+      localStorage.setItem('ka-theme', next);
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[next];
+      closeMenu();
+    }
+    function toggleMenu() { document.getElementById('vizMenuDropdown').classList.toggle('open'); }
+    function closeMenu() { document.getElementById('vizMenuDropdown').classList.remove('open'); }
+    document.addEventListener('click', function(e) { if (!e.target.closest('.viz-menu')) closeMenu(); });
+    function downloadImage() {
+      closeMenu();
+      if (typeof htmlToImage === 'undefined') { alert('라이브러리 로딩 중...'); return; }
+      htmlToImage.toPng(document.getElementById('main'), { pixelRatio: 2 })
+        .then(function(dataUrl) { var a = document.createElement('a'); a.download = 'analyst-investment-framework.png'; a.href = dataUrl; a.click(); });
+    }
+  </script>
+</body>
+</html>
