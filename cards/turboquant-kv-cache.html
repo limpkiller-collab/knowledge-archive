@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TurboQuant — AI 메모리 병목의 종말</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --accent: #8b5cf6;
+            --accent-light: #a78bfa;
+            --accent-dark: #7c3aed;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+            --border: #e5e7eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        body.theme-dark {
+            --text-primary: #f3f4f6;
+            --text-secondary: #d1d5db;
+            --bg-primary: #1f2937;
+            --bg-secondary: #111827;
+            --bg-tertiary: #374151;
+            --border: #4b5563;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .card-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        /* Header */
+        .card-header {
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 16px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--accent-dark);
+        }
+
+        .header-left {
+            flex: 1;
+        }
+
+        .card-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .card-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--accent);
+            color: white;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .difficulty-badge {
+            background: var(--accent);
+            padding: 4px 12px;
+            border-radius: 4px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* View Menu */
+        .view-menu {
+            display: flex;
+            gap: 8px;
+        }
+
+        .view-btn {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .view-btn:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .view-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* Tags */
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* KPI Grid */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 32px 0;
+            padding: 24px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(139, 92, 246, 0.02));
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .kpi-item {
+            text-align: center;
+            padding: 16px;
+            background: var(--bg-primary);
+            border-radius: 6px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .kpi-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+
+        .kpi-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Section */
+        .section {
+            margin: 32px 0;
+            padding: 24px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .subsection {
+            margin: 20px 0;
+        }
+
+        .subsection-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .subsection-title::before {
+            content: '→';
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .content-text {
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin: 12px 0;
+        }
+
+        .highlight-box {
+            padding: 16px;
+            margin: 12px 0;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.05));
+            border-left: 4px solid var(--accent);
+            border-radius: 4px;
+            color: var(--text-primary);
+        }
+
+        .highlight-box strong {
+            color: var(--accent);
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            border-radius: 6px;
+            overflow: hidden;
+            background: var(--bg-primary);
+        }
+
+        .comparison-table thead {
+            background: var(--accent);
+            color: white;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .comparison-table thead th {
+            border: none;
+            font-weight: 600;
+        }
+
+        .comparison-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tbody tr:nth-child(even) {
+            background: var(--bg-tertiary);
+        }
+
+        .comparison-table tbody tr:hover {
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        /* Grid Comparison */
+        .grid-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        .comparison-card {
+            padding: 16px;
+            background: var(--bg-primary);
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .comparison-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+        }
+
+        .comparison-card-title {
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .comparison-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .comparison-card li {
+            padding: 6px 0;
+            font-size: 14px;
+            color: var(--text-secondary);
+            display: flex;
+            gap: 8px;
+        }
+
+        .comparison-card li::before {
+            content: '•';
+            color: var(--accent);
+            font-weight: 700;
+            min-width: 8px;
+        }
+
+        /* List */
+        ul, ol {
+            margin: 12px 0 12px 24px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        li {
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        /* Links */
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: var(--accent-dark);
+            text-decoration: underline;
+        }
+
+        /* Related Knowledge */
+        .related-knowledge {
+            margin: 32px 0;
+            padding: 24px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .related-knowledge-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .related-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .related-item {
+            padding: 8px 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .related-item:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Footer */
+        .card-footer {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .source-info {
+            display: flex;
+            gap: 8px;
+        }
+
+        .source-info a {
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .card-container {
+                padding: 24px 16px;
+            }
+
+            .card-title {
+                font-size: 24px;
+            }
+
+            .card-header {
+                flex-direction: column;
+            }
+
+            .view-menu {
+                margin-top: 16px;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-table {
+                font-size: 12px;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 10px 12px;
+            }
+        }
+
+        /* Print Style */
+        @media print {
+            .view-menu {
+                display: none;
+            }
+
+            .card-container {
+                max-width: 100%;
+            }
+
+            body {
+                background: white;
+            }
+
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Print-safe accent styling */
+        @media print {
+            .badge, .difficulty-badge, .view-btn.active {
+                background: var(--accent);
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body class="theme-dark">
+    <div class="card-container">
+        <!-- Header -->
+        <div class="card-header">
+            <div class="header-left">
+                <a href="../index.html" class="back-link">← 돌아가기</a>
+                <h1 class="card-title">TurboQuant</h1>
+                <p class="card-subtitle">AI 메모리 병목의 종말</p>
+                <div class="meta-row">
+                    <div class="meta-item">
+                        <span class="difficulty-badge">중급</span>
+                    </div>
+                    <div class="meta-item">📅 2026-04-04</div>
+                    <div class="meta-item">🏢 토스뱅크 · LaonPeople</div>
+                </div>
+                <div class="tags">
+                    <span class="tag">AI</span>
+                    <span class="tag">반도체</span>
+                    <span class="tag">기술</span>
+                    <span class="tag">트렌드</span>
+                </div>
+            </div>
+            <div class="view-menu">
+                <button class="view-btn" id="themeBtn" title="테마 전환">🌙</button>
+                <button class="view-btn" id="downloadBtn" title="PNG 다운로드">📥</button>
+                <button class="view-btn" id="printBtn" title="인쇄">🖨️</button>
+            </div>
+        </div>
+
+        <!-- KPI Grid -->
+        <div class="kpi-grid">
+            <div class="kpi-item">
+                <div class="kpi-value">6배</div>
+                <div class="kpi-label">메모리 절감</div>
+            </div>
+            <div class="kpi-item">
+                <div class="kpi-value">8배</div>
+                <div class="kpi-label">속도 향상 (H100)</div>
+            </div>
+            <div class="kpi-item">
+                <div class="kpi-value">무손실</div>
+                <div class="kpi-label">재학습 불필요</div>
+            </div>
+        </div>
+
+        <!-- 배경: KV Cache 병목 -->
+        <div class="section">
+            <h2 class="section-title">배경: KV Cache 병목 문제</h2>
+            <div class="content-text">
+                LLM(Large Language Model)은 대화의 맥락(Context)을 유지하기 위해 <strong>Key-Value Cache(KV Cache)</strong>라는 디지털 메모장을 사용합니다.
+            </div>
+            <ul>
+                <li><strong>KV Cache의 역할:</strong> 이전 토큰들의 Attention 계산값을 저장해 같은 연산을 반복하지 않음</li>
+                <li><strong>메모리 폭발 문제:</strong> 대화가 길어질수록 캐시 크기 ∝ GPU 메모리 사용량 지수함수적 증가</li>
+                <li><strong>기존 해결책의 한계:</strong> SnapKV 등 기존 방법은 데이터를 삭제해 필수 정보도 손실</li>
+            </ul>
+            <div class="highlight-box">
+                <strong>핵심 문제:</strong> 메모리 효율과 정보 정확도 사이의 트레이드오프를 피할 수 없었음
+            </div>
+        </div>
+
+        <!-- TurboQuant란? -->
+        <div class="section">
+            <h2 class="section-title">TurboQuant란?</h2>
+            <div class="content-text">
+                Google Research가 개발한 혁신적인 <strong>KV Cache 압축 알고리즘</strong>으로, 정밀도 손실을 최소화하면서도 극적인 압축을 달성합니다.
+            </div>
+            <ul>
+                <li><strong>압축률:</strong> 16비트 → 3비트 (약 5.3배 압축)</li>
+                <li><strong>정밀도:</strong> 정규화 상수(메타데이터) 최소화로 손실 최소화</li>
+                <li><strong>공식 발표:</strong> 2026년 4월 ICLR 컨퍼런스</li>
+                <li><strong>상용화 일정:</strong> Google 자체 서비스 우선 적용 후 확산 예상</li>
+            </ul>
+        </div>
+
+        <!-- 두 가지 기술 기둥 -->
+        <div class="section">
+            <h2 class="section-title">두 가지 기술 기둥</h2>
+
+            <div class="subsection">
+                <div class="subsection-title">PolarQuant (극좌표 양자화)</div>
+                <div class="content-text">
+                    데이터를 직교좌표(Cartesian) 형식에서 극좌표(Polar) 형식으로 변환하여 정규화 효율을 극대화합니다.
+                </div>
+                <ul>
+                    <li><strong>변환 프로세스:</strong> 각 차원에 랜덤 회전(Random Rotation) 적용</li>
+                    <li><strong>균일 분포 생성:</strong> 비균일한 데이터를 균일한 분포로 재구성</li>
+                    <li><strong>메타데이터 제거:</strong> 정규화 상수 불필요 → 블록당 1~2비트 오버헤드 절감</li>
+                </ul>
+                <div class="highlight-box">
+                    <strong>이점:</strong> 교정(calibration) 데이터 없이 데이터 분포와 무관하게 작동
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-title">QJL (Quantized Johnson-Lindenstrauss)</div>
+                <div class="content-text">
+                    PolarQuant 압축 후 발생하는 잔여 오차를 1비트 양자화로 보정하여 정확도를 복구합니다.
+                </div>
+                <ul>
+                    <li><strong>오차 보정:</strong> 1비트로 압축된 오차 신호가 원본과의 거리 보전</li>
+                    <li><strong>랜덤 프로젝션:</strong> Johnson-Lindenstrauss 보조정리 활용으로 고차원 내적 연산의 통계적 정확도 유지</li>
+                    <li><strong>이론적 효율:</strong> 샤논(Shannon) 정보 이론 한계에 근접한 압축</li>
+                </ul>
+                <div class="highlight-box">
+                    <strong>수학적 보증:</strong> 내적(inner product) 거리가 통계적으로 보존됨 → Attention 정확도 보장
+                </div>
+            </div>
+        </div>
+
+        <!-- 기술 비교 -->
+        <div class="section">
+            <h2 class="section-title">PolarQuant vs QJL 비교</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>특성</th>
+                        <th>PolarQuant</th>
+                        <th>QJL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>주요 역할</strong></td>
+                        <td>극좌표 변환 및 데이터 균일화</td>
+                        <td>오차 보정 및 정확도 보증</td>
+                    </tr>
+                    <tr>
+                        <td><strong>압축 비트수</strong></td>
+                        <td>3비트 + 메타 1~2비트</td>
+                        <td>1비트 (오차)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>이론적 기반</strong></td>
+                        <td>극좌표 기하학</td>
+                        <td>Johnson-Lindenstrauss 보조정리</td>
+                    </tr>
+                    <tr>
+                        <td><strong>데이터 의존성</strong></td>
+                        <td>무관 (교정 불필요)</td>
+                        <td>무관 (통계적 보장)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>계산 복잡도</strong></td>
+                        <td>선형 (O(n))</td>
+                        <td>선형 (O(n))</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 기존 방법 vs TurboQuant -->
+        <div class="section">
+            <h2 class="section-title">기존 압축 방법 vs TurboQuant</h2>
+            <div class="grid-comparison">
+                <div class="comparison-card">
+                    <div class="comparison-card-title">SnapKV (기존)</div>
+                    <ul>
+                        <li>방식: 중요도 선별 후 데이터 삭제</li>
+                        <li>장점: 구현 단순</li>
+                        <li>단점: 정보 손실 불가피</li>
+                        <li>정확도: 감소 위험</li>
+                        <li>재학습: 필요</li>
+                    </ul>
+                </div>
+                <div class="comparison-card">
+                    <div class="comparison-card-title">양자화 (일반)</div>
+                    <ul>
+                        <li>방식: 정확도 레벨 선택 후 반올림</li>
+                        <li>장점: 표준화된 접근</li>
+                        <li>단점: 교정 데이터 필요</li>
+                        <li>정확도: 데이터 의존적</li>
+                        <li>재학습: 경우에 따라 필요</li>
+                    </ul>
+                </div>
+                <div class="comparison-card">
+                    <div class="comparison-card-title">TurboQuant (혁신)</div>
+                    <ul>
+                        <li>방식: 극좌표 변환 + 오차 보정</li>
+                        <li>장점: 최고 압축률, 무손실</li>
+                        <li>단점: 초기 구현 복잡</li>
+                        <li>정확도: 재학습 없이 보존</li>
+                        <li>재학습: 불필요</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 성능 지표 -->
+        <div class="section">
+            <h2 class="section-title">성능 지표 (KPI)</h2>
+            <ul>
+                <li><strong>메모리:</strong> 최대 6배 절감 (KV Cache 용량)
+                    <ul style="margin-top: 8px;">
+                        <li>예: 100GB → 16.7GB</li>
+                        <li>장대한 대화(수천 토큰)에서 더 큰 효과</li>
+                    </ul>
+                </li>
+                <li><strong>속도:</strong> NVIDIA H100 기준 최대 8배 향상
+                    <ul style="margin-top: 8px;">
+                        <li>메모리 대역폭 병목 해소</li>
+                        <li>배치 처리량 증가</li>
+                    </ul>
+                </li>
+                <li><strong>정확도:</strong> 재학습 없이 손실 없음
+                    <ul style="margin-top: 8px;">
+                        <li>Perplexity 지표 유지</li>
+                        <li>Task-specific 성능 보존</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 제번스 역설 (Jevons Paradox) -->
+        <div class="section">
+            <h2 class="section-title">시장 시사점 — 제번스 역설</h2>
+            <div class="highlight-box">
+                <strong>제번스 역설 (Jevons Paradox):</strong> 효율이 높아질수록 총 수요가 증가하는 경제 현상
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-title">역사적 사례: 증기기관 혁명</div>
+                <ul>
+                    <li><strong>1760년대:</strong> 제임스 와트(James Watt) 증기기관 효율 개선</li>
+                    <li><strong>예상:</strong> 석탄 소비 감소</li>
+                    <li><strong>실제 결과:</strong> 19세기 석탄 소비 10배 증가!</li>
+                    <li><strong>원인:</strong> 저렴해진 에너지 덕에 산업 확산 → 사용 사례 폭발적 증가</li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <div class="subsection-title">AI 메모리에 적용할 때</div>
+                <ul>
+                    <li><strong>TurboQuant 효과:</strong> 메모리당 처리 능력 6배 향상</li>
+                    <li><strong>인프라 비용 급락:</strong> GPU 수요 감소? → 아니다!</li>
+                    <li><strong>새로운 사용 사례:</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>엣지 디바이스에서 LLM 실행 가능</li>
+                            <li>개인화된 AI 어시스턴트 확산</li>
+                            <li>실시간 긴 맥락 처리 대중화</li>
+                            <li>다중 LLM 동시 운영 가능</li>
+                        </ul>
+                    </li>
+                    <li><strong>메모리 총수요:</strong> 오히려 증가 가능 (더 많은 모델, 더 긴 맥락)</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <strong>국내 반도체 기업에 시사:</strong> 삼성, SK하이닉스는 효율화 표준 적응과 함께 다양한 용도 개발 병행 필수. 메모리 수요 쇠퇴가 아닌 시장 구조 재편에 대비해야 함.
+            </div>
+        </div>
+
+        <!-- 타임라인 -->
+        <div class="section">
+            <h2 class="section-title">상용화 타임라인</h2>
+            <ul>
+                <li><strong>2026년 4월 (현재):</strong> ICLR 컨퍼런스 공식 발표 예정</li>
+                <li><strong>2026년 중반~후반:</strong> Google Gemini, Bard 등 자체 서비스에 우선 통합</li>
+                <li><strong>2026년 말~2027년:</strong> 오픈소스 구현 공개 가능성</li>
+                <li><strong>2027년 이후:</strong> 산업 표준화, 다양한 프레임워크 지원 확대</li>
+            </ul>
+        </div>
+
+        <!-- Related Knowledge -->
+        <div class="related-knowledge">
+            <div class="related-knowledge-title">관련 지식</div>
+            <div class="related-items">
+                <span class="related-item" data-id="semiconductor-basics">반도체 기초</span>
+                <span class="related-item" data-id="silicon-photonics">포토닉스 기술</span>
+                <span class="related-item" data-id="neocloud-ai-infrastructure">AI 인프라</span>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer">
+            <div class="source-info">
+                출처: <a href="https://www.tossbank.com/articles/turboquant" target="_blank">토스뱅크</a> · LaonPeople
+            </div>
+            <div class="created-date">카드 ID: turboquant-kv-cache</div>
+        </div>
+    </div>
+
+    <script>
+        // Card metadata
+        const cardMeta = {
+            id: 'turboquant-kv-cache',
+            title: 'TurboQuant — AI 메모리 병목의 종말',
+            accentColor: '#8b5cf6',
+            difficulty: '중급',
+            tags: ['AI', '반도체', '기술', '트렌드'],
+            date: '2026-04-04',
+            source: '토스뱅크 · LaonPeople',
+            sourceUrl: 'https://www.tossbank.com/articles/turboquant'
+        };
+
+        // Theme Management
+        const themeBtn = document.getElementById('themeBtn');
+        const htmlElement = document.documentElement;
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('ka-theme') || 'dark';
+            if (savedTheme === 'light') {
+                htmlElement.classList.remove('theme-dark');
+                themeBtn.textContent = '☀️';
+            } else {
+                htmlElement.classList.add('theme-dark');
+                themeBtn.textContent = '🌙';
+            }
+        }
+
+        themeBtn.addEventListener('click', () => {
+            htmlElement.classList.toggle('theme-dark');
+            const isDark = htmlElement.classList.contains('theme-dark');
+            localStorage.setItem('ka-theme', isDark ? 'dark' : 'light');
+            themeBtn.textContent = isDark ? '🌙' : '☀️';
+        });
+
+        // Download PNG
+        const downloadBtn = document.getElementById('downloadBtn');
+        downloadBtn.addEventListener('click', async () => {
+            downloadBtn.textContent = '⏳';
+            downloadBtn.disabled = true;
+
+            try {
+                const canvas = await html2canvas(document.querySelector('.card-container'), {
+                    backgroundColor: getComputedStyle(document.body).backgroundColor,
+                    scale: 2,
+                    logging: false
+                });
+
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL('image/png');
+                link.download = `${cardMeta.id}_${cardMeta.date}.png`;
+                link.click();
+
+                downloadBtn.textContent = '✓';
+                setTimeout(() => {
+                    downloadBtn.textContent = '📥';
+                    downloadBtn.disabled = false;
+                }, 2000);
+            } catch (err) {
+                console.error('Download failed:', err);
+                downloadBtn.textContent = '❌';
+                setTimeout(() => {
+                    downloadBtn.textContent = '📥';
+                    downloadBtn.disabled = false;
+                }, 2000);
+            }
+        });
+
+        // Print
+        const printBtn = document.getElementById('printBtn');
+        printBtn.addEventListener('click', () => {
+            window.print();
+        });
+
+        // Related items click handler
+        document.querySelectorAll('.related-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const id = item.getAttribute('data-id');
+                // Placeholder for navigation logic
+                console.log('Navigate to:', id);
+            });
+        });
+
+        // Initialize
+        initTheme();
+    </script>
+</body>
+</html>

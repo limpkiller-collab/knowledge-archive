@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2025년 AI 트렌드 리포트 — 4대 전환 흐름</title>
+  <meta name="knowledge-id" content="ai-trend-2025">
+  <meta name="knowledge-tags" content="AI,트렌드,기술,시장분석">
+  <meta name="knowledge-difficulty" content="입문">
+  <meta name="knowledge-date" content="2026-04-04">
+  <meta name="knowledge-source" content="LaonPeople 트렌드리포트">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #f43f5e; --accent2: #3b82f6;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(244,63,94,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #e11d48; --accent2: #2563eb;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(225,29,72,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%,
+        color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+
+    /* 뷰 메뉴 */
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--menu-border); background: var(--menu-bg);
+      color: var(--menu-text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(12px); transition: all 0.2s;
+    }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px;
+      background: var(--menu-bg); backdrop-filter: blur(16px);
+      border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px;
+      opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border: none; background: transparent;
+      color: var(--menu-text); font-size: 14px; font-family: inherit;
+      cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left;
+    }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    /* 뒤로가기 */
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      margin-bottom: 24px; padding: 6px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface); transition: background 0.15s;
+    }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    /* 히어로 */
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--text-secondary);
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 560px; margin: 0 auto; line-height: 1.7; }
+
+    /* 메타 바 */
+    .meta-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 36px;
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-beginner { background: var(--chip-green); color: var(--positive); }
+    .diff-intermediate { background: var(--chip-amber); color: var(--warning); }
+    .tag-chip { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+
+    /* 카드 */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease;
+      margin-bottom: 16px;
+    }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title {
+      font-size: 12px; font-weight: 700; color: var(--text-secondary);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px;
+    }
+
+    /* KPI 행 */
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    /* 하이라이트 박스 */
+    .highlight-box {
+      padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--chip-accent); font-size: 13.5px; line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .highlight-box strong { color: var(--accent); }
+
+    /* 트렌드 카드 그리드 */
+    .trend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+    .trend-card {
+      border-radius: 12px; padding: 22px; border: 1px solid var(--border);
+      background: var(--surface); position: relative; overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .trend-card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .trend-top-line { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+    .trend-num { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 6px; margin-top: 4px; }
+    .trend-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+    .trend-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 10px; }
+    .trend-stat {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 600; padding: 3px 10px;
+      border-radius: 99px; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+    }
+    html.theme-light .trend-stat { background: rgba(0,0,0,0.04); }
+    .trend-examples { margin-top: 10px; }
+    .trend-ex-label { font-size: 11px; color: var(--text-secondary); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .trend-ex-item { font-size: 12px; color: var(--text-secondary); display: flex; align-items: flex-start; gap: 6px; margin-bottom: 3px; }
+    .trend-ex-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-secondary); margin-top: 6px; flex-shrink: 0; }
+
+    /* 핵심 인사이트 */
+    .insight-list { display: flex; flex-direction: column; gap: 10px; }
+    .insight-item { display: flex; align-items: flex-start; gap: 12px; }
+    .insight-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .insight-text { font-size: 13.5px; line-height: 1.65; }
+    .insight-text strong { color: var(--text); font-weight: 600; }
+
+    /* 관련 지식 */
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+
+    @media (max-width: 640px) {
+      .trend-grid, .kpi-row { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+    }
+    @media print {
+      body { background: white !important; }
+      .viz-menu { display: none !important; }
+      .card { break-inside: avoid; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">🤖 AI 트렌드 2025</div>
+        <h1>2025년 AI 트렌드 리포트 — 4대 전환 흐름</h1>
+        <p class="hero-sub">실험·시연 단계에서 현장 중심 실용화로 — 자율 에이전트·버티컬·온디바이스·피지컬 AI가 주도하는 2025년 AI 지형도</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="diff-badge diff-beginner">입문</span>
+        <span class="tag-chip">#AI</span>
+        <span class="tag-chip">#트렌드</span>
+        <span class="tag-chip">#기술</span>
+        <span class="tag-chip">#시장분석</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.04
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          LaonPeople 트렌드리포트
+        </span>
+      </div>
+
+      <!-- KPI 행 -->
+      <div class="kpi-row animate d2" role="region" aria-label="2025 AI 시장 핵심 수치">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">45.8%</div>
+          <div class="kpi-label">AI 에이전트 CAGR</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:#f59e0b">147%</div>
+          <div class="kpi-label">팔란티어 주가 상승</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--positive)">350%</div>
+          <div class="kpi-label">피지컬 AI 5년 성장률</div>
+        </div>
+      </div>
+
+      <!-- 핵심 인사이트 -->
+      <div class="highlight-box animate d2">
+        2025년 AI는 <strong>범용 기술 경쟁 종료</strong>를 선언했다. 이제 승패는 기술력이 아닌 <strong>산업별 적용 깊이와 실행 속도</strong>로 결정되며, 4대 흐름이 현장을 바꾸고 있다.
+      </div>
+
+      <!-- 4대 트렌드 그리드 -->
+      <div class="trend-grid animate d3">
+        <!-- 1. 자율 에이전트 -->
+        <div class="trend-card">
+          <div class="trend-top-line" style="background:#f43f5e"></div>
+          <div style="padding-top:8px">
+            <div class="trend-num" style="color:#f43f5e">Trend 01</div>
+            <div class="trend-title">자율형 AI 에이전트</div>
+            <div class="trend-desc">
+              지시를 기다리지 않고 스스로 계획하고 실행한다. MCP로 여러 앱과 연동하고 RPA와 결합해 ERP 같은 기존 시스템까지 자동 제어한다.
+            </div>
+            <span class="trend-stat" style="color:#f43f5e">시장 76억→471억 달러 (2025→2030)</span>
+            <div class="trend-examples">
+              <div class="trend-ex-label">주요 사례</div>
+              <div class="trend-ex-item"><div class="trend-ex-dot"></div>OpenAI 오퍼레이터 — 웹브라우저 직접 제어</div>
+              <div class="trend-ex-item"><div class="trend-ex-dot"></div>Anthropic 컴퓨터 유즈 — PC 조작 자동화</div>
+              <div class="trend-ex-item"><div class="trend-ex-dot"></div>SKT 에스터(Aster) — 개인 AI 에이전트</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. 버티컬 AI -->
+        <div class="trend-card">
+          <div class="trend-top-line" style="background:#8b5cf6"></div>
+          <div style="padding-top:8px">
+            <div class="trend-num" style="color:#8b5cf6">Trend 02</div>
+            <div class="trend-title">버티컬(산업 특화) AI</div>
+            <div class="trend-desc">
+              특정 산업과 업무에 최적화된 맞춤형 AI 솔루션. 범용 AI가 기술적 토대를 제공하고 버티컬 AI가 실제 비즈니스 가치를 창출한다.
+            </div>
+            <span class="trend-stat" style="color:#8b5cf6">팔란티어 +147% · S&P 500 최고 상승</span>
+            <div class="trend-examples">
+              <div class="trend-ex-label">적용 분야</div>
+              <div class="trend-ex-item"><div class="trend-ex-dot"></div>의료 — 검사·진단 AI</div>
+              <div class="trend-ex-item"><div class="trend-ex-dot"></div>제조 — 공정 분석·품질 검사 AI</div>
+              <div class="trend-ex-item"><div class="trend-ex-dot"></div>이커머스 — X2B 특화 AI</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. 온디바이스 AI -->
+        <div class="trend-card">
+          <div class="trend-top-line" style="background:#06b6d4"></div>
+          <div style="padding-top:8px">
+            <div class="trend-num" style="color:#06b6d4">Trend 03</div>
+            <div class="trend-title">온디바이스 AI</div>
+            <div class="trend-desc">
+              클라우드 서버 없이 개인 기기 내부에서 직접 작동한다. 실시간 반응, 프라이버시 보호, 클라우드 비용 절감이 핵심 장점이다.
+            </div>
+            <span class="trend-stat" style="color:#06b6d4">SLM + NPU 기술 성숙 단계</span>
+            <div class="trend-examples">
+              <div class="trend-ex-label">주요 제품</div>
+              <div class="trend-ex-item"><div class="trend-ex-dot"></div>삼성 갤럭시 AI</div>
+              <div class="trend-ex-item"><div class="trend-ex-dot"></div>Apple Intelligence</div>
+              <div class="trend-ex-item"><div class="trend-ex-dot"></div>MS Copilot+ PC (NPU 탑재)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. 피지컬 AI -->
+        <div class="trend-card">
+          <div class="trend-top-line" style="background:#f97316"></div>
+          <div style="padding-top:8px">
+            <div class="trend-num" style="color:#f97316">Trend 04</div>
+            <div class="trend-title">피지컬 AI</div>
+            <div class="trend-desc">
+              AI가 로봇·자율주행차 등 물리적 기기와 결합해 실제 환경에서 작동한다. 두뇌(AI 모델) + 감각(센서) + 행동(액추에이터)이 통합된다.
+            </div>
+            <span class="trend-stat" style="color:#f97316">225억→643억 달러 · CAGR 23.3%</span>
+            <div class="trend-examples">
+              <div class="trend-ex-label">적용 사례</div>
+              <div class="trend-ex-item"><div class="trend-ex-dot"></div>Tesla 옵티머스 · 벤츠/길리 생산라인</div>
+              <div class="trend-ex-item"><div class="trend-ex-dot"></div>수술 로봇(다빈치) · 정밀 농업 드론</div>
+              <div class="trend-ex-item"><div class="trend-ex-dot"></div>스마트팩토리 · 자동화 창고</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 핵심 인사이트 카드 -->
+      <div class="card animate d4">
+        <div class="section-title">2025년 AI 전환의 본질</div>
+        <div class="insight-list">
+          <div class="insight-item">
+            <div class="insight-icon">🔄</div>
+            <div class="insight-text"><strong>실험 → 실용화</strong> — "될 것 같다"는 단계를 지나 실제 현장에서 비용·시간을 줄이는 단계로 진입</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-icon">🎯</div>
+            <div class="insight-text"><strong>범용 경쟁 종료</strong> — GPT vs Claude 경쟁보다 "어느 산업에 얼마나 깊이 적용했는가"가 관건</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-icon">⚡</div>
+            <div class="insight-text"><strong>속도가 승패 결정</strong> — 기술 격차는 좁혀지고 있어 적용 깊이와 실행 속도가 경쟁우위의 핵심</div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-icon">🤝</div>
+            <div class="insight-text"><strong>에이전트 협업(A2A)</strong> — AI 간 Agent-to-Agent 협업이 등장하며 단일 AI를 넘어 에이전트 생태계로 진화</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 피지컬 AI 시장 -->
+      <div class="card animate d4">
+        <div class="section-title">피지컬 AI 시장 규모 전망</div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:5px;">
+              <span style="font-weight:500;">2025년 현재</span>
+              <span style="font-weight:700; color:#f97316;">약 225억 달러</span>
+            </div>
+            <div style="height:8px; background:var(--border); border-radius:99px; overflow:hidden;">
+              <div style="height:100%; width:35%; border-radius:99px; background:#f97316;"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:5px;">
+              <span style="font-weight:500;">2030년 예상</span>
+              <span style="font-weight:700; color:#f97316;">약 643억 달러</span>
+            </div>
+            <div style="height:8px; background:var(--border); border-radius:99px; overflow:hidden;">
+              <div style="height:100%; width:100%; border-radius:99px; background:#f97316; opacity:0.85;"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:5px;">
+              <span style="font-weight:500;">휴머노이드 로봇 (2035년)</span>
+              <span style="font-weight:700; color:var(--text-secondary);">약 380억 달러</span>
+            </div>
+            <div style="height:8px; background:var(--border); border-radius:99px; overflow:hidden;">
+              <div style="height:100%; width:59%; border-radius:99px; background:#888;"></div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:12px; color:var(--text-secondary); margin-top:12px;">* 현재 휴머노이드 가격 5만~40만 달러로 대중화 제약이 있으나 빠르게 하락 중</p>
+      </div>
+
+      <!-- 관련 지식 -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="ai-agent-cli-vs-mcp.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">AI 에이전트 구현의 두 갈래 — CLI vs MCP</div>
+          </a>
+          <a href="neocloud-ai-infrastructure.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">네오클라우드 — AI 인프라 시대의 도래</div>
+          </a>
+          <a href="semiconductor-basics.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">반도체 기초 — AI 칩 경쟁의 배경</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">출처: LaonPeople 트렌드리포트 — 2025년 AI 어디까지 왔나 (laonpeople.com)</p>
+
+    </div>
+  </main>
+
+  <script>
+    var THEMES = ['theme-dark', 'theme-light'];
+    var THEME_LABELS = { 'theme-dark': 'Dark', 'theme-light': 'Light' };
+
+    (function() {
+      var saved = localStorage.getItem('ka-theme') || 'theme-dark';
+      document.documentElement.className = saved;
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[saved];
+    })();
+
+    function cycleTheme() {
+      var cur = document.documentElement.className;
+      var next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+      document.documentElement.className = next;
+      localStorage.setItem('ka-theme', next);
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[next];
+      closeMenu();
+    }
+
+    function toggleMenu() { document.getElementById('vizMenuDropdown').classList.toggle('open'); }
+    function closeMenu() { document.getElementById('vizMenuDropdown').classList.remove('open'); }
+    document.addEventListener('click', function(e) { if (!e.target.closest('.viz-menu')) closeMenu(); });
+
+    function downloadImage() {
+      closeMenu();
+      if (typeof htmlToImage === 'undefined') { alert('라이브러리 로딩 중...'); return; }
+      htmlToImage.toPng(document.getElementById('main'), { pixelRatio: 2 })
+        .then(function(dataUrl) {
+          var a = document.createElement('a');
+          a.download = 'ai-trend-2025.png';
+          a.href = dataUrl;
+          a.click();
+        });
+    }
+  </script>
+</body>
+</html>

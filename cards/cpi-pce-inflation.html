@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPI vs PCE — 미국 인플레이션 지표 핵심 비교</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --accent: #f59e0b;
+            --accent-light: #fef3c7;
+            --accent-dark: #d97706;
+
+            --bg-light: #ffffff;
+            --bg-secondary-light: #f9fafb;
+            --text-light: #1f2937;
+            --text-secondary-light: #6b7280;
+            --border-light: #e5e7eb;
+
+            --bg-dark: #1a1a1a;
+            --bg-secondary-dark: #2d2d2d;
+            --text-dark: #f3f4f6;
+            --text-secondary-dark: #d1d5db;
+            --border-dark: #404040;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.theme-dark {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 32px 20px;
+            background-color: var(--bg-light);
+            min-height: 100vh;
+        }
+
+        body.theme-dark .container {
+            background-color: var(--bg-dark);
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            gap: 16px;
+        }
+
+        .header-content h1 {
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            color: var(--text-light);
+        }
+
+        body.theme-dark .header-content h1 {
+            color: var(--text-dark);
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            background-color: var(--accent-light);
+            color: var(--accent-dark);
+        }
+
+        .source {
+            font-size: 13px;
+            color: var(--text-secondary-light);
+            margin-top: 8px;
+        }
+
+        body.theme-dark .source {
+            color: var(--text-secondary-dark);
+        }
+
+        .source a {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--accent);
+        }
+
+        .source a:hover {
+            text-decoration: underline;
+        }
+
+        /* View Menu */
+        .view-menu {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .view-btn {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-light);
+            background-color: var(--bg-secondary-light);
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        body.theme-dark .view-btn {
+            border-color: var(--border-dark);
+            background-color: var(--bg-secondary-dark);
+            color: var(--text-dark);
+        }
+
+        .view-btn:hover {
+            background-color: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* Back Button */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 24px;
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            gap: 10px;
+        }
+
+        .back-link::before {
+            content: "←";
+        }
+
+        /* KPI Grid */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin: 32px 0;
+        }
+
+        .kpi-card {
+            padding: 20px;
+            border-radius: 8px;
+            background-color: var(--bg-secondary-light);
+            border-left: 4px solid var(--accent);
+            transition: all 0.2s;
+        }
+
+        body.theme-dark .kpi-card {
+            background-color: var(--bg-secondary-dark);
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .kpi-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        body.theme-dark .kpi-label {
+            color: var(--text-secondary-dark);
+        }
+
+        .kpi-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+
+        .kpi-desc {
+            font-size: 13px;
+            color: var(--text-secondary-light);
+            line-height: 1.4;
+        }
+
+        body.theme-dark .kpi-desc {
+            color: var(--text-secondary-dark);
+        }
+
+        /* Content Sections */
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        body.theme-dark .section-title {
+            color: var(--text-dark);
+        }
+
+        .section-title::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 24px;
+            background-color: var(--accent);
+            border-radius: 2px;
+        }
+
+        .content-box {
+            padding: 20px;
+            border-radius: 8px;
+            background-color: var(--bg-secondary-light);
+            border: 1px solid var(--border-light);
+            margin-bottom: 16px;
+        }
+
+        body.theme-dark .content-box {
+            background-color: var(--bg-secondary-dark);
+            border-color: var(--border-dark);
+        }
+
+        .content-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-light);
+        }
+
+        body.theme-dark .content-box h3 {
+            color: var(--text-dark);
+        }
+
+        .content-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .content-box li {
+            padding-left: 20px;
+            margin-bottom: 8px;
+            position: relative;
+            color: var(--text-secondary-light);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        body.theme-dark .content-box li {
+            color: var(--text-secondary-dark);
+        }
+
+        .content-box li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* Comparison Grid */
+        .compare-grid {
+            overflow-x: auto;
+            margin-bottom: 24px;
+        }
+
+        .compare-grid table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--bg-light);
+        }
+
+        body.theme-dark .compare-grid table {
+            background-color: var(--bg-dark);
+        }
+
+        .compare-grid th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 14px;
+            background-color: var(--accent);
+            color: white;
+            border: 1px solid var(--accent-dark);
+        }
+
+        .compare-grid td {
+            padding: 14px 16px;
+            border: 1px solid var(--border-light);
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        body.theme-dark .compare-grid td {
+            border-color: var(--border-dark);
+            color: var(--text-dark);
+        }
+
+        .compare-grid tr:nth-child(even) {
+            background-color: var(--bg-secondary-light);
+        }
+
+        body.theme-dark .compare-grid tr:nth-child(even) {
+            background-color: var(--bg-secondary-dark);
+        }
+
+        .compare-grid tbody tr:hover {
+            background-color: var(--accent-light);
+        }
+
+        body.theme-dark .compare-grid tbody tr:hover {
+            background-color: rgba(245, 158, 11, 0.1);
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            padding: 24px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--accent-light) 0%, rgba(245, 158, 11, 0.05) 100%);
+            border: 2px solid var(--accent);
+            margin-bottom: 24px;
+        }
+
+        body.theme-dark .highlight-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.02) 100%);
+            border-color: var(--accent);
+        }
+
+        .highlight-box h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 12px;
+        }
+
+        body.theme-dark .highlight-box h3 {
+            color: var(--accent);
+        }
+
+        .highlight-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .highlight-box li {
+            padding-left: 28px;
+            margin-bottom: 10px;
+            position: relative;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-light);
+        }
+
+        body.theme-dark .highlight-box li {
+            color: var(--text-dark);
+        }
+
+        .highlight-box li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        /* Related Knowledge */
+        .related-knowledge {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        body.theme-dark .related-knowledge {
+            border-top-color: var(--border-dark);
+        }
+
+        .related-knowledge h3 {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-secondary-light);
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        body.theme-dark .related-knowledge h3 {
+            color: var(--text-secondary-dark);
+        }
+
+        .knowledge-tag {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 4px;
+            border-radius: 4px;
+            background-color: var(--accent-light);
+            color: var(--accent-dark);
+            font-size: 12px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .knowledge-tag:hover {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-light);
+            font-size: 12px;
+            color: var(--text-secondary-light);
+            text-align: right;
+        }
+
+        body.theme-dark .footer {
+            border-top-color: var(--border-dark);
+            color: var(--text-secondary-dark);
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background-color: white;
+                color: #000;
+            }
+
+            .view-menu, .back-link {
+                display: none;
+            }
+
+            .container {
+                max-width: 100%;
+                padding: 20px;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+            }
+
+            .header-content h1 {
+                font-size: 24px;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .compare-grid {
+                font-size: 12px;
+            }
+
+            .compare-grid td, .compare-grid th {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body class="theme-dark">
+    <div class="container">
+        <!-- Back Link -->
+        <a href="../index.html" class="back-link">인덱스로 돌아가기</a>
+
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <h1>CPI vs PCE<br>미국 인플레이션 지표 핵심 비교</h1>
+                <div class="header-meta">
+                    <span class="badge">경제</span>
+                    <span class="badge">금융</span>
+                    <span class="badge">투자</span>
+                    <span class="badge">입문</span>
+                </div>
+                <div class="source">
+                    출처: <a href="https://www.tossbank.com/articles/cpipce" target="_blank">토스뱅크</a> · 2026.04.04
+                </div>
+            </div>
+            <div class="view-menu">
+                <button class="view-btn" onclick="toggleTheme()" title="테마 전환">
+                    <span id="theme-icon">🌙</span>
+                </button>
+                <button class="view-btn" onclick="downloadPNG()" title="PNG 다운로드">
+                    💾
+                </button>
+                <button class="view-btn" onclick="window.print()" title="인쇄">
+                    🖨️
+                </button>
+            </div>
+        </div>
+
+        <!-- KPI Grid -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-label">PCE 목표</div>
+                <div class="kpi-value">2%</div>
+                <div class="kpi-desc">연준의 공식 인플레이션 목표 수준</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">CPI 발표</div>
+                <div class="kpi-value">매월 2주차</div>
+                <div class="kpi-desc">매월 2번째 주 화·수요일 발표</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">PCE 발표</div>
+                <div class="kpi-value">매월 마지막 주</div>
+                <div class="kpi-desc">매월 마지막 주 금요일 발표</div>
+            </div>
+        </div>
+
+        <!-- Section 1: 인플레이션 지표를 봐야 하는 이유 -->
+        <div class="section">
+            <h2 class="section-title">인플레이션 지표를 봐야 하는 이유</h2>
+
+            <div class="content-box">
+                <ul>
+                    <li><strong>연준(Fed)의 기준금리 결정에 직접 사용</strong><br>
+                    인플레이션 지표는 연준의 금리 결정 프레임워크의 핵심 입력값입니다.</li>
+                    <li><strong>금리 방향 = 자산 가격의 핵심 변수</strong><br>
+                    기준금리는 채권, 주식, 부동산 등 모든 자산 가격에 영향을 미칩니다.</li>
+                    <li><strong>"물가 상승 → 금리 인상 → 자산 가격 하락" 메커니즘 이해 필수</strong><br>
+                    인플레이션을 이해하는 것은 자산 배분 전략의 근간입니다.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 2: CPI -->
+        <div class="section">
+            <h2 class="section-title">CPI (Consumer Price Index, 소비자물가지수)</h2>
+
+            <div class="content-box">
+                <h3>정의</h3>
+                <p style="margin-bottom: 12px; color: var(--text-secondary-light);">
+                    소비자가 직접 구매하는 재화·서비스(주거비, 차량, 식료품 등)의 가격 변동을 측정합니다.
+                </p>
+            </div>
+
+            <div class="content-box">
+                <h3>발표 정보</h3>
+                <ul>
+                    <li>발표 기관: BLS(노동통계국)</li>
+                    <li>발표 주기: 매월 2번째 주 화·수요일</li>
+                    <li>시장 반응: 매우 빠르고 강함 (가장 즉각적인 영향)</li>
+                </ul>
+            </div>
+
+            <div class="content-box">
+                <h3>특징</h3>
+                <ul>
+                    <li><strong>헤드라인 CPI:</strong> 모든 품목 포함 (변동성 높음)</li>
+                    <li><strong>근원 CPI:</strong> 에너지·식품 제외 (기조 인플레이션 파악에 유용)</li>
+                    <li>시장 변동성을 가장 크게 유발하는 지표</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 3: PCE -->
+        <div class="section">
+            <h2 class="section-title">PCE (Personal Consumption Expenditures, 개인소비지출)</h2>
+
+            <div class="content-box">
+                <h3>정의</h3>
+                <p style="margin-bottom: 12px; color: var(--text-secondary-light);">
+                    소비자 직접 지출 + 고용주·정부 대신 지불한 간접 지출(건강보험 등)을 포함하여 측정합니다.
+                </p>
+            </div>
+
+            <div class="content-box">
+                <h3>발표 정보</h3>
+                <ul>
+                    <li>발표 기관: 상무부</li>
+                    <li>발표 주기: 매월 마지막 주 금요일</li>
+                    <li>정책 직결성: 연준의 공식 선호 인플레이션 지표</li>
+                </ul>
+            </div>
+
+            <div class="content-box">
+                <h3>특징</h3>
+                <ul>
+                    <li><strong>연준의 공식 인플레이션 목표: 2%</strong></li>
+                    <li>CPI보다 포괄적이고 낮게 산출되는 경향</li>
+                    <li>연준 정책 방향의 선행지표 역할</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 4: 비교표 -->
+        <div class="section">
+            <h2 class="section-title">CPI vs PCE 핵심 차이 비교</h2>
+
+            <div class="compare-grid">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>항목</th>
+                            <th>CPI</th>
+                            <th>PCE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>측정 범위</strong></td>
+                            <td>소비자 직접 구매만</td>
+                            <td>직접 + 간접 지출 포함</td>
+                        </tr>
+                        <tr>
+                            <td><strong>발표 기관</strong></td>
+                            <td>BLS (노동통계국)</td>
+                            <td>상무부</td>
+                        </tr>
+                        <tr>
+                            <td><strong>발표 시점</strong></td>
+                            <td>매월 2번째 주</td>
+                            <td>매월 마지막 주 금요일</td>
+                        </tr>
+                        <tr>
+                            <td><strong>시장 영향</strong></td>
+                            <td>즉각적 · 강함</td>
+                            <td>중기 정책 신호</td>
+                        </tr>
+                        <tr>
+                            <td><strong>연준 활용</strong></td>
+                            <td>참고 지표</td>
+                            <td>핵심 정책 지표</td>
+                        </tr>
+                        <tr>
+                            <td><strong>일반적 수치</strong></td>
+                            <td>PCE보다 0.3%p 높음</td>
+                            <td>CPI보다 낮게 산출</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 5: 투자 포인트 -->
+        <div class="section">
+            <h2 class="section-title">투자자가 봐야 할 포인트</h2>
+
+            <div class="highlight-box">
+                <h3>시장 변동성 관리 체크리스트</h3>
+                <ul>
+                    <li><strong>CPI 발표일:</strong> 시장 단기 변동성 최대 수준 (매월 2주차 화·수요일)</li>
+                    <li><strong>PCE 발표일:</strong> 연준 정책 방향의 선행지표 (매월 마지막 주 금요일)</li>
+                    <li><strong>근원 CPI/PCE 수치:</strong> 에너지·식품 제외 지표가 기조 인플레이션 파악에 더 유용</li>
+                    <li><strong>예상치 대비 편차:</strong> 0.1%p 초과도 시장에 큰 영향 (특히 PCE)</li>
+                    <li><strong>발표 시간:</strong> CPI는 EST 오전 8:30, PCE는 EST 오전 8:30 발표</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 6: 연준 이중 책무와의 연결 -->
+        <div class="section">
+            <h2 class="section-title">연준 이중 책무와의 연결</h2>
+
+            <div class="content-box">
+                <h3>연준의 공식 목표</h3>
+                <ul>
+                    <li><strong>물가 안정:</strong> PCE 2% 목표</li>
+                    <li><strong>최대 고용:</strong> 실업률 관리</li>
+                </ul>
+            </div>
+
+            <div class="content-box">
+                <h3>정책 신호 해석</h3>
+                <ul>
+                    <li><strong>PCE > 2% 지속:</strong> 금리 인상 신호 가능성 높음</li>
+                    <li><strong>PCE < 2% + 경기 침체:</strong> 금리 인하 기대 형성</li>
+                    <li><strong>근원 PCE 안정성:</strong> 연준의 추가 인상/인하 판단에 중요한 지표</li>
+                    <li><strong>Forward Guidance:</strong> 연준의 향후 금리 경로 설명에서 PCE 중심으로 서술</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Related Knowledge -->
+        <div class="related-knowledge">
+            <h3>관련 지식 카드</h3>
+            <a href="#" class="knowledge-tag">macro-economic-indicators</a>
+            <a href="#" class="knowledge-tag">stablecoin-basics</a>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Knowledge Card · CPI vs PCE — 미국 인플레이션 지표 핵심 비교<br>
+            ID: cpi-pce-inflation · Generated: 2026.04.04</p>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle
+        function initTheme() {
+            const saved = localStorage.getItem('ka-theme');
+            const isDark = saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+            if (isDark) {
+                document.body.classList.add('theme-dark');
+                updateThemeIcon();
+            } else {
+                document.body.classList.remove('theme-dark');
+                updateThemeIcon();
+            }
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('theme-dark');
+            const isDark = document.body.classList.contains('theme-dark');
+            localStorage.setItem('ka-theme', isDark ? 'dark' : 'light');
+            updateThemeIcon();
+        }
+
+        function updateThemeIcon() {
+            const icon = document.getElementById('theme-icon');
+            if (document.body.classList.contains('theme-dark')) {
+                icon.textContent = '☀️';
+            } else {
+                icon.textContent = '🌙';
+            }
+        }
+
+        // PNG Download
+        async function downloadPNG() {
+            const element = document.querySelector('.container');
+            try {
+                const canvas = await html2canvas(element, { scale: 2, useCORS: true });
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL('image/png');
+                link.download = 'cpi-pce-inflation_' + new Date().toISOString().slice(0,10) + '.png';
+                link.click();
+            } catch (e) {
+                alert('PNG 다운로드 중 오류가 발생했습니다.');
+                console.error(e);
+            }
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', initTheme);
+    </script>
+</body>
+</html>
