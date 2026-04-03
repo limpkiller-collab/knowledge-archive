@@ -260,6 +260,25 @@
       .header-stats { flex-direction: column; gap: 4px; }
     }
 
+    /* === Read Status === */
+    .read-btn {
+      position: absolute; top: 12px; right: 12px; z-index: 2;
+      width: 26px; height: 26px; border-radius: 50%;
+      border: 1.5px solid var(--border); background: var(--surface);
+      color: var(--text-secondary); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s; opacity: 0; pointer-events: all;
+      flex-shrink: 0;
+    }
+    .knowledge-card:hover .read-btn { opacity: 1; }
+    .knowledge-card.is-read .read-btn {
+      opacity: 1; background: var(--positive); border-color: var(--positive); color: #fff;
+    }
+    .knowledge-card.is-read {
+      opacity: 0.55;
+    }
+    .knowledge-card.is-read:hover { opacity: 1; }
+
     @media print {
       body { background: white !important; }
       .theme-toggle, .search-bar, .filter-section { display: none !important; }
@@ -285,6 +304,10 @@
             총 <strong id="totalCount">0</strong>개 지식
           </span>
           <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            읽음: <strong id="readCount">0</strong> / <strong id="totalCount2">0</strong>
+          </span>
+          <span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
             최근: <strong id="latestDate">-</strong>
           </span>
@@ -297,6 +320,12 @@
       </div>
 
       <div class="filter-section animate delay-2">
+        <div class="filter-row" id="readFilters" role="group" aria-label="읽음 필터" style="margin-bottom:8px">
+          <span class="filter-label">읽음</span>
+          <button class="filter-chip active" id="readChip-all" onclick="filterRead('all')">전체</button>
+          <button class="filter-chip" id="readChip-unread" onclick="filterRead('unread')">미읽음</button>
+          <button class="filter-chip" id="readChip-read" onclick="filterRead('read')">읽음 ✓</button>
+        </div>
         <div class="filter-row" id="tagFilters" role="group" aria-label="태그 필터">
           <span class="filter-label">태그</span>
           <!-- 동적 생성 -->
@@ -641,6 +670,33 @@
     // State
     var activeTag = 'all';
     var searchQuery = '';
+    var activeReadFilter = 'all';
+    var readStatus = {};
+
+    // === Read Status ===
+    function loadReadStatus() {
+      try { readStatus = JSON.parse(localStorage.getItem('ka-read-status') || '{}'); } catch(e) { readStatus = {}; }
+    }
+    function saveReadStatus() {
+      try { localStorage.setItem('ka-read-status', JSON.stringify(readStatus)); } catch(e) {}
+    }
+    function toggleRead(id, event) {
+      event.preventDefault();
+      event.stopPropagation();
+      readStatus[id] = !readStatus[id];
+      if (!readStatus[id]) delete readStatus[id];
+      saveReadStatus();
+      renderCards();
+      renderStats();
+    }
+    function filterRead(val) {
+      activeReadFilter = val;
+      ['all','unread','read'].forEach(function(v) {
+        var el = document.getElementById('readChip-' + v);
+        if (el) el.className = 'filter-chip' + (v === val ? ' active' : '');
+      });
+      renderCards();
+    }
 
     // === Render ===
     function getAllTags() {
@@ -678,7 +734,11 @@
             || k.tags.join(' ').toLowerCase().indexOf(q) !== -1
             || k.source.toLowerCase().indexOf(q) !== -1;
         }
-        return matchTag && matchSearch;
+        var isRead = !!readStatus[k.id];
+        var matchRead = activeReadFilter === 'all'
+          || (activeReadFilter === 'read' && isRead)
+          || (activeReadFilter === 'unread' && !isRead);
+        return matchTag && matchSearch && matchRead;
       });
     }
 
@@ -698,8 +758,11 @@
           var t = splitTitle(k.title);
           var titleHtml = '<div class="card-title">' + t.main + '</div>'
             + (t.sub ? '<div class="card-subtitle">' + t.sub + '</div>' : '');
-          html += '<a href="' + k.file + '" class="knowledge-card" role="listitem" style="animation-delay:' + (i * 0.05) + 's; --card-color:' + k.color + '">'
+          var isRead = !!readStatus[k.id];
+          var checkIcon = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+          html += '<a href="' + k.file + '" class="knowledge-card' + (isRead ? ' is-read' : '') + '" role="listitem" style="animation-delay:' + (i * 0.05) + 's; --card-color:' + k.color + '">'
             + '<div class="color-accent" style="background:' + k.color + '"></div>'
+            + '<button class="read-btn" onclick="toggleRead(\'' + k.id + '\', event)" title="' + (isRead ? '읽음 해제' : '읽음 표시') + '" aria-label="' + (isRead ? '읽음 해제' : '읽음 표시') + '">' + checkIcon + '</button>'
             + titleHtml
             + '<div class="card-summary">' + k.summary + '</div>'
             + '<div class="card-meta">'
@@ -721,6 +784,9 @@
 
     function renderStats() {
       document.getElementById('totalCount').textContent = KNOWLEDGE_DB.length;
+      document.getElementById('totalCount2').textContent = KNOWLEDGE_DB.length;
+      var readCnt = KNOWLEDGE_DB.filter(function(k) { return !!readStatus[k.id]; }).length;
+      document.getElementById('readCount').textContent = readCnt;
       if (KNOWLEDGE_DB.length > 0) {
         var sorted = KNOWLEDGE_DB.slice().sort(function(a, b) { return b.date.localeCompare(a.date); });
         document.getElementById('latestDate').textContent = sorted[0].date;
@@ -987,6 +1053,7 @@
     });
 
     // === Init ===
+    loadReadStatus();
     renderTagFilters();
     renderStats();
     renderCards();
