@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>감정평가 3방식</title>
+  <meta name="knowledge-id" content="property-appraisal-3methods">
+  <meta name="knowledge-tags" content="부동산,금융,개념정리,비교분석">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-04">
+  <meta name="knowledge-source" content="감정평가에 관한 규칙 · 감정평가사협회">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html.theme-dark{--bg:#0A0A0A;--surface:#141414;--surface-hover:#1C1C1C;--border:rgba(255,255,255,0.06);--text:#EDEDED;--text-secondary:#888;--accent:#f59e0b;--accent2:#3b82f6;--positive:#10b981;--negative:#f43f5e;--warning:#f59e0b;--chip-amber:rgba(245,158,11,0.12);--chip-green:rgba(16,185,129,0.12);--menu-bg:rgba(10,10,10,0.85);--menu-border:rgba(255,255,255,0.08);--menu-text:#EDEDED;--menu-item-hover:rgba(255,255,255,0.06);}
+    html.theme-light{--bg:#FAFAF9;--surface:#FFFFFF;--surface-hover:#F5F5F4;--border:#e5e5e5;--text:#1a1a1a;--text-secondary:#666;--accent:#d97706;--accent2:#2563eb;--positive:#059669;--negative:#e11d48;--warning:#d97706;--chip-amber:rgba(217,119,6,0.08);--chip-green:rgba(5,150,105,0.08);--menu-bg:rgba(255,255,255,0.92);--menu-border:rgba(0,0,0,0.08);--menu-text:#1a1a1a;--menu-item-hover:rgba(0,0,0,0.04);}
+    body{font-family:'Noto Sans KR','Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:-0.011em;transition:background 0.3s,color 0.3s;min-height:100vh;}
+    body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 70% 50% at 50% 10%,color-mix(in srgb,var(--accent),transparent 88%),transparent);}
+    h1{font-weight:700;letter-spacing:-0.03em;line-height:1.08;}h2{font-weight:600;letter-spacing:-0.02em;}h3{font-weight:600;letter-spacing:-0.02em;}
+    *:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px;}
+    .container{max-width:860px;margin:0 auto;padding:64px 24px 80px;}
+    .viz-menu{position:fixed;top:16px;right:16px;z-index:9999;}
+    .viz-menu-toggle{width:40px;height:40px;border-radius:10px;border:1px solid var(--menu-border);background:var(--menu-bg);color:var(--menu-text);cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px);transition:all 0.2s;}
+    .viz-menu-toggle:hover{background:var(--menu-item-hover);}
+    .viz-menu-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:196px;background:var(--menu-bg);backdrop-filter:blur(16px);border:1px solid var(--menu-border);border-radius:12px;padding:6px;opacity:0;visibility:hidden;transform:translateY(-8px) scale(0.96);transition:all 0.2s cubic-bezier(0.4,0,0.2,1);box-shadow:0 8px 32px rgba(0,0,0,0.25);}
+    .viz-menu-dropdown.open{opacity:1;visibility:visible;transform:translateY(0) scale(1);}
+    .viz-menu-dropdown button{width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;border:none;background:transparent;color:var(--menu-text);font-size:14px;font-family:inherit;cursor:pointer;border-radius:8px;transition:background 0.15s;text-align:left;}
+    .viz-menu-dropdown button:hover{background:var(--menu-item-hover);}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--accent);text-decoration:none;margin-bottom:24px;padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface);transition:background 0.15s;}
+    .nav-back:hover{background:var(--surface-hover);}
+    .hero{text-align:center;margin-bottom:32px;}
+    .hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:500;letter-spacing:0.04em;color:var(--text-secondary);text-transform:uppercase;margin-bottom:20px;}
+    .hero h1{font-size:clamp(1.8rem,4.5vw,2.8rem);margin-bottom:12px;}
+    .hero-sub{font-size:15px;color:var(--text-secondary);max-width:520px;margin:0 auto;line-height:1.7;}
+    .meta-bar{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:36px;font-size:12px;color:var(--text-secondary);}
+    .diff-badge{padding:2px 10px;border-radius:99px;font-size:11px;font-weight:600;border:1px solid var(--border);}
+    .diff-intermediate{background:var(--chip-amber);color:var(--warning);}
+    .tag-chip{padding:2px 10px;border-radius:99px;font-size:11px;font-weight:500;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);}
+    .meta-item{display:inline-flex;align-items:center;gap:4px;}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;transition:box-shadow 0.2s ease;margin-bottom:16px;}
+    html.theme-dark .card{box-shadow:0 0 0 1px var(--border);}html.theme-light .card{box-shadow:0 1px 3px rgba(0,0,0,0.05);}
+    .section-title{font-size:12px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px;}
+    .kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;}
+    .kpi-item{text-align:center;padding:18px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--border);}
+    .kpi-value{font-size:1.6rem;font-weight:700;letter-spacing:-0.03em;}
+    .kpi-label{font-size:11px;color:var(--text-secondary);font-weight:500;margin-top:4px;text-transform:uppercase;letter-spacing:0.04em;}
+    .highlight-box{background:color-mix(in srgb,var(--accent),transparent 90%);border:1px solid color-mix(in srgb,var(--accent),transparent 70%);border-radius:12px;padding:18px 22px;margin-bottom:20px;font-size:14px;line-height:1.7;}
+    .method-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px;}
+    .method-card{border-radius:12px;padding:20px;border:1px solid var(--border);background:var(--surface);}
+    .method-icon{font-size:2rem;margin-bottom:10px;}
+    .method-name{font-size:15px;font-weight:700;margin-bottom:4px;}
+    .method-sub{font-size:12px;color:var(--accent);font-weight:600;margin-bottom:10px;}
+    .method-desc{font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:10px;}
+    .method-formula{font-size:12px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'Inter',monospace;line-height:1.5;}
+    html.theme-light .method-formula{background:rgba(0,0,0,0.03);}
+    .method-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px;}
+    .method-tag{font-size:10px;padding:2px 8px;border-radius:99px;border:1px solid var(--border);color:var(--text-secondary);}
+    .bar-chart{display:flex;flex-direction:column;gap:10px;}
+    .bar-item{}
+    .bar-header{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;}
+    .bar-label{font-weight:500;}
+    .bar-value{color:var(--text-secondary);}
+    .bar-track{height:8px;background:var(--border);border-radius:99px;overflow:hidden;}
+    .bar-fill{height:100%;border-radius:99px;transition:width 1s ease;}
+    .related-section{margin-top:36px;}
+    .related-section h3{font-size:14px;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.06em;}
+    .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+    .related-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;text-decoration:none;color:var(--text);transition:background 0.15s,border-color 0.15s;display:block;}
+    .related-card:hover{background:var(--surface-hover);border-color:var(--accent);}
+    .r-label{font-size:11px;color:var(--accent);font-weight:600;margin-bottom:4px;}
+    .r-title{font-size:13px;font-weight:500;line-height:1.4;}
+    .footer-note{font-size:12px;color:var(--text-secondary);text-align:center;margin-top:32px;}
+    .animate{opacity:0;transform:translateY(16px);animation:fadeUp 0.5s ease forwards;}
+    .d1{animation-delay:0.05s;}.d2{animation-delay:0.12s;}.d3{animation-delay:0.19s;}.d4{animation-delay:0.26s;}.d5{animation-delay:0.33s;}
+    @keyframes fadeUp{to{opacity:1;transform:none;}}
+    @media(max-width:700px){.method-grid{grid-template-columns:1fr;}.kpi-row{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+  <nav class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>테마: <span id="themeLabel">Dark</span></button>
+      <button onclick="downloadImage()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG 저장</button>
+      <button onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>인쇄</button>
+    </div>
+  </nav>
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back animate d1">← 아카이브로 돌아가기</a>
+      <div class="hero animate d1">
+        <div class="hero-badge">🏠 부동산 · 감정평가</div>
+        <h1>감정평가 3방식</h1>
+        <p class="hero-sub">원가법·거래사례비교법·수익환원법 — 부동산 가치를 산정하는 세 가지 접근법과 유형별 적용 기준</p>
+      </div>
+      <div class="meta-bar animate d2">
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="tag-chip">#부동산</span><span class="tag-chip">#금융</span>
+        <span class="tag-chip">#개념정리</span><span class="tag-chip">#비교분석</span>
+        <span class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>2026.04.04</span>
+        <span class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>감정평가에 관한 규칙</span>
+      </div>
+      <div class="kpi-row animate d2">
+        <div class="kpi-item"><div class="kpi-value" style="color:var(--accent)">3</div><div class="kpi-label">감정평가 접근법</div></div>
+        <div class="kpi-item"><div class="kpi-value" style="color:var(--text-secondary)">원가·비교·수익</div><div class="kpi-label">3방식 약칭</div></div>
+        <div class="kpi-item"><div class="kpi-value" style="color:var(--positive)">시산가액</div><div class="kpi-label">방식별 산출 결과</div></div>
+      </div>
+      <div class="highlight-box animate d2">
+        감정평가사는 원칙적으로 <strong>3방식을 모두 적용</strong>해 각각 시산가액을 구한 뒤 합리적으로 조정·결정한다.
+        단, 물건 특성·자료 유무에 따라 일부 방식 생략이 가능하며,
+        <strong>주거용은 비교법, 수익형은 수익환원법, 특수물건은 원가법</strong>이 중심이 된다.
+      </div>
+      <div class="method-grid animate d3">
+        <div class="method-card">
+          <div class="method-icon">🏗️</div>
+          <div class="method-name">원가법</div>
+          <div class="method-sub">비용성 접근 (Cost Approach)</div>
+          <div class="method-desc">대상 물건을 <strong>새로 짓는 데 드는 비용</strong>에서 감가상각액을 공제해 현재 가치를 산정. 재조달원가 기준.</div>
+          <div class="method-formula">
+            적산가액 = 재조달원가 − 감가상각액<br>
+            감가상각 = 경제적 내용연수 기준<br>
+            (물리적 감가 + 기능적 감가 + 경제적 감가)
+          </div>
+          <div class="method-tags">
+            <span class="method-tag">신축건물</span>
+            <span class="method-tag">공장·창고</span>
+            <span class="method-tag">특수목적물</span>
+            <span class="method-tag">구분소유권 난한 경우</span>
+          </div>
+        </div>
+        <div class="method-card" style="border-color:color-mix(in srgb,var(--accent),transparent 70%)">
+          <div class="method-icon">🔍</div>
+          <div class="method-name">거래사례비교법</div>
+          <div class="method-sub">시장성 접근 (Sales Comparison)</div>
+          <div class="method-desc">유사 물건의 <strong>실제 거래 사례</strong>를 수집해 사정·시점·지역·개별 요인을 보정하여 가격 결정. 가장 보편적.</div>
+          <div class="method-formula">
+            비준가액 = 사례가격 × 사정보정<br>
+            × 시점수정 × 지역요인 × 개별요인<br>
+            (공시지가 기준법도 이 범주)
+          </div>
+          <div class="method-tags">
+            <span class="method-tag" style="border-color:var(--accent);color:var(--accent)">아파트·단독주택</span>
+            <span class="method-tag">근린상가</span>
+            <span class="method-tag">토지</span>
+          </div>
+        </div>
+        <div class="method-card">
+          <div class="method-icon">💰</div>
+          <div class="method-name">수익환원법</div>
+          <div class="method-sub">수익성 접근 (Income Approach)</div>
+          <div class="method-desc">대상 물건이 장래 창출할 <strong>순수익을 환원율로 나누어</strong> 현재 가치를 산정. DCF도 이 방식의 일종.</div>
+          <div class="method-formula">
+            수익가액 = 순수익(NOI) ÷ 환원율(Cap Rate)<br>
+            또는 DCF: Σ(연간 CF ÷ (1+r)^t)<br>
+            + 복귀가액 ÷ (1+r)^n
+          </div>
+          <div class="method-tags">
+            <span class="method-tag">오피스·물류센터</span>
+            <span class="method-tag">호텔·리조트</span>
+            <span class="method-tag">수익형부동산</span>
+          </div>
+        </div>
+      </div>
+      <div class="card animate d4">
+        <div class="section-title">물건 유형별 주된 적용 방식</div>
+        <div class="bar-chart">
+          <div class="bar-item"><div class="bar-header"><span class="bar-label">아파트 · 단독주택</span><span class="bar-value">거래사례비교법 중심</span></div><div class="bar-track"><div class="bar-fill" style="width:85%;background:var(--accent)"></div></div></div>
+          <div class="bar-item"><div class="bar-header"><span class="bar-label">오피스 · 상업용부동산</span><span class="bar-value">수익환원법 중심</span></div><div class="bar-track"><div class="bar-fill" style="width:80%;background:#10b981"></div></div></div>
+          <div class="bar-item"><div class="bar-header"><span class="bar-label">공장 · 창고 · 특수건물</span><span class="bar-value">원가법 중심</span></div><div class="bar-track"><div class="bar-fill" style="width:70%;background:#8b5cf6"></div></div></div>
+          <div class="bar-item"><div class="bar-header"><span class="bar-label">토지</span><span class="bar-value">공시지가기준법 + 비교법</span></div><div class="bar-track"><div class="bar-fill" style="width:75%;background:#06b6d4"></div></div></div>
+        </div>
+      </div>
+      <div class="card animate d4" style="font-size:13px;color:var(--text-secondary);line-height:1.8;">
+        <div class="section-title">은행 담보감정 실무 포인트</div>
+        <ul style="padding-left:20px;display:flex;flex-direction:column;gap:6px;">
+          <li><strong style="color:var(--text)">담보가율:</strong> 감정평가액 기준으로 LTV 적용 (아파트 통상 70~80%)</li>
+          <li><strong style="color:var(--text)">재평가 트리거:</strong> 담보물 가치 급락 시 추가 담보 요구 또는 기한이익 상실 가능</li>
+          <li><strong style="color:var(--text)">감정평가사 선정:</strong> 금융기관이 직접 의뢰 — 차주가 선정한 감정서는 내부 감정으로 대체 요구</li>
+          <li><strong style="color:var(--text)">시점 수정:</strong> 감정일 기준 → 심사일 사이 시장 변동을 별도 검토</li>
+        </ul>
+      </div>
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="auction-dividend-order.html" class="related-card"><div class="r-label">→ 관련</div><div class="r-title">경매 배당 순서</div></a>
+          <a href="public-price-system.html" class="related-card"><div class="r-label">→ 관련</div><div class="r-title">공시가격 체계</div></a>
+          <a href="redevelopment-vs-reconstruction.html" class="related-card"><div class="r-label">→ 관련</div><div class="r-title">재개발 vs 재건축</div></a>
+        </div>
+      </div>
+      <p class="footer-note animate d5">출처: 감정평가에 관한 규칙 · 감정평가 실무기준 · 한국감정평가사협회</p>
+    </div>
+  </main>
+  <script>
+    var THEMES=['theme-dark','theme-light'];var THEME_LABELS={'theme-dark':'Dark','theme-light':'Light'};
+    (function(){var s=localStorage.getItem('ka-theme')||'theme-dark';document.documentElement.className=s;var l=document.getElementById('themeLabel');if(l)l.textContent=THEME_LABELS[s];})();
+    function cycleTheme(){var c=document.documentElement.className;var n=THEMES[(THEMES.indexOf(c)+1)%THEMES.length];document.documentElement.className=n;localStorage.setItem('ka-theme',n);var l=document.getElementById('themeLabel');if(l)l.textContent=THEME_LABELS[n];closeMenu();}
+    function toggleMenu(){document.getElementById('vizMenuDropdown').classList.toggle('open');}
+    function closeMenu(){document.getElementById('vizMenuDropdown').classList.remove('open');}
+    document.addEventListener('click',function(e){if(!e.target.closest('.viz-menu'))closeMenu();});
+    function downloadImage(){closeMenu();if(typeof htmlToImage==='undefined'){alert('로딩 중...');return;}htmlToImage.toPng(document.getElementById('main'),{pixelRatio:2}).then(function(d){var a=document.createElement('a');a.download='property-appraisal-3methods.png';a.href=d;a.click();});}
+  </script>
+</body></html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>경매 배당 순서</title>
+  <meta name="knowledge-id" content="auction-dividend-order">
+  <meta name="knowledge-tags" content="부동산,법률,담보,개념정리">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-04">
+  <meta name="knowledge-source" content="민사집행법 · 주택임대차보호법">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #f43f5e; --accent2: #3b82f6;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #e11d48; --accent2: #2563eb;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif; background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased; letter-spacing: -0.011em;
+      transition: background 0.3s, color 0.3s; min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%, color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1{font-weight:700;letter-spacing:-0.03em;line-height:1.08;}
+    h2{font-weight:600;letter-spacing:-0.02em;}
+    h3{font-weight:600;letter-spacing:-0.02em;}
+    *:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px;}
+    .container{max-width:860px;margin:0 auto;padding:64px 24px 80px;}
+    .viz-menu{position:fixed;top:16px;right:16px;z-index:9999;}
+    .viz-menu-toggle{width:40px;height:40px;border-radius:10px;border:1px solid var(--menu-border);background:var(--menu-bg);color:var(--menu-text);cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px);transition:all 0.2s;}
+    .viz-menu-toggle:hover{background:var(--menu-item-hover);}
+    .viz-menu-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:196px;background:var(--menu-bg);backdrop-filter:blur(16px);border:1px solid var(--menu-border);border-radius:12px;padding:6px;opacity:0;visibility:hidden;transform:translateY(-8px) scale(0.96);transition:all 0.2s cubic-bezier(0.4,0,0.2,1);box-shadow:0 8px 32px rgba(0,0,0,0.25);}
+    .viz-menu-dropdown.open{opacity:1;visibility:visible;transform:translateY(0) scale(1);}
+    .viz-menu-dropdown button{width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;border:none;background:transparent;color:var(--menu-text);font-size:14px;font-family:inherit;cursor:pointer;border-radius:8px;transition:background 0.15s;text-align:left;}
+    .viz-menu-dropdown button:hover{background:var(--menu-item-hover);}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--accent);text-decoration:none;margin-bottom:24px;padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface);transition:background 0.15s;}
+    .nav-back:hover{background:var(--surface-hover);}
+    .hero{text-align:center;margin-bottom:32px;}
+    .hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:500;letter-spacing:0.04em;color:var(--text-secondary);text-transform:uppercase;margin-bottom:20px;}
+    .hero h1{font-size:clamp(1.8rem,4.5vw,2.8rem);margin-bottom:12px;}
+    .hero-sub{font-size:15px;color:var(--text-secondary);max-width:520px;margin:0 auto;line-height:1.7;}
+    .meta-bar{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:36px;font-size:12px;color:var(--text-secondary);}
+    .diff-badge{padding:2px 10px;border-radius:99px;font-size:11px;font-weight:600;border:1px solid var(--border);}
+    .diff-intermediate{background:var(--chip-amber);color:var(--warning);}
+    .tag-chip{padding:2px 10px;border-radius:99px;font-size:11px;font-weight:500;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);}
+    .meta-item{display:inline-flex;align-items:center;gap:4px;}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;transition:box-shadow 0.2s ease;}
+    html.theme-dark .card{box-shadow:0 0 0 1px var(--border);}
+    html.theme-light .card{box-shadow:0 1px 3px rgba(0,0,0,0.05);}
+    .section-title{font-size:12px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px;}
+    .kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;}
+    .kpi-item{text-align:center;padding:18px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--border);}
+    .kpi-value{font-size:1.6rem;font-weight:700;letter-spacing:-0.03em;}
+    .kpi-label{font-size:11px;color:var(--text-secondary);font-weight:500;margin-top:4px;text-transform:uppercase;letter-spacing:0.04em;}
+    .highlight-box{background:color-mix(in srgb,var(--accent),transparent 90%);border:1px solid color-mix(in srgb,var(--accent),transparent 70%);border-radius:12px;padding:18px 22px;margin-bottom:20px;font-size:14px;line-height:1.7;}
+    .priority-list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+    .priority-item{display:flex;align-items:flex-start;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
+    .priority-num{min-width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+    .priority-body{flex:1;}
+    .priority-title{font-size:14px;font-weight:600;margin-bottom:4px;}
+    .priority-desc{font-size:13px;color:var(--text-secondary);line-height:1.6;}
+    .priority-badge{display:inline-block;font-size:10px;font-weight:600;padding:1px 8px;border-radius:99px;margin-left:6px;vertical-align:middle;}
+    .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+    .era-card{border-radius:12px;padding:22px;border:1px solid var(--border);position:relative;overflow:hidden;}
+    .era-card .top-line{position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;}
+    .era-label{font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:10px;margin-top:4px;}
+    .era-title{font-size:1.1rem;font-weight:700;margin-bottom:12px;}
+    .era-item{display:flex;align-items:flex-start;gap:8px;font-size:13px;margin-bottom:8px;color:var(--text-secondary);}
+    .era-item strong{color:var(--text);font-weight:600;}
+    .era-dot{width:6px;height:6px;border-radius:50%;margin-top:6px;flex-shrink:0;}
+    .related-section{margin-top:36px;}
+    .related-section h3{font-size:14px;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.06em;}
+    .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+    .related-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;text-decoration:none;color:var(--text);transition:background 0.15s,border-color 0.15s;display:block;}
+    .related-card:hover{background:var(--surface-hover);border-color:var(--accent);}
+    .r-label{font-size:11px;color:var(--accent);font-weight:600;margin-bottom:4px;}
+    .r-title{font-size:13px;font-weight:500;line-height:1.4;}
+    .footer-note{font-size:12px;color:var(--text-secondary);text-align:center;margin-top:32px;}
+    .animate{opacity:0;transform:translateY(16px);animation:fadeUp 0.5s ease forwards;}
+    .d1{animation-delay:0.05s;}.d2{animation-delay:0.12s;}.d3{animation-delay:0.19s;}
+    .d4{animation-delay:0.26s;}.d5{animation-delay:0.33s;}
+    @keyframes fadeUp{to{opacity:1;transform:none;}}
+    @media(max-width:600px){.kpi-row{grid-template-columns:1fr;}.compare-grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+  <nav class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>테마: <span id="themeLabel">Dark</span></button>
+      <button onclick="downloadImage()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG 저장</button>
+      <button onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>인쇄</button>
+    </div>
+  </nav>
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back animate d1">← 아카이브로 돌아가기</a>
+      <div class="hero animate d1">
+        <div class="hero-badge">🏛️ 부동산 · 법률</div>
+        <h1>경매 배당 순서</h1>
+        <p class="hero-sub">낙찰대금은 누가 먼저 가져가는가 — 민사집행법상 배당 우선순위 완전 정리</p>
+      </div>
+      <div class="meta-bar animate d2">
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="tag-chip">#부동산</span><span class="tag-chip">#법률</span>
+        <span class="tag-chip">#담보</span><span class="tag-chip">#개념정리</span>
+        <span class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>2026.04.04</span>
+        <span class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>민사집행법 · 주택임대차보호법</span>
+      </div>
+      <div class="kpi-row animate d2">
+        <div class="kpi-item"><div class="kpi-value" style="color:var(--accent)">7단계</div><div class="kpi-label">배당 우선순위</div></div>
+        <div class="kpi-item"><div class="kpi-value" style="color:var(--warning)">5,500만</div><div class="kpi-label">최우선변제 한도 (서울)</div></div>
+        <div class="kpi-item"><div class="kpi-value" style="color:var(--positive)">按分</div><div class="kpi-label">동순위 시 처리 방식</div></div>
+      </div>
+      <div class="highlight-box animate d2">
+        경매 낙찰 후 배당은 <strong>법정 순위</strong>에 따라 엄격하게 집행된다.
+        담보권자도 소액임차인의 최우선변제권보다 후순위일 수 있으며,
+        같은 순위끼리는 채권액에 비례해 안분(按分)한다.
+        <strong>배당에서 남는 돈만 채무자에게 돌아간다.</strong>
+      </div>
+      <div class="card animate d3">
+        <div class="section-title">배당 우선순위 — 1순위가 먼저, 남은 금액만 다음 순위로</div>
+        <div class="priority-list">
+          <div class="priority-item">
+            <div class="priority-num" style="background:rgba(244,63,94,0.15);color:#f43f5e;">1</div>
+            <div class="priority-body">
+              <div class="priority-title">경매 집행비용 <span class="priority-badge" style="background:rgba(244,63,94,0.15);color:#f43f5e;">최우선</span></div>
+              <div class="priority-desc">법원 경매 진행 비용(감정료·공고료·집행관 수수료 등). 낙찰대금에서 가장 먼저 공제.</div>
+            </div>
+          </div>
+          <div class="priority-item">
+            <div class="priority-num" style="background:rgba(245,158,11,0.15);color:#f59e0b;">2</div>
+            <div class="priority-body">
+              <div class="priority-title">소액임차인 최우선변제권 <span class="priority-badge" style="background:rgba(245,158,11,0.15);color:#f59e0b;">주임법 §8</span></div>
+              <div class="priority-desc">일정 보증금 이하 임차인이 <strong>담보물권보다 먼저</strong> 소액을 변제받는 권리.<br>
+              서울 기준: 보증금 1억 6,500만 원 이하 → 최대 <strong>5,500만 원</strong> 최우선 변제.<br>
+              <em style="color:var(--warning)">※ 확정일자 불필요 — 전입신고+점유만 갖추면 됨</em></div>
+            </div>
+          </div>
+          <div class="priority-item">
+            <div class="priority-num" style="background:rgba(245,158,11,0.15);color:#f59e0b;">3</div>
+            <div class="priority-body">
+              <div class="priority-title">당해세 <span class="priority-badge" style="background:rgba(245,158,11,0.15);color:#f59e0b;">국세·지방세</span></div>
+              <div class="priority-desc">해당 부동산에 부과된 재산세·종합부동산세·취득세 등. 저당권보다 선순위.</div>
+            </div>
+          </div>
+          <div class="priority-item">
+            <div class="priority-num" style="background:rgba(16,185,129,0.15);color:#10b981;">4</div>
+            <div class="priority-body">
+              <div class="priority-title">임금·퇴직금·재해보상금 <span class="priority-badge" style="background:rgba(16,185,129,0.15);color:#10b981;">근로기준법 §38</span></div>
+              <div class="priority-desc">최종 3개월 임금, 3년치 퇴직금, 재해보상금은 담보물권·조세보다 우선. 초과분은 일반채권으로 후순위.</div>
+            </div>
+          </div>
+          <div class="priority-item">
+            <div class="priority-num" style="background:rgba(59,130,246,0.15);color:#3b82f6;">5</div>
+            <div class="priority-body">
+              <div class="priority-title">담보물권 (저당권·근저당권·전세권) <span class="priority-badge" style="background:rgba(59,130,246,0.15);color:#3b82f6;">설정일 순서</span></div>
+              <div class="priority-desc">등기 <strong>설정일 빠른 순서</strong>대로 배당. 같은 날이면 등기 접수번호 순.<br>근저당은 채권최고액 한도로 배당받는다(실채권 < 최고액이면 실채권만).</div>
+            </div>
+          </div>
+          <div class="priority-item">
+            <div class="priority-num" style="background:rgba(59,130,246,0.15);color:#3b82f6;">6</div>
+            <div class="priority-body">
+              <div class="priority-title">대항력+확정일자 임차인 <span class="priority-badge" style="background:rgba(59,130,246,0.15);color:#3b82f6;">주임법 §3의2</span></div>
+              <div class="priority-desc">전입신고+확정일자를 모두 갖춘 임차인. 확정일자 기준일과 저당권 설정일 선후를 비교해 우선순위 결정.</div>
+            </div>
+          </div>
+          <div class="priority-item">
+            <div class="priority-num" style="background:rgba(136,136,136,0.15);color:#888;">7</div>
+            <div class="priority-body">
+              <div class="priority-title">일반채권자 / 잔여분 채무자</div>
+              <div class="priority-desc">위 순위 배당 후 잔액을 안분. 부족하면 미변제로 남고, 채무자는 잔액이 있을 때만 돌려받는다.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="compare-grid animate d4">
+        <div class="era-card card" style="background:color-mix(in srgb,#f59e0b,transparent 92%)">
+          <div class="top-line" style="background:#f59e0b;"></div>
+          <div style="padding-top:8px">
+            <div class="era-label" style="color:#f59e0b;">⚠️ 은행 실무 포인트</div>
+            <div class="era-title" style="font-size:1rem;">담보 설정 전 확인사항</div>
+            <div class="era-item"><div class="era-dot" style="background:#f59e0b;"></div><div><strong>소액임차인 현황:</strong> 계약 전 전입세대 열람 필수</div></div>
+            <div class="era-item"><div class="era-dot" style="background:#f59e0b;"></div><div><strong>당해세 체납:</strong> 국세·지방세 완납증명서 징구</div></div>
+            <div class="era-item"><div class="era-dot" style="background:#f59e0b;"></div><div><strong>선순위 저당:</strong> 등기부 갑구·을구 전체 확인</div></div>
+            <div class="era-item"><div class="era-dot" style="background:#f59e0b;"></div><div><strong>채권최고액:</strong> 실채권의 110~120%로 설정</div></div>
+          </div>
+        </div>
+        <div class="era-card card" style="background:color-mix(in srgb,#3b82f6,transparent 92%)">
+          <div class="top-line" style="background:#3b82f6;"></div>
+          <div style="padding-top:8px">
+            <div class="era-label" style="color:#3b82f6;">📋 배당 계산 예시</div>
+            <div class="era-title" style="font-size:1rem;">낙찰가 3억, 근저당 2.4억</div>
+            <div class="era-item"><div class="era-dot" style="background:#3b82f6;"></div><div>① 집행비용 300만 공제 → 잔 2.97억</div></div>
+            <div class="era-item"><div class="era-dot" style="background:#3b82f6;"></div><div>② 소액임차인 최우선변제 (해당 시)</div></div>
+            <div class="era-item"><div class="era-dot" style="background:#3b82f6;"></div><div>③ 당해세 체납액 공제</div></div>
+            <div class="era-item"><div class="era-dot" style="background:#3b82f6;"></div><div>④ 근저당권자 → 잔액 한도 배당</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="property-appraisal-3methods.html" class="related-card"><div class="r-label">→ 관련</div><div class="r-title">감정평가 3방식</div></a>
+          <a href="public-price-system.html" class="related-card"><div class="r-label">→ 관련</div><div class="r-title">공시가격 체계</div></a>
+          <a href="redevelopment-vs-reconstruction.html" class="related-card"><div class="r-label">→ 관련</div><div class="r-title">재개발 vs 재건축</div></a>
+        </div>
+      </div>
+      <p class="footer-note animate d5">출처: 민사집행법 · 주택임대차보호법 · 국세기본법 · 근로기준법</p>
+    </div>
+  </main>
+  <script>
+    var THEMES=['theme-dark','theme-light'];
+    var THEME_LABELS={'theme-dark':'Dark','theme-light':'Light'};
+    (function(){var s=localStorage.getItem('ka-theme')||'theme-dark';document.documentElement.className=s;var l=document.getElementById('themeLabel');if(l)l.textContent=THEME_LABELS[s];})();
+    function cycleTheme(){var c=document.documentElement.className;var n=THEMES[(THEMES.indexOf(c)+1)%THEMES.length];document.documentElement.className=n;localStorage.setItem('ka-theme',n);var l=document.getElementById('themeLabel');if(l)l.textContent=THEME_LABELS[n];closeMenu();}
+    function toggleMenu(){document.getElementById('vizMenuDropdown').classList.toggle('open');}
+    function closeMenu(){document.getElementById('vizMenuDropdown').classList.remove('open');}
+    document.addEventListener('click',function(e){if(!e.target.closest('.viz-menu'))closeMenu();});
+    function downloadImage(){closeMenu();if(typeof htmlToImage==='undefined'){alert('로딩 중...');return;}htmlToImage.toPng(document.getElementById('main'),{pixelRatio:2}).then(function(d){var a=document.createElement('a');a.download='auction-dividend-order.png';a.href=d;a.click();});}
+  </script>
+</body>
+</html>

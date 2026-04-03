@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>커피 추출 과학</title>
+  <meta name="knowledge-id" content="coffee-extraction-science">
+  <meta name="knowledge-tags" content="음식,과학,개념정리,비교분석">
+  <meta name="knowledge-difficulty" content="입문">
+  <meta name="knowledge-date" content="2026-04-04">
+  <meta name="knowledge-source" content="SCA(Specialty Coffee Association) · 커피 과학 연구">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html.theme-dark{--bg:#0A0A0A;--surface:#141414;--surface-hover:#1C1C1C;--border:rgba(255,255,255,0.06);--text:#EDEDED;--text-secondary:#888;--accent:#8b5cf6;--accent2:#f59e0b;--positive:#10b981;--negative:#f43f5e;--warning:#f59e0b;--chip-purple:rgba(139,92,246,0.12);--chip-green:rgba(16,185,129,0.12);--chip-amber:rgba(245,158,11,0.12);--menu-bg:rgba(10,10,10,0.85);--menu-border:rgba(255,255,255,0.08);--menu-text:#EDEDED;--menu-item-hover:rgba(255,255,255,0.06);}
+    html.theme-light{--bg:#FAFAF9;--surface:#FFFFFF;--surface-hover:#F5F5F4;--border:#e5e5e5;--text:#1a1a1a;--text-secondary:#666;--accent:#7c3aed;--accent2:#d97706;--positive:#059669;--negative:#e11d48;--warning:#d97706;--chip-purple:rgba(124,58,237,0.08);--chip-green:rgba(5,150,105,0.08);--chip-amber:rgba(217,119,6,0.08);--menu-bg:rgba(255,255,255,0.92);--menu-border:rgba(0,0,0,0.08);--menu-text:#1a1a1a;--menu-item-hover:rgba(0,0,0,0.04);}
+    body{font-family:'Noto Sans KR','Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:-0.011em;transition:background 0.3s,color 0.3s;min-height:100vh;}
+    body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 70% 50% at 50% 10%,color-mix(in srgb,var(--accent),transparent 88%),transparent);}
+    h1{font-weight:700;letter-spacing:-0.03em;line-height:1.08;}h2,h3{font-weight:600;letter-spacing:-0.02em;}
+    *:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px;}
+    .container{max-width:860px;margin:0 auto;padding:64px 24px 80px;}
+    .viz-menu{position:fixed;top:16px;right:16px;z-index:9999;}
+    .viz-menu-toggle{width:40px;height:40px;border-radius:10px;border:1px solid var(--menu-border);background:var(--menu-bg);color:var(--menu-text);cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px);transition:all 0.2s;}
+    .viz-menu-toggle:hover{background:var(--menu-item-hover);}
+    .viz-menu-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:196px;background:var(--menu-bg);backdrop-filter:blur(16px);border:1px solid var(--menu-border);border-radius:12px;padding:6px;opacity:0;visibility:hidden;transform:translateY(-8px) scale(0.96);transition:all 0.2s cubic-bezier(0.4,0,0.2,1);box-shadow:0 8px 32px rgba(0,0,0,0.25);}
+    .viz-menu-dropdown.open{opacity:1;visibility:visible;transform:translateY(0) scale(1);}
+    .viz-menu-dropdown button{width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;border:none;background:transparent;color:var(--menu-text);font-size:14px;font-family:inherit;cursor:pointer;border-radius:8px;transition:background 0.15s;text-align:left;}
+    .viz-menu-dropdown button:hover{background:var(--menu-item-hover);}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--accent);text-decoration:none;margin-bottom:24px;padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface);transition:background 0.15s;}
+    .nav-back:hover{background:var(--surface-hover);}
+    .hero{text-align:center;margin-bottom:32px;}
+    .hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:500;letter-spacing:0.04em;color:var(--text-secondary);text-transform:uppercase;margin-bottom:20px;}
+    .hero h1{font-size:clamp(1.8rem,4.5vw,2.8rem);margin-bottom:12px;}
+    .hero-sub{font-size:15px;color:var(--text-secondary);max-width:520px;margin:0 auto;line-height:1.7;}
+    .meta-bar{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:36px;font-size:12px;color:var(--text-secondary);}
+    .diff-badge{padding:2px 10px;border-radius:99px;font-size:11px;font-weight:600;border:1px solid var(--border);}
+    .diff-beginner{background:var(--chip-green);color:var(--positive);}
+    .tag-chip{padding:2px 10px;border-radius:99px;font-size:11px;font-weight:500;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);}
+    .meta-item{display:inline-flex;align-items:center;gap:4px;}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;transition:box-shadow 0.2s ease;margin-bottom:16px;}
+    html.theme-dark .card{box-shadow:0 0 0 1px var(--border);}html.theme-light .card{box-shadow:0 1px 3px rgba(0,0,0,0.05);}
+    .section-title{font-size:12px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px;}
+    .kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;}
+    .kpi-item{text-align:center;padding:18px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--border);}
+    .kpi-value{font-size:1.6rem;font-weight:700;letter-spacing:-0.03em;}
+    .kpi-label{font-size:11px;color:var(--text-secondary);font-weight:500;margin-top:4px;text-transform:uppercase;letter-spacing:0.04em;}
+    .highlight-box{background:color-mix(in srgb,var(--accent),transparent 90%);border:1px solid color-mix(in srgb,var(--accent),transparent 70%);border-radius:12px;padding:18px 22px;margin-bottom:20px;font-size:14px;line-height:1.7;}
+  </style>
+</head>
+  <style>
+    .method-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px;}
+    .method-card{border-radius:12px;padding:20px;border:1px solid var(--border);background:var(--surface);}
+    .method-icon{font-size:2rem;margin-bottom:10px;}
+    .method-name{font-size:15px;font-weight:700;margin-bottom:4px;}
+    .method-sub{font-size:12px;color:var(--accent);font-weight:600;margin-bottom:10px;}
+    .method-desc{font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:10px;}
+    .method-formula{font-size:12px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:8px 12px;line-height:1.6;}
+    html.theme-light .method-formula{background:rgba(0,0,0,0.03);}
+    .method-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px;}
+    .method-tag{font-size:10px;padding:2px 8px;border-radius:99px;border:1px solid var(--border);color:var(--text-secondary);}
+    .var-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:0;}
+    .var-item{border-radius:10px;padding:14px 16px;border:1px solid var(--border);background:var(--surface);}
+    .var-name{font-size:13px;font-weight:700;margin-bottom:4px;}
+    .var-range{font-size:12px;color:var(--accent);font-weight:600;margin-bottom:4px;}
+    .var-desc{font-size:12px;color:var(--text-secondary);line-height:1.5;}
+    .bar-chart{display:flex;flex-direction:column;gap:10px;}
+    .bar-item{}
+    .bar-header{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;}
+    .bar-label{font-weight:500;}.bar-value{color:var(--text-secondary);}
+    .bar-track{height:8px;background:var(--border);border-radius:99px;overflow:hidden;}
+    .bar-fill{height:100%;border-radius:99px;}
+    .related-section{margin-top:36px;}
+    .related-section h3{font-size:14px;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.06em;}
+    .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+    .related-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;text-decoration:none;color:var(--text);transition:background 0.15s,border-color 0.15s;display:block;}
+    .related-card:hover{background:var(--surface-hover);border-color:var(--accent);}
+    .r-label{font-size:11px;color:var(--accent);font-weight:600;margin-bottom:4px;}
+    .r-title{font-size:13px;font-weight:500;line-height:1.4;}
+    .footer-note{font-size:12px;color:var(--text-secondary);text-align:center;margin-top:32px;}
+    .animate{opacity:0;transform:translateY(16px);animation:fadeUp 0.5s ease forwards;}
+    .d1{animation-delay:0.05s;}.d2{animation-delay:0.12s;}.d3{animation-delay:0.19s;}.d4{animation-delay:0.26s;}.d5{animation-delay:0.33s;}
+    @keyframes fadeUp{to{opacity:1;transform:none;}}
+    @media(max-width:700px){.method-grid{grid-template-columns:1fr;}.kpi-row{grid-template-columns:1fr;}.var-grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+  <nav class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>테마: <span id="themeLabel">Dark</span></button>
+      <button onclick="downloadImage()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PNG 저장</button>
+      <button onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>인쇄</button>
+    </div>
+  </nav>
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back animate d1">← 아카이브로 돌아가기</a>
+      <div class="hero animate d1">
+        <div class="hero-badge">☕ 음식 · 과학</div>
+        <h1>커피 추출 과학</h1>
+        <p class="hero-sub">에스프레소·드립·콜드브루 — 추출 원리부터 맛을 결정하는 변수까지, 커피 한 잔의 화학</p>
+      </div>
+      <div class="meta-bar animate d2">
+        <span class="diff-badge diff-beginner">입문</span>
+        <span class="tag-chip">#음식</span><span class="tag-chip">#과학</span>
+        <span class="tag-chip">#개념정리</span><span class="tag-chip">#비교분석</span>
+        <span class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>2026.04.04</span>
+        <span class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>SCA · 커피 과학 연구</span>
+      </div>
+      <div class="kpi-row animate d2">
+        <div class="kpi-item"><div class="kpi-value" style="color:var(--accent)">18~22%</div><div class="kpi-label">SCA 최적 추출수율</div></div>
+        <div class="kpi-item"><div class="kpi-value" style="color:var(--warning)">93°C</div><div class="kpi-label">드립 이상적 수온</div></div>
+        <div class="kpi-item"><div class="kpi-value" style="color:var(--positive)">1:15~1:17</div><div class="kpi-label">드립 커피:물 비율</div></div>
+      </div>
+      <div class="highlight-box animate d2">
+        커피 맛을 결정하는 건 원두만이 아니다. <strong>추출수율(Extraction Yield)</strong>이라는 지표가 핵심 —
+        원두 고형분 중 물에 녹아 나오는 비율이 18~22%일 때 최적의 균형을 이룬다.
+        그 이하는 <strong style="color:var(--warning)">과소추출(신맛·텁텁함)</strong>,
+        그 이상은 <strong style="color:var(--negative)">과다추출(쓴맛·떫음)</strong>.
+      </div>
+      <div class="method-grid animate d3">
+        <div class="method-card" style="border-color:color-mix(in srgb,var(--accent),transparent 60%)">
+          <div class="method-icon">☕</div>
+          <div class="method-name">에스프레소</div>
+          <div class="method-sub">고압 단시간 추출</div>
+          <div class="method-desc">9bar 압력으로 <strong>25~30초</strong> 만에 농축된 30ml를 추출. 크레마(거품층)는 압력이 만들어내는 에멀젼.</div>
+          <div class="method-formula">
+            분쇄도: 매우 가늘게<br>
+            수온: 90~96°C<br>
+            원두:물 = 1:2 (더블샷 기준)<br>
+            압력: 9bar
+          </div>
+          <div class="method-tags">
+            <span class="method-tag" style="border-color:var(--accent);color:var(--accent)">카페인 농도 최고</span>
+            <span class="method-tag">아메리카노 베이스</span>
+            <span class="method-tag">라떼·카푸치노</span>
+          </div>
+        </div>
+        <div class="method-card">
+          <div class="method-icon">🫗</div>
+          <div class="method-name">드립 (Pour Over)</div>
+          <div class="method-sub">중력 침투 추출</div>
+          <div class="method-desc">뜨거운 물이 <strong>중력</strong>으로 원두를 통과하며 성분을 녹여낸다. 뜸들이기(bloom) 30초가 CO₂를 제거해 추출 균일도를 높임.</div>
+          <div class="method-formula">
+            분쇄도: 중간 (설탕 크기)<br>
+            수온: 90~96°C<br>
+            원두:물 = 1:15~1:17<br>
+            총 추출 시간: 3~4분
+          </div>
+          <div class="method-tags">
+            <span class="method-tag">V60</span><span class="method-tag">칼리타</span>
+            <span class="method-tag">케멕스</span><span class="method-tag">향미 선명</span>
+          </div>
+        </div>
+        <div class="method-card">
+          <div class="method-icon">🧊</div>
+          <div class="method-name">콜드브루</div>
+          <div class="method-sub">상온·저온 장시간 침출</div>
+          <div class="method-desc"><strong>열 없이 시간</strong>으로 추출. 산성 화합물과 쓴맛 성분이 덜 용출되어 부드럽고 달콤한 맛. 카페인 함량은 드립보다 높다.</div>
+          <div class="method-formula">
+            분쇄도: 굵게<br>
+            수온: 상온~4°C (냉장)<br>
+            원두:물 = 1:8~1:10<br>
+            추출 시간: 8~24시간
+          </div>
+          <div class="method-tags">
+            <span class="method-tag">저산도</span><span class="method-tag">부드러운 맛</span>
+            <span class="method-tag" style="border-color:var(--negative);color:var(--negative)">카페인 주의</span>
+          </div>
+        </div>
+      </div>
+      <div class="card animate d4">
+        <div class="section-title">맛을 결정하는 4가지 핵심 변수</div>
+        <div class="var-grid">
+          <div class="var-item">
+            <div class="var-name">⚙️ 분쇄도 (Grind Size)</div>
+            <div class="var-range">가늘 → 굵 : 추출속도 증가</div>
+            <div class="var-desc">표면적을 결정. 가늘수록 물과 접촉면이 늘어 과다추출 위험. 방법마다 최적 분쇄도가 다르다. 버 그라인더가 블레이드보다 균일.</div>
+          </div>
+          <div class="var-item">
+            <div class="var-name">🌡️ 수온 (Water Temperature)</div>
+            <div class="var-range">권장: 90~96°C</div>
+            <div class="var-desc">높을수록 용해 속도 증가 → 쓴맛 성분도 더 잘 추출. 100°C 끓인 물은 과다추출 위험. 콜드브루는 온도로 이를 역이용.</div>
+          </div>
+          <div class="var-item">
+            <div class="var-name">⏱️ 추출 시간 (Contact Time)</div>
+            <div class="var-range">에스프레소 25~30초 / 드립 3~4분</div>
+            <div class="var-desc">짧으면 신맛·과소추출, 길면 쓴맛·과다추출. 분쇄도와 역비례 관계 — 분쇄도를 올리면 시간을 늘려 보정.</div>
+          </div>
+          <div class="var-item">
+            <div class="var-name">💧 물의 질 (Water Quality)</div>
+            <div class="var-range">TDS 75~250 ppm 권장</div>
+            <div class="var-desc">미네랄(마그네슘·칼슘)이 향미 화합물을 잡아당겨 추출을 돕는다. 증류수는 맛이 밋밋하고, 경수는 스케일·잡맛 유발.</div>
+          </div>
+        </div>
+      </div>
+      <div class="card animate d4">
+        <div class="section-title">추출 방식별 카페인 · 산도 · 바디감 비교</div>
+        <div class="bar-chart">
+          <div class="bar-item"><div class="bar-header"><span class="bar-label">카페인 농도 (per mL)</span><span class="bar-value">에스프레소 최고</span></div><div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--accent)"></div></div></div>
+          <div class="bar-item"><div class="bar-header"><span class="bar-label">총 카페인 (한 잔 기준)</span><span class="bar-value">드립 ≥ 콜드브루 > 에스프레소</span></div><div class="bar-track"><div class="bar-fill" style="width:75%;background:var(--warning)"></div></div></div>
+          <div class="bar-item"><div class="bar-header"><span class="bar-label">산도 (Acidity)</span><span class="bar-value">드립 > 에스프레소 > 콜드브루</span></div><div class="bar-track"><div class="bar-fill" style="width:65%;background:var(--positive)"></div></div></div>
+          <div class="bar-item"><div class="bar-header"><span class="bar-label">바디감 (Body)</span><span class="bar-value">에스프레소 > 콜드브루 > 드립</span></div><div class="bar-track"><div class="bar-fill" style="width:80%;background:#3b82f6"></div></div></div>
+        </div>
+      </div>
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="france-restaurant-guide.html" class="related-card"><div class="r-label">→ 관련</div><div class="r-title">프랑스 식당 완전 가이드</div></a>
+          <a href="france-wine-classification.html" class="related-card"><div class="r-label">→ 관련</div><div class="r-title">프랑스 와인 등급 체계</div></a>
+        </div>
+      </div>
+      <p class="footer-note animate d5">출처: SCA(Specialty Coffee Association) · Coffee Science Foundation · James Hoffmann "The World Atlas of Coffee"</p>
+    </div>
+  </main>
+  <script>
+    var THEMES=['theme-dark','theme-light'];var THEME_LABELS={'theme-dark':'Dark','theme-light':'Light'};
+    (function(){var s=localStorage.getItem('ka-theme')||'theme-dark';document.documentElement.className=s;var l=document.getElementById('themeLabel');if(l)l.textContent=THEME_LABELS[s];})();
+    function cycleTheme(){var c=document.documentElement.className;var n=THEMES[(THEMES.indexOf(c)+1)%THEMES.length];document.documentElement.className=n;localStorage.setItem('ka-theme',n);var l=document.getElementById('themeLabel');if(l)l.textContent=THEME_LABELS[n];closeMenu();}
+    function toggleMenu(){document.getElementById('vizMenuDropdown').classList.toggle('open');}
+    function closeMenu(){document.getElementById('vizMenuDropdown').classList.remove('open');}
+    document.addEventListener('click',function(e){if(!e.target.closest('.viz-menu'))closeMenu();});
+    function downloadImage(){closeMenu();if(typeof htmlToImage==='undefined'){alert('로딩 중...');return;}htmlToImage.toPng(document.getElementById('main'),{pixelRatio:2}).then(function(d){var a=document.createElement('a');a.download='coffee-extraction-science.png';a.href=d;a.click();});}
+  </script>
+</body></html>
