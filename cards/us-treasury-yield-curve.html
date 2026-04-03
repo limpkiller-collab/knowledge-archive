@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>미국채 수익률 곡선 — 장단기 금리차와 경기 신호 읽기</title>
+  <meta name="knowledge-id" content="us-treasury-yield-curve">
+  <meta name="knowledge-tags" content="경제,금융,투자,채권">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-04">
+  <meta name="knowledge-source" content="한국경제·AB자산운용·브런치">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #6366f1; --accent2: #f59e0b;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(99,102,241,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #4f46e5; --accent2: #d97706;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(79,70,229,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%,
+        color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--menu-border); background: var(--menu-bg); color: var(--menu-text); cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(12px); transition: all 0.2s; }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px; background: var(--menu-bg); backdrop-filter: blur(16px); border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px; opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96); transition: all 0.2s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: none; background: transparent; color: var(--menu-text); font-size: 14px; font-family: inherit; cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left; }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    .nav-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent); text-decoration: none; margin-bottom: 24px; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 560px; margin: 0 auto; line-height: 1.7; }
+
+    .meta-bar { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 36px; font-size: 12px; color: var(--text-secondary); }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-intermediate { background: var(--chip-amber); color: var(--warning); }
+    .tag-chip { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease; margin-bottom: 16px; }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
+
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    .highlight-box { padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border); background: var(--chip-accent); font-size: 13.5px; line-height: 1.7; margin-bottom: 16px; }
+    .highlight-box strong { color: var(--accent); }
+
+    /* 곡선 유형 카드 3열 */
+    .curve-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .curve-card { border-radius: 12px; padding: 18px; border: 1px solid var(--border); background: var(--surface); position: relative; overflow: hidden; }
+    .curve-top { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+    .curve-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 6px; margin-bottom: 8px; }
+    .curve-title { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .curve-desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 10px; }
+    .curve-signal { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 99px; display: inline-block; }
+
+    /* 스프레드 목록 */
+    .spread-list { display: flex; flex-direction: column; gap: 12px; }
+    .spread-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); }
+    .spread-name { font-size: 14px; font-weight: 600; }
+    .spread-desc { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+    .spread-badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 99px; background: var(--chip-accent); color: var(--accent); white-space: nowrap; }
+
+    /* 타임라인 */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .timeline-item { display: flex; gap: 16px; }
+    .timeline-left { display: flex; flex-direction: column; align-items: center; width: 32px; flex-shrink: 0; }
+    .timeline-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); flex-shrink: 0; margin-top: 4px; }
+    .timeline-line { width: 2px; flex: 1; background: var(--border); margin: 4px 0; min-height: 20px; }
+    .timeline-item:last-child .timeline-line { display: none; }
+    .timeline-right { padding-bottom: 20px; flex: 1; }
+    .timeline-year { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .timeline-content { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+    .timeline-content strong { color: var(--text); }
+
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+
+    @media (max-width: 640px) {
+      .curve-grid { grid-template-columns: 1fr; }
+      .kpi-row { grid-template-columns: 1fr 1fr; }
+      .container { padding: 48px 16px 60px; }
+    }
+    @media print {
+      body { background: white !important; }
+      .viz-menu { display: none !important; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">📈 채권 · 금리</div>
+        <h1>미국채 수익률 곡선 — 장단기 금리차와 경기 신호 읽기</h1>
+        <p class="hero-sub">수익률 곡선의 형태 변화는 경기 방향의 가장 신뢰도 높은 선행지표다. 역전이 말하는 것과 투자자가 대응해야 할 전략을 정리한다.</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="tag-chip">#경제</span>
+        <span class="tag-chip">#금융</span>
+        <span class="tag-chip">#투자</span>
+        <span class="tag-chip">#채권</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.04
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          한국경제 · AB자산운용
+        </span>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-row animate d2">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--negative)">6회</div>
+          <div class="kpi-label">역전 후 침체 사례 (1980~)</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">6~18개월</div>
+          <div class="kpi-label">역전 → 침체 평균 시차</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--positive)">3종</div>
+          <div class="kpi-label">핵심 모니터링 스프레드</div>
+        </div>
+      </div>
+
+      <!-- 핵심 인사이트 -->
+      <div class="highlight-box animate d2">
+        수익률 곡선 역전은 <strong>"단기금리 > 장기금리"</strong> 상태로, 1980년 이후 미국의 경기침체 6회 모두 역전이 선행했다. 단, 역전 자체가 침체를 '보장'하지는 않으며 <strong>역전 해소(재가팔화) 시점이 실제 침체 신호에 더 가깝다.</strong>
+      </div>
+
+      <!-- 곡선 3가지 형태 -->
+      <div class="curve-grid animate d3">
+        <div class="curve-card">
+          <div class="curve-top" style="background:#10b981"></div>
+          <div class="curve-label" style="color:#10b981; margin-top:10px;">정상 곡선</div>
+          <div class="curve-title">우상향 (Normal)</div>
+          <div class="curve-desc">장기금리 &gt; 단기금리. 미래 성장·인플레 기대가 높을 때 나타나는 정상 상태. 경기 확장 국면.</div>
+          <span class="curve-signal" style="background:rgba(16,185,129,0.12); color:#10b981;">경기 확장 신호</span>
+        </div>
+        <div class="curve-card">
+          <div class="curve-top" style="background:#f59e0b"></div>
+          <div class="curve-label" style="color:#f59e0b; margin-top:10px;">평탄 곡선</div>
+          <div class="curve-title">플랫 (Flat)</div>
+          <div class="curve-desc">장단기 금리차가 0에 수렴. 연준의 급격한 금리 인상 또는 경기 둔화 기대가 맞물릴 때 발생.</div>
+          <span class="curve-signal" style="background:rgba(245,158,11,0.12); color:#f59e0b;">경기 둔화 경고</span>
+        </div>
+        <div class="curve-card">
+          <div class="curve-top" style="background:#f43f5e"></div>
+          <div class="curve-label" style="color:#f43f5e; margin-top:10px;">역전 곡선</div>
+          <div class="curve-title">인버티드 (Inverted)</div>
+          <div class="curve-desc">단기금리 &gt; 장기금리. 시장이 장기 저성장·침체를 예상. 가장 강력한 경기침체 선행지표.</div>
+          <span class="curve-signal" style="background:rgba(244,63,94,0.12); color:#f43f5e;">경기침체 경보</span>
+        </div>
+      </div>
+
+      <!-- 핵심 스프레드 3가지 -->
+      <div class="card animate d3">
+        <div class="section-title">핵심 모니터링 스프레드</div>
+        <div class="spread-list">
+          <div class="spread-item">
+            <div>
+              <div class="spread-name">10년 - 2년 스프레드</div>
+              <div class="spread-desc">시장 참여자와 투자자가 가장 주목하는 지표. Bloomberg, FRED에서 실시간 확인 가능.</div>
+            </div>
+            <span class="spread-badge">시장 선호</span>
+          </div>
+          <div class="spread-item">
+            <div>
+              <div class="spread-name">10년 - 3개월 스프레드</div>
+              <div class="spread-desc">연준 및 학계가 선호. 경기침체 예측 정확도가 10Y-2Y보다 높다는 연구 결과 있음.</div>
+            </div>
+            <span class="spread-badge">연준 선호</span>
+          </div>
+          <div class="spread-item">
+            <div>
+              <div class="spread-name">30년 - 5년 스프레드</div>
+              <div class="spread-desc">장기 성장 기대와 인플레이션 프리미엄을 반영. 장기 투자 포트폴리오 조정 시 참고.</div>
+            </div>
+            <span class="spread-badge">장기 성장</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 투자 전략 타임라인 -->
+      <div class="card animate d4">
+        <div class="section-title">국면별 투자 대응 전략</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-left">
+              <div class="timeline-dot" style="background:#10b981"></div>
+              <div class="timeline-line"></div>
+            </div>
+            <div class="timeline-right">
+              <div class="timeline-year" style="color:#10b981">정상 곡선</div>
+              <div class="timeline-content"><strong>주식·장기채 선호.</strong> 경기 확장 국면 — 주식 비중 확대, 하이일드 채권 편입, 성장주 비중 유지</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left">
+              <div class="timeline-dot" style="background:#f59e0b"></div>
+              <div class="timeline-line"></div>
+            </div>
+            <div class="timeline-right">
+              <div class="timeline-year" style="color:#f59e0b">평탄화 진행</div>
+              <div class="timeline-content"><strong>방어적 조정 시작.</strong> 단기채·MMF 비중 확대, 주식 내 경기방어주(헬스케어·필수소비재) 이동</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left">
+              <div class="timeline-dot" style="background:#f43f5e"></div>
+              <div class="timeline-line"></div>
+            </div>
+            <div class="timeline-right">
+              <div class="timeline-year" style="color:#f43f5e">역전 발생</div>
+              <div class="timeline-content"><strong>장기채 매수 기회.</strong> 장기국채 ETF(TLT 등) 분할 매수 시작, 주식 방어주·배당주 전환, 현금 비중 확대</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left">
+              <div class="timeline-dot" style="background:#6366f1"></div>
+              <div class="timeline-line"></div>
+            </div>
+            <div class="timeline-right">
+              <div class="timeline-year" style="color:#6366f1">재가팔화 (스티프닝)</div>
+              <div class="timeline-content"><strong>실제 침체 임박 신호.</strong> 역전 해소 국면이 가장 위험한 시기. 연준 금리 인하 시작 → 이후 경기 회복 기대로 주식 비중 점진적 확대</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 역전 역사 -->
+      <div class="card animate d4">
+        <div class="section-title">주요 역전 사례와 결과</div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--surface); border:1px solid var(--border); border-radius:10px;">
+            <span style="font-size:13px; font-weight:600;">2000년 역전</span>
+            <span style="font-size:12px; color:var(--text-secondary);">→ 2001년 닷컴버블 붕괴·침체</span>
+            <span style="font-size:11px; color:var(--negative); font-weight:600;">약 12개월 후</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--surface); border:1px solid var(--border); border-radius:10px;">
+            <span style="font-size:13px; font-weight:600;">2006~07년 역전</span>
+            <span style="font-size:12px; color:var(--text-secondary);">→ 2008년 금융위기</span>
+            <span style="font-size:11px; color:var(--negative); font-weight:600;">약 18개월 후</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--surface); border:1px solid var(--border); border-radius:10px;">
+            <span style="font-size:13px; font-weight:600;">2022~2024년 역전</span>
+            <span style="font-size:12px; color:var(--text-secondary);">→ 연착륙 (침체 없이 해소)</span>
+            <span style="font-size:11px; color:var(--positive); font-weight:600;">역전 해소</span>
+          </div>
+        </div>
+        <p style="font-size:12px; color:var(--text-secondary); margin-top:12px;">* 2022~24년 사례는 역전이 항상 침체로 이어지지 않음을 보여준 중요한 반례</p>
+      </div>
+
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="fed-rate-mechanism.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">연준 금리결정 메커니즘 — FOMC·점도표</div>
+          </a>
+          <a href="bonds-vs-stocks.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">채권 vs 주식 자산배분 전략</div>
+          </a>
+          <a href="macro-economic-indicators.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">거시경제지표 완전 가이드</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">출처: 한국경제·AB자산운용·브런치 (2026.04.04 기준)</p>
+    </div>
+  </main>
+
+  <script>
+    var THEMES = ['theme-dark', 'theme-light'];
+    var THEME_LABELS = { 'theme-dark': 'Dark', 'theme-light': 'Light' };
+    (function() {
+      var saved = localStorage.getItem('ka-theme') || 'theme-dark';
+      document.documentElement.className = saved;
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[saved];
+    })();
+    function cycleTheme() {
+      var cur = document.documentElement.className;
+      var next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+      document.documentElement.className = next;
+      localStorage.setItem('ka-theme', next);
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[next];
+      closeMenu();
+    }
+    function toggleMenu() { document.getElementById('vizMenuDropdown').classList.toggle('open'); }
+    function closeMenu() { document.getElementById('vizMenuDropdown').classList.remove('open'); }
+    document.addEventListener('click', function(e) { if (!e.target.closest('.viz-menu')) closeMenu(); });
+    function downloadImage() {
+      closeMenu();
+      if (typeof htmlToImage === 'undefined') { alert('라이브러리 로딩 중...'); return; }
+      htmlToImage.toPng(document.getElementById('main'), { pixelRatio: 2 })
+        .then(function(dataUrl) {
+          var a = document.createElement('a');
+          a.download = 'us-treasury-yield-curve.png';
+          a.href = dataUrl; a.click();
+        });
+    }
+  </script>
+</body>
+</html>

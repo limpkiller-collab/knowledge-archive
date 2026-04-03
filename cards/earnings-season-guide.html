@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실적시즌 완전 가이드 — 어닝서프라이즈·가이던스·주가 반응</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body.theme-dark {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b4b4b4;
+            --text-tertiary: #808080;
+            --border-color: #333333;
+            --accent: #f97316;
+        }
+
+        body.theme-light {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --bg-tertiary: #eeeeee;
+            --text-primary: #0f0f0f;
+            --text-secondary: #4a4a4a;
+            --text-tertiary: #808080;
+            --border-color: #dddddd;
+            --accent: #f97316;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-back {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-back:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .viz-menu {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .theme-toggle, .download-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle:hover, .download-btn:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 3rem 1.5rem;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .kpi-card {
+            padding: 1.5rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .kpi-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-label {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+        }
+
+        /* Meta Bar */
+        .meta-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.875rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .meta-label {
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+
+        .meta-value {
+            color: var(--text-primary);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge.accent {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Content */
+        .content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .subsection-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .text-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        ul li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Inner Card Grid */
+        .inner-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .inner-card {
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .inner-card-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .inner-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .inner-card-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Bar Chart */
+        .chart-container {
+            margin-top: 1.5rem;
+        }
+
+        .chart-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .chart-bar {
+            height: 40px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .chart-fill {
+            height: 100%;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 0.5rem;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .chart-fill.positive {
+            background: #10b981;
+        }
+
+        .chart-fill.negative {
+            background: #ef4444;
+        }
+
+        /* Timeline */
+        .timeline {
+            margin-top: 1.5rem;
+        }
+
+        .timeline-item {
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent);
+            border-radius: 4px;
+        }
+
+        .timeline-number {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            margin-right: 0.75rem;
+        }
+
+        .timeline-content {
+            display: inline;
+            color: var(--text-secondary);
+        }
+
+        /* Related Knowledge */
+        .related-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .related-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .related-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .related-card {
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .related-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .related-card-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        .footer-note {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            text-align: center;
+            border-radius: 6px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 1.5rem;
+            }
+
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .inner-cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content {
+                padding: 1.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="theme-dark">
+    <!-- Header -->
+    <div class="header">
+        <a href="../index.html" class="nav-back">← 돌아가기</a>
+        <div class="viz-menu">
+            <button class="theme-toggle" onclick="toggleTheme()">🌙 테마</button>
+            <button class="download-btn" onclick="downloadCard()">⬇️ PNG</button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1 class="hero-title">실적시즌 완전 가이드</h1>
+        <p class="hero-subtitle">어닝서프라이즈 · 가이던스 · 주가 반응</p>
+        
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-value">4회</div>
+                <div class="kpi-label">연간 실적발표</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">6주</div>
+                <div class="kpi-label">시즌 지속기간</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">75%</div>
+                <div class="kpi-label">평균 어닝 비트율</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Meta Bar -->
+    <div class="meta-bar">
+        <div class="meta-item">
+            <span class="meta-label">난이도:</span>
+            <span class="badge accent">입문</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">태그:</span>
+            <span class="badge">금융</span>
+            <span class="badge">투자</span>
+            <span class="badge">주식</span>
+            <span class="badge">개념정리</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">출처:</span>
+            <span class="meta-value">키움증권 · SK증권 · 미래에셋증권</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">작성:</span>
+            <span class="meta-value">2026-04-04</span>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+        <!-- Section 1: 실적시즌이란 -->
+        <div class="section">
+            <h2 class="section-title">실적시즌(어닝시즌)이란?</h2>
+            <div class="text-content">
+                <ul>
+                    <li><strong>미국:</strong> 분기 종료 후 약 3~4주부터 시작, 약 6주간 지속</li>
+                    <li><strong>1분기(Q1):</strong> 4월 중순 시작</li>
+                    <li><strong>2분기(Q2):</strong> 7월 중순</li>
+                    <li><strong>3분기(Q3):</strong> 10월 중순</li>
+                    <li><strong>4분기(Q4):</strong> 1월 중순</li>
+                    <li><strong>시작 신호:</strong> 대형 금융주(JP모건, 씨티 등)가 스타트 신호탄</li>
+                    <li><strong>참여율:</strong> S&P 500 기업 85% 이상이 6주 안에 발표</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 2: 핵심 개념 4가지 -->
+        <div class="section">
+            <h2 class="section-title">핵심 개념 4가지</h2>
+            
+            <div class="inner-cards-grid">
+                <div class="inner-card">
+                    <div class="inner-card-label">1. 핵심개념</div>
+                    <div class="inner-card-title">EPS 컨센서스</div>
+                    <div class="inner-card-content">
+                        월가 애널리스트들의 평균 예상 EPS. Bloomberg, FactSet, Refinitiv 등에서 집계. 실적 발표의 기준선으로 작용.
+                    </div>
+                </div>
+
+                <div class="inner-card">
+                    <div class="inner-card-label">2. 핵심개념</div>
+                    <div class="inner-card-title">어닝서프라이즈</div>
+                    <div class="inner-card-content">
+                        실제 EPS > 컨센서스 = 비트(Beat). 실제 < 컨센서스 = 미스(Miss). 5% 이상 비트 시 강한 서프라이즈.
+                    </div>
+                </div>
+
+                <div class="inner-card">
+                    <div class="inner-card-label">3. 핵심개념</div>
+                    <div class="inner-card-title">가이던스</div>
+                    <div class="inner-card-content">
+                        다음 분기/연간 실적 전망치. 어닝 비트보다 가이던스가 더 중요한 경우 많음. 상향/하향 여부가 주가 방향 결정.
+                    </div>
+                </div>
+
+                <div class="inner-card">
+                    <div class="inner-card-label">4. 핵심개념</div>
+                    <div class="inner-card-title">이익모멘텀</div>
+                    <div class="inner-card-content">
+                        시간이 지나며 컨센서스 상향 조정 → 긍정적 모멘텀. 실적시즌 직전 1개월 FQ1 영업이익 변화율 측정.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: 주가 반응 패턴 -->
+        <div class="section">
+            <h2 class="section-title">주가 반응 패턴</h2>
+            
+            <div class="chart-container">
+                <div class="chart-item">
+                    <div class="chart-label">최상: 어닝 비트 + 가이던스 상향</div>
+                    <div class="chart-bar">
+                        <div class="chart-fill positive" style="width: 100%;">강한 주가 상승</div>
+                    </div>
+                </div>
+
+                <div class="chart-item">
+                    <div class="chart-label">혼조: 어닝 비트 + 가이던스 유지</div>
+                    <div class="chart-bar">
+                        <div class="chart-fill positive" style="width: 60%;">소폭 상승 또는 횡보</div>
+                    </div>
+                </div>
+
+                <div class="chart-item">
+                    <div class="chart-label">실망: 어닝 비트 + 가이던스 하향</div>
+                    <div class="chart-bar">
+                        <div class="chart-fill negative" style="width: 70%;">주가 하락 (비싸게 사서 뉴스에 팔기)</div>
+                    </div>
+                </div>
+
+                <div class="chart-item">
+                    <div class="chart-label">최악: 어닝 미스 + 가이던스 하향</div>
+                    <div class="chart-bar">
+                        <div class="chart-fill negative" style="width: 100%;">급락</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: 실전 체크리스트 -->
+        <div class="section">
+            <h2 class="section-title">실전 체크리스트 (발표 당일)</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="timeline-number">1</span>
+                    <span class="timeline-content">실제 EPS vs 컨센서스 EPS 비교</span>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-number">2</span>
+                    <span class="timeline-content">매출액(Revenue) 컨센서스 대비 확인</span>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-number">3</span>
+                    <span class="timeline-content">다음 분기 가이던스 vs 시장 기대치</span>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-number">4</span>
+                    <span class="timeline-content">주주환원 정책 (배당 증액, 자사주 매입) 변화</span>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-number">5</span>
+                    <span class="timeline-content">경영진 컨퍼런스콜 어조 (낙관/비관)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Knowledge -->
+        <div class="related-section">
+            <h3 class="related-title">관련 지식 카드</h3>
+            <div class="related-cards">
+                <a href="stock-valuation-per-pbr.html" class="related-card">
+                    <div class="related-card-title">PER · PBR 주가배수</div>
+                </a>
+                <a href="macro-economic-indicators.html" class="related-card">
+                    <div class="related-card-title">거시경제지표</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-note">
+            <strong>Knowledge Archive</strong> · 지식 카드는 학습을 돕기 위한 참고 자료입니다. 투자 결정은 전문가 상담 후 신중하게 진행하세요.
+        </div>
+    </div>
+
+    <script>
+        const cardId = 'earnings-season-guide';
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('theme-dark');
+            
+            if (isDark) {
+                html.classList.remove('theme-dark');
+                html.classList.add('theme-light');
+                document.body.classList.remove('theme-dark');
+                document.body.classList.add('theme-light');
+                localStorage.setItem('ka-theme', 'light');
+            } else {
+                html.classList.remove('theme-light');
+                html.classList.add('theme-dark');
+                document.body.classList.remove('theme-light');
+                document.body.classList.add('theme-dark');
+                localStorage.setItem('ka-theme', 'dark');
+            }
+        }
+
+        function downloadCard() {
+            alert('PNG 다운로드 기능은 준비 중입니다. 브라우저 인쇄(Ctrl+P 또는 Cmd+P) → PDF로 저장으로 이용해주세요.');
+        }
+
+        // 테마 복원
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('ka-theme');
+            if (savedTheme === 'light') {
+                document.documentElement.classList.remove('theme-dark');
+                document.documentElement.classList.add('theme-light');
+                document.body.classList.remove('theme-dark');
+                document.body.classList.add('theme-light');
+            }
+        });
+    </script>
+</body>
+</html>
