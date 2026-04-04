@@ -1089,6 +1089,7 @@
         var el = document.getElementById('catChip-' + c);
         if (el) el.className = 'filter-chip' + (c === cat ? ' active' : '');
       });
+      renderTagFilters();  // 태그 목록도 카테고리에 맞게 갱신
       renderCards();
     }
 
@@ -1100,10 +1101,22 @@
     }
 
     function renderTagFilters() {
+      // 카테고리 필터가 적용된 카드의 태그만 표시 (AND 연동)
+      var catFiltered = KNOWLEDGE_DB.filter(function(k) {
+        return activeCategory === 'all' || k.category === activeCategory;
+      });
+      var tagSet = {};
+      catFiltered.forEach(function(k) {
+        k.tags.forEach(function(t) { tagSet[t] = true; });
+      });
+      var tags = Object.keys(tagSet).sort();
+      // 선택된 태그가 현재 카테고리에 없으면 자동 초기화
+      if (activeTag !== 'all' && !tagSet[activeTag]) {
+        activeTag = 'all';
+      }
       var container = document.getElementById('tagFilters');
-      var tags = getAllTags();
       var html = '<span class="filter-label">태그</span>';
-      html += '<button class="filter-chip' + (activeTag === 'all' ? ' active' : '') + '" onclick="filterTag(\'all\')">전체</button>';
+      html += '<button class="filter-chip' + (activeTag === 'all' ? ' active' : '') + '" onclick="filterTag(\'all\')"> 전체</button>';
       tags.forEach(function(tag) {
         html += '<button class="filter-chip' + (activeTag === tag ? ' active' : '') + '" onclick="filterTag(\'' + tag + '\')">#' + tag + '</button>';
       });
