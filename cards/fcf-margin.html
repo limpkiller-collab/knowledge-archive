@@ -9,6 +9,7 @@
   <meta name="knowledge-difficulty" content="중급">
   <meta name="knowledge-date" content="2026-04-04">
   <meta name="knowledge-source" content="기관 애널리스트 분석 기준">
+  <meta name="knowledge-category" content="투자·주식">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
@@ -137,6 +138,24 @@
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
     @media (max-width: 640px) { .kpi-row, .compare-2col { grid-template-columns: 1fr; } .container { padding: 48px 16px 60px; } }
     @media print { body { background: white !important; } .viz-menu { display: none !important; } .card { break-inside: avoid; } * { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
+  
+    /* === Category Badge === */
+    .category-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.02em; white-space: nowrap;
+    }
+    .cat-투자주식 { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.3); }
+    .cat-경제거시 { background:rgba(59,130,246,0.12); color:#3b82f6; border:1px solid rgba(59,130,246,0.3); }
+    .cat-기술산업 { background:rgba(139,92,246,0.12); color:#8b5cf6; border:1px solid rgba(139,92,246,0.3); }
+    .cat-부동산   { background:rgba(245,158,11,0.12); color:#f59e0b; border:1px solid rgba(245,158,11,0.3); }
+    .cat-시사컬처 { background:rgba(244,63,94,0.12);  color:#f43f5e; border:1px solid rgba(244,63,94,0.3);  }
+    html.theme-light .cat-투자주식 { background:rgba(16,185,129,0.08); }
+    html.theme-light .cat-경제거시 { background:rgba(59,130,246,0.08); }
+    html.theme-light .cat-기술산업 { background:rgba(139,92,246,0.08); }
+    html.theme-light .cat-부동산   { background:rgba(245,158,11,0.08); }
+    html.theme-light .cat-시사컬처 { background:rgba(244,63,94,0.08);  }
+
   </style>
   <style id="mobile-table-patch">
     /* 모바일 테이블 가독성 패치 */

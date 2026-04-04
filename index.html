@@ -294,6 +294,26 @@
     }
     .knowledge-card.is-read:hover { opacity: 1; }
 
+
+    /* === Category Badges === */
+    .cat-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.02em; white-space: nowrap;
+    }
+    .cat-투자주식 { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.3); }
+    .cat-경제거시 { background:rgba(59,130,246,0.12); color:#3b82f6; border:1px solid rgba(59,130,246,0.3); }
+    .cat-기술산업 { background:rgba(139,92,246,0.12); color:#8b5cf6; border:1px solid rgba(139,92,246,0.3); }
+    .cat-부동산   { background:rgba(245,158,11,0.12); color:#f59e0b; border:1px solid rgba(245,158,11,0.3); }
+    .cat-시사컬처 { background:rgba(244,63,94,0.12);  color:#f43f5e; border:1px solid rgba(244,63,94,0.3);  }
+    html.theme-light .cat-투자주식 { background:rgba(16,185,129,0.08); }
+    html.theme-light .cat-경제거시 { background:rgba(59,130,246,0.08); }
+    html.theme-light .cat-기술산업 { background:rgba(139,92,246,0.08); }
+    html.theme-light .cat-부동산   { background:rgba(245,158,11,0.08); }
+    html.theme-light .cat-시사컬처 { background:rgba(244,63,94,0.08);  }
+    /* 카테고리 필터 행 구분선 */
+    #catFilters { border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+
     @media print {
       body { background: white !important; }
       .theme-toggle, .search-bar, .filter-section { display: none !important; }
@@ -341,7 +361,16 @@
           <button class="filter-chip" id="readChip-unread" onclick="filterRead('unread')">미읽음</button>
           <button class="filter-chip" id="readChip-read" onclick="filterRead('read')">읽음 ✓</button>
         </div>
-        <div class="filter-row" id="tagFilters" role="group" aria-label="태그 필터">
+        <div class="filter-row" id="catFilters" role="group" aria-label="카테고리 필터">
+          <span class="filter-label">분류</span>
+          <button class="filter-chip active" id="catChip-all" onclick="filterCategory('all')">전체</button>
+          <button class="filter-chip" id="catChip-투자·주식" onclick="filterCategory('투자·주식')">📈 투자·주식</button>
+          <button class="filter-chip" id="catChip-경제·거시" onclick="filterCategory('경제·거시')">🌐 경제·거시</button>
+          <button class="filter-chip" id="catChip-기술·산업" onclick="filterCategory('기술·산업')">🔬 기술·산업</button>
+          <button class="filter-chip" id="catChip-부동산" onclick="filterCategory('부동산')">🏢 부동산</button>
+          <button class="filter-chip" id="catChip-시사·컬처" onclick="filterCategory('시사·컬처')">🌍 시사·컬처</button>
+        </div>
+                <div class="filter-row" id="tagFilters" role="group" aria-label="태그 필터">
           <span class="filter-label">태그</span>
           <!-- 동적 생성 -->
         </div>
@@ -420,7 +449,8 @@
         difficulty: "입문",
         summary: "시스템반도체(CPU·AP)와 메모리반도체(낸드·D램)의 차이를 한 장으로 정리",
         related: [],
-        color: "#3b82f6"
+        color: "#3b82f6",
+        category: "기술·산업"
       },
       {
         id: "space-old-vs-new",
@@ -433,7 +463,8 @@
         difficulty: "입문",
         summary: "냉전 시대 국가 주도(올드스페이스)에서 민간 주도(뉴스페이스)로 — SpaceX가 NASA 예상 비용의 1/10에 팔콘 9 개발",
         related: ["rocket-basics", "reusable-rocket", "leo-satellite-comms"],
-        color: "#8b5cf6"
+        color: "#8b5cf6",
+        category: "기술·산업"
       },
       {
         id: "rocket-basics",
@@ -446,7 +477,8 @@
         difficulty: "입문",
         summary: "뉴턴 제3법칙·치올코프스키 방정식으로 설명하는 로켓 원리 — 전체 무게의 96%가 연료, 화물은 1~4%",
         related: ["space-old-vs-new", "reusable-rocket", "leo-satellite-comms"],
-        color: "#f59e0b"
+        color: "#f59e0b",
+        category: "기술·산업"
       },
       {
         id: "reusable-rocket",
@@ -459,7 +491,8 @@
         difficulty: "입문",
         summary: "수직이착륙·메탄 연료·3D 프린팅으로 10회 재사용 시 발사 비용 1/3 — 우주 비즈니스의 전환점",
         related: ["space-old-vs-new", "rocket-basics", "leo-satellite-comms"],
-        color: "#10b981"
+        color: "#10b981",
+        category: "기술·산업"
       },
       {
         id: "leo-satellite-comms",
@@ -472,7 +505,8 @@
         difficulty: "입문",
         summary: "GEO(500ms) vs LEO(20ms) — 레이저 통신이 광케이블보다 47% 빠른 이유, 군집위성과 디지털 격차 해소",
         related: ["space-old-vs-new", "rocket-basics", "reusable-rocket"],
-        color: "#06b6d4"
+        color: "#06b6d4",
+        category: "기술·산업"
       },
       {
         id: "ev-battery-structure",
@@ -485,7 +519,8 @@
         difficulty: "입문",
         summary: "셀→모듈→팩 계층 구조와 NCM·NCA·LFP 세 가지 배터리 종류의 특성 비교",
         related: [],
-        color: "#10b981"
+        color: "#10b981",
+        category: "기술·산업"
       },
       {
         id: "nvlink-fusion",
@@ -498,7 +533,8 @@
         difficulty: "중급",
         summary: "GPU만 연결하던 NVLink를 서드파티 XPU까지 개방 — 마벨 3조원 투자로 AI 팩토리 표준 인프라 선점",
         related: ["silicon-photonics", "semiconductor-basics"],
-        color: "#3b82f6"
+        color: "#3b82f6",
+        category: "기술·산업"
       },
       {
         id: "silicon-photonics",
@@ -511,7 +547,8 @@
         difficulty: "중급",
         summary: "전자 대신 광자로 데이터 전송 — 전력 3.5배 절감·대역폭 10~50배 향상, 2030년 60억달러 시장 전망",
         related: ["nvlink-fusion", "semiconductor-basics", "leo-satellite-comms"],
-        color: "#06b6d4"
+        color: "#06b6d4",
+        category: "기술·산업"
       },
       {
         id: "quantum-basics",
@@ -524,7 +561,8 @@
         difficulty: "중급",
         summary: "중첩·얽힘으로 2ⁿ 상태 동시 처리 — 8조→60조원 시장(CAGR 21%), NISQ에서 FTQC로 가는 실용화 여정",
         related: ["qubit-technologies", "quantum-companies", "nvlink-fusion"],
-        color: "#8b5cf6"
+        color: "#8b5cf6",
+        category: "기술·산업"
       },
       {
         id: "qubit-technologies",
@@ -537,7 +575,8 @@
         difficulty: "고급",
         summary: "결맞음 시간·게이트 속도·충실도로 가르는 5대 큐비트 방식 — 어떤 기술이 FTQC를 먼저 달성하느냐가 시장 승자 결정",
         related: ["quantum-basics", "quantum-companies", "silicon-photonics"],
-        color: "#06b6d4"
+        color: "#06b6d4",
+        category: "기술·산업"
       },
       {
         id: "quantum-companies",
@@ -550,7 +589,8 @@
         difficulty: "중급",
         summary: "순수 양자컴퓨팅 상장사(IonQ·Rigetti)는 마일스톤이 주가 드라이버 — IBM 2029년 FTQC, Google은 로드맵 불확실성 최고",
         related: ["quantum-basics", "qubit-technologies", "nvlink-fusion"],
-        color: "#f59e0b"
+        color: "#f59e0b",
+        category: "기술·산업"
       },
       {
         id: "french-restaurant-types",
@@ -563,7 +603,8 @@
         difficulty: "입문",
         summary: "브라세리(종일 영업)·비스트로·가스트로노미크 차이, 에티켓(팁 5~10%·주문법·드레스코드), 지역별 부숑·윈스튜브까지",
         related: [],
-        color: "#8b5cf6"
+        color: "#8b5cf6",
+        category: "시사·컬처"
       },
       {
         id: "smr-small-modular-reactor",
@@ -576,7 +617,8 @@
         difficulty: "중급",
         summary: "300MW 이하 모듈형 원자로 — 공장 제작·수동 안전으로 AI 데이터센터 무탄소 전력 공급. 2035년 $51.7B 시장, CAGR 42%",
         related: ["ev-battery-structure", "space-old-vs-new"],
-        color: "#f97316"
+        color: "#f97316",
+        category: "기술·산업"
       },
       {
         id: "realestate-redevelopment",
@@ -589,7 +631,8 @@
         difficulty: "중급",
         summary: "재건축(아파트 단지·안전진단·초과이익환수)과 재개발(낙후지역·세입자 이전비) 차이, 9~10단계 절차, 관리처분인가·분담금·비례율 핵심 용어 정리",
         related: ["michelin-guide-system", "french-wine-classification"],
-        color: "#10b981"
+        color: "#10b981",
+        category: "부동산"
       },
       {
         id: "french-wine-classification",
@@ -602,7 +645,8 @@
         difficulty: "입문",
         summary: "AOP(원산지 통제) > IGP(지역등급) > Vin de France 3단계 체계. 보르도 1855 등급, 부르고뉴 그랑 크뤼, 샹파뉴·론·알자스 산지별 품종까지",
         related: ["french-restaurant-types", "michelin-guide-system"],
-        color: "#a855f7"
+        color: "#a855f7",
+        category: "시사·컬처"
       },
       {
         id: "michelin-guide-system",
@@ -615,7 +659,8 @@
         difficulty: "입문",
         summary: "1900년 타이어 회사 창간 → 1933년 3스타 체계 확립. ⭐3스타(여행 목적지)·⭐2스타(일부러 찾아갈)·⭐1스타(들를 만한 가치). 빕 구르망·그린스타·평가 5원칙",
         related: ["french-restaurant-types", "french-wine-classification"],
-        color: "#ef4444"
+        color: "#ef4444",
+        category: "시사·컬처"
       },
       {
         id: "neocloud-ai-infrastructure",
@@ -628,7 +673,8 @@
         difficulty: "입문",
         summary: "GPU 중심·NVLink·InfiniBand로 설계된 생성형 AI 전용 클라우드 — 기존 클라우드 병목 해소, CoreWeave $142억 계약·Lambda $15억 조달로 급성장 중",
         related: ["nvlink-fusion", "silicon-photonics", "semiconductor-basics"],
-        color: "#3b82f6"
+        color: "#3b82f6",
+        category: "기술·산업"
       },
       {
         id: "middle-east-wars-overview",
@@ -641,7 +687,8 @@
         difficulty: "중급",
         summary: "1948 독립전쟁(나크바)·1956 수에즈·1967 6일전쟁(영토 3배)·1973 욤키푸르(오일쇼크)까지 — SVG 지도와 타임라인으로 정리한 4차례 아랍-이스라엘 전쟁",
         related: ["israel-palestine-conflict", "shia-sunni-islam"],
-        color: "#f43f5e"
+        color: "#f43f5e",
+        category: "시사·컬처"
       },
       {
         id: "israel-palestine-conflict",
@@ -654,7 +701,8 @@
         difficulty: "중급",
         summary: "1917 밸푸어 선언→1948 건국·나크바→1967 점령지→1993 오슬로→2023 가자전쟁. UN 분할안(1947) vs 현재 지도 비교, 예루살렘·난민·정착촌·가자봉쇄 4대 쟁점",
         related: ["middle-east-wars-overview", "shia-sunni-islam"],
-        color: "#f59e0b"
+        color: "#f59e0b",
+        category: "시사·컬처"
       },
       {
         id: "shia-sunni-islam",
@@ -667,7 +715,8 @@
         difficulty: "입문",
         summary: "632년 무함마드 사후 후계 분열 — 수니파 85%(칼리파 선출제)·시아파 15%(알리 혈통 이맘). 교리·지도자·의례 비교와 이란-사우디 대리전으로 이어지는 현대적 의미",
         related: ["middle-east-wars-overview", "israel-palestine-conflict"],
-        color: "#8b5cf6"
+        color: "#8b5cf6",
+        category: "시사·컬처"
       },
       {
         id: "stablecoin-basics",
@@ -680,7 +729,8 @@
         difficulty: "입문",
         summary: "1달러에 고정된 암호화폐. 법정화폐·암호화폐·원자재 3종 담보형 비교, 미국(GENIUS Act)·한국·기업·개인 4대 이해관계자, 루나 사태와 위험 요인까지 정리",
         related: ["neocloud-ai-infrastructure", "semiconductor-basics"],
-        color: "#06b6d4"
+        color: "#06b6d4",
+        category: "경제·거시"
       },
       {
         id: "macro-economic-indicators",
@@ -693,7 +743,8 @@
         difficulty: "중급",
         summary: "GDP·CPI·실업률·금리 등 핵심 거시경제지표의 개념, 발표 시점, 투자 판단 포인트를 한눈에 정리한 가이드",
         related: ["cpi-pce-inflation"],
-        color: "#3b82f6"
+        color: "#3b82f6",
+        category: "경제·거시"
       },
       {
         id: "turboquant-kv-cache",
@@ -706,7 +757,8 @@
         difficulty: "중급",
         summary: "KV Cache 압축으로 LLM 추론 비용을 획기적으로 줄이는 TurboQuant 기술의 원리와 AI 인프라 혁신 의미",
         related: ["semiconductor-basics", "silicon-photonics", "neocloud-ai-infrastructure"],
-        color: "#8b5cf6"
+        color: "#8b5cf6",
+        category: "기술·산업"
       },
       {
         id: "cpi-pce-inflation",
@@ -719,7 +771,8 @@
         difficulty: "입문",
         summary: "미국 연준이 선호하는 PCE와 대중 체감 물가 CPI의 차이, 발표 주체·시기·구성 항목·투자 활용법 비교",
         related: ["macro-economic-indicators", "stablecoin-basics"],
-        color: "#f59e0b"
+        color: "#f59e0b",
+        category: "경제·거시"
       },
       {
         id: "ai-agent-cli-vs-mcp",
@@ -732,7 +785,8 @@
         difficulty: "중급",
         summary: "AI 에이전트 구현 방식 CLI(직접 실행)와 MCP(표준 프로토콜 연동)의 구조적 차이, 장단점, 선택 기준 비교",
         related: ["neocloud-ai-infrastructure", "ai-trend-2025"],
-        color: "#10b981"
+        color: "#10b981",
+        category: "기술·산업"
       },
       {
         id: "ai-trend-2025",
@@ -745,7 +799,8 @@
         difficulty: "입문",
         summary: "자율 에이전트·버티컬·온디바이스·피지컬 AI 4대 흐름으로 정리한 2025년 AI 현장 실용화 전환 보고서",
         related: ["neocloud-ai-infrastructure", "ai-agent-cli-vs-mcp", "semiconductor-basics"],
-        color: "#f43f5e"
+        color: "#f43f5e",
+        category: "기술·산업"
       },
       {
         id: "fed-rate-mechanism",
@@ -758,7 +813,8 @@
         difficulty: "중급",
         summary: "연 8회 FOMC 회의와 점도표 해석법, 기준금리가 시장금리→실물경제→자산가격으로 전달되는 3단계 경로와 투자 활용 포인트",
         related: ["macro-economic-indicators", "us-treasury-yield-curve", "cpi-pce-inflation"],
-        color: "#3b82f6"
+        color: "#3b82f6",
+        category: "경제·거시"
       },
       {
         id: "us-treasury-yield-curve",
@@ -771,7 +827,8 @@
         difficulty: "중급",
         summary: "정상·평탄·역전 3가지 수익률 곡선 형태와 의미, 10Y-2Y·10Y-3M 핵심 스프레드 모니터링법, 국면별 포트폴리오 대응 전략",
         related: ["fed-rate-mechanism", "bonds-vs-stocks", "macro-economic-indicators"],
-        color: "#6366f1"
+        color: "#6366f1",
+        category: "경제·거시"
       },
       {
         id: "bonds-vs-stocks",
@@ -784,7 +841,8 @@
         difficulty: "중급",
         summary: "금리 인상·고점·인하 3국면별 채권과 주식의 상관관계 변화, 안정형·중립형·공격형 포트폴리오 모델과 리밸런싱 원칙",
         related: ["us-treasury-yield-curve", "fed-rate-mechanism", "macro-economic-indicators"],
-        color: "#f59e0b"
+        color: "#f59e0b",
+        category: "투자·주식"
       },
       {
         id: "stock-valuation-per-pbr",
@@ -797,7 +855,8 @@
         difficulty: "입문",
         summary: "PER(주가수익비율)·PBR(주가순자산비율)·EPS(주당순이익) 개념·공식·해석 기준, 3지표 종합 활용한 저평가 주식 발굴법",
         related: ["earnings-season-guide", "macro-economic-indicators", "bonds-vs-stocks"],
-        color: "#10b981"
+        color: "#10b981",
+        category: "투자·주식"
       },
       {
         id: "earnings-season-guide",
@@ -810,7 +869,8 @@
         difficulty: "입문",
         summary: "분기 실적시즌 일정·구조, EPS 컨센서스 대비 어닝서프라이즈·쇼크 개념, 가이던스가 주가 반응에 더 큰 영향을 미치는 이유",
         related: ["stock-valuation-per-pbr", "macro-economic-indicators"],
-        color: "#f97316"
+        color: "#f97316",
+        category: "투자·주식"
       },
       {
         id: "financial-statements-3core",
@@ -823,7 +883,8 @@
         difficulty: "중급",
         summary: "손익계산서(Gross/Operating/Net Margin)·재무상태표(D/E·Current Ratio)·현금흐름표(FCF) 3종을 연결해서 읽는 기관 애널리스트 기준의 핵심 계정과 비율",
         related: ["analyst-investment-framework", "stock-valuation-per-pbr", "earnings-season-guide"],
-        color: "#3b82f6"
+        color: "#3b82f6",
+        category: "투자·주식"
       },
       {
         id: "analyst-investment-framework",
@@ -836,7 +897,8 @@
         difficulty: "심화",
         summary: "ROIC 자본 복리 효과·경제적 해자 개념, EV/EBITDA·P/FCF·Rule of 40 밸류에이션, 애널리스트 Top 10 지표와 장기 우량 기업 체크리스트",
         related: ["financial-statements-3core", "stock-valuation-per-pbr", "earnings-season-guide"],
-        color: "#10b981"
+        color: "#10b981",
+        category: "투자·주식"
       },
       {
         id: "price-fcf-vs-per",
@@ -849,7 +911,8 @@
         difficulty: "중급",
         summary: "회계적 이익 기반 PER의 5가지 한계, FCF 공식(OCF-CapEx)과 기관투자자가 실제로 쓰는 Price/FCF·EV/FCF·FCF Yield 3종 지표 완전 정리",
         related: ["analyst-investment-framework", "stock-valuation-per-pbr", "financial-statements-3core", "earnings-season-guide"],
-        color: "#f59e0b"
+        color: "#f59e0b",
+        category: "투자·주식"
       },
       {
         id: "fcf-margin",
@@ -862,7 +925,8 @@
         difficulty: "중급",
         summary: "FCF 마진율(FCF÷매출) 공식, 업종별 벤치마크(SaaS 20~40%·반도체 25~45%·제조 4~10%), 순이익 마진과의 차이, Rule of 40 연계",
         related: ["price-fcf-vs-per", "analyst-investment-framework", "financial-statements-3core"],
-        color: "#06b6d4"
+        color: "#06b6d4",
+        category: "투자·주식"
       },
       {
         id: "ev-ebitda-valuation",
@@ -875,7 +939,8 @@
         difficulty: "중급",
         summary: "EV(시총+순부채) 구성 분해, EBITDA가 제거하는 것(이자·세금·감가상각), 업종별 적정 배수(빅테크 20~35x), PER과의 차이 및 M&A 활용법",
         related: ["analyst-investment-framework", "dcf-valuation", "price-fcf-vs-per"],
-        color: "#8b5cf6"
+        color: "#8b5cf6",
+        category: "투자·주식"
       },
       {
         id: "dcf-valuation",
@@ -888,7 +953,8 @@
         difficulty: "심화",
         summary: "DCF 5단계 절차, WACC(CAPM 기반) 계산법, Terminal Value 고든성장모델, WACC·g 민감도 분석, GIGO 원칙과 실전 한계 4가지",
         related: ["ev-ebitda-valuation", "analyst-investment-framework", "price-fcf-vs-per", "us-treasury-yield-curve"],
-        color: "#f43f5e"
+        color: "#f43f5e",
+        category: "투자·주식"
       },
       {
         id: "investment-analysis-roadmap",
@@ -901,7 +967,8 @@
         difficulty: "입문",
         summary: "탑다운 5단계(매크로→재무분석→수익성→밸류에이션→실적모니터링) 흐름도와 단계별 참조 카드 링크, 투자 시리즈 전체 12장 인덱스",
         related: ["macro-economic-indicators", "financial-statements-3core", "analyst-investment-framework", "ev-ebitda-valuation"],
-        color: "#3b82f6"
+        color: "#3b82f6",
+        category: "투자·주식"
       },
       {
         id: "auction-dividend-order",
@@ -914,7 +981,8 @@
         difficulty: "중급",
         summary: "집행비용→소액임차인→당해세→임금→담보물권→확정일자임차인→일반채권 7단계 배당 우선순위와 은행 담보 설정 전 체크포인트",
         related: ["property-appraisal-3methods", "public-price-system", "redevelopment-vs-reconstruction"],
-        color: "#f43f5e"
+        color: "#f43f5e",
+        category: "부동산"
       },
       {
         id: "property-appraisal-3methods",
@@ -927,7 +995,8 @@
         difficulty: "중급",
         summary: "부동산 가치를 산정하는 3가지 접근법(비용성·시장성·수익성)과 물건 유형별 주된 적용 방식, 은행 담보감정 실무 포인트",
         related: ["auction-dividend-order", "public-price-system", "redevelopment-vs-reconstruction"],
-        color: "#f59e0b"
+        color: "#f59e0b",
+        category: "부동산"
       },
       {
         id: "public-price-system",
@@ -940,7 +1009,8 @@
         difficulty: "입문",
         summary: "공시지가·개별공시지가·공동주택가격 등 5종 비교, 공시 주체·시기·활용 용도(재산세·종부세·건보료·LTV) 완전 정리",
         related: ["auction-dividend-order", "property-appraisal-3methods", "redevelopment-vs-reconstruction"],
-        color: "#10b981"
+        color: "#10b981",
+        category: "부동산"
       },
       {
         id: "coffee-extraction-science",
@@ -953,7 +1023,8 @@
         difficulty: "입문",
         summary: "추출수율(18~22%) 개념, 에스프레소·드립·콜드브루 3방식의 원리·비율·시간 비교, 맛을 결정하는 분쇄도·수온·시간·물 4대 변수",
         related: ["france-restaurant-guide", "france-wine-classification"],
-        color: "#8b5cf6"
+        color: "#8b5cf6",
+        category: "시사·컬처"
       }
     ];
     // ==========================================
@@ -962,6 +1033,7 @@
     var activeTag = 'all';
     var searchQuery = '';
     var activeReadFilter = 'all';
+    var activeCategory = 'all';
     var readStatus = {};
 
     // === Read Status ===
@@ -1009,6 +1081,17 @@
       renderCards();
     }
 
+
+    function filterCategory(cat) {
+      activeCategory = cat;
+      var cats = ['all', '투자·주식', '경제·거시', '기술·산업', '부동산', '시사·컬처'];
+      cats.forEach(function(c) {
+        var el = document.getElementById('catChip-' + c);
+        if (el) el.className = 'filter-chip' + (c === cat ? ' active' : '');
+      });
+      renderCards();
+    }
+
     // === Render ===
     function getAllTags() {
       var tagSet = {};
@@ -1049,7 +1132,8 @@
         var matchRead = activeReadFilter === 'all'
           || (activeReadFilter === 'read' && isRead)
           || (activeReadFilter === 'unread' && !isRead);
-        return matchTag && matchSearch && matchRead;
+        var matchCat = activeCategory === 'all' || k.category === activeCategory;
+        return matchTag && matchSearch && matchRead && matchCat;
       });
     }
 
@@ -1066,6 +1150,8 @@
         var html = '';
         filtered.forEach(function(k, i) {
           var tagsHtml = k.tags.map(function(t) { return '<span class="card-tag">#' + t + '</span>'; }).join('');
+          var _CI = {'투자·주식':['📈','cat-투자주식'],'경제·거시':['🌐','cat-경제거시'],'기술·산업':['🔬','cat-기술산업'],'부동산':['🏢','cat-부동산'],'시사·컬처':['🌍','cat-시사컬처']};
+          var catHtml = (k.category && _CI[k.category]) ? '<span class="cat-badge ' + _CI[k.category][1] + '">' + _CI[k.category][0] + ' ' + k.category + '</span>' : '';
           var t = splitTitle(k.title);
           var titleHtml = '<div class="card-title">' + t.main + '</div>'
             + (t.sub ? '<div class="card-subtitle">' + t.sub + '</div>' : '');
@@ -1077,7 +1163,7 @@
             + titleHtml
             + '<div class="card-summary">' + k.summary + '</div>'
             + '<div class="card-meta">'
-            + '  ' + tagsHtml
+            + (catHtml ? catHtml + ' ' : '') + tagsHtml
             + '  <span class="card-date">' + k.date + '</span>'
             + '</div>'
             + '</a>';
