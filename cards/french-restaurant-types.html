@@ -142,14 +142,18 @@
     .highlight-box strong { color: var(--accent); }
 
     /* 식당 유형 테이블 */
-    .type-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .type-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 580px; }
     .type-table th {
       text-align: left; padding: 10px 12px; font-size: 11px; font-weight: 700;
       color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;
       border-bottom: 1px solid var(--border); white-space: nowrap;
     }
-    .type-table td { padding: 11px 12px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; }
-    .type-table { min-width: 520px; }
+    .type-table td {
+      padding: 11px 12px; border-bottom: 1px solid var(--border);
+      vertical-align: top; line-height: 1.5; white-space: nowrap;
+    }
+    /* 특징 열만 줄바꿈 허용 (내용이 길어서) */
+    .type-table td:last-child { white-space: normal; min-width: 140px; }
     .type-table tr:last-child td { border-bottom: none; }
     .type-table tr:hover td { background: var(--surface-hover); }
     .type-name { font-weight: 700; color: var(--text); }
@@ -218,10 +222,12 @@
     @media (max-width: 640px) {
       .kpi-row, .detail-grid { grid-template-columns: 1fr; }
       .container { padding: 48px 16px 60px; }
-      .type-table { font-size: 12px; }
+      .type-table { font-size: 12px; min-width: 560px; }
       .type-table th { padding: 8px 10px; font-size: 10px; }
-      .type-table td { padding: 10px 10px; }
+      .type-table td { padding: 8px 10px; font-size: 12px; }
     }
+    /* iOS Safari 가로 스크롤 부드럽게 */
+    div[style*="overflow-x"] { -webkit-overflow-scrolling: touch; }
     @media print {
       body { background: white !important; }
       .viz-menu { display: none !important; }

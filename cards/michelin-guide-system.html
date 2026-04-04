@@ -203,6 +203,11 @@
     @media (max-width: 640px) {
       .kpi-row { grid-template-columns: 1fr; }
       .container { padding: 48px 16px 60px; }
+      /* star-item: emoji+뱃지 1행 / 본문 2행으로 재배치 */
+      .star-item { flex-wrap: wrap; gap: 8px 12px; }
+      .star-emoji { order: 1; flex: 0 0 auto; }
+      .star-count { order: 2; margin-left: auto; }
+      .star-body { order: 3; flex-basis: 100%; min-width: 0; }
     }
     @media print {
       body { background: white !important; }
