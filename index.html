@@ -295,6 +295,19 @@
     .knowledge-card.is-read:hover { opacity: 1; }
 
 
+
+    /* === Category Count Badge === */
+    .cat-count {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 16px; height: 15px; padding: 0 4px;
+      border-radius: 99px; font-size: 10px; font-weight: 700;
+      background: rgba(255,255,255,0.18); color: inherit;
+      margin-left: 3px; vertical-align: middle;
+    }
+    .filter-chip.active .cat-count { background: rgba(255,255,255,0.28); }
+    html.theme-light .cat-count { background: rgba(0,0,0,0.10); }
+    html.theme-light .filter-chip.active .cat-count { background: rgba(255,255,255,0.35); }
+
     /* === Category Badges === */
     .cat-badge {
       display: inline-flex; align-items: center; gap: 4px;
@@ -1084,13 +1097,8 @@
 
     function filterCategory(cat) {
       activeCategory = cat;
-      var cats = ['all', '투자·주식', '경제·거시', '기술·산업', '부동산', '시사·컬처'];
-      cats.forEach(function(c) {
-        var el = document.getElementById('catChip-' + c);
-        if (el) el.className = 'filter-chip' + (c === cat ? ' active' : '');
-      });
-      renderTagFilters();  // 태그 목록도 카테고리에 맞게 갱신
-      renderCards();
+      renderTagFilters();   // 태그 목록을 카테고리에 맞게 갱신
+      renderCards();        // renderCards 내부에서 renderCatFilters() 호출
     }
 
     // === Render ===
@@ -1098,6 +1106,48 @@
       var tagSet = {};
       KNOWLEDGE_DB.forEach(function(k) { k.tags.forEach(function(t) { tagSet[t] = true; }); });
       return Object.keys(tagSet).sort();
+    }
+
+    function renderCatFilters() {
+      // 검색+읽음 필터만 적용해 카테고리별 카드 수 계산 (카테고리 필터 제외)
+      var counts = {}, total = 0;
+      KNOWLEDGE_DB.forEach(function(k) {
+        var matchSearch = true;
+        if (searchQuery) {
+          var q = searchQuery.toLowerCase();
+          matchSearch = k.title.toLowerCase().indexOf(q) !== -1
+            || k.summary.toLowerCase().indexOf(q) !== -1
+            || k.tags.join(' ').toLowerCase().indexOf(q) !== -1
+            || k.source.toLowerCase().indexOf(q) !== -1;
+        }
+        var isRead = !!readStatus[k.id];
+        var matchRead = activeReadFilter === 'all'
+          || (activeReadFilter === 'read' && isRead)
+          || (activeReadFilter === 'unread' && !isRead);
+        if (matchSearch && matchRead) {
+          counts[k.category] = (counts[k.category] || 0) + 1;
+          total++;
+        }
+      });
+      var defs = [
+        { id: 'all',     label: '전체' },
+        { id: '투자·주식', label: '📈 투자·주식' },
+        { id: '경제·거시', label: '🌐 경제·거시' },
+        { id: '기술·산업', label: '🔬 기술·산업' },
+        { id: '부동산',   label: '🏢 부동산'   },
+        { id: '시사·컬처', label: '🌍 시사·컬처' }
+      ];
+      var html = '<span class="filter-label">분류</span>';
+      defs.forEach(function(d) {
+        var cnt = d.id === 'all' ? total : (counts[d.id] || 0);
+        var isActive = activeCategory === d.id;
+        html += '<button class="filter-chip' + (isActive ? ' active' : '')
+          + '" id="catChip-' + d.id + '" onclick="filterCategory(\'' + d.id + '\')">'
+          + d.label
+          + '<span class="cat-count">' + cnt + '</span>'
+          + '</button>';
+      });
+      document.getElementById('catFilters').innerHTML = html;
     }
 
     function renderTagFilters() {
@@ -1185,6 +1235,7 @@
       }
 
       document.getElementById('resultsCount').textContent = filtered.length + '개 지식 표시 중';
+      renderCatFilters();  // 카테고리 버튼 카드 수 갱신
 
       var filterDesc = [];
       if (activeTag !== 'all') filterDesc.push('#' + activeTag);
@@ -1466,6 +1517,7 @@
     // === Init ===
     loadReadStatus();
     renderTagFilters();
+    renderCatFilters();
     renderStats();
     renderCards();
   </script>
