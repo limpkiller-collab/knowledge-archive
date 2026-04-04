@@ -245,6 +245,14 @@
       * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
     }
   </style>
+  <style id="mobile-table-patch">
+    /* 모바일 테이블 가독성 패치 */
+    th { white-space: nowrap !important; }
+    @media (max-width: 640px) {
+      th { font-size: 10px !important; padding-left: 8px !important; padding-right: 8px !important; }
+      td { font-size: 12px !important; padding-left: 8px !important; padding-right: 8px !important; }
+    }
+  </style>
 </head>
 <body>
   <div class="viz-menu">
