@@ -1827,19 +1827,22 @@
         var dy = y - prevY; prevY = y; dragDeltaX = x - startX;
         if (!dirLocked) {
           var tdx = Math.abs(dragDeltaX), tdy = Math.abs(y - startY);
-          if (tdx > LOCK_THRESHOLD || tdy > LOCK_THRESHOLD) dirLocked = tdx >= tdy ? 'h' : 'v';
+          if (tdx > LOCK_THRESHOLD || tdy > LOCK_THRESHOLD) {
+            dirLocked = tdx >= tdy ? 'h' : 'v';
+            /* 수직 방향 확정 시 overlay pointer-events 해제 → iframe 네이티브 스크롤 위임 */
+            if (dirLocked === 'v') overlay.style.pointerEvents = 'none';
+          }
         }
         if (dirLocked === 'h') {
           var rot = dragDeltaX * 0.022;
           wrap.style.transform = 'translateX(' + (dragDeltaX * 0.55) + 'px) rotate(' + rot + 'deg)';
-        } else if (dirLocked === 'v') {
-          var frame = getFrame();
-          if (frame && frame.contentWindow) { try { frame.contentWindow.scrollBy(0, -dy); } catch(e) {} }
         }
+        /* dirLocked === 'v': pointer-events:none 이므로 브라우저가 직접 iframe 스크롤 처리 */
       }
       function onEnd() {
         if (!dragging) return;
         dragging = false; overlay.classList.remove('is-dragging'); wrap.style.transition = '';
+        overlay.style.pointerEvents = ''; /* pointer-events 복원 */
         var locked = dirLocked, delta = dragDeltaX; dirLocked = null;
         if (locked === 'h') {
           wrap.style.transform = '';
@@ -1861,6 +1864,8 @@
         onMove(e.touches[0].clientX, e.touches[0].clientY);
       }, { passive: false });
       overlay.addEventListener('touchend', onEnd);
+      /* pointer-events:none(수직 스크롤) 상태에서 touchend가 overlay를 통과할 경우를 대비해 document에도 등록 */
+      document.addEventListener('touchend', onEnd, { passive: true });
       overlay.addEventListener('mousedown', function(e) { onStart(e.clientX, e.clientY); e.preventDefault(); });
       document.addEventListener('mousemove', function(e) { onMove(e.clientX, e.clientY); });
       document.addEventListener('mouseup', onEnd);

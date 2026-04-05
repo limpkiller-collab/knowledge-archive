@@ -228,6 +228,30 @@
     html.theme-light .cat-부동산   { background:rgba(245,158,11,0.08); }
     html.theme-light .cat-시사컬처 { background:rgba(244,63,94,0.08);  }
 
+  
+  /* === KA Read FAB === */
+  #ka-read-fab { position: fixed; bottom: 24px; right: 20px; z-index: 9999; }
+  #ka-read-btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 10px 18px; border-radius: 99px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(20,20,20,0.85); color: rgba(255,255,255,0.7);
+    font-family: inherit; font-size: 13px; font-weight: 600;
+    cursor: pointer; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    white-space: nowrap;
+  }
+  #ka-read-btn:hover { background: rgba(40,40,40,0.95); color: #fff; }
+  #ka-read-btn.is-read {
+    background: #10b981; border-color: #10b981; color: #fff;
+    box-shadow: 0 0 24px rgba(16,185,129,0.4), 0 4px 16px rgba(0,0,0,0.3);
+  }
+  html.theme-light #ka-read-btn {
+    background: rgba(255,255,255,0.92); color: #333;
+    border-color: rgba(0,0,0,0.12); box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+  }
+  html.theme-light #ka-read-btn.is-read { background: #10b981; border-color: #10b981; color: #fff; }
   </style>
 </head>
 <body>
@@ -480,6 +504,39 @@
       a.download = 'french-wine-classification.png';
       a.click();
     }
+  
+  // === KA Read FAB ===
+  (function() {
+    var _KA_ID = (document.querySelector('meta[name="knowledge-id"]') || {}).content;
+    if (!_KA_ID) return;
+    function _kaGet() { try { return JSON.parse(localStorage.getItem('ka-read-status') || '{}'); } catch(e) { return {}; } }
+    function _kaUpdate() {
+      var isRead = !!_kaGet()[_KA_ID];
+      var btn = document.getElementById('ka-read-btn');
+      var lbl = document.getElementById('ka-read-label');
+      if (!btn) return;
+      btn.className = isRead ? 'is-read' : '';
+      if (lbl) lbl.textContent = isRead ? '읽음 완료 ✓' : '읽음 표시';
+    }
+    window.kaToggleRead = function() {
+      var s = _kaGet(); s[_KA_ID] = !s[_KA_ID];
+      if (!s[_KA_ID]) delete s[_KA_ID];
+      localStorage.setItem('ka-read-status', JSON.stringify(s));
+      _kaUpdate();
+      if (window.parent && window.parent !== window) {
+        try { window.parent.renderCards(); window.parent.renderStats(); } catch(e) {}
+      }
+    };
+    _kaUpdate();
+  })();
+
   </script>
+  <!-- KA Read FAB -->
+  <div id="ka-read-fab">
+    <button id="ka-read-btn" onclick="kaToggleRead()" aria-label="읽음 상태 토글">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <span id="ka-read-label">읽음 표시</span>
+    </button>
+  </div>
 </body>
 </html>
