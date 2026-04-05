@@ -405,6 +405,38 @@
     }
     .card-date { font-size: 11px; color: var(--text-sec); margin-left: auto; }
 
+    /* Series badge (on card) */
+    .series-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap;
+      background: rgba(59,130,246,0.13); color: #60a5fa;
+      border: 1px solid rgba(59,130,246,0.25);
+    }
+    html.theme-light .series-badge { background: rgba(37,99,235,0.08); color: #2563eb; border-color: rgba(37,99,235,0.2); }
+
+    /* Series banner (shown above card grid when series filtered) */
+    .series-banner {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 18px; border-radius: 12px; margin-bottom: 16px;
+      background: rgba(59,130,246,0.07); border: 1px solid rgba(59,130,246,0.2);
+      font-size: 13px;
+    }
+    .series-banner-icon { font-size: 18px; flex-shrink: 0; }
+    .series-banner-name { font-weight: 700; color: #60a5fa; }
+    html.theme-light .series-banner-name { color: #2563eb; }
+    .series-banner-desc { color: var(--text-sec); font-size: 12px; }
+    .series-banner-clear {
+      margin-left: auto; padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(59,130,246,0.3);
+      background: transparent; color: #60a5fa; font-size: 11px; font-weight: 600;
+      cursor: pointer; font-family: inherit; transition: background 0.15s;
+    }
+    .series-banner-clear:hover { background: rgba(59,130,246,0.12); }
+
+    /* Series filter chip variant */
+    .filter-chip.series-chip { border-color: rgba(59,130,246,0.3); }
+    .filter-chip.series-chip.active { background: rgba(59,130,246,0.85); color: #fff; border-color: transparent; }
+
     /* Difficulty dot */
     .diff-dot {
       width: 6px; height: 6px; border-radius: 50%;
@@ -660,12 +692,25 @@
         <div class="filter-row" id="tagFilters" role="group" aria-label="태그 필터">
           <!-- dynamically rendered -->
         </div>
+        <div class="filter-row" id="seriesFilters" role="group" aria-label="시리즈 필터" style="display:none;">
+          <!-- dynamically rendered -->
+        </div>
       </div>
 
       <!-- RESULTS INFO -->
       <div class="results-info fade-in delay-2">
         <span id="resultsCount">0개 지식 표시 중</span>
         <span class="active-filter-label" id="activeFilters"></span>
+      </div>
+
+      <!-- SERIES BANNER (shown when series filter active) -->
+      <div class="series-banner" id="seriesBanner" style="display:none;">
+        <span class="series-banner-icon">📚</span>
+        <div>
+          <div class="series-banner-name" id="seriesBannerName"></div>
+          <div class="series-banner-desc" id="seriesBannerDesc"></div>
+        </div>
+        <button class="series-banner-clear" onclick="filterSeries('all')">✕ 해제</button>
       </div>
 
       <!-- CARD GRID -->
@@ -1432,7 +1477,8 @@
         summary: "커버드콜 ETF 과도한 분배율 함정 — TSLY 주가 -70% 사례, 분배율(%) 착시 메커니즘, JEPI·JEPQ·QYLD TOP3가 10% 내외 유지하는 이유, 건전한 투자 원칙",
         related: ["risk-metrics-mdd-sharpe", "behavioral-economics-investing", "analyst-investment-framework"],
         color: "#f43f5e",
-        category: "투자·주식"
+        category: "투자·주식",
+        series: "ETF 분석 시리즈"
       },
       {
         id: "us-etf-analysis-10-metrics",
@@ -1446,7 +1492,8 @@
         summary: "비용·추적능력·유동성·구조 4축 평가 — Expense Ratio·Tracking Error·AUM·Spread 등 10개 지표로 좋은/나쁜 ETF를 판별하는 기관 기준",
         related: ["covered-call-etf-distribution-risk", "risk-metrics-mdd-sharpe", "behavioral-economics-investing", "analyst-investment-framework"],
         color: "#10b981",
-        category: "투자·주식"
+        category: "투자·주식",
+        series: "ETF 분석 시리즈"
       },
       {
         id: "covered-call-etf-analysis-metrics",
@@ -1460,7 +1507,8 @@
         summary: "커버드콜 ETF 전용 분석법 — NAV 추세·ROC 비중·옵션 커버율·Total Return으로 JEPI vs QYLD를 판별하는 기관 기준 체크리스트",
         related: ["covered-call-etf-distribution-risk", "us-etf-analysis-10-metrics", "risk-metrics-mdd-sharpe", "behavioral-economics-investing"],
         color: "#8b5cf6",
-        category: "투자·주식"
+        category: "투자·주식",
+        series: "ETF 분석 시리즈"
       },
       {
         id: "etf-5-comprehensive-checklist",
@@ -1474,7 +1522,8 @@
         summary: "2026년 4월 기준 ETF 5종 7개 지표 완전 비교 — 보수율·AUM·거래량·추적오차·NAV·ROC·성과 + 한국 투자자 세금(원천징수·금융소득종합과세) 안내",
         related: ["us-etf-analysis-10-metrics", "covered-call-etf-analysis-metrics", "covered-call-etf-distribution-risk", "risk-metrics-mdd-sharpe"],
         color: "#3b82f6",
-        category: "투자·주식"
+        category: "투자·주식",
+        series: "ETF 분석 시리즈"
       }
     ];
     // ==========================================
@@ -1484,6 +1533,7 @@
     var searchQuery        = '';
     var activeReadFilter   = 'all';
     var activeCategory     = 'all';
+    var activeSeries       = 'all';
     var readStatus         = {};
 
     // ============ READ STATUS ============
@@ -1529,8 +1579,61 @@
     function filterCategory(cat) {
       activeCategory = cat;
       activeTag = 'all';
+      activeSeries = 'all';
       renderTagFilters();
+      renderSeriesFilters();
       renderCards();
+    }
+
+    // ============ SERIES FILTER ============
+    function filterSeries(s) {
+      activeSeries = s;
+      renderSeriesFilters();
+      renderCards();
+    }
+
+    function renderSeriesFilters() {
+      // 현재 보이는 카드 중 series 있는 것 수집
+      var seriesMap = {};
+      KNOWLEDGE_DB.forEach(function(k) {
+        if (k.series) {
+          if (!seriesMap[k.series]) seriesMap[k.series] = 0;
+          seriesMap[k.series]++;
+        }
+      });
+      var seriesList = Object.keys(seriesMap);
+      var container = document.getElementById('seriesFilters');
+      if (!container) return;
+
+      if (seriesList.length === 0) {
+        container.style.display = 'none';
+        return;
+      }
+      container.style.display = '';
+
+      var html = '<span class="filter-label">시리즈</span>';
+      html += '<button class="filter-chip series-chip' + (activeSeries === 'all' ? ' active' : '') + '" onclick="filterSeries(\'all\')">전체</button>';
+      seriesList.forEach(function(s) {
+        var cnt = seriesMap[s];
+        html += '<button class="filter-chip series-chip' + (activeSeries === s ? ' active' : '')
+          + '" onclick="filterSeries(\'' + s.replace(/'/g, "\\'") + '\')">'
+          + '📚 ' + s
+          + '<span class="cat-count">' + cnt + '</span>'
+          + '</button>';
+      });
+      container.innerHTML = html;
+
+      // 시리즈 배너
+      var banner = document.getElementById('seriesBanner');
+      if (!banner) return;
+      if (activeSeries !== 'all') {
+        var cnt2 = seriesMap[activeSeries] || 0;
+        document.getElementById('seriesBannerName').textContent = activeSeries;
+        document.getElementById('seriesBannerDesc').textContent = '이 시리즈의 지식 카드 ' + cnt2 + '개';
+        banner.style.display = 'flex';
+      } else {
+        banner.style.display = 'none';
+      }
     }
 
     // ============ RENDER SIDEBAR NAV ============
@@ -1637,8 +1740,9 @@
         var matchRead = activeReadFilter === 'all'
           || (activeReadFilter === 'read' && isRead)
           || (activeReadFilter === 'unread' && !isRead);
-        var matchCat = activeCategory === 'all' || k.category === activeCategory;
-        return matchTag && matchSearch && matchRead && matchCat;
+        var matchCat    = activeCategory === 'all' || k.category === activeCategory;
+        var matchSeries = activeSeries === 'all' || k.series === activeSeries;
+        return matchTag && matchSearch && matchRead && matchCat && matchSeries;
       });
     }
 
@@ -1681,12 +1785,15 @@
               + '<span class="material-symbols-outlined" style="font-size:11px">' + catIcon + '</span>'
               + k.category + '</span>'
             : '';
+          var seriesBadge = k.series
+            ? '<span class="series-badge" onclick="event.preventDefault();filterSeries(\'' + k.series.replace(/'/g, "\\'") + '\')">📚 ' + k.series + '</span>'
+            : '';
 
           html += '<a href="' + k.file + '" class="ka-card' + (isRead ? ' is-read' : '') + '" role="listitem"'
             + ' style="--card-accent:' + k.color + ';animation-delay:' + (i * 0.04) + 's">'
             + '<div class="card-stripe" style="background:' + k.color + '"></div>'
             + '<button class="card-read-btn" onclick="toggleRead(\'' + k.id + '\', event)" title="' + (isRead ? '읽음 해제' : '읽음 표시') + '" aria-label="' + (isRead ? '읽음 해제' : '읽음 표시') + '">' + checkSvg + '</button>'
-            + '<div class="card-category-row">' + catBadge + '</div>'
+            + '<div class="card-category-row">' + catBadge + (seriesBadge ? '<span style="margin-left:4px">' + seriesBadge + '</span>' : '') + '</div>'
             + '<div class="card-title">' + t.main + '</div>'
             + (t.sub ? '<div class="card-subtitle">' + t.sub + '</div>' : '')
             + '<div class="card-summary">' + k.summary + '</div>'
@@ -1698,7 +1805,10 @@
       document.getElementById('resultsCount').textContent = filtered.length + '개 지식 표시 중';
       renderCatFilters();
 
+      renderSeriesFilters();
+
       var filterDesc = [];
+      if (activeSeries !== 'all') filterDesc.push('📚 ' + activeSeries);
       if (activeTag !== 'all') filterDesc.push('#' + activeTag);
       if (searchQuery) filterDesc.push('"' + searchQuery + '"');
       document.getElementById('activeFilters').textContent = filterDesc.length ? filterDesc.join(' · ') : '';
