@@ -583,7 +583,7 @@
 
     /* Mobile search bar (shows below topbar on small screens) */
     .mobile-searchbar {
-      display: none; position: fixed; top: 64px; left: 0; right: 0; z-index: 99;
+      display: none; position: fixed; top: 64px; left: 0; right: 0; z-index: 150;
       padding: 10px 16px; background: var(--bg);
       border-bottom: 1px solid var(--border);
       box-shadow: 0 4px 20px rgba(0,0,0,0.18);
@@ -1794,7 +1794,7 @@
           }).join('');
           var extraCount = k.tags.length - 4;
           var moreBtnHtml = k.tags.length > 4
-            ? '<button class="card-tags-more" onclick="event.preventDefault();toggleTagExpand(this)">+' + extraCount + ' 더보기</button>'
+            ? '<button class="card-tags-more" onclick="event.preventDefault();event.stopPropagation();toggleTagExpand(this)">+' + extraCount + ' 더보기</button>'
             : '';
           var tagsHtml = '<div class="card-tags-area"><div class="card-tags-box">' + allTagsHtml + '</div>' + moreBtnHtml + '</div>';
           var catBadge = k.category
@@ -1898,10 +1898,11 @@
     function toggleMobileSearch() {
       var bar = document.getElementById('mobileSearchBar');
       if (!bar) return;
-      bar.classList.toggle('visible');
-      if (bar.classList.contains('visible')) {
+      var isHidden = bar.style.display === '' || bar.style.display === 'none';
+      bar.style.display = isHidden ? 'block' : 'none';
+      if (isHidden) {
         var inp = document.getElementById('searchInputMobile');
-        if (inp) setTimeout(function() { inp.focus(); }, 100);
+        if (inp) setTimeout(function() { inp.focus(); }, 80);
       }
     }
 
@@ -2076,7 +2077,7 @@
         } else {
           if (toggle) toggle.style.display = 'none';
           var bar = document.getElementById('mobileSearchBar');
-          if (bar) bar.classList.remove('visible');
+          if (bar) bar.style.display = 'none';
         }
       }
       checkWidth();
