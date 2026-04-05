@@ -395,15 +395,25 @@
     }
     .card-summary { font-size: 12.5px; color: var(--text-sec); line-height: 1.65; flex: 1; }
     .card-meta {
-      display: flex; align-items: center; gap: 5px;
-      flex-wrap: wrap; font-size: 11px; margin-top: 2px;
+      display: flex; align-items: flex-start; gap: 6px;
+      flex-wrap: nowrap; font-size: 11px; margin-top: 2px;
     }
     .card-tag {
       padding: 2px 7px; border-radius: 4px; font-size: 11px;
       background: var(--surface-highest); color: var(--text-sec);
       border: 1px solid var(--border); font-weight: 500;
     }
-    .card-date { font-size: 11px; color: var(--text-sec); margin-left: auto; }
+    .card-date { font-size: 11px; color: var(--text-sec); flex-shrink: 0; }
+    /* Tag collapsible */
+    .card-tags-area { flex: 1; min-width: 0; }
+    .card-tags-box { display: flex; flex-wrap: wrap; gap: 4px; overflow: hidden; max-height: 44px; }
+    .card-tags-box.expanded { max-height: none; }
+    .card-tags-more {
+      margin-top: 3px; display: inline-block; font-size: 10px; cursor: pointer;
+      padding: 1px 6px; border-radius: 4px; font-weight: 600;
+      background: var(--surface-highest); color: var(--text-sec);
+      border: 1px solid var(--border); white-space: nowrap; line-height: 1.8;
+    }
 
     /* Series badge (on card) */
     .series-badge {
@@ -573,8 +583,10 @@
 
     /* Mobile search bar (shows below topbar on small screens) */
     .mobile-searchbar {
-      display: none; padding: 8px 16px 0;
-      background: var(--bg);
+      display: none; position: fixed; top: 64px; left: 0; right: 0; z-index: 99;
+      padding: 10px 16px; background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.18);
     }
     .mobile-searchbar.visible { display: block; }
     @media (max-width: 767px) {
@@ -590,7 +602,7 @@
     <div style="display:flex;align-items:center;gap:16px;flex:1;min-width:0;">
       <span class="topbar-brand">지식 Archive</span>
       <div class="topbar-search" role="search">
-        <span class="material-symbols-outlined" style="font-size:17px;color:var(--text-sec);flex-shrink:0">search</span>
+        <span class="material-symbols-outlined" style="font-size:17px;color:var(--text-sec);flex-shrink:0;cursor:pointer" onclick="document.getElementById('searchInput').focus()">search</span>
         <input type="text" id="searchInput" placeholder="제목·태그·키워드 검색…" aria-label="지식 검색">
       </div>
     </div>
@@ -605,7 +617,7 @@
   </header>
 
   <!-- Mobile search bar -->
-  <div class="mobile-searchbar" id="mobileSearchBar" style="padding-top:72px;">
+  <div class="mobile-searchbar" id="mobileSearchBar">
     <div class="topbar-search" style="max-width:100%;border-radius:10px;">
       <span class="material-symbols-outlined" style="font-size:17px;color:var(--text-sec)">search</span>
       <input type="text" id="searchInputMobile" placeholder="검색…" aria-label="지식 검색(모바일)">
@@ -1777,9 +1789,14 @@
           var isRead   = !!readStatus[k.id];
           var catCls   = _CI[k.category] || '';
           var catIcon  = _ICONS[k.category] || 'label';
-          var tagsHtml = k.tags.slice(0,4).map(function(tag) {
+          var allTagsHtml = k.tags.map(function(tag) {
             return '<span class="card-tag">#' + tag + '</span>';
           }).join('');
+          var extraCount = k.tags.length - 4;
+          var moreBtnHtml = k.tags.length > 4
+            ? '<button class="card-tags-more" onclick="event.preventDefault();toggleTagExpand(this)">+' + extraCount + ' 더보기</button>'
+            : '';
+          var tagsHtml = '<div class="card-tags-area"><div class="card-tags-box">' + allTagsHtml + '</div>' + moreBtnHtml + '</div>';
           var catBadge = k.category
             ? '<span class="cat-badge ' + catCls + '">'
               + '<span class="material-symbols-outlined" style="font-size:11px">' + catIcon + '</span>'
@@ -2003,7 +2020,9 @@
           var rot = dragDeltaX * 0.022;
           wrap.style.transform = 'translateX(' + (dragDeltaX * 0.55) + 'px) rotate(' + rot + 'deg)';
         }
-        /* dirLocked === 'v': pointer-events:none 이므로 브라우저가 직접 iframe 스크롤 처리 */
+        if (dirLocked === 'v') {
+          try { var fr = getFrame(); if (fr && fr.contentWindow) fr.contentWindow.scrollBy(0, -dy); } catch(e) {}
+        }
       }
       function onEnd() {
         if (!dragging) return;
@@ -2063,6 +2082,14 @@
       checkWidth();
       window.addEventListener('resize', checkWidth);
     })();
+
+    // ============ TAG EXPAND TOGGLE ============
+    function toggleTagExpand(btn) {
+      var box = btn.previousElementSibling;
+      var isExpanded = box.classList.toggle('expanded');
+      var total = box.querySelectorAll('.card-tag').length;
+      btn.textContent = isExpanded ? '접기' : '+' + (total - 4) + ' 더보기';
+    }
 
     // ============ INIT ============
     loadReadStatus();
