@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOO·QQQ·SCHD·JEPI·JEPQ 5종 종합 비교 — 7개 지표 체크리스트</title>
+  <meta name="knowledge-id" content="etf-5-comprehensive-checklist">
+  <meta name="knowledge-tags" content="ETF,투자,비교분석,배당,포트폴리오">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-06">
+  <meta name="knowledge-source" content="Vanguard·JPMorgan·Schwab·Invesco Fact Sheet (2026.02)">
+  <meta name="knowledge-category" content="투자·주식">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #3b82f6; --accent2: #10b981;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(59,130,246,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #2563eb; --accent2: #059669;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(37,99,235,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+    body { font-family: 'Noto Sans KR','Inter',sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; letter-spacing: -0.011em; transition: background 0.3s, color 0.3s; min-height: 100vh; }
+    body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse 70% 50% at 50% 10%, color-mix(in srgb, var(--accent), transparent 88%), transparent); }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    .container { max-width: 960px; margin: 0 auto; padding: 64px 24px 80px; }
+    /* Viz Menu */
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--menu-border); background: var(--menu-bg); color: var(--menu-text); cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(12px); transition: all 0.2s; }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px; background: var(--menu-bg); backdrop-filter: blur(16px); border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px; opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96); transition: all 0.2s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: none; background: transparent; color: var(--menu-text); font-size: 14px; font-family: inherit; cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left; }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+    /* Nav */
+    .nav-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent); text-decoration: none; margin-bottom: 24px; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .nav-back:hover { background: var(--surface-hover); }
+    /* Hero */
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 14px; color: var(--text-secondary); max-width: 640px; margin: 0 auto; line-height: 1.7; }
+    /* Meta */
+    .meta-bar { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 36px; font-size: 12px; color: var(--text-secondary); }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); background: rgba(245,158,11,0.12); color: #f59e0b; }
+    .tag-chip { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+    /* Card */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease; margin-bottom: 16px; }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
+    /* KPI */
+    .kpi-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 16px; }
+    .kpi-item { text-align: center; padding: 16px 8px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-name { font-size: 14px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 4px; }
+    .kpi-index { font-size: 10px; color: var(--text-secondary); margin-bottom: 6px; }
+    .kpi-cost { font-size: 11px; font-weight: 600; }
+    .kpi-yield { font-size: 13px; font-weight: 700; margin-top: 4px; }
+    /* highlight */
+    .highlight-box { padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border); background: var(--chip-accent); font-size: 13.5px; line-height: 1.7; margin-bottom: 16px; }
+    .highlight-box strong { color: var(--accent); }
+    /* Table */
+    .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .comp-table { width: 100%; border-collapse: collapse; font-size: 12.5px; min-width: 620px; }
+    .comp-table th { padding: 8px 12px; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid var(--border); white-space: nowrap; text-align: center; background: var(--surface-hover); }
+    .comp-table th:first-child { text-align: left; min-width: 120px; }
+    .comp-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); text-align: center; white-space: nowrap; line-height: 1.4; }
+    .comp-table td:first-child { text-align: left; font-weight: 600; color: var(--text-secondary); font-size: 11.5px; background: var(--surface-hover); white-space: normal; min-width: 110px; }
+    .comp-table tr.section-row td { background: rgba(59,130,246,0.06); color: var(--accent); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 6px 12px; border-top: 1px solid rgba(59,130,246,0.2); }
+    .comp-table tr:last-child td { border-bottom: none; }
+    .comp-table td.wrap { white-space: normal; max-width: 160px; font-size: 11.5px; }
+    /* Purpose cards */
+    .purpose-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+    .purpose-card { border-radius: 10px; padding: 14px 12px; border: 1px solid var(--border); background: var(--surface-hover); text-align: center; }
+    .p-etf { font-size: 16px; font-weight: 800; color: var(--accent); margin-bottom: 4px; }
+    .p-goal { font-size: 11px; font-weight: 600; color: var(--text); margin-bottom: 4px; line-height: 1.4; }
+    .p-user { font-size: 10.5px; color: var(--text-secondary); line-height: 1.4; }
+    /* Tax table */
+    .tax-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .tax-table th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    .tax-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); line-height: 1.5; }
+    .tax-table tr:last-child td { border-bottom: none; }
+    .tax-table td:first-child { font-weight: 600; color: var(--accent); white-space: nowrap; }
+    /* Related */
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+    /* Category badge */
+    .category-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
+    .cat-투자주식 { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.3); }
+    .cat-경제거시 { background:rgba(59,130,246,0.12); color:#3b82f6; border:1px solid rgba(59,130,246,0.3); }
+    .cat-기술산업 { background:rgba(139,92,246,0.12); color:#8b5cf6; border:1px solid rgba(139,92,246,0.3); }
+    .cat-부동산   { background:rgba(245,158,11,0.12); color:#f59e0b; border:1px solid rgba(245,158,11,0.3); }
+    .cat-시사컬처 { background:rgba(244,63,94,0.12);  color:#f43f5e; border:1px solid rgba(244,63,94,0.3);  }
+    html.theme-light .cat-투자주식 { background:rgba(16,185,129,0.08); }
+    /* Animations */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}.d4{animation-delay:.24s}.d5{animation-delay:.30s}
+    @media (max-width: 680px) {
+      .kpi-5, .purpose-5 { grid-template-columns: repeat(2,1fr); }
+      .container { padding: 48px 16px 60px; }
+      .comp-table th { font-size: 10px !important; padding: 6px 8px !important; }
+      .comp-table td { font-size: 11px !important; padding: 7px 8px !important; }
+    }
+    @media print { body{background:white!important} .viz-menu{display:none!important} *{print-color-adjust:exact;-webkit-print-color-adjust:exact} }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/></svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main"><div class="container">
+    <a href="../index.html" class="nav-back animate">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      지식 Archive
+    </a>
+
+    <header class="hero animate">
+      <div class="hero-badge">📊 ETF 5종 종합 체크리스트</div>
+      <h1>VOO · QQQ · SCHD · JEPI · JEPQ 완전 비교</h1>
+      <p class="hero-sub">2026년 4월 기준 — 7개 지표 체크리스트 + 성과 비교 + 한국 투자자 세금 안내. 출처: Vanguard·JPMorgan·Schwab·Invesco Fact Sheet (2026.02), etf.com</p>
+    </header>
+
+    <div class="meta-bar animate d1">
+      <span class="category-badge cat-투자주식">📈 투자·주식</span>
+      <span class="diff-badge">중급</span>
+      <span class="tag-chip">#ETF</span>
+      <span class="tag-chip">#비교분석</span>
+      <span class="tag-chip">#배당</span>
+      <span class="tag-chip">#포트폴리오</span>
+      <span class="meta-item">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        2026.04.06
+      </span>
+    </div>
+
+    <!-- 5종 요약 카드 -->
+    <div class="kpi-5 animate d2">
+      <div class="kpi-item">
+        <div class="kpi-name" style="color:#3b82f6">VOO</div>
+        <div class="kpi-index">S&P 500 · 패시브</div>
+        <div class="kpi-cost" style="color:#10b981">보수 0.03%</div>
+        <div class="kpi-yield" style="color:#888">배당 ~1.2%</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-name" style="color:#8b5cf6">QQQ</div>
+        <div class="kpi-index">Nasdaq-100 · 패시브</div>
+        <div class="kpi-cost" style="color:#f59e0b">보수 0.20%</div>
+        <div class="kpi-yield" style="color:#888">배당 ~0.7%</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-name" style="color:#10b981">SCHD</div>
+        <div class="kpi-index">DJ Dividend 100 · 패시브</div>
+        <div class="kpi-cost" style="color:#10b981">보수 0.06%</div>
+        <div class="kpi-yield" style="color:#10b981">배당 ~3.3%</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-name" style="color:#f59e0b">JEPI</div>
+        <div class="kpi-index">S&P500 참조 · 액티브CC</div>
+        <div class="kpi-cost" style="color:#f59e0b">보수 0.35%</div>
+        <div class="kpi-yield" style="color:#f59e0b">배당 ~8.4%</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-name" style="color:#f43f5e">JEPQ</div>
+        <div class="kpi-index">Nasdaq 참조 · 액티브CC</div>
+        <div class="kpi-cost" style="color:#f59e0b">보수 0.35%</div>
+        <div class="kpi-yield" style="color:#f43f5e">배당 ~11.2%</div>
+      </div>
+    </div>
+
+    <!-- 7개 지표 체크리스트 -->
+    <div class="card animate d2">
+      <div class="section-title">🔢 ETF 종합 분석 체크리스트 (7개 지표)</div>
+      <div class="tbl-wrap">
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th>항목</th>
+              <th style="color:#3b82f6">VOO</th>
+              <th style="color:#8b5cf6">QQQ</th>
+              <th style="color:#10b981">SCHD</th>
+              <th style="color:#f59e0b">JEPI</th>
+              <th style="color:#f43f5e">JEPQ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="section-row"><td colspan="6">1️⃣ 추종 지수 / 운용방식</td></tr>
+            <tr>
+              <td>지수명</td>
+              <td>S&P 500</td>
+              <td>Nasdaq-100</td>
+              <td>DJ US Div 100</td>
+              <td>S&P 500 참조</td>
+              <td>Nasdaq-100 참조</td>
+            </tr>
+            <tr>
+              <td>운용방식</td>
+              <td>패시브</td>
+              <td>패시브</td>
+              <td>패시브</td>
+              <td style="color:#f59e0b">액티브(커버드콜)</td>
+              <td style="color:#f43f5e">액티브(커버드콜)</td>
+            </tr>
+            <tr class="section-row"><td colspan="6">2️⃣ Expense Ratio (보수율)</td></tr>
+            <tr>
+              <td>보수율</td>
+              <td style="color:#10b981; font-weight:700;">0.03%</td>
+              <td style="color:#f59e0b; font-weight:700;">0.20%</td>
+              <td style="color:#10b981; font-weight:700;">0.06%</td>
+              <td style="color:#f59e0b; font-weight:700;">0.35%</td>
+              <td style="color:#f59e0b; font-weight:700;">0.35%</td>
+            </tr>
+            <tr>
+              <td>평가</td>
+              <td>✅ 업계 최저</td>
+              <td>🟡 다소 높음</td>
+              <td>✅ 배당ETF 최저급</td>
+              <td>🟡 액티브 적정</td>
+              <td>🟡 액티브 적정</td>
+            </tr>
+            <tr class="section-row"><td colspan="6">3️⃣ AUM (순자산총액)</td></tr>
+            <tr>
+              <td>AUM</td>
+              <td style="font-weight:700;">~$632B</td>
+              <td style="font-weight:700;">~$290B</td>
+              <td style="font-weight:700;">~$85.9B</td>
+              <td style="font-weight:700;">~$45.0B</td>
+              <td style="font-weight:700;">~$34.6B</td>
+            </tr>
+            <tr>
+              <td>규모 평가</td>
+              <td>✅ 세계 1위</td>
+              <td>✅ 최대 기술ETF</td>
+              <td>✅ 배당ETF 최대</td>
+              <td>✅ 액티브ETF 최대</td>
+              <td>✅ 급성장</td>
+            </tr>
+            <tr class="section-row"><td colspan="6">4️⃣ 거래량 / 스프레드</td></tr>
+            <tr>
+              <td>일평균 거래량</td>
+              <td>~1,370만 주</td>
+              <td>~4,500만 주</td>
+              <td>~2,755만 주</td>
+              <td>~500만 주</td>
+              <td>~450만 주</td>
+            </tr>
+            <tr>
+              <td>비드-애스크</td>
+              <td>~$0.01 (0.002%)</td>
+              <td>~$0.01 (0.002%)</td>
+              <td>~$0.01 (0.03%)</td>
+              <td>~0.02%</td>
+              <td>~0.02~0.03%</td>
+            </tr>
+            <tr class="section-row"><td colspan="6">5️⃣ Tracking Error (추적오차)</td></tr>
+            <tr>
+              <td>추적오차</td>
+              <td style="color:#10b981; font-weight:700;">~0.01%</td>
+              <td style="color:#10b981; font-weight:700;">~0.014%</td>
+              <td style="color:#10b981; font-weight:700;">~0.03~0.05%</td>
+              <td style="color:#888;">N/A (액티브)</td>
+              <td style="color:#888;">N/A (액티브)</td>
+            </tr>
+            <tr>
+              <td>비고</td>
+              <td>완벽한 지수 추적</td>
+              <td>매우 낮음</td>
+              <td>낮음</td>
+              <td class="wrap">상승 캡 ~70~80% 설계</td>
+              <td class="wrap">Beta=0.69, Nasdaq의 ~70% 변동성</td>
+            </tr>
+            <tr class="section-row"><td colspan="6">6️⃣ NAV 장기 추세</td></tr>
+            <tr>
+              <td>NAV 추세</td>
+              <td>📈 강한 우상향</td>
+              <td>📈 강한 우상향</td>
+              <td>📈 완만한 우상향</td>
+              <td>↔️ 횡보~완만</td>
+              <td>📈 완만한 우상향</td>
+            </tr>
+            <tr>
+              <td>출시연도</td>
+              <td>2010년</td>
+              <td>1999년</td>
+              <td>2011년</td>
+              <td>2020년</td>
+              <td>2022년</td>
+            </tr>
+            <tr>
+              <td>장기 연평균</td>
+              <td>~13.27% (10yr)</td>
+              <td>~13%+ (10yr)</td>
+              <td>양호 (배당포함)</td>
+              <td>~9.41% (5yr)</td>
+              <td>~16.38% (설정 후)</td>
+            </tr>
+            <tr class="section-row"><td colspan="6">7️⃣ 분배금 구성 (ROC 여부)</td></tr>
+            <tr>
+              <td>분배 주기</td>
+              <td>분기</td>
+              <td>분기</td>
+              <td>분기</td>
+              <td style="color:#10b981; font-weight:600;">월배당</td>
+              <td style="color:#10b981; font-weight:600;">월배당</td>
+            </tr>
+            <tr>
+              <td>12M 배당수익률</td>
+              <td>~1.16%</td>
+              <td>~0.7%</td>
+              <td>~3.3%</td>
+              <td style="color:#f59e0b; font-weight:700;">~8.37%</td>
+              <td style="color:#f43f5e; font-weight:700;">~11.16%</td>
+            </tr>
+            <tr>
+              <td>분배금 구성</td>
+              <td class="wrap">적격배당 (Qualified)</td>
+              <td class="wrap">적격배당 (Qualified)</td>
+              <td class="wrap">적격배당 (고배당주)</td>
+              <td class="wrap">주식배당 + ELN 옵션 프리미엄 (일반소득)</td>
+              <td class="wrap">주식배당 + ELN 옵션 프리미엄 (일반소득)</td>
+            </tr>
+            <tr>
+              <td>ROC 여부</td>
+              <td style="color:#10b981">❌ 없음</td>
+              <td style="color:#10b981">❌ 없음</td>
+              <td style="color:#10b981">❌ 없음</td>
+              <td style="color:#f59e0b">🟡 소규모 가능</td>
+              <td style="color:#f59e0b">🟡 소규모 가능</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 성과 비교 요약 -->
+    <div class="card animate d3">
+      <div class="section-title">📈 성과 비교 요약 (etf.com · JPMorgan Fact Sheet 2026.02 기준)</div>
+      <div class="tbl-wrap">
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th>항목</th>
+              <th style="color:#3b82f6">VOO</th>
+              <th style="color:#8b5cf6">QQQ</th>
+              <th style="color:#10b981">SCHD</th>
+              <th style="color:#f59e0b">JEPI</th>
+              <th style="color:#f43f5e">JEPQ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1년 수익률 (NAV)</td>
+              <td>~17%</td>
+              <td style="color:#8b5cf6; font-weight:700;">~20.35%</td>
+              <td>~8~10%</td>
+              <td>9.55%</td>
+              <td>15.76%</td>
+            </tr>
+            <tr>
+              <td>3년 연환산</td>
+              <td>~13.45%</td>
+              <td style="color:#8b5cf6; font-weight:700;">~20%+</td>
+              <td>~5~7%</td>
+              <td>10.15%</td>
+              <td>25.14%</td>
+            </tr>
+            <tr>
+              <td>5년 연환산</td>
+              <td>~14.31%</td>
+              <td>~14%+</td>
+              <td>~8~10%</td>
+              <td>9.41%</td>
+              <td>N/A</td>
+            </tr>
+            <tr>
+              <td>베타 (1년)</td>
+              <td>~1.00</td>
+              <td>~1.10~1.15</td>
+              <td style="color:#10b981">~0.7~0.8</td>
+              <td style="color:#10b981; font-weight:700;">0.36</td>
+              <td>0.69</td>
+            </tr>
+            <tr>
+              <td>표준편차 (1년)</td>
+              <td>~10.5%</td>
+              <td style="color:#f43f5e">~15%</td>
+              <td style="color:#10b981">~8%</td>
+              <td style="color:#10b981; font-weight:700;">6.62%</td>
+              <td>13.56%</td>
+            </tr>
+            <tr>
+              <td>배당수익률 (12M)</td>
+              <td>~1.16%</td>
+              <td>~0.7%</td>
+              <td>~3.3%</td>
+              <td style="color:#f59e0b">8.37%</td>
+              <td style="color:#f43f5e">11.16%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 한국 투자자 세금 안내 -->
+    <div class="card animate d3">
+      <div class="section-title">🇰🇷 한국 거주자 세금 및 분배금 안내</div>
+      <div class="tbl-wrap">
+        <table class="tax-table" style="min-width:500px;">
+          <tr><th>구분</th><th>내용</th></tr>
+          <tr>
+            <td>원천징수세율</td>
+            <td>미국 ETF 배당 → <strong>15% 원천징수</strong> (한미 조세조약)</td>
+          </tr>
+          <tr>
+            <td>금융소득 종합과세</td>
+            <td>연간 금융소득(이자+배당) <strong>2,000만원 초과</strong> 시 종합소득세 합산 과세</td>
+          </tr>
+          <tr>
+            <td>VOO·QQQ·SCHD</td>
+            <td>적격배당(Qualified Dividend) → 미국 세율 낮음, 한국 배당소득세 동일 적용</td>
+          </tr>
+          <tr>
+            <td>JEPI·JEPQ</td>
+            <td>ELN 옵션 프리미엄은 <strong>일반소득(Ordinary Income)</strong> → 한국 배당소득세 적용. 월배당 8~11% → 금융소득종합과세 기준 초과 가능성 점검 필요</td>
+          </tr>
+          <tr>
+            <td>ROC 발생 시</td>
+            <td>미국에서 비과세이나, 한국에서는 <strong>취득원가 감소 처리</strong> → 향후 양도세에 영향</td>
+          </tr>
+          <tr>
+            <td>SCHD 특이사항</td>
+            <td>2024년 <strong>3:1 액면분할</strong> 완료 → 배당수익률 계산 시 분할 전후 기준 확인 필요</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- 투자 목적별 선택 -->
+    <div class="card animate d4">
+      <div class="section-title">🎯 투자 목적별 ETF 선택 가이드</div>
+      <div class="purpose-5">
+        <div class="purpose-card">
+          <div class="p-etf" style="color:#3b82f6">VOO</div>
+          <div class="p-goal">시장 수익 / 성장</div>
+          <div class="p-user">장기 적립식 인덱스 투자자</div>
+        </div>
+        <div class="purpose-card">
+          <div class="p-etf" style="color:#8b5cf6">QQQ</div>
+          <div class="p-goal">기술주 성장</div>
+          <div class="p-user">기술주 집중 성장 추구자</div>
+        </div>
+        <div class="purpose-card">
+          <div class="p-etf" style="color:#10b981">SCHD</div>
+          <div class="p-goal">배당 성장</div>
+          <div class="p-user">배당 성장 장기 투자자</div>
+        </div>
+        <div class="purpose-card">
+          <div class="p-etf" style="color:#f59e0b">JEPI</div>
+          <div class="p-goal">월배당 소득 / 저위험</div>
+          <div class="p-user">소득 중심 저위험 선호자</div>
+        </div>
+        <div class="purpose-card">
+          <div class="p-etf" style="color:#f43f5e">JEPQ</div>
+          <div class="p-goal">성장 + 월배당 균형</div>
+          <div class="p-user">성장·소득 균형 투자자</div>
+        </div>
+      </div>
+      <div style="margin-top:14px; padding:12px 16px; border-radius:10px; border:1px solid var(--border); background:var(--chip-accent); font-size:13px; line-height:1.7;">
+        💡 <strong>핵심 요약:</strong> 장기 자산 증식 → VOO·QQQ·SCHD / 현금흐름 중심 → JEPI·JEPQ. 배당 높을수록 세금 부담과 금융소득종합과세 임계 도달 시점을 반드시 점검할 것.
+      </div>
+    </div>
+
+    <!-- Related -->
+    <div class="related-section animate d5">
+      <h3>🔗 관련 지식</h3>
+      <div class="related-grid">
+        <a href="us-etf-analysis-10-metrics.html" class="related-card">
+          <div class="r-label">투자·주식</div>
+          <div class="r-title">미국 ETF 분석 10대 핵심 지표 (일반 ETF)</div>
+        </a>
+        <a href="covered-call-etf-analysis-metrics.html" class="related-card">
+          <div class="r-label">투자·주식</div>
+          <div class="r-title">커버드콜 ETF 분석 10대 지표</div>
+        </a>
+        <a href="covered-call-etf-distribution-risk.html" class="related-card">
+          <div class="r-label">투자·주식</div>
+          <div class="r-title">커버드콜 ETF 분배율의 함정</div>
+        </a>
+        <a href="risk-metrics-mdd-sharpe.html" class="related-card">
+          <div class="r-label">투자·주식</div>
+          <div class="r-title">MDD와 샤프 지수 — 리스크 조정 수익 지표</div>
+        </a>
+      </div>
+    </div>
+
+  </div></main>
+
+  <script>
+    const THEMES=['dark','light'];
+    let themeIdx=THEMES.indexOf(localStorage.getItem('ka-theme')||'dark');
+    function applyTheme(t){document.documentElement.className='theme-'+t;document.getElementById('themeLabel').textContent=t.charAt(0).toUpperCase()+t.slice(1);localStorage.setItem('ka-theme',t);}
+    applyTheme(THEMES[themeIdx]);
+    function cycleTheme(){themeIdx=(themeIdx+1)%THEMES.length;applyTheme(THEMES[themeIdx]);closeMenu();}
+    function toggleMenu(){document.getElementById('vizMenuDropdown').classList.toggle('open');}
+    function closeMenu(){document.getElementById('vizMenuDropdown').classList.remove('open');}
+    document.addEventListener('click',e=>{if(!e.target.closest('.viz-menu'))closeMenu();});
+    function downloadImage(){
+      closeMenu();
+      htmlToImage.toPng(document.getElementById('main'),{quality:1,pixelRatio:2,backgroundColor:getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()})
+        .then(d=>{const a=document.createElement('a');a.download='etf-5-comprehensive-checklist.png';a.href=d;a.click();})
+        .catch(e=>console.error(e));
+    }
+  </script>
+</body>
+</html>
