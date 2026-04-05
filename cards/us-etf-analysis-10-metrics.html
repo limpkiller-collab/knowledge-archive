@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>미국 ETF 분석 10대 핵심 지표 — 기관 투자자가 실제로 보는 평가 프레임워크</title>
+  <meta name="knowledge-id" content="us-etf-analysis-10-metrics">
+  <meta name="knowledge-tags" content="ETF,투자,비교분석,포트폴리오,위험관리">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-05">
+  <meta name="knowledge-source" content="기관 투자자 ETF 분석 프레임워크">
+  <meta name="knowledge-category" content="투자·주식">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #10b981; --accent2: #3b82f6;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(16,185,129,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #059669; --accent2: #2563eb;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(5,150,105,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+    body { font-family: 'Noto Sans KR','Inter',sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; letter-spacing: -0.011em; transition: background 0.3s, color 0.3s; min-height: 100vh; }
+    body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse 70% 50% at 50% 10%, color-mix(in srgb, var(--accent), transparent 88%), transparent); }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--menu-border); background: var(--menu-bg); color: var(--menu-text); cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(12px); transition: all 0.2s; }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px; background: var(--menu-bg); backdrop-filter: blur(16px); border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px; opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96); transition: all 0.2s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: none; background: transparent; color: var(--menu-text); font-size: 14px; font-family: inherit; cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left; }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+    .nav-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent); text-decoration: none; margin-bottom: 24px; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .nav-back:hover { background: var(--surface-hover); }
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.6rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 600px; margin: 0 auto; line-height: 1.7; }
+    .meta-bar { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 36px; font-size: 12px; color: var(--text-secondary); }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); background: rgba(245,158,11,0.12); color: #f59e0b; }
+    .tag-chip { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease; margin-bottom: 16px; }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .highlight-box { padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border); background: var(--chip-accent); font-size: 13.5px; line-height: 1.7; margin-bottom: 16px; }
+    .highlight-box strong { color: var(--accent); }
+    .good-bad-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+    .gb-card { border-radius: 12px; padding: 20px; border: 1px solid var(--border); background: var(--surface); }
+    .gb-card.good { border-top: 3px solid #10b981; }
+    .gb-card.bad  { border-top: 3px solid #f43f5e; }
+    .gb-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+    .gb-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .gb-list li { font-size: 12.5px; color: var(--text-secondary); display: flex; gap: 8px; line-height: 1.5; }
+    .gb-list li .icon { flex-shrink: 0; }
+    /* metric table */
+    .metric-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .metric-table th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    .metric-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    .metric-table tr:last-child td { border-bottom: none; }
+    .metric-table td:first-child { font-weight: 600; color: var(--accent); }
+    .metric-table td.wrap { white-space: normal; min-width: 140px; }
+    /* numbered metric items */
+    .metric-list { display: flex; flex-direction: column; gap: 12px; }
+    .metric-item { display: flex; gap: 14px; padding: 14px 16px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface-hover); align-items: flex-start; }
+    .metric-num { flex-shrink: 0; width: 28px; height: 28px; border-radius: 8px; background: var(--chip-accent); color: var(--accent); font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .metric-body { flex: 1; min-width: 0; }
+    .metric-name { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+    .metric-desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.6; }
+    .metric-sub { margin-top: 6px; padding: 6px 10px; border-radius: 6px; background: var(--chip-amber); font-size: 12px; color: var(--text-secondary); }
+    /* 4개 핵심 지표 highlight */
+    .core4-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+    .core4-item { padding: 16px; border-radius: 10px; border: 1px solid rgba(16,185,129,0.3); background: rgba(16,185,129,0.06); text-align: center; }
+    .core4-num { font-size: 22px; font-weight: 800; color: var(--accent); letter-spacing: -0.03em; }
+    .core4-name { font-size: 12px; font-weight: 600; color: var(--text); margin-top: 4px; }
+    .core4-hint { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+    /* related */
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+    /* category badge */
+    .category-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
+    .cat-투자주식 { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.3); }
+    .cat-경제거시 { background:rgba(59,130,246,0.12); color:#3b82f6; border:1px solid rgba(59,130,246,0.3); }
+    .cat-기술산업 { background:rgba(139,92,246,0.12); color:#8b5cf6; border:1px solid rgba(139,92,246,0.3); }
+    .cat-부동산   { background:rgba(245,158,11,0.12); color:#f59e0b; border:1px solid rgba(245,158,11,0.3); }
+    .cat-시사컬처 { background:rgba(244,63,94,0.12);  color:#f43f5e; border:1px solid rgba(244,63,94,0.3);  }
+    html.theme-light .cat-투자주식 { background:rgba(16,185,129,0.08); }
+    html.theme-light .cat-경제거시 { background:rgba(59,130,246,0.08); }
+    html.theme-light .cat-기술산업 { background:rgba(139,92,246,0.08); }
+    html.theme-light .cat-부동산   { background:rgba(245,158,11,0.08); }
+    html.theme-light .cat-시사컬처 { background:rgba(244,63,94,0.08); }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+    @media (max-width: 640px) {
+      .kpi-row, .good-bad-grid, .core4-grid { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+      .metric-table th { white-space: nowrap !important; font-size: 10px !important; padding: 6px 8px !important; }
+      .metric-table td { font-size: 12px !important; padding: 8px !important; }
+    }
+    @media print { body { background: white !important; } .viz-menu { display: none !important; } * { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/></svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main"><div class="container">
+    <a href="../index.html" class="nav-back animate">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      지식 Archive
+    </a>
+
+    <header class="hero animate">
+      <div class="hero-badge">📊 ETF 분석 프레임워크</div>
+      <h1>미국 ETF 분석 10대 핵심 지표</h1>
+      <p class="hero-sub">기관 투자자와 자산운용사가 실제로 사용하는 평가 프레임워크 — 비용·추적능력·유동성·구조 4축으로 ETF 품질을 판별한다.</p>
+    </header>
+
+    <div class="meta-bar animate d1">
+      <span class="category-badge cat-투자주식">📈 투자·주식</span>
+      <span class="diff-badge">중급</span>
+      <span class="tag-chip">#ETF</span>
+      <span class="tag-chip">#투자</span>
+      <span class="tag-chip">#비교분석</span>
+      <span class="tag-chip">#포트폴리오</span>
+      <span class="tag-chip">#위험관리</span>
+      <span class="meta-item">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        2026.04.05
+      </span>
+      <span class="meta-item">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        기관 투자자 ETF 분석 프레임워크
+      </span>
+    </div>
+
+    <!-- KPI Row -->
+    <div class="kpi-row animate d2">
+      <div class="kpi-item">
+        <div class="kpi-value" style="color:#10b981">4,000+</div>
+        <div class="kpi-label">미국 상장 ETF 수</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-value" style="color:#3b82f6">$16T+</div>
+        <div class="kpi-label">미국 ETF 총 자산 규모</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-value" style="color:#f59e0b">80%</div>
+        <div class="kpi-label">AUM $1B 미만 ETF 비율</div>
+      </div>
+    </div>
+
+    <!-- 핵심 요약 -->
+    <div class="card animate d2">
+      <div class="section-title">📌 분석 핵심 원칙</div>
+      <div class="highlight-box">
+        기관 투자자는 ETF를 단순 수익률이 아닌 <strong>비용 + 추적 능력 + 유동성 + 구조</strong>의 4축으로 동시에 평가한다. 이름이나 단기 수익률에 현혹되지 말고 지표를 체계적으로 확인해야 한다.
+      </div>
+      <div style="padding:12px 16px; border-radius:10px; border:1px solid rgba(16,185,129,0.2); background:rgba(16,185,129,0.06); font-size:13px; line-height:1.7;">
+        💡 <strong>핵심 통찰:</strong> 장기 투자에서 Expense Ratio 0.5% 차이는 포트폴리오 최종 가치의 <strong>10~15% 차이</strong>를 만들어낼 수 있다. (Investopedia)
+      </div>
+    </div>
+
+    <!-- 10대 지표 -->
+    <div class="card animate d2">
+      <div class="section-title">🔢 반드시 확인하는 10개 핵심 지표</div>
+      <div class="metric-list">
+
+        <div class="metric-item">
+          <div class="metric-num">1</div>
+          <div class="metric-body">
+            <div class="metric-name">Expense Ratio (총보수)</div>
+            <div class="metric-desc">ETF를 보유하면서 매년 자동으로 빠져나가는 운용 비용. 낮을수록 장기 복리에 유리하다.</div>
+            <div class="metric-sub">
+              <div style="overflow-x:auto; -webkit-overflow-scrolling:touch;">
+                <table class="metric-table" style="min-width:320px; margin-top:4px;">
+                  <tr><th>유형</th><th>좋은 수준</th><th>예시</th></tr>
+                  <tr><td>Broad Market</td><td style="color:#10b981">&lt; 0.05%</td><td style="color:var(--text);">VOO 0.03%</td></tr>
+                  <tr><td>Sector ETF</td><td style="color:#f59e0b">&lt; 0.20%</td><td style="color:var(--text);">XLK 0.10%</td></tr>
+                  <tr><td>Thematic ETF</td><td style="color:#f43f5e">&lt; 0.50%</td><td style="color:var(--text);">ARKK 0.75%</td></tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-item">
+          <div class="metric-num">2</div>
+          <div class="metric-body">
+            <div class="metric-name">Tracking Error (추적오차)</div>
+            <div class="metric-desc">ETF가 벤치마크 지수를 얼마나 정확히 따라가는지 나타내는 변동성. <strong>0.5% 이하</strong>가 우수 수준. 거래비용·현금 보유·파생상품 사용 시 높아진다.</div>
+          </div>
+        </div>
+
+        <div class="metric-item">
+          <div class="metric-num">3</div>
+          <div class="metric-body">
+            <div class="metric-name">Tracking Difference</div>
+            <div class="metric-desc">지수 수익률 대비 ETF 실제 수익률의 차이. <em>Tracking Difference ≈ Expense Ratio</em>보다 크게 벌어지면 내부 비효율이 있다는 신호.</div>
+          </div>
+        </div>
+
+        <div class="metric-item">
+          <div class="metric-num">4</div>
+          <div class="metric-body">
+            <div class="metric-name">AUM (Assets Under Management)</div>
+            <div class="metric-desc">ETF에 들어온 총 자금 규모. 클수록 추적오차·비용·유동성 모두 유리해진다.</div>
+            <div class="metric-sub">
+              <div style="overflow-x:auto; -webkit-overflow-scrolling:touch;">
+                <table class="metric-table" style="min-width:260px; margin-top:4px;">
+                  <tr><th>규모</th><th>평가</th></tr>
+                  <tr><td>$5B 이상</td><td style="color:#10b981">매우 안정</td></tr>
+                  <tr><td>$1B 이상</td><td style="color:#10b981">안정</td></tr>
+                  <tr><td>$100M 미만</td><td style="color:#f43f5e">청산 위험</td></tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-item">
+          <div class="metric-num">5</div>
+          <div class="metric-body">
+            <div class="metric-name">거래량 (Trading Volume)</div>
+            <div class="metric-desc">일일 거래량이 많을수록 매매 비용이 줄어든다. 거래량이 낮으면 대규모 매매 시 시장 충격이 발생할 수 있다.</div>
+          </div>
+        </div>
+
+        <div class="metric-item">
+          <div class="metric-num">6</div>
+          <div class="metric-body">
+            <div class="metric-name">Bid-Ask Spread (스프레드)</div>
+            <div class="metric-desc">매수·매도 가격 차이. <strong>숨겨진 거래 비용</strong>이다. SPY는 0.01%, 소형 ETF는 0.5~1%까지 벌어진다. Expense Ratio와 함께 반드시 확인해야 한다.</div>
+          </div>
+        </div>
+
+        <div class="metric-item">
+          <div class="metric-num">7</div>
+          <div class="metric-body">
+            <div class="metric-name">ETF Holdings (구성 종목)</div>
+            <div class="metric-desc">ETF의 실제 투자 내용. 이름만 보지 말고 상위 종목 비중을 확인해야 한다. QQQ는 상위 3개 종목(애플·MS·엔비디아)이 약 24%를 차지하는 빅테크 집중 ETF다.</div>
+          </div>
+        </div>
+
+        <div class="metric-item">
+          <div class="metric-num">8</div>
+          <div class="metric-body">
+            <div class="metric-name">Sector / Country Exposure</div>
+            <div class="metric-desc">섹터 및 국가 집중도. S&P500도 IT 비중 약 30%. 섹터 집중이 심할수록 특정 이벤트에 취약하다.</div>
+          </div>
+        </div>
+
+        <div class="metric-item">
+          <div class="metric-num">9</div>
+          <div class="metric-body">
+            <div class="metric-name">Volatility / Max Drawdown</div>
+            <div class="metric-desc">ETF의 변동성과 역대 최대 낙폭. S&P500 약 -55%, 나스닥 약 -80%. 리스크 수준을 직관적으로 이해하는 지표다.</div>
+          </div>
+        </div>
+
+        <div class="metric-item">
+          <div class="metric-num">10</div>
+          <div class="metric-body">
+            <div class="metric-name">ETF Issuer (운용사)</div>
+            <div class="metric-desc">운용사 규모와 신뢰도가 ETF 품질을 결정한다. 대형 운용사일수록 추적 품질·운용 안정성·생존율이 높다.</div>
+            <div class="metric-sub">
+              <div style="overflow-x:auto; -webkit-overflow-scrolling:touch;">
+                <table class="metric-table" style="min-width:300px; margin-top:4px;">
+                  <tr><th>운용사</th><th>특징</th><th>대표 ETF</th></tr>
+                  <tr><td>Vanguard</td><td style="color:var(--text);">초저비용</td><td style="color:var(--text);">VOO, VTI</td></tr>
+                  <tr><td>BlackRock (iShares)</td><td style="color:var(--text);">세계 최대</td><td style="color:var(--text);">IVV, AGG</td></tr>
+                  <tr><td>State Street</td><td style="color:var(--text);">가장 오래된 ETF</td><td style="color:var(--text);">SPY</td></tr>
+                  <tr><td>Invesco</td><td style="color:var(--text);">나스닥 특화</td><td style="color:var(--text);">QQQ</td></tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 좋은 ETF vs 나쁜 ETF -->
+    <div class="card animate d3">
+      <div class="section-title">⚖️ 좋은 ETF vs 나쁜 ETF 판별 기준</div>
+      <div class="good-bad-grid">
+        <div class="gb-card good">
+          <div class="gb-label" style="color:#10b981">✅ 좋은 ETF</div>
+          <ul class="gb-list">
+            <li><span class="icon">💚</span><span><strong>낮은 비용</strong> — Expense Ratio &lt; 0.10% (예: VOO, VTI, IVV)</span></li>
+            <li><span class="icon">💚</span><span><strong>큰 규모</strong> — AUM &gt; $1B, 장기 생존 가능성 높음</span></li>
+            <li><span class="icon">💚</span><span><strong>높은 유동성</strong> — 거래량 많고 스프레드 낮음</span></li>
+            <li><span class="icon">💚</span><span><strong>추적 정확도</strong> — Tracking Error &lt; 0.5%</span></li>
+            <li><span class="icon">💚</span><span><strong>단순한 전략</strong> — Broad Index, 투명한 구조</span></li>
+            <li><span class="icon">💚</span><span><strong>분산 투자</strong> — VTI처럼 4,000개+ 종목 보유</span></li>
+          </ul>
+        </div>
+        <div class="gb-card bad">
+          <div class="gb-label" style="color:#f43f5e">❌ 나쁜 ETF</div>
+          <ul class="gb-list">
+            <li><span class="icon">🔴</span><span><strong>작은 규모</strong> — AUM &lt; $100M, 청산 위험</span></li>
+            <li><span class="icon">🔴</span><span><strong>높은 비용</strong> — Expense Ratio &gt; 0.75%, 특히 테마 ETF</span></li>
+            <li><span class="icon">🔴</span><span><strong>낮은 거래량</strong> — 스프레드 높아 매매 비용 급증</span></li>
+            <li><span class="icon">🔴</span><span><strong>큰 추적오차</strong> — Tracking Error &gt; 1%</span></li>
+            <li><span class="icon">🔴</span><span><strong>과열 테마</strong> — AI·블록체인·메타버스 ETF 수명 짧음</span></li>
+            <li><span class="icon">🔴</span><span><strong>종목 집중</strong> — 상위 3~5개 종목이 50%+ 차지</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 실전 4개 핵심 지표 -->
+    <div class="card animate d3">
+      <div class="section-title">⚡ 실전 투자 시 가장 중요한 4개 지표</div>
+      <div class="highlight-box">
+        수십 개 지표가 있어도 <strong>이 4개만 보면 판단의 80%가 가능하다.</strong>
+      </div>
+      <div class="core4-grid">
+        <div class="core4-item">
+          <div class="core4-num">①</div>
+          <div class="core4-name">Expense Ratio</div>
+          <div class="core4-hint">매년 빠져나가는 비용</div>
+        </div>
+        <div class="core4-item">
+          <div class="core4-num">②</div>
+          <div class="core4-name">AUM</div>
+          <div class="core4-hint">규모 = 생존 가능성</div>
+        </div>
+        <div class="core4-item">
+          <div class="core4-num">③</div>
+          <div class="core4-name">거래량 / Spread</div>
+          <div class="core4-hint">숨겨진 매매 비용</div>
+        </div>
+        <div class="core4-item">
+          <div class="core4-num">④</div>
+          <div class="core4-name">Tracking Error</div>
+          <div class="core4-hint">지수 추종 품질</div>
+        </div>
+      </div>
+      <div style="padding:12px 16px; border-radius:10px; border:1px solid var(--border); background:var(--surface-hover); font-size:13px; line-height:1.7;">
+        📌 <strong>결론:</strong> 장기 투자자 대부분이 <strong>VOO · VTI · QQQ</strong> 같은 대형 ETF에 집중하는 이유가 여기에 있다. 현재 미국 ETF 약 4,000개 중 80%는 AUM $1B 미만 — 대부분 장기적으로 경쟁력이 떨어진다.
+      </div>
+    </div>
+
+    <!-- ETF 시장 현황 -->
+    <div class="card animate d4">
+      <div class="section-title">📊 대표 ETF 비교 스냅샷</div>
+      <div style="overflow-x:auto; -webkit-overflow-scrolling:touch;">
+        <table class="metric-table" style="min-width:560px;">
+          <tr>
+            <th>ETF</th>
+            <th>운용사</th>
+            <th>Expense Ratio</th>
+            <th>AUM</th>
+            <th>특징</th>
+          </tr>
+          <tr>
+            <td>VOO</td>
+            <td style="color:var(--text);">Vanguard</td>
+            <td style="color:#10b981; font-weight:700;">0.03%</td>
+            <td style="color:var(--text);">$600B+</td>
+            <td class="wrap">S&P500 추종, 장기 투자 최적</td>
+          </tr>
+          <tr>
+            <td>SPY</td>
+            <td style="color:var(--text);">State Street</td>
+            <td style="color:#10b981; font-weight:700;">0.09%</td>
+            <td style="color:var(--text);">$550B+</td>
+            <td class="wrap">세계 최초 ETF, 유동성 최강</td>
+          </tr>
+          <tr>
+            <td>QQQ</td>
+            <td style="color:var(--text);">Invesco</td>
+            <td style="color:#f59e0b; font-weight:700;">0.20%</td>
+            <td style="color:var(--text);">$300B+</td>
+            <td class="wrap">나스닥 100, 빅테크 집중</td>
+          </tr>
+          <tr>
+            <td>VTI</td>
+            <td style="color:var(--text);">Vanguard</td>
+            <td style="color:#10b981; font-weight:700;">0.03%</td>
+            <td style="color:var(--text);">$450B+</td>
+            <td class="wrap">미국 전체 시장, 4,000개+ 종목</td>
+          </tr>
+          <tr>
+            <td>ARKK</td>
+            <td style="color:var(--text);">ARK Invest</td>
+            <td style="color:#f43f5e; font-weight:700;">0.75%</td>
+            <td style="color:var(--text);">$6B</td>
+            <td class="wrap">액티브 테마 ETF, 고비용·고변동</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- 관련 지식 -->
+    <div class="related-section animate d5">
+      <h3>🔗 관련 지식</h3>
+      <div class="related-grid">
+        <a href="covered-call-etf-distribution-risk.html" class="related-card">
+          <div class="r-label">투자·주식</div>
+          <div class="r-title">커버드콜 ETF 분배율의 함정</div>
+        </a>
+        <a href="risk-metrics-mdd-sharpe.html" class="related-card">
+          <div class="r-label">투자·주식</div>
+          <div class="r-title">MDD와 샤프 지수 — 리스크 조정 수익 지표</div>
+        </a>
+        <a href="behavioral-economics-investing.html" class="related-card">
+          <div class="r-label">투자·주식</div>
+          <div class="r-title">행동경제학과 투자 심리 편향</div>
+        </a>
+        <a href="analyst-investment-framework.html" class="related-card">
+          <div class="r-label">투자·주식</div>
+          <div class="r-title">기관 투자자 분석 프레임워크</div>
+        </a>
+      </div>
+    </div>
+
+  </div></main>
+
+  <script>
+    // Theme
+    const THEMES = ['dark','light'];
+    let themeIdx = THEMES.indexOf(localStorage.getItem('ka-theme')||'dark');
+    function applyTheme(t){ document.documentElement.className='theme-'+t; document.getElementById('themeLabel').textContent=t.charAt(0).toUpperCase()+t.slice(1); localStorage.setItem('ka-theme',t); }
+    applyTheme(THEMES[themeIdx]);
+    function cycleTheme(){ themeIdx=(themeIdx+1)%THEMES.length; applyTheme(THEMES[themeIdx]); closeMenu(); }
+
+    // Menu
+    function toggleMenu(){ document.getElementById('vizMenuDropdown').classList.toggle('open'); }
+    function closeMenu(){ document.getElementById('vizMenuDropdown').classList.remove('open'); }
+    document.addEventListener('click', e=>{ if(!e.target.closest('.viz-menu')) closeMenu(); });
+
+    // Download
+    function downloadImage(){
+      closeMenu();
+      const el = document.getElementById('main');
+      htmlToImage.toPng(el,{quality:1,pixelRatio:2,backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()})
+        .then(d=>{ const a=document.createElement('a'); a.download='us-etf-analysis-10-metrics.png'; a.href=d; a.click(); })
+        .catch(e=>console.error(e));
+    }
+  </script>
+</body>
+</html>
