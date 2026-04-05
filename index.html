@@ -1,142 +1,450 @@
 <!DOCTYPE html>
-<html lang="ko" class="theme-dark">
+<html lang="ko" id="htmlRoot" class="theme-dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>지식 Archive</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html.theme-dark {
-      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
-      --border: rgba(255,255,255,0.06);
-      --text: #EDEDED; --text-secondary: #888;
-      --accent: #3b82f6; --accent-secondary: #8b5cf6;
-      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
-      --info: #06b6d4;
-      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
-      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    /* ============================
+       DESIGN TOKENS — Obsidian Curator
+       ============================ */
+    :root {
+      --bg:              #0e0e0e;
+      --surface-low:     #131313;
+      --surface-mid:     #1a1919;
+      --surface-high:    #201f1f;
+      --surface-highest: #262626;
+      --surface-bright:  #2c2c2c;
+      --primary:         #85adff;
+      --primary-fixed:   #6e9fff;
+      --on-primary-fixed:#000000;
+      --secondary:       #69f6b8;
+      --tertiary:        #ff6f7e;
+      --on-surface:      #ffffff;
+      --on-surface-v:    #adaaaa;
+      --outline-v:       #494847;
+      --border:          rgba(255,255,255,0.05);
+      --text:            #ffffff;
+      --text-sec:        #adaaaa;
+      --accent:          #6e9fff;
     }
     html.theme-light {
-      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
-      --border: #e5e5e5;
-      --text: #1a1a1a; --text-secondary: #666;
-      --accent: #2563eb; --accent-secondary: #7c3aed;
-      --positive: #059669; --negative: #e11d48; --warning: #d97706;
-      --info: #0ea5e9;
-      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
-      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+      --bg:              #FAFAFA;
+      --surface-low:     #FFFFFF;
+      --surface-mid:     #F9FAFB;
+      --surface-high:    #FFFFFF;
+      --surface-highest: #F3F4F6;
+      --surface-bright:  #FFFFFF;
+      --primary:         #2563EB;
+      --primary-fixed:   #2563EB;
+      --on-primary-fixed:#FFFFFF;
+      --secondary:       #059669;
+      --tertiary:        #E11D48;
+      --on-surface:      #111827;
+      --on-surface-v:    #4B5563;
+      --outline-v:       #E0E0E0;
+      --border:          rgba(0,0,0,0.06);
+      --text:            #111827;
+      --text-sec:        #4B5563;
+      --accent:          #2563EB;
     }
 
-    body {
-      font-family: 'Noto Sans KR', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg); color: var(--text);
-      line-height: 1.6; -webkit-font-smoothing: antialiased;
-      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s;
-      min-height: 100vh;
-    }
-    body::before {
-      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
-      background: radial-gradient(ellipse 80% 40% at 50% 0%, color-mix(in srgb, var(--accent-secondary), transparent 92%), transparent);
-    }
-    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
-    h2 { font-weight: 600; letter-spacing: -0.02em; }
-    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+    /* ============================
+       RESET & BASE
+       ============================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
     *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
 
-    .container { max-width: 960px; margin: 0 auto; padding: 56px 24px 80px; }
-
-    /* === Header === */
-    .header { text-align: center; margin-bottom: 40px; }
-    .header h1 { font-size: clamp(2rem, 5vw, 2.8rem); margin-bottom: 10px; }
-    .header-sub { font-size: 15px; color: var(--text-secondary); margin-bottom: 6px; }
-    .header-stats {
-      display: inline-flex; gap: 20px; font-size: 13px; color: var(--text-secondary);
-      margin-top: 12px;
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      line-height: 1; display: inline-block; vertical-align: middle;
+      font-feature-settings: 'liga';
+      -webkit-font-feature-settings: 'liga';
     }
-    .header-stats span { display: inline-flex; align-items: center; gap: 5px; }
+    .fill-icon { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
 
-    /* === Search === */
-    .search-bar {
-      position: relative; max-width: 520px; margin: 0 auto 24px;
+    body {
+      font-family: 'Inter', 'Noto Sans KR', -apple-system, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
     }
-    .search-bar input {
-      width: 100%; padding: 12px 16px 12px 42px; border-radius: 12px;
-      border: 1px solid var(--border); background: var(--surface);
-      color: var(--text); font-size: 15px; font-family: inherit;
+
+    /* ============================
+       TOP APP BAR
+       ============================ */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 64px;
+      background: color-mix(in srgb, var(--bg), transparent 30%);
+      backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 0 40px -10px color-mix(in srgb, var(--primary), transparent 85%);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; gap: 16px;
+    }
+    .topbar-brand {
+      font-size: 17px; font-weight: 900; letter-spacing: -0.03em;
+      color: var(--on-surface); white-space: nowrap; flex-shrink: 0;
+    }
+    .topbar-search {
+      flex: 1; max-width: 400px;
+      display: flex; align-items: center; gap: 8px;
+      background: var(--surface-highest);
+      border: 1px solid var(--outline-v);
+      border-radius: 99px; padding: 8px 16px;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .search-bar input::placeholder { color: var(--text-secondary); }
-    .search-bar input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent), transparent 80%); outline: none; }
-    .search-bar .search-icon {
-      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-      color: var(--text-secondary); pointer-events: none;
+    .topbar-search:focus-within {
+      border-color: var(--primary-fixed);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary), transparent 80%);
+    }
+    .topbar-search input {
+      background: transparent; border: none; outline: none;
+      font-size: 14px; font-family: inherit; color: var(--text);
+      width: 100%;
+    }
+    .topbar-search input::placeholder { color: var(--text-sec); }
+    .topbar-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+    .icon-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: none; background: transparent;
+      color: var(--text-sec); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, color 0.15s; font-size: 20px;
+    }
+    .icon-btn:hover { background: var(--surface-high); color: var(--on-surface); }
+
+    /* ============================
+       SIDEBAR
+       ============================ */
+    .sidebar {
+      position: fixed; top: 64px; left: 0; bottom: 0;
+      width: 240px; z-index: 90;
+      background: var(--bg);
+      border-right: 1px solid var(--border);
+      display: none;
+      flex-direction: column;
+      padding: 20px 12px;
+      overflow-y: auto;
+    }
+    @media (min-width: 1024px) { .sidebar { display: flex; } }
+
+    .sidebar-section-label {
+      font-size: 10.5px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text-sec); padding: 0 10px; margin-bottom: 6px;
+    }
+    .sidebar-nav { display: flex; flex-direction: column; gap: 2px; }
+    .sidebar-nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 10px; border-radius: 8px;
+      border: none; background: transparent;
+      color: var(--text-sec); font-size: 13.5px; font-family: inherit;
+      cursor: pointer; text-align: left;
+      transition: background 0.15s, color 0.15s;
+      width: 100%;
+    }
+    .sidebar-nav-item:hover { background: var(--surface-low); color: var(--on-surface); }
+    .sidebar-nav-item.active {
+      background: var(--surface-low);
+      color: var(--on-surface); font-weight: 600;
+      border-right: 2px solid var(--primary-fixed);
+    }
+    .sidebar-nav-item .nav-icon { font-size: 18px; flex-shrink: 0; }
+    .sidebar-nav-item .nav-label { flex: 1; }
+    .sidebar-nav-item .nav-count {
+      font-size: 11px; font-weight: 700;
+      background: var(--surface-highest); color: var(--text-sec);
+      padding: 1px 6px; border-radius: 99px;
+      min-width: 20px; text-align: center;
+    }
+    .sidebar-nav-item.active .nav-count {
+      background: color-mix(in srgb, var(--primary-fixed), transparent 85%);
+      color: var(--primary-fixed);
     }
 
-    /* === Filters === */
-    .filter-section { margin-bottom: 32px; }
+    .sidebar-status {
+      margin-top: auto; margin-bottom: 80px;
+      background: var(--surface-mid);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px;
+    }
+    .sidebar-status-label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--primary-fixed); margin-bottom: 8px;
+    }
+    .sidebar-status-text { font-size: 12px; color: var(--text-sec); line-height: 1.5; }
+    .progress-bar-wrap {
+      height: 4px; background: var(--surface-highest);
+      border-radius: 99px; overflow: hidden; margin-top: 10px;
+    }
+    .progress-bar-fill {
+      height: 100%; background: var(--primary-fixed);
+      border-radius: 99px;
+      box-shadow: 0 0 10px color-mix(in srgb, var(--primary), transparent 60%);
+      transition: width 1s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* ============================
+       MAIN CONTENT
+       ============================ */
+    .main-content {
+      padding-top: 64px;
+      padding-bottom: 96px;
+    }
+    @media (min-width: 1024px) { .main-content { margin-left: 240px; } }
+
+    .content-inner {
+      max-width: 960px; margin: 0 auto;
+      padding: 32px 24px 40px;
+    }
+    @media (max-width: 640px) { .content-inner { padding: 24px 16px 40px; } }
+
+    /* ============================
+       HERO SECTION
+       ============================ */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px; margin-bottom: 32px;
+    }
+    @media (min-width: 640px) { .hero-grid { grid-template-columns: 1.6fr 1fr; } }
+
+    .hero-card {
+      background: var(--surface-low);
+      border-radius: 16px; padding: 28px;
+      position: relative; overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      background: color-mix(in srgb, var(--primary), transparent 93%);
+      filter: blur(80px); pointer-events: none;
+    }
+    .hero-title {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 900; letter-spacing: -0.03em; line-height: 1.1;
+      margin-bottom: 8px; position: relative; z-index: 1;
+    }
+    .hero-sub { font-size: 13px; color: var(--text-sec); margin-bottom: 24px; position: relative; z-index: 1; }
+    .hero-progress-label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--primary-fixed); margin-bottom: 4px;
+    }
+    .hero-progress-nums { font-size: 13px; font-weight: 700; float: right; }
+    .hero-stat-card {
+      background: var(--surface-high);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .hero-stat-top-label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text-sec); margin-bottom: 12px;
+    }
+    .hero-latest-row { display: flex; align-items: flex-start; gap: 10px; }
+    .hero-latest-icon {
+      width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
+      background: color-mix(in srgb, var(--tertiary), transparent 85%);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--tertiary); font-size: 18px;
+    }
+    .hero-latest-title { font-weight: 700; font-size: 13px; line-height: 1.4; }
+    .hero-latest-date { font-size: 11px; color: var(--text-sec); margin-top: 3px; }
+    .hero-bottom-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 16px; margin-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .hero-total-num { font-size: 28px; font-weight: 900; }
+    .hero-total-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-sec); }
+    .shuffle-btn {
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 1px solid var(--outline-v); background: transparent;
+      color: var(--text-sec); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .shuffle-btn:hover { border-color: var(--primary-fixed); color: var(--primary-fixed); }
+
+    /* ============================
+       FILTER AREA
+       ============================ */
+    .filter-section { margin-bottom: 24px; }
     .filter-row {
-      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-      justify-content: center; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 6px;
+      flex-wrap: wrap; margin-bottom: 8px;
     }
     .filter-label {
-      font-size: 12px; font-weight: 600; color: var(--text-secondary);
-      letter-spacing: 0.04em; text-transform: uppercase; margin-right: 4px;
+      font-size: 10.5px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-sec); margin-right: 2px; flex-shrink: 0;
     }
     .filter-chip {
-      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
-      background: transparent; color: var(--text-secondary); font-size: 13px;
-      font-family: inherit; cursor: pointer; transition: all 0.15s; font-weight: 500;
+      padding: 4px 12px; border-radius: 99px;
+      border: 1px solid var(--outline-v);
+      background: transparent; color: var(--text-sec);
+      font-size: 12.5px; font-family: inherit;
+      cursor: pointer; transition: all 0.15s; font-weight: 500;
+      display: inline-flex; align-items: center; gap: 4px;
     }
-    .filter-chip:hover { background: var(--surface-hover); color: var(--text); }
-    .filter-chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .filter-chip:hover { background: var(--surface-high); color: var(--on-surface); }
+    .filter-chip.active {
+      background: var(--primary-fixed); color: var(--on-primary-fixed);
+      border-color: var(--primary-fixed);
+    }
+    .cat-count {
+      min-width: 16px; height: 14px; padding: 0 4px;
+      border-radius: 99px; font-size: 10px; font-weight: 700;
+      background: rgba(255,255,255,0.18); color: inherit; text-align: center;
+    }
+    .filter-chip.active .cat-count { background: rgba(0,0,0,0.2); }
+    html.theme-light .cat-count { background: rgba(0,0,0,0.10); }
 
-    /* === Results count === */
+    .cat-divider { border: none; border-top: 1px solid var(--border); margin: 4px 0 8px; }
+
+    /* Category badge colors */
+    .cat-badge {
+      display: inline-flex; align-items: center; gap: 3px;
+      padding: 2px 8px; border-radius: 99px;
+      font-size: 10.5px; font-weight: 600; white-space: nowrap;
+    }
+    .cat-투자주식 { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.25); }
+    .cat-경제거시 { background:rgba(99,102,241,0.12); color:#6366f1; border:1px solid rgba(99,102,241,0.25); }
+    .cat-기술산업 { background:rgba(133,173,255,0.12); color:#85adff; border:1px solid rgba(133,173,255,0.25); }
+    .cat-부동산   { background:rgba(245,158,11,0.12); color:#f59e0b; border:1px solid rgba(245,158,11,0.25); }
+    .cat-시사컬처 { background:rgba(255,111,126,0.12); color:#ff6f7e; border:1px solid rgba(255,111,126,0.25); }
+    html.theme-light .cat-기술산업 { background:rgba(37,99,235,0.07); color:#2563eb; border-color:rgba(37,99,235,0.2); }
+
+    /* ============================
+       RESULTS INFO
+       ============================ */
     .results-info {
       display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 16px; font-size: 13px; color: var(--text-secondary);
+      margin-bottom: 18px; font-size: 13px; color: var(--text-sec);
     }
+    .active-filter-label { font-size: 12px; color: var(--primary-fixed); font-weight: 500; }
 
-    /* === Card Grid === */
+    /* ============================
+       CARD GRID
+       ============================ */
     .card-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 16px;
     }
-    .knowledge-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 14px; padding: 24px; text-decoration: none; color: inherit;
-      display: flex; flex-direction: column; gap: 12px;
-      transition: box-shadow 0.2s ease; position: relative; overflow: hidden;
+    @media (max-width: 640px) { .card-grid { grid-template-columns: 1fr; } }
+
+    .ka-card {
+      position: relative;
+      background: var(--surface-high);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 22px;
+      text-decoration: none; color: inherit;
+      display: flex; flex-direction: column; gap: 10px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s;
+      overflow: hidden;
     }
-    .theme-dark .knowledge-card { box-shadow: 0 0 0 1px var(--border); }
-    .theme-light .knowledge-card { box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03); }
-    .knowledge-card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.12); }
-    .knowledge-card .color-accent {
-      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    .ka-card:hover {
+      border-color: color-mix(in srgb, var(--card-accent, var(--primary)), transparent 55%);
+      box-shadow: 0 8px 32px -8px color-mix(in srgb, var(--card-accent, var(--primary)), transparent 70%);
+    }
+    .ka-card.is-read { opacity: 0.5; }
+    .ka-card.is-read:hover { opacity: 1; }
+
+    /* Top accent stripe */
+    .card-stripe {
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
       border-radius: 14px 14px 0 0;
     }
-    .knowledge-card .card-title { font-size: 16px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.35; }
-    .knowledge-card .card-summary { font-size: 13px; color: var(--text-secondary); line-height: 1.6; flex: 1; }
-    .knowledge-card .card-meta {
-      display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px;
-    }
-    .knowledge-card .card-subtitle {
-      font-size: 12px; font-weight: 700;
-      color: var(--card-color, var(--accent));
-      letter-spacing: 0.03em; text-transform: uppercase;
-      margin-top: -2px;
-    }
-    .knowledge-card .card-tag {
-      padding: 2px 8px; border-radius: 4px; font-size: 11px;
-      background: var(--surface-hover); border: 1px solid var(--border);
-      color: var(--text-secondary); font-weight: 500;
-    }
-    .knowledge-card .card-date { font-size: 11px; color: var(--text-secondary); margin-left: auto; }
-    .knowledge-card .card-source { font-size: 11px; color: var(--text-secondary); }
 
-    /* === Random Swipe View === */
+    /* Read button (shows on hover) */
+    .card-read-btn {
+      position: absolute; top: 12px; right: 12px; z-index: 2;
+      width: 24px; height: 24px; border-radius: 50%;
+      border: 1.5px solid var(--outline-v); background: var(--surface-highest);
+      color: var(--text-sec); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s; opacity: 0;
+    }
+    .ka-card:hover .card-read-btn { opacity: 1; }
+    .ka-card.is-read .card-read-btn {
+      opacity: 1;
+      background: #10b981; border-color: #10b981; color: #fff;
+    }
+
+    .card-category-row { display: flex; align-items: center; gap: 6px; }
+    .card-title {
+      font-size: 15px; font-weight: 700;
+      letter-spacing: -0.02em; line-height: 1.38;
+    }
+    .card-subtitle {
+      font-size: 11.5px; font-weight: 600;
+      color: var(--card-accent, var(--primary));
+      letter-spacing: 0.01em;
+      margin-top: -4px;
+    }
+    .card-summary { font-size: 12.5px; color: var(--text-sec); line-height: 1.65; flex: 1; }
+    .card-meta {
+      display: flex; align-items: center; gap: 5px;
+      flex-wrap: wrap; font-size: 11px; margin-top: 2px;
+    }
+    .card-tag {
+      padding: 2px 7px; border-radius: 4px; font-size: 11px;
+      background: var(--surface-highest); color: var(--text-sec);
+      border: 1px solid var(--border); font-weight: 500;
+    }
+    .card-date { font-size: 11px; color: var(--text-sec); margin-left: auto; }
+
+    /* Difficulty dot */
+    .diff-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      display: inline-block; flex-shrink: 0;
+    }
+
+    /* ============================
+       EMPTY STATE
+       ============================ */
+    .empty-state {
+      text-align: center; padding: 60px 20px; color: var(--text-sec);
+    }
+    .empty-state .e-icon { font-size: 56px; opacity: 0.3; display: block; margin-bottom: 12px; }
+    .empty-state p { font-size: 14px; }
+
+    /* ============================
+       MOBILE BOTTOM NAV
+       ============================ */
+    .mobile-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-around; align-items: center;
+      height: 60px; padding: 0 16px;
+      background: color-mix(in srgb, var(--bg), transparent 15%);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border-top: 1px solid var(--border);
+    }
+    @media (min-width: 1024px) { .mobile-nav { display: none; } }
+    .mobile-nav-btn {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 2px; background: transparent; border: none;
+      color: var(--text-sec); cursor: pointer;
+      font-size: 10px; font-family: inherit;
+      transition: color 0.15s; padding: 4px 12px;
+    }
+    .mobile-nav-btn.active { color: var(--primary); }
+    .mobile-nav-btn .material-symbols-outlined { font-size: 22px; }
+
+    /* ============================
+       SWIPE OVERLAY (unchanged)
+       ============================ */
     .swipe-overlay {
       display: none; position: fixed; inset: 0; z-index: 10000;
       background: rgba(0,0,0,0.96); backdrop-filter: blur(12px);
@@ -150,22 +458,15 @@
       display: flex; align-items: center; justify-content: space-between;
       padding: 12px 16px;
     }
-    .swipe-counter { font-size: 13px; color: rgba(255,255,255,0.45); font-weight: 600; font-family: 'Inter',sans-serif; }
+    .swipe-counter { font-size: 13px; color: rgba(255,255,255,0.45); font-weight: 600; }
     .swipe-close {
       width: 36px; height: 36px; border-radius: 9px;
       border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.06);
       color: rgba(255,255,255,0.7); cursor: pointer; font-size: 18px;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.15s;
+      display: flex; align-items: center; justify-content: center; transition: background 0.15s;
     }
     .swipe-close:hover { background: rgba(255,255,255,0.14); color: #fff; }
-
-    /* iframe stage */
-    .swipe-stage {
-      width: min(860px, 96vw);
-      flex: 1; min-height: 0;
-      display: flex; flex-direction: column; align-items: center; gap: 0;
-    }
+    .swipe-stage { width: min(860px, 96vw); flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; gap: 0; }
     .swipe-card-wrap {
       flex: 1; width: 100%; min-height: 0;
       position: relative; border-radius: 16px; overflow: hidden;
@@ -173,43 +474,30 @@
       transition: transform 0.28s cubic-bezier(0.4,0,0.2,1), opacity 0.28s;
       will-change: transform, opacity;
     }
-    .swipe-frame {
-      width: 100%; height: 100%; border: none; display: block;
-      background: #0a0a0a;
-    }
-    /* 투명 드래그 캡처 레이어 — iframe 위에 올라가 터치/마우스 스와이프 감지 */
+    .swipe-frame { width: 100%; height: 100%; border: none; display: block; background: #0a0a0a; }
     .swipe-drag-overlay {
       position: absolute; inset: 0; z-index: 10;
       cursor: grab; touch-action: none; user-select: none;
     }
     .swipe-drag-overlay.is-dragging { cursor: grabbing; }
-    /* 탭 시 일시적으로 iframe에 이벤트 통과 */
     .swipe-drag-overlay.pass-through { pointer-events: none; }
-    /* 로딩 스피너 */
     .swipe-loading {
       position: absolute; inset: 0; z-index: 5;
       display: flex; align-items: center; justify-content: center;
-      background: #0a0a0a; gap: 10px;
-      color: rgba(255,255,255,0.35); font-size: 14px;
-      transition: opacity 0.2s;
+      background: #0a0a0a; gap: 10px; color: rgba(255,255,255,0.35); font-size: 14px; transition: opacity 0.2s;
     }
     @keyframes swipeSpin { to { transform: rotate(360deg); } }
     .swipe-spinner {
       width: 22px; height: 22px; border-radius: 50%;
-      border: 2px solid rgba(255,255,255,0.1);
-      border-top-color: rgba(255,255,255,0.55);
+      border: 2px solid rgba(255,255,255,0.1); border-top-color: rgba(255,255,255,0.55);
       animation: swipeSpin 0.75s linear infinite;
     }
-
-    .swipe-nav {
-      display: flex; align-items: center; gap: 16px; margin-top: 14px; flex-shrink: 0;
-    }
+    .swipe-nav { display: flex; align-items: center; gap: 16px; margin-top: 14px; flex-shrink: 0; }
     .swipe-btn {
       width: 48px; height: 48px; border-radius: 50%;
       border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06);
       color: rgba(255,255,255,0.7); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s;
+      display: flex; align-items: center; justify-content: center; transition: all 0.15s;
     }
     .swipe-btn:hover { background: rgba(255,255,255,0.14); color: #fff; transform: scale(1.06); }
     .swipe-btn:disabled { opacity: 0.25; cursor: default; transform: none !important; }
@@ -217,56 +505,11 @@
     .swipe-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: all 0.2s; }
     .swipe-dot.active { width: 20px; border-radius: 3px; background: rgba(255,255,255,0.7); }
     .swipe-hint { font-size: 11px; color: rgba(255,255,255,0.22); margin-top: 10px; text-align: center; flex-shrink: 0; }
-
-    /* === Random button === */
-    .btn-random {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
-      background: transparent; color: var(--text-secondary); font-size: 13px;
-      font-family: inherit; cursor: pointer; transition: all 0.15s; font-weight: 500;
-    }
-    .btn-random:hover { background: var(--surface-hover); color: var(--text); }
-
-    /* === Empty state === */
-    .empty-state {
-      text-align: center; padding: 60px 20px; color: var(--text-secondary);
-    }
-    .empty-state svg { margin-bottom: 16px; opacity: 0.4; }
-    .empty-state p { font-size: 15px; }
-
-    /* === Theme toggle === */
-    .theme-toggle {
-      position: fixed; top: 16px; right: 16px; z-index: 9999;
-      width: 40px; height: 40px; border-radius: 10px;
-      border: 1px solid var(--menu-border); background: var(--menu-bg);
-      color: var(--menu-text); cursor: pointer; display: flex;
-      align-items: center; justify-content: center;
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      transition: all 0.2s ease; font-size: 16px;
-    }
-    .theme-toggle:hover { background: var(--menu-item-hover); }
-
-    /* === Animations === */
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-    .animate { animation: fadeInUp 0.5s ease-out both; }
-    .delay-1 { animation-delay: 0.06s; } .delay-2 { animation-delay: 0.12s; }
-    .delay-3 { animation-delay: 0.18s; }
-    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
-
-    @media (max-width: 640px) {
-      .card-grid { grid-template-columns: 1fr; }
-      .container { padding: 40px 16px 60px; }
-      .filter-row { justify-content: flex-start; }
-      .header-stats { flex-direction: column; gap: 4px; }
-    }
-
-    /* === Swipe Read Button === */
     .swipe-read-btn {
       width: 48px; height: 48px; border-radius: 50%;
       border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06);
       color: rgba(255,255,255,0.6); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0;
     }
     .swipe-read-btn:hover { background: rgba(255,255,255,0.14); color: #fff; transform: scale(1.06); }
     .swipe-read-btn.is-read {
@@ -275,139 +518,185 @@
     }
     .swipe-read-btn.is-read:hover { background: #059669; border-color: #059669; }
 
-    /* === Read Status === */
-    .read-btn {
-      position: absolute; top: 12px; right: 12px; z-index: 2;
-      width: 26px; height: 26px; border-radius: 50%;
-      border: 1.5px solid var(--border); background: var(--surface);
-      color: var(--text-secondary); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s; opacity: 0; pointer-events: all;
-      flex-shrink: 0;
+    /* ============================
+       ANIMATIONS
+       ============================ */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
-    .knowledge-card:hover .read-btn { opacity: 1; }
-    .knowledge-card.is-read .read-btn {
-      opacity: 1; background: var(--positive); border-color: var(--positive); color: #fff;
+    .fade-in { animation: fadeInUp 0.45s ease-out both; }
+    .delay-1 { animation-delay: 0.05s; }
+    .delay-2 { animation-delay: 0.1s; }
+    .delay-3 { animation-delay: 0.15s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
     }
-    .knowledge-card.is-read {
-      opacity: 0.55;
-    }
-    .knowledge-card.is-read:hover { opacity: 1; }
-
-
-
-    /* === Category Count Badge === */
-    .cat-count {
-      display: inline-flex; align-items: center; justify-content: center;
-      min-width: 16px; height: 15px; padding: 0 4px;
-      border-radius: 99px; font-size: 10px; font-weight: 700;
-      background: rgba(255,255,255,0.18); color: inherit;
-      margin-left: 3px; vertical-align: middle;
-    }
-    .filter-chip.active .cat-count { background: rgba(255,255,255,0.28); }
-    html.theme-light .cat-count { background: rgba(0,0,0,0.10); }
-    html.theme-light .filter-chip.active .cat-count { background: rgba(255,255,255,0.35); }
-
-    /* === Category Badges === */
-    .cat-badge {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600;
-      letter-spacing: 0.02em; white-space: nowrap;
-    }
-    .cat-투자주식 { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.3); }
-    .cat-경제거시 { background:rgba(59,130,246,0.12); color:#3b82f6; border:1px solid rgba(59,130,246,0.3); }
-    .cat-기술산업 { background:rgba(139,92,246,0.12); color:#8b5cf6; border:1px solid rgba(139,92,246,0.3); }
-    .cat-부동산   { background:rgba(245,158,11,0.12); color:#f59e0b; border:1px solid rgba(245,158,11,0.3); }
-    .cat-시사컬처 { background:rgba(244,63,94,0.12);  color:#f43f5e; border:1px solid rgba(244,63,94,0.3);  }
-    html.theme-light .cat-투자주식 { background:rgba(16,185,129,0.08); }
-    html.theme-light .cat-경제거시 { background:rgba(59,130,246,0.08); }
-    html.theme-light .cat-기술산업 { background:rgba(139,92,246,0.08); }
-    html.theme-light .cat-부동산   { background:rgba(245,158,11,0.08); }
-    html.theme-light .cat-시사컬처 { background:rgba(244,63,94,0.08);  }
-    /* 카테고리 필터 행 구분선 */
-    #catFilters { border-bottom: 1px solid var(--border); padding-bottom: 12px; }
-
     @media print {
-      body { background: white !important; }
-      .theme-toggle, .search-bar, .filter-section { display: none !important; }
-      .knowledge-card { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
-      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .topbar, .sidebar, .mobile-nav, .filter-section, .hero-grid { display: none !important; }
+      .main-content { margin-left: 0 !important; padding-top: 0 !important; }
+      .ka-card { break-inside: avoid; box-shadow: none; }
+    }
+
+    /* Mobile search bar (shows below topbar on small screens) */
+    .mobile-searchbar {
+      display: none; padding: 8px 16px 0;
+      background: var(--bg);
+    }
+    .mobile-searchbar.visible { display: block; }
+    @media (max-width: 767px) {
+      .topbar-search { display: none; }
     }
   </style>
 </head>
 <body>
-  <a href="#main" style="position:absolute;left:-9999px" onfocus="this.style.cssText='position:fixed;left:16px;top:16px;z-index:10000;padding:8px 16px;background:var(--accent);color:white;text-decoration:none;border-radius:4px;'" onblur="this.style.left='-9999px'">콘텐츠로 바로가기</a>
+  <a href="#main" style="position:absolute;left:-9999px" onfocus="this.style.cssText='position:fixed;left:16px;top:16px;z-index:10001;padding:8px 16px;background:var(--accent);color:white;text-decoration:none;border-radius:4px;'" onblur="this.style.left='-9999px'">콘텐츠로 바로가기</a>
 
-  <button class="theme-toggle" onclick="cycleTheme()" aria-label="테마 전환" id="themeBtn">◐</button>
-
-  <main id="main" role="main">
-    <div class="container">
-
-      <header class="header animate">
-        <h1>지식 Archive</h1>
-        <p class="header-sub">하나의 지식, 하나의 페이지. 쌓이는 지식의 허브.</p>
-        <div class="header-stats">
-          <span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-            총 <strong id="totalCount">0</strong>개 지식
-          </span>
-          <span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-            읽음: <strong id="readCount">0</strong> / <strong id="totalCount2">0</strong>
-          </span>
-          <span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-            최근: <strong id="latestDate">-</strong>
-          </span>
-        </div>
-      </header>
-
-      <div class="search-bar animate delay-1">
-        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        <input type="text" id="searchInput" placeholder="제목, 태그, 키워드로 검색..." aria-label="지식 검색">
+  <!-- ===== TOP APP BAR ===== -->
+  <header class="topbar" role="banner">
+    <div style="display:flex;align-items:center;gap:16px;flex:1;min-width:0;">
+      <span class="topbar-brand">지식 Archive</span>
+      <div class="topbar-search" role="search">
+        <span class="material-symbols-outlined" style="font-size:17px;color:var(--text-sec);flex-shrink:0">search</span>
+        <input type="text" id="searchInput" placeholder="제목·태그·키워드 검색…" aria-label="지식 검색">
       </div>
+    </div>
+    <div class="topbar-actions">
+      <button class="icon-btn" onclick="toggleMobileSearch()" aria-label="모바일 검색" id="mobileSearchToggle" style="display:none">
+        <span class="material-symbols-outlined" style="font-size:20px">search</span>
+      </button>
+      <button class="icon-btn" onclick="cycleTheme()" aria-label="테마 전환" id="themeBtn">
+        <span class="material-symbols-outlined" style="font-size:20px" id="themeIcon">dark_mode</span>
+      </button>
+    </div>
+  </header>
 
-      <div class="filter-section animate delay-2">
-        <div class="filter-row" id="readFilters" role="group" aria-label="읽음 필터" style="margin-bottom:8px">
+  <!-- Mobile search bar -->
+  <div class="mobile-searchbar" id="mobileSearchBar" style="padding-top:72px;">
+    <div class="topbar-search" style="max-width:100%;border-radius:10px;">
+      <span class="material-symbols-outlined" style="font-size:17px;color:var(--text-sec)">search</span>
+      <input type="text" id="searchInputMobile" placeholder="검색…" aria-label="지식 검색(모바일)">
+    </div>
+  </div>
+
+  <!-- ===== SIDEBAR ===== -->
+  <nav class="sidebar" role="navigation" aria-label="카테고리 네비게이션">
+    <div class="sidebar-section-label">카테고리</div>
+    <div class="sidebar-nav" id="sidebarNav">
+      <!-- dynamically rendered -->
+    </div>
+    <div class="sidebar-status">
+      <div class="sidebar-status-label">Archive Status</div>
+      <div class="sidebar-status-text">
+        총 <strong id="sidebarTotal">0</strong>개 지식<br>
+        읽음 <strong id="sidebarRead">0</strong>개
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="sidebarProgress" style="width:0%"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN ===== -->
+  <main class="main-content" id="main" role="main">
+    <div class="content-inner">
+
+      <!-- HERO -->
+      <section class="hero-grid fade-in" aria-label="통계">
+        <div class="hero-card">
+          <div class="hero-glow"></div>
+          <h1 class="hero-title">지식 Archive</h1>
+          <p class="hero-sub">하나의 지식, 하나의 페이지. 쌓이는 지식의 허브.</p>
+          <div style="position:relative;z-index:1;max-width:320px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+              <span class="hero-progress-label">읽기 진도</span>
+              <span style="font-size:13px;font-weight:700;">
+                <span id="heroReadCount">0</span> / <span id="heroTotal">0</span>
+              </span>
+            </div>
+            <div class="progress-bar-wrap" style="height:6px;">
+              <div class="progress-bar-fill" id="heroProgress" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-stat-card">
+          <div>
+            <div class="hero-stat-top-label">최근 등록</div>
+            <div class="hero-latest-row">
+              <div class="hero-latest-icon">
+                <span class="material-symbols-outlined" style="font-size:18px">auto_awesome</span>
+              </div>
+              <div>
+                <div class="hero-latest-title" id="heroLatestTitle">—</div>
+                <div class="hero-latest-date" id="heroLatestDate">—</div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-bottom-row">
+            <div>
+              <div class="hero-total-num" id="heroTotalBig">0</div>
+              <div class="hero-total-label">총 지식</div>
+            </div>
+            <button class="shuffle-btn" onclick="openSwipeView()" title="랜덤 스와이프 보기" aria-label="랜덤 보기">
+              <span class="material-symbols-outlined" style="font-size:18px">shuffle</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- FILTERS -->
+      <div class="filter-section fade-in delay-1">
+        <div class="filter-row" id="readFilters" role="group" aria-label="읽음 필터">
           <span class="filter-label">읽음</span>
           <button class="filter-chip active" id="readChip-all" onclick="filterRead('all')">전체</button>
           <button class="filter-chip" id="readChip-unread" onclick="filterRead('unread')">미읽음</button>
           <button class="filter-chip" id="readChip-read" onclick="filterRead('read')">읽음 ✓</button>
         </div>
+        <hr class="cat-divider">
         <div class="filter-row" id="catFilters" role="group" aria-label="카테고리 필터">
-          <span class="filter-label">분류</span>
-          <button class="filter-chip active" id="catChip-all" onclick="filterCategory('all')">전체</button>
-          <button class="filter-chip" id="catChip-투자·주식" onclick="filterCategory('투자·주식')">📈 투자·주식</button>
-          <button class="filter-chip" id="catChip-경제·거시" onclick="filterCategory('경제·거시')">🌐 경제·거시</button>
-          <button class="filter-chip" id="catChip-기술·산업" onclick="filterCategory('기술·산업')">🔬 기술·산업</button>
-          <button class="filter-chip" id="catChip-부동산" onclick="filterCategory('부동산')">🏢 부동산</button>
-          <button class="filter-chip" id="catChip-시사·컬처" onclick="filterCategory('시사·컬처')">🌍 시사·컬처</button>
+          <!-- dynamically rendered -->
         </div>
-                <div class="filter-row" id="tagFilters" role="group" aria-label="태그 필터">
-          <span class="filter-label">태그</span>
-          <!-- 동적 생성 -->
+        <div class="filter-row" id="tagFilters" role="group" aria-label="태그 필터">
+          <!-- dynamically rendered -->
         </div>
       </div>
 
-      <div class="results-info animate delay-3">
+      <!-- RESULTS INFO -->
+      <div class="results-info fade-in delay-2">
         <span id="resultsCount">0개 지식 표시 중</span>
-        <button class="btn-random" onclick="openSwipeView()" title="랜덤 순서로 스와이프 보기">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
-          랜덤보기
-        </button>
+        <span class="active-filter-label" id="activeFilters"></span>
       </div>
 
-      <div class="card-grid" id="cardGrid" role="list" aria-label="지식 카드 목록">
-        <!-- 동적 생성 -->
-      </div>
-
+      <!-- CARD GRID -->
+      <div class="card-grid" id="cardGrid" role="list" aria-label="지식 카드 목록"></div>
       <div class="empty-state" id="emptyState" style="display:none;">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <span class="material-symbols-outlined e-icon">search_off</span>
         <p>검색 결과가 없습니다.</p>
       </div>
 
-    </div>
+    </div><!-- /content-inner -->
   </main>
+
+  <!-- ===== MOBILE BOTTOM NAV ===== -->
+  <nav class="mobile-nav" role="navigation" aria-label="모바일 네비게이션">
+    <button class="mobile-nav-btn" onclick="toggleMobileSearch()" id="mobileNavSearch">
+      <span class="material-symbols-outlined">search</span>
+      <span>검색</span>
+    </button>
+    <button class="mobile-nav-btn active" onclick="filterCategory('all')" id="mobileNavAll">
+      <span class="material-symbols-outlined fill-icon">grid_view</span>
+      <span>전체</span>
+    </button>
+    <button class="mobile-nav-btn" onclick="openSwipeView()">
+      <span class="material-symbols-outlined">shuffle</span>
+      <span>랜덤</span>
+    </button>
+    <button class="mobile-nav-btn" onclick="filterRead(activeReadFilter === 'unread' ? 'all' : 'unread')" id="mobileNavUnread">
+      <span class="material-symbols-outlined">bookmarks</span>
+      <span>미읽음</span>
+    </button>
+  </nav>
 
   <!-- ===== SWIPE OVERLAY ===== -->
   <div class="swipe-overlay" id="swipeOverlay" role="dialog" aria-modal="true" aria-label="랜덤 카드 보기">
@@ -415,20 +704,15 @@
       <span class="swipe-counter" id="swipeCounter">1 / 1</span>
       <button class="swipe-close" onclick="closeSwipeView()" aria-label="닫기">✕</button>
     </div>
-
     <div class="swipe-stage">
       <div class="swipe-card-wrap" id="swipeCardWrap">
-        <!-- 로딩 스피너 -->
         <div class="swipe-loading" id="swipeLoading">
           <div class="swipe-spinner"></div>
           <span>불러오는 중…</span>
         </div>
-        <!-- 실제 상세 페이지를 iframe으로 표시 -->
         <iframe class="swipe-frame" id="swipeFrame" src="" title="지식 카드 상세"></iframe>
-        <!-- 드래그 감지용 투명 오버레이 (iframe 위에 위치) -->
         <div class="swipe-drag-overlay" id="swipeDragOverlay"></div>
       </div>
-
       <div class="swipe-nav">
         <button class="swipe-btn" id="swipePrevBtn" onclick="swipePrev()" aria-label="이전">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
@@ -437,18 +721,17 @@
         <button class="swipe-btn" id="swipeNextBtn" onclick="swipeNext()" aria-label="다음">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
         </button>
-        <button class="swipe-read-btn" id="swipeReadBtn" onclick="toggleSwipeRead()" aria-label="읽음 표시" title="읽음 표시">
+        <button class="swipe-read-btn" id="swipeReadBtn" onclick="toggleSwipeRead()" aria-label="읽음 표시">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         </button>
       </div>
-      <p class="swipe-hint">드래그·스와이프로 넘기기 &nbsp;·&nbsp; 탭하면 스크롤/링크 클릭 가능 &nbsp;·&nbsp; ← → 키보드 &nbsp;·&nbsp; ✓ 읽음 표시</p>
+      <p class="swipe-hint">드래그·스와이프로 넘기기 &nbsp;·&nbsp; 탭하면 스크롤/링크 클릭 &nbsp;·&nbsp; ← → 키보드 &nbsp;·&nbsp; ✓ 읽음</p>
     </div>
   </div>
 
   <script>
     // ==========================================
     // 📚 KNOWLEDGE DATABASE
-    // 새 지식 카드를 추가할 때 이 배열에 항목을 추가하세요.
     // ==========================================
     var KNOWLEDGE_DB = [
       {
@@ -1038,8 +1321,7 @@
         related: ["france-restaurant-guide", "france-wine-classification"],
         color: "#8b5cf6",
         category: "시사·컬처"
-      }
-      ,
+      },
       {
         id: "risk-metrics-mdd-sharpe",
         title: "리스크 관리의 수학 — MDD와 샤프 지수(Sharpe Ratio) 이해하기",
@@ -1141,14 +1423,14 @@
     ];
     // ==========================================
 
-    // State
-    var activeTag = 'all';
-    var searchQuery = '';
-    var activeReadFilter = 'all';
-    var activeCategory = 'all';
-    var readStatus = {};
+    // ============ STATE ============
+    var activeTag          = 'all';
+    var searchQuery        = '';
+    var activeReadFilter   = 'all';
+    var activeCategory     = 'all';
+    var readStatus         = {};
 
-    // === Read Status ===
+    // ============ READ STATUS ============
     function loadReadStatus() {
       try { readStatus = JSON.parse(localStorage.getItem('ka-read-status') || '{}'); } catch(e) { readStatus = {}; }
     }
@@ -1156,13 +1438,10 @@
       try { localStorage.setItem('ka-read-status', JSON.stringify(readStatus)); } catch(e) {}
     }
     function toggleRead(id, event) {
-      event.preventDefault();
-      event.stopPropagation();
+      event.preventDefault(); event.stopPropagation();
       readStatus[id] = !readStatus[id];
       if (!readStatus[id]) delete readStatus[id];
-      saveReadStatus();
-      renderCards();
-      renderStats();
+      saveReadStatus(); renderCards(); renderStats();
     }
     function updateSwipeReadBtn() {
       if (!swipeCards.length) return;
@@ -1179,10 +1458,7 @@
       var k = swipeCards[swipeIndex];
       readStatus[k.id] = !readStatus[k.id];
       if (!readStatus[k.id]) delete readStatus[k.id];
-      saveReadStatus();
-      updateSwipeReadBtn();
-      renderCards();
-      renderStats();
+      saveReadStatus(); updateSwipeReadBtn(); renderCards(); renderStats();
     }
     function filterRead(val) {
       activeReadFilter = val;
@@ -1193,22 +1469,42 @@
       renderCards();
     }
 
-
+    // ============ CATEGORY FILTER ============
     function filterCategory(cat) {
       activeCategory = cat;
-      renderTagFilters();   // 태그 목록을 카테고리에 맞게 갱신
-      renderCards();        // renderCards 내부에서 renderCatFilters() 호출
+      activeTag = 'all';
+      renderTagFilters();
+      renderCards();
     }
 
-    // === Render ===
-    function getAllTags() {
-      var tagSet = {};
-      KNOWLEDGE_DB.forEach(function(k) { k.tags.forEach(function(t) { tagSet[t] = true; }); });
-      return Object.keys(tagSet).sort();
+    // ============ RENDER SIDEBAR NAV ============
+    var _CATS = [
+      { id: 'all',      label: '전체',     icon: 'grid_view',    cls: '' },
+      { id: '투자·주식', label: '투자·주식', icon: 'trending_up',  cls: 'cat-투자주식' },
+      { id: '경제·거시', label: '경제·거시', icon: 'public',       cls: 'cat-경제거시' },
+      { id: '기술·산업', label: '기술·산업', icon: 'memory',       cls: 'cat-기술산업' },
+      { id: '부동산',    label: '부동산',   icon: 'apartment',    cls: 'cat-부동산'   },
+      { id: '시사·컬처', label: '시사·컬처', icon: 'theater_comedy',cls: 'cat-시사컬처' }
+    ];
+
+    function renderSidebarNav(counts, total) {
+      var nav = document.getElementById('sidebarNav');
+      if (!nav) return;
+      var html = '';
+      _CATS.forEach(function(c) {
+        var cnt = c.id === 'all' ? total : (counts[c.id] || 0);
+        var isActive = activeCategory === c.id;
+        html += '<button class="sidebar-nav-item' + (isActive ? ' active' : '') + '" onclick="filterCategory(\'' + c.id + '\')" aria-current="' + (isActive ? 'page' : 'false') + '">'
+          + '<span class="material-symbols-outlined nav-icon' + (isActive ? ' fill-icon' : '') + '">' + c.icon + '</span>'
+          + '<span class="nav-label">' + c.label + '</span>'
+          + '<span class="nav-count">' + cnt + '</span>'
+          + '</button>';
+      });
+      nav.innerHTML = html;
     }
 
+    // ============ RENDER CAT FILTER CHIPS (main area) ============
     function renderCatFilters() {
-      // 검색+읽음 필터만 적용해 카테고리별 카드 수 계산 (카테고리 필터 제외)
       var counts = {}, total = 0;
       KNOWLEDGE_DB.forEach(function(k) {
         var matchSearch = true;
@@ -1228,50 +1524,40 @@
           total++;
         }
       });
-      var defs = [
-        { id: 'all',     label: '전체' },
-        { id: '투자·주식', label: '📈 투자·주식' },
-        { id: '경제·거시', label: '🌐 경제·거시' },
-        { id: '기술·산업', label: '🔬 기술·산업' },
-        { id: '부동산',   label: '🏢 부동산'   },
-        { id: '시사·컬처', label: '🌍 시사·컬처' }
-      ];
+
       var html = '<span class="filter-label">분류</span>';
-      defs.forEach(function(d) {
-        var cnt = d.id === 'all' ? total : (counts[d.id] || 0);
-        var isActive = activeCategory === d.id;
+      _CATS.forEach(function(c) {
+        var cnt = c.id === 'all' ? total : (counts[c.id] || 0);
+        var isActive = activeCategory === c.id;
         html += '<button class="filter-chip' + (isActive ? ' active' : '')
-          + '" id="catChip-' + d.id + '" onclick="filterCategory(\'' + d.id + '\')">'
-          + d.label
+          + '" id="catChip-' + c.id + '" onclick="filterCategory(\'' + c.id + '\')">'
+          + c.label
           + '<span class="cat-count">' + cnt + '</span>'
           + '</button>';
       });
       document.getElementById('catFilters').innerHTML = html;
+      renderSidebarNav(counts, total);
     }
 
+    // ============ RENDER TAG FILTERS ============
     function renderTagFilters() {
-      // 카테고리 필터가 적용된 카드의 태그만 표시 (AND 연동)
       var catFiltered = KNOWLEDGE_DB.filter(function(k) {
         return activeCategory === 'all' || k.category === activeCategory;
       });
       var tagSet = {};
-      catFiltered.forEach(function(k) {
-        k.tags.forEach(function(t) { tagSet[t] = true; });
-      });
+      catFiltered.forEach(function(k) { k.tags.forEach(function(t) { tagSet[t] = true; }); });
       var tags = Object.keys(tagSet).sort();
-      // 선택된 태그가 현재 카테고리에 없으면 자동 초기화
-      if (activeTag !== 'all' && !tagSet[activeTag]) {
-        activeTag = 'all';
-      }
+      if (activeTag !== 'all' && !tagSet[activeTag]) activeTag = 'all';
       var container = document.getElementById('tagFilters');
       var html = '<span class="filter-label">태그</span>';
-      html += '<button class="filter-chip' + (activeTag === 'all' ? ' active' : '') + '" onclick="filterTag(\'all\')"> 전체</button>';
+      html += '<button class="filter-chip' + (activeTag === 'all' ? ' active' : '') + '" onclick="filterTag(\'all\')">전체</button>';
       tags.forEach(function(tag) {
         html += '<button class="filter-chip' + (activeTag === tag ? ' active' : '') + '" onclick="filterTag(\'' + tag + '\')">#' + tag + '</button>';
       });
       container.innerHTML = html;
     }
 
+    // ============ SPLIT TITLE ============
     function splitTitle(title) {
       var sep = title.indexOf(' — ');
       if (sep === -1) sep = title.indexOf(' \u2014 ');
@@ -1279,9 +1565,10 @@
       return { main: title.slice(0, sep), sub: title.slice(sep + 3) };
     }
 
+    // ============ FILTER ============
     function filterCards() {
       return KNOWLEDGE_DB.filter(function(k) {
-        var matchTag = activeTag === 'all' || k.tags.indexOf(activeTag) !== -1;
+        var matchTag    = activeTag === 'all' || k.tags.indexOf(activeTag) !== -1;
         var matchSearch = true;
         if (searchQuery) {
           var q = searchQuery.toLowerCase();
@@ -1290,7 +1577,7 @@
             || k.tags.join(' ').toLowerCase().indexOf(q) !== -1
             || k.source.toLowerCase().indexOf(q) !== -1;
         }
-        var isRead = !!readStatus[k.id];
+        var isRead   = !!readStatus[k.id];
         var matchRead = activeReadFilter === 'all'
           || (activeReadFilter === 'read' && isRead)
           || (activeReadFilter === 'unread' && !isRead);
@@ -1299,42 +1586,61 @@
       });
     }
 
+    // ============ RENDER CARDS ============
     function renderCards() {
       var filtered = filterCards();
-      var grid = document.getElementById('cardGrid');
-      var empty = document.getElementById('emptyState');
+      var grid     = document.getElementById('cardGrid');
+      var empty    = document.getElementById('emptyState');
 
       if (filtered.length === 0) {
-        grid.innerHTML = '';
-        empty.style.display = 'block';
+        grid.innerHTML = ''; empty.style.display = 'block';
       } else {
         empty.style.display = 'none';
+        var _CI = {
+          '투자·주식': 'cat-투자주식',
+          '경제·거시': 'cat-경제거시',
+          '기술·산업': 'cat-기술산업',
+          '부동산':    'cat-부동산',
+          '시사·컬처': 'cat-시사컬처'
+        };
+        var _ICONS = {
+          '투자·주식': 'trending_up',
+          '경제·거시': 'public',
+          '기술·산업': 'memory',
+          '부동산':    'apartment',
+          '시사·컬처': 'theater_comedy'
+        };
+        var checkSvg = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
         var html = '';
         filtered.forEach(function(k, i) {
-          var tagsHtml = k.tags.map(function(t) { return '<span class="card-tag">#' + t + '</span>'; }).join('');
-          var _CI = {'투자·주식':['📈','cat-투자주식'],'경제·거시':['🌐','cat-경제거시'],'기술·산업':['🔬','cat-기술산업'],'부동산':['🏢','cat-부동산'],'시사·컬처':['🌍','cat-시사컬처']};
-          var catHtml = (k.category && _CI[k.category]) ? '<span class="cat-badge ' + _CI[k.category][1] + '">' + _CI[k.category][0] + ' ' + k.category + '</span>' : '';
           var t = splitTitle(k.title);
-          var titleHtml = '<div class="card-title">' + t.main + '</div>'
-            + (t.sub ? '<div class="card-subtitle">' + t.sub + '</div>' : '');
-          var isRead = !!readStatus[k.id];
-          var checkIcon = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-          html += '<a href="' + k.file + '" class="knowledge-card' + (isRead ? ' is-read' : '') + '" role="listitem" style="animation-delay:' + (i * 0.05) + 's; --card-color:' + k.color + '">'
-            + '<div class="color-accent" style="background:' + k.color + '"></div>'
-            + '<button class="read-btn" onclick="toggleRead(\'' + k.id + '\', event)" title="' + (isRead ? '읽음 해제' : '읽음 표시') + '" aria-label="' + (isRead ? '읽음 해제' : '읽음 표시') + '">' + checkIcon + '</button>'
-            + titleHtml
+          var isRead   = !!readStatus[k.id];
+          var catCls   = _CI[k.category] || '';
+          var catIcon  = _ICONS[k.category] || 'label';
+          var tagsHtml = k.tags.slice(0,4).map(function(tag) {
+            return '<span class="card-tag">#' + tag + '</span>';
+          }).join('');
+          var catBadge = k.category
+            ? '<span class="cat-badge ' + catCls + '">'
+              + '<span class="material-symbols-outlined" style="font-size:11px">' + catIcon + '</span>'
+              + k.category + '</span>'
+            : '';
+
+          html += '<a href="' + k.file + '" class="ka-card' + (isRead ? ' is-read' : '') + '" role="listitem"'
+            + ' style="--card-accent:' + k.color + ';animation-delay:' + (i * 0.04) + 's">'
+            + '<div class="card-stripe" style="background:' + k.color + '"></div>'
+            + '<button class="card-read-btn" onclick="toggleRead(\'' + k.id + '\', event)" title="' + (isRead ? '읽음 해제' : '읽음 표시') + '" aria-label="' + (isRead ? '읽음 해제' : '읽음 표시') + '">' + checkSvg + '</button>'
+            + '<div class="card-category-row">' + catBadge + '</div>'
+            + '<div class="card-title">' + t.main + '</div>'
+            + (t.sub ? '<div class="card-subtitle">' + t.sub + '</div>' : '')
             + '<div class="card-summary">' + k.summary + '</div>'
-            + '<div class="card-meta">'
-            + (catHtml ? catHtml + ' ' : '') + tagsHtml
-            + '  <span class="card-date">' + k.date + '</span>'
-            + '</div>'
+            + '<div class="card-meta">' + tagsHtml + '<span class="card-date">' + k.date + '</span></div>'
             + '</a>';
         });
         grid.innerHTML = html;
       }
-
       document.getElementById('resultsCount').textContent = filtered.length + '개 지식 표시 중';
-      renderCatFilters();  // 카테고리 버튼 카드 수 갱신
+      renderCatFilters();
 
       var filterDesc = [];
       if (activeTag !== 'all') filterDesc.push('#' + activeTag);
@@ -1342,51 +1648,95 @@
       document.getElementById('activeFilters').textContent = filterDesc.length ? filterDesc.join(' · ') : '';
     }
 
+    // ============ RENDER STATS ============
     function renderStats() {
-      document.getElementById('totalCount').textContent = KNOWLEDGE_DB.length;
-      document.getElementById('totalCount2').textContent = KNOWLEDGE_DB.length;
+      var total   = KNOWLEDGE_DB.length;
       var readCnt = KNOWLEDGE_DB.filter(function(k) { return !!readStatus[k.id]; }).length;
-      document.getElementById('readCount').textContent = readCnt;
-      if (KNOWLEDGE_DB.length > 0) {
-        var sorted = KNOWLEDGE_DB.slice().sort(function(a, b) { return b.date.localeCompare(a.date); });
-        document.getElementById('latestDate').textContent = sorted[0].date;
+      var pct     = total > 0 ? Math.round(readCnt / total * 100) : 0;
+
+      // Hero section
+      var hR = document.getElementById('heroReadCount');
+      var hT = document.getElementById('heroTotal');
+      var hTB = document.getElementById('heroTotalBig');
+      var hP = document.getElementById('heroProgress');
+      if (hR)  hR.textContent  = readCnt;
+      if (hT)  hT.textContent  = total;
+      if (hTB) hTB.textContent = total;
+      if (hP)  hP.style.width  = pct + '%';
+
+      // Latest
+      if (total > 0) {
+        var sorted = KNOWLEDGE_DB.slice().sort(function(a,b) { return b.date.localeCompare(a.date); });
+        var latest = sorted[0];
+        var t = splitTitle(latest.title);
+        var lT = document.getElementById('heroLatestTitle');
+        var lD = document.getElementById('heroLatestDate');
+        if (lT) lT.textContent = t.main;
+        if (lD) lD.textContent = latest.date;
+      }
+
+      // Sidebar
+      var sT = document.getElementById('sidebarTotal');
+      var sR = document.getElementById('sidebarRead');
+      var sP = document.getElementById('sidebarProgress');
+      if (sT) sT.textContent = total;
+      if (sR) sR.textContent = readCnt;
+      if (sP) sP.style.width = pct + '%';
+    }
+
+    // ============ TAG FILTER ============
+    function filterTag(tag) {
+      activeTag = tag; renderTagFilters(); renderCards();
+    }
+
+    // ============ SEARCH ============
+    var searchTimer;
+    function onSearchInput(val) {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(function() {
+        searchQuery = val.trim();
+        renderCards();
+      }, 200);
+    }
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+      onSearchInput(e.target.value);
+      var mob = document.getElementById('searchInputMobile');
+      if (mob) mob.value = e.target.value;
+    });
+    var mobSearch = document.getElementById('searchInputMobile');
+    if (mobSearch) {
+      mobSearch.addEventListener('input', function(e) {
+        onSearchInput(e.target.value);
+        document.getElementById('searchInput').value = e.target.value;
+      });
+    }
+
+    // ============ MOBILE SEARCH TOGGLE ============
+    function toggleMobileSearch() {
+      var bar = document.getElementById('mobileSearchBar');
+      if (!bar) return;
+      bar.classList.toggle('visible');
+      if (bar.classList.contains('visible')) {
+        var inp = document.getElementById('searchInputMobile');
+        if (inp) setTimeout(function() { inp.focus(); }, 100);
       }
     }
 
-    // === Filter actions ===
-    function filterTag(tag) {
-      activeTag = tag;
-      renderTagFilters();
-      renderCards();
-    }
-
-    // === Search ===
-    var searchTimer;
-    document.getElementById('searchInput').addEventListener('input', function(e) {
-      clearTimeout(searchTimer);
-      searchTimer = setTimeout(function() {
-        searchQuery = e.target.value.trim();
-        renderCards();
-      }, 200);
-    });
-
-    // === Theme ===
+    // ============ THEME ============
     var currentTheme = 'dark';
     function applyTheme(t) {
-      document.documentElement.className = 'theme-' + t;
-      document.getElementById('themeBtn').textContent = t === 'dark' ? '◐' : '◑';
-      localStorage.setItem('viz-theme', t); currentTheme = t;
+      document.getElementById('htmlRoot').className = 'theme-' + t;
+      var icon = document.getElementById('themeIcon');
+      if (icon) icon.textContent = t === 'dark' ? 'dark_mode' : 'light_mode';
+      localStorage.setItem('viz-theme', t);
+      currentTheme = t;
     }
     function cycleTheme() { applyTheme(currentTheme === 'dark' ? 'light' : 'dark'); }
-    var saved = localStorage.getItem('viz-theme');
-    applyTheme(saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+    var savedTheme = localStorage.getItem('viz-theme');
+    applyTheme(savedTheme || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
 
-    // ==========================================
-    // 🎲 SWIPE / RANDOM VIEW  (iframe 상세 페이지 모드)
-    // ==========================================
-    var swipeCards = [];
-    var swipeIndex = 0;
-    var swipeAnimating = false;
+    // ============ SWIPE VIEW ============
+    var swipeCards = [], swipeIndex = 0, swipeAnimating = false;
 
     function openSwipeView() {
       var filtered = filterCards();
@@ -1395,74 +1745,47 @@
       swipeIndex = 0;
       document.getElementById('swipeOverlay').classList.add('active');
       document.body.style.overflow = 'hidden';
-      renderSwipeDots();
-      loadSwipeFrame(null);
-      initSwipeDrag();
+      renderSwipeDots(); loadSwipeFrame(null); initSwipeDrag();
     }
-
     function closeSwipeView() {
-      var frame = document.getElementById('swipeFrame');
-      frame.src = '';                                   // iframe 언로드
+      document.getElementById('swipeFrame').src = '';
       document.getElementById('swipeOverlay').classList.remove('active');
       document.body.style.overflow = '';
     }
-
-    // iframe에 현재 카드의 상세 페이지를 로드
     function loadSwipeFrame(enterDir) {
       var k     = swipeCards[swipeIndex];
       var wrap  = document.getElementById('swipeCardWrap');
       var frame = document.getElementById('swipeFrame');
       var loader = document.getElementById('swipeLoading');
-      var total = swipeCards.length;
-
-      // 로딩 표시
-      loader.style.display = 'flex';
-      frame.style.opacity  = '0';
-
-      // 입장 애니메이션
+      loader.style.display = 'flex'; frame.style.opacity = '0';
       if (enterDir) {
         wrap.style.transition = 'none';
         wrap.style.transform  = enterDir === 'next' ? 'translateX(80%) rotate(5deg)' : 'translateX(-80%) rotate(-5deg)';
         wrap.style.opacity    = '0';
         void wrap.offsetWidth;
-        wrap.style.transition = '';
-        wrap.style.transform  = '';
-        wrap.style.opacity    = '1';
+        wrap.style.transition = ''; wrap.style.transform = ''; wrap.style.opacity = '1';
       }
-
-      // iframe 로드
       frame.onload = function() {
-        loader.style.display = 'none';
-        frame.style.opacity  = '1';
-        // 테마 동기화: 부모 페이지의 테마를 iframe에도 적용
+        loader.style.display = 'none'; frame.style.opacity = '1';
         try {
           var iDoc = frame.contentDocument || frame.contentWindow.document;
-          var theme = localStorage.getItem('ka-theme') || 'theme-dark';
-          iDoc.documentElement.className = theme;
-          localStorage.setItem('ka-theme', theme);     // iframe 내 로컬스토리지도 이미 읽으나 재확인
-        } catch(e) { /* 동일 출처이므로 일반적으로 문제 없음 */ }
+          iDoc.documentElement.className = 'theme-' + currentTheme;
+        } catch(e) {}
       };
       frame.src = k.file;
-
-      // UI 업데이트
-      document.getElementById('swipeCounter').textContent = (swipeIndex + 1) + ' / ' + total;
+      document.getElementById('swipeCounter').textContent = (swipeIndex + 1) + ' / ' + swipeCards.length;
       document.getElementById('swipePrevBtn').disabled = swipeIndex === 0;
-      document.getElementById('swipeNextBtn').disabled = swipeIndex === total - 1;
-      updateSwipeDots();
-      updateSwipeReadBtn();
+      document.getElementById('swipeNextBtn').disabled = swipeIndex === swipeCards.length - 1;
+      updateSwipeDots(); updateSwipeReadBtn();
     }
-
     function renderSwipeDots() {
       var dots = document.getElementById('swipeDots');
       var max  = Math.min(swipeCards.length, 9);
       var html = '';
-      for (var i = 0; i < max; i++) {
-        html += '<div class="swipe-dot' + (i === 0 ? ' active' : '') + '" id="dot-' + i + '"></div>';
-      }
+      for (var i = 0; i < max; i++) html += '<div class="swipe-dot' + (i === 0 ? ' active' : '') + '" id="dot-' + i + '"></div>';
       if (swipeCards.length > 9) html += '<div class="swipe-dot" style="opacity:0.35;width:4px">…</div>';
       dots.innerHTML = html;
     }
-
     function updateSwipeDots() {
       var max = Math.min(swipeCards.length, 9);
       for (var i = 0; i < max; i++) {
@@ -1470,150 +1793,107 @@
         if (d) d.className = 'swipe-dot' + (i === swipeIndex ? ' active' : '');
       }
     }
-
     function swipeNext() {
       if (swipeAnimating || swipeIndex >= swipeCards.length - 1) return;
       swipeAnimating = true;
       var wrap = document.getElementById('swipeCardWrap');
-      wrap.style.transform = 'translateX(-105%) rotate(-7deg)';
-      wrap.style.opacity   = '0';
-      setTimeout(function() {
-        swipeIndex++;
-        loadSwipeFrame('next');
-        swipeAnimating = false;
-      }, 240);
+      wrap.style.transform = 'translateX(-105%) rotate(-7deg)'; wrap.style.opacity = '0';
+      setTimeout(function() { swipeIndex++; loadSwipeFrame('next'); swipeAnimating = false; }, 240);
     }
-
     function swipePrev() {
       if (swipeAnimating || swipeIndex <= 0) return;
       swipeAnimating = true;
       var wrap = document.getElementById('swipeCardWrap');
-      wrap.style.transform = 'translateX(105%) rotate(7deg)';
-      wrap.style.opacity   = '0';
-      setTimeout(function() {
-        swipeIndex--;
-        loadSwipeFrame('prev');
-        swipeAnimating = false;
-      }, 240);
+      wrap.style.transform = 'translateX(105%) rotate(7deg)'; wrap.style.opacity = '0';
+      setTimeout(function() { swipeIndex--; loadSwipeFrame('prev'); swipeAnimating = false; }, 240);
     }
 
-    // === 드래그 오버레이 초기화 (한 번만 실행) ===
     var swipeDragInited = false;
     function initSwipeDrag() {
       if (swipeDragInited) return;
       swipeDragInited = true;
-
       var overlay = document.getElementById('swipeDragOverlay');
       var wrap    = document.getElementById('swipeCardWrap');
-
-      var startX = 0, startY = 0, prevY = 0;
-      var dragDeltaX = 0;
-      var dragging   = false;
-      var dirLocked  = null;   // null | 'h' | 'v'
-      var LOCK_THRESHOLD  = 8;
-      var SWIPE_THRESHOLD = 65;
-      var TAP_LIMIT       = 10;
-
+      var startX = 0, startY = 0, prevY = 0, dragDeltaX = 0;
+      var dragging = false, dirLocked = null;
+      var LOCK_THRESHOLD = 8, SWIPE_THRESHOLD = 65, TAP_LIMIT = 10;
       function getFrame() { return document.getElementById('swipeFrame'); }
-
       function onStart(x, y) {
-        startX = x; startY = y; prevY = y;
-        dragging = true; dragDeltaX = 0; dirLocked = null;
-        overlay.classList.add('is-dragging');
-        wrap.style.transition = 'none';
+        startX = x; startY = y; prevY = y; dragging = true; dragDeltaX = 0; dirLocked = null;
+        overlay.classList.add('is-dragging'); wrap.style.transition = 'none';
       }
-
       function onMove(x, y) {
         if (!dragging) return;
-        var dy = y - prevY;   // 직전 프레임 대비 이동량
-        prevY  = y;
-        dragDeltaX = x - startX;
-
-        // 방향 미결정 시 임계값 도달 시점에 방향 고정
+        var dy = y - prevY; prevY = y; dragDeltaX = x - startX;
         if (!dirLocked) {
-          var totalDx = Math.abs(dragDeltaX);
-          var totalDy = Math.abs(y - startY);
-          if (totalDx > LOCK_THRESHOLD || totalDy > LOCK_THRESHOLD) {
-            dirLocked = (totalDx >= totalDy) ? 'h' : 'v';
-          }
+          var tdx = Math.abs(dragDeltaX), tdy = Math.abs(y - startY);
+          if (tdx > LOCK_THRESHOLD || tdy > LOCK_THRESHOLD) dirLocked = tdx >= tdy ? 'h' : 'v';
         }
-
         if (dirLocked === 'h') {
-          // 좌우 스와이프 — 카드 이동 애니메이션
           var rot = dragDeltaX * 0.022;
           wrap.style.transform = 'translateX(' + (dragDeltaX * 0.55) + 'px) rotate(' + rot + 'deg)';
         } else if (dirLocked === 'v') {
-          // 상하 스크롤 — iframe 내부로 직접 전달 (same-origin이므로 가능)
           var frame = getFrame();
-          if (frame && frame.contentWindow) {
-            try { frame.contentWindow.scrollBy(0, -dy); } catch(e) {}
-          }
+          if (frame && frame.contentWindow) { try { frame.contentWindow.scrollBy(0, -dy); } catch(e) {} }
         }
       }
-
       function onEnd() {
         if (!dragging) return;
-        dragging = false;
-        overlay.classList.remove('is-dragging');
-        wrap.style.transition = '';
-
-        var locked = dirLocked;
-        var delta  = dragDeltaX;
-        dirLocked  = null;
-
+        dragging = false; overlay.classList.remove('is-dragging'); wrap.style.transition = '';
+        var locked = dirLocked, delta = dragDeltaX; dirLocked = null;
         if (locked === 'h') {
           wrap.style.transform = '';
           if (Math.abs(delta) < TAP_LIMIT) {
             overlay.classList.add('pass-through');
             setTimeout(function() { overlay.classList.remove('pass-through'); }, 700);
-          } else if (delta < -SWIPE_THRESHOLD) {
-            swipeNext();
-          } else if (delta > SWIPE_THRESHOLD) {
-            swipePrev();
-          }
+          } else if (delta < -SWIPE_THRESHOLD) { swipeNext(); }
+          else if (delta > SWIPE_THRESHOLD) { swipePrev(); }
         } else if (!locked) {
-          // 아주 짧은 탭
           wrap.style.transform = '';
           overlay.classList.add('pass-through');
           setTimeout(function() { overlay.classList.remove('pass-through'); }, 700);
         }
-        // locked === 'v' : wrap transform 없음, 정리만
       }
-
-      // 터치 이벤트
-      overlay.addEventListener('touchstart', function(e) {
-        onStart(e.touches[0].clientX, e.touches[0].clientY);
-      }, { passive: true });
+      overlay.addEventListener('touchstart', function(e) { onStart(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
       overlay.addEventListener('touchmove', function(e) {
         if (!dragging) return;
-        if (dirLocked === 'h') e.preventDefault(); // 수평 스와이프 시에만 페이지 스크롤 차단
+        if (dirLocked === 'h') e.preventDefault();
         onMove(e.touches[0].clientX, e.touches[0].clientY);
       }, { passive: false });
       overlay.addEventListener('touchend', onEnd);
-
-      // 마우스 이벤트
-      overlay.addEventListener('mousedown', function(e) {
-        onStart(e.clientX, e.clientY); e.preventDefault();
-      });
+      overlay.addEventListener('mousedown', function(e) { onStart(e.clientX, e.clientY); e.preventDefault(); });
       document.addEventListener('mousemove', function(e) { onMove(e.clientX, e.clientY); });
-      document.addEventListener('mouseup',   onEnd);
+      document.addEventListener('mouseup', onEnd);
     }
 
-    // === 키보드 네비게이션 ===
     document.addEventListener('keydown', function(e) {
-      var overlay = document.getElementById('swipeOverlay');
-      if (!overlay || !overlay.classList.contains('active')) return;
+      var ov = document.getElementById('swipeOverlay');
+      if (!ov || !ov.classList.contains('active')) return;
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); swipeNext(); }
       if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { e.preventDefault(); swipePrev(); }
       if (e.key === 'Escape') closeSwipeView();
     });
-
-    // 배경 클릭 시 닫기
     document.getElementById('swipeOverlay').addEventListener('click', function(e) {
       if (e.target === this) closeSwipeView();
     });
 
-    // === Init ===
+    // ============ MOBILE TOPBAR SEARCH VISIBILITY ============
+    (function() {
+      var toggle = document.getElementById('mobileSearchToggle');
+      function checkWidth() {
+        if (window.innerWidth < 768) {
+          if (toggle) toggle.style.display = 'flex';
+        } else {
+          if (toggle) toggle.style.display = 'none';
+          var bar = document.getElementById('mobileSearchBar');
+          if (bar) bar.classList.remove('visible');
+        }
+      }
+      checkWidth();
+      window.addEventListener('resize', checkWidth);
+    })();
+
+    // ============ INIT ============
     loadReadStatus();
     renderTagFilters();
     renderCatFilters();
