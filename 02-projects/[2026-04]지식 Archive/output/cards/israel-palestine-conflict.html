@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>이스라엘-팔레스타인 분쟁 — 100년 갈등의 구조와 현재</title>
+  <meta name="knowledge-id" content="israel-palestine-conflict">
+  <meta name="knowledge-tags" content="국제정치,중동,분쟁,팔레스타인,이스라엘">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-08">
+  <meta name="knowledge-source" content="Al Jazeera·BBC·하레츠·UN OCHA·나무위키">
+  <meta name="knowledge-category" content="시사·컬처">
+  <meta name="knowledge-series" content="중동 전쟁 2026 시리즈">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #3b82f6; --accent2: #f59e0b;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(59,130,246,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #2563eb; --accent2: #d97706;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(37,99,235,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%,
+        color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--menu-border); background: var(--menu-bg);
+      color: var(--menu-text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(12px); transition: all 0.2s;
+    }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px;
+      background: var(--menu-bg); backdrop-filter: blur(16px);
+      border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px;
+      opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border: none; background: transparent;
+      color: var(--menu-text); font-size: 14px; font-family: inherit;
+      cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left;
+    }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      margin-bottom: 24px; padding: 6px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface); transition: background 0.15s;
+    }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--text-secondary);
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 540px; margin: 0 auto; line-height: 1.7; }
+
+    .meta-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 36px;
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-intermediate { background: var(--chip-amber); color: var(--warning); }
+    .tag-chip { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+    .category-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
+    .cat-시사컬처 { background:rgba(59,130,246,0.12); color:#3b82f6; border:1px solid rgba(59,130,246,0.3); }
+    html.theme-light .cat-시사컬처 { background:rgba(59,130,246,0.08); }
+    .series-badge-hero {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 11px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      background: rgba(59,130,246,0.1); color: #60a5fa;
+      border: 1px solid rgba(59,130,246,0.25);
+    }
+    html.theme-light .series-badge-hero { background: rgba(37,99,235,0.08); color: #2563eb; border-color: rgba(37,99,235,0.2); }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease; margin-bottom: 16px; }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
+
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    .highlight-box { padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border); background: var(--chip-accent); font-size: 13.5px; line-height: 1.7; margin-bottom: 16px; }
+    .highlight-box strong { color: var(--accent); }
+
+    .quote-box { padding: 16px 20px; border-radius: 10px; border-left: 3px solid var(--accent); background: var(--surface); font-size: 13px; line-height: 1.7; color: var(--text-secondary); margin-bottom: 16px; font-style: italic; }
+    .quote-box cite { display: block; margin-top: 6px; font-style: normal; font-weight: 600; font-size: 12px; color: var(--accent); }
+
+    .card-grid-inner { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 12px; margin-bottom: 16px; }
+    .inner-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+    .inner-card-icon { font-size: 1.4rem; margin-bottom: 8px; }
+    .inner-card-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    .inner-card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+    .timeline { display: flex; flex-direction: column; gap: 0; margin-bottom: 4px; }
+    .timeline-item { display: flex; gap: 16px; }
+    .timeline-left { display: flex; flex-direction: column; align-items: center; width: 32px; flex-shrink: 0; }
+    .timeline-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); flex-shrink: 0; margin-top: 4px; }
+    .timeline-dot.gray { background: #64748b; }
+    .timeline-line { width: 2px; flex: 1; background: var(--border); margin: 4px 0; min-height: 20px; }
+    .timeline-item:last-child .timeline-line { display: none; }
+    .timeline-right { padding-bottom: 20px; flex: 1; }
+    .timeline-year { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .timeline-year.gray { color: var(--text-secondary); }
+    .timeline-content { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+    .timeline-content strong { color: var(--text); }
+
+    th { white-space: nowrap; }
+    td { white-space: nowrap; }
+    table { min-width: 560px; width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: var(--surface); color: var(--text-secondary); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+    td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+    td:first-child { color: var(--accent); font-weight: 700; font-size: 12px; }
+    td.desc { white-space: normal; min-width: 200px; }
+    tr:last-child td { border-bottom: none; }
+
+    .badge-red { display: inline-block; padding: 1px 8px; border-radius: 99px; font-size: 11px; font-weight: 600; background: rgba(244,63,94,0.15); color: #f43f5e; border: 1px solid rgba(244,63,94,0.3); }
+    .badge-amber { display: inline-block; padding: 1px 8px; border-radius: 99px; font-size: 11px; font-weight: 600; background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+    .badge-blue { display: inline-block; padding: 1px 8px; border-radius: 99px; font-size: 11px; font-weight: 600; background: rgba(59,130,246,0.15); color: #3b82f6; border: 1px solid rgba(59,130,246,0.3); }
+    .badge-green { display: inline-block; padding: 1px 8px; border-radius: 99px; font-size: 11px; font-weight: 600; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+
+    .vs-layout { display: grid; grid-template-columns: 1fr 40px 1fr; gap: 8px; align-items: center; margin-bottom: 16px; }
+    .vs-side { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+    .vs-side.il { border-color: rgba(59,130,246,0.3); }
+    .vs-side.pa { border-color: rgba(245,158,11,0.3); }
+    .vs-center { text-align: center; font-size: 13px; font-weight: 800; color: var(--text-secondary); }
+    .vs-side-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px; }
+    .vs-side.il .vs-side-label { color: #3b82f6; }
+    .vs-side.pa .vs-side-label { color: #f59e0b; }
+    .vs-fact { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 4px; }
+
+    .region-table { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .region-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+    .region-name { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .region-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+    @media (max-width: 640px) {
+      .kpi-row { grid-template-columns: 1fr; }
+      .vs-layout { grid-template-columns: 1fr; }
+      .vs-center { display: none; }
+      .region-table { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+      th { font-size: 10px !important; padding-left: 8px !important; padding-right: 8px !important; }
+      td { font-size: 12px !important; padding-left: 8px !important; padding-right: 8px !important; }
+    }
+    @media print {
+      body { background: white !important; }
+      .viz-menu { display: none !important; }
+      .card { break-inside: avoid; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <div class="container" id="captureTarget">
+    <a href="../index.html" class="nav-back">← 아카이브로</a>
+
+    <div class="hero animate d1">
+      <div class="hero-badge">🌍 시사·컬처</div>
+      <h1>이스라엘–팔레스타인 분쟁</h1>
+      <p class="hero-sub">1948년 이스라엘 건국 이후 70년 넘게 이어진 영토·민족·종교 충돌 — 오슬로에서 10월 7일, 그리고 지금까지</p>
+    </div>
+
+    <div class="meta-bar animate d2">
+      <span class="category-badge cat-시사컬처">🎭 시사·컬처</span>
+      <span class="series-badge-hero">📚 중동 전쟁 2026 시리즈</span>
+      <span class="diff-badge diff-intermediate">중급</span>
+      <span class="meta-item">📅 2026-04-08</span>
+      <span class="meta-item">🔖 Al Jazeera · BBC · UN OCHA · 하레츠</span>
+    </div>
+
+    <div class="kpi-row animate d2">
+      <div class="kpi-item">
+        <div class="kpi-value" style="color:#3b82f6;">1948</div>
+        <div class="kpi-label">이스라엘 건국년도</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-value" style="color:#f59e0b;">5만+</div>
+        <div class="kpi-label">가자 전쟁 사망자(UN)</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-value" style="color:#f43f5e;">진행 중</div>
+        <div class="kpi-label">가자 전쟁 상태</div>
+      </div>
+    </div>
+
+    <!-- 핵심 구도 -->
+    <div class="card animate d3">
+      <div class="section-title">⚡ 핵심 구도 — 무엇이 충돌하는가</div>
+      <div class="highlight-box">
+        <strong>이스라엘</strong>은 1948년 팔레스타인 땅에 건국을 선언. 팔레스타인인들은 이를 <strong>나크바(대재앙)</strong>로 부르며 대규모 난민이 발생했다. 이후 세 차례 중동전쟁, 점령지 확대, 정착촌 건설이 반복되면서 두 민족의 국가 수립 요구가 충돌하고 있다.
+      </div>
+      <div class="vs-layout">
+        <div class="vs-side il">
+          <div class="vs-side-label">🇮🇱 이스라엘</div>
+          <div class="vs-fact">• 1948년 건국, UN 정식 회원국</div>
+          <div class="vs-fact">• 안보 우선 — 적대 포위 환경 주장</div>
+          <div class="vs-fact">• 요르단강 서안·동예루살렘 점령</div>
+          <div class="vs-fact">• 가자 봉쇄 유지 (2007~)</div>
+          <div class="vs-fact">• 핵 보유 의혹 (비공식·모호 정책)</div>
+        </div>
+        <div class="vs-center">VS</div>
+        <div class="vs-side pa">
+          <div class="vs-side-label">🇵🇸 팔레스타인</div>
+          <div class="vs-fact">• PLO→PA, 2012 UN 옵서버국</div>
+          <div class="vs-fact">• 독립 국가 요구 (두 국가 해법)</div>
+          <div class="vs-fact">• 가자: 하마스 통치 (2007~)</div>
+          <div class="vs-fact">• 서안: 파타(PA) 자치통치</div>
+          <div class="vs-fact">• 난민 500~700만 명 (UNRWA 집계)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 역사 타임라인 -->
+    <div class="card animate d3">
+      <div class="section-title">📅 100년 분쟁 타임라인</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+          <div class="timeline-right">
+            <div class="timeline-year">1917 · 밸푸어 선언</div>
+            <div class="timeline-content"><strong>영국</strong>, 팔레스타인 땅에 유대 민족 국가 수립 지지 선언. 아랍인 주민과의 갈등의 씨앗 형성.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+          <div class="timeline-right">
+            <div class="timeline-year">1948 · 이스라엘 건국 / 나크바</div>
+            <div class="timeline-content"><strong>이스라엘 독립 선언</strong> 직후 1차 중동전쟁 발발. 팔레스타인 주민 70만 명 이상 추방·피난 — 난민 문제의 기원.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+          <div class="timeline-right">
+            <div class="timeline-year">1967 · 6일 전쟁</div>
+            <div class="timeline-content">이스라엘, <strong>요르단강 서안·가자·시나이·골란고원</strong> 점령. 현재 분쟁의 지리적 틀이 확정됨.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+          <div class="timeline-right">
+            <div class="timeline-year">1993 · 오슬로 협정</div>
+            <div class="timeline-content">이스라엘–PLO 상호 인정. <strong>두 국가 해법</strong> 로드맵 합의. 그러나 정착촌 확대·지도자 암살·2차 인티파다로 사실상 붕괴.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+          <div class="timeline-right">
+            <div class="timeline-year">2007 · 가자 분리</div>
+            <div class="timeline-content">하마스, 가자 무력 장악 → 이스라엘·이집트 <strong>육해공 봉쇄</strong> 시작. 서안(PA)과 가자(하마스)로 팔레스타인 내부 분열 고착.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+          <div class="timeline-right">
+            <div class="timeline-year">2023.10.07 · 알아크사 홍수 작전</div>
+            <div class="timeline-content">하마스, 이스라엘 기습 공격 — <strong>1,200명 사망, 254명 납치</strong>. 이스라엘 가자 지상전 개시. 가자 북부 초토화·인도주의 위기 심화.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-left"><div class="timeline-dot gray"></div><div class="timeline-line"></div></div>
+          <div class="timeline-right">
+            <div class="timeline-year gray">2024~2025 · 전쟁 장기화</div>
+            <div class="timeline-content">가자 사망자 <strong>5만 명 이상</strong>(UN). 라파 지상전, 구호 차단 논란, 국제사법재판소(ICJ) 제소, ICC 네타냐후 체포영장(2024). 수차례 휴전 협상 실패.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-left"><div class="timeline-dot gray"></div></div>
+          <div class="timeline-right">
+            <div class="timeline-year gray">2026 현재 · 이란-이스라엘 전쟁 연동</div>
+            <div class="timeline-content">이스라엘의 이란 공습(2026.2.28) 이후 가자 전선은 광역 중동 분쟁으로 편입. 저항의 축 동시 개입. 팔레스타인 정치 협상 완전 중단.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 주요 지역 -->
+    <div class="card animate d3">
+      <div class="section-title">🗺️ 핵심 지역 4곳</div>
+      <div class="region-table">
+        <div class="region-item">
+          <div class="region-name" style="color:#f43f5e;">🔴 가자 지구</div>
+          <div class="region-desc">면적 365㎢, 인구 230만(분쟁 전). 2007년 이후 하마스 통치·이스라엘 봉쇄. 2023년 전쟁으로 인프라 90% 파괴 추정. "세계 최대 노천 감옥"이라 불림.</div>
+        </div>
+        <div class="region-item">
+          <div class="region-name" style="color:#f59e0b;">🟡 요르단강 서안</div>
+          <div class="region-desc">1967년 점령 후 PA(파타) 자치통치. 이스라엘 정착촌 700,000명 거주(2026 추정). UN 안보리 결의 무시한 정착촌 확대가 두 국가 해법의 최대 장애.</div>
+        </div>
+        <div class="region-item">
+          <div class="region-name" style="color:#3b82f6;">🔵 동예루살렘</div>
+          <div class="region-desc">이스라엘이 1980년 수도로 일방 선언(UN 결의 무효). 팔레스타인은 국가 수도 요구. 알아크사 모스크(이슬람 3대 성지) 관리권 분쟁이 종교적 핵.</div>
+        </div>
+        <div class="region-item">
+          <div class="region-name" style="color:#10b981;">🟢 이스라엘 내 아랍계</div>
+          <div class="region-desc">이스라엘 시민권을 가진 아랍계 팔레스타인 인구 약 21%(약 200만). 법적 시민이지만 2018년 민족국가법으로 차별 법제화 논란.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 핵심 쟁점 -->
+    <div class="card animate d4">
+      <div class="section-title">⚖️ 해결을 막는 5대 핵심 쟁점</div>
+      <div class="card-grid-inner">
+        <div class="inner-card">
+          <div class="inner-card-icon">🕌</div>
+          <div class="inner-card-title">예루살렘 지위</div>
+          <div class="inner-card-desc">두 민족 모두 수도로 요구. 유대인에겐 통곡의 벽, 이슬람에겐 알아크사가 성지. 어떤 협상도 여기서 막힌다.</div>
+        </div>
+        <div class="inner-card">
+          <div class="inner-card-icon">🏠</div>
+          <div class="inner-card-title">난민 귀환권</div>
+          <div class="inner-card-desc">1948·67년 피난민과 후손 500~700만 명의 귀환 요구. 이스라엘이 수용하면 유대 국가 성격이 소멸된다는 논리로 거부.</div>
+        </div>
+        <div class="inner-card">
+          <div class="inner-card-icon">🏗️</div>
+          <div class="inner-card-title">서안 정착촌</div>
+          <div class="inner-card-desc">UN 불법 판정에도 불구, 이스라엘 우파 연립 정부가 지속 확대. 두 국가 해법의 물리적 공간을 잠식 중.</div>
+        </div>
+        <div class="inner-card">
+          <div class="inner-card-icon">🔒</div>
+          <div class="inner-card-title">가자 봉쇄</div>
+          <div class="inner-card-desc">이스라엘의 안보 이유 봉쇄 vs. 팔레스타인의 집단 처벌 항의. 2023년 전쟁으로 봉쇄 효과가 전면전으로 확대.</div>
+        </div>
+        <div class="inner-card">
+          <div class="inner-card-icon">🔀</div>
+          <div class="inner-card-title">하마스 vs PA 분열</div>
+          <div class="inner-card-desc">팔레스타인 내부 분열(가자-서안)로 단일 협상 파트너 부재. 이스라엘은 이를 협상 회피의 명분으로 활용.</div>
+        </div>
+        <div class="inner-card">
+          <div class="inner-card-icon">🛡️</div>
+          <div class="inner-card-title">이스라엘 안보 딜레마</div>
+          <div class="inner-card-desc">홀로코스트 트라우마·전략 종심 부재(폭 15km)·적대 국가 포위. '안보 없인 평화 없다'는 구조적 논리.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 국제사회 반응 -->
+    <div class="card animate d4">
+      <div class="section-title">🌐 국제사회 입장</div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>국가/기구</th>
+              <th>공식 입장</th>
+              <th>행동</th>
+              <th>평가</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>미국 🇺🇸</td>
+              <td class="desc">이스라엘 자위권 지지. 두 국가 해법 원칙 언급</td>
+              <td class="desc">군사·외교 지원. UN 거부권 반복 행사</td>
+              <td><span class="badge-blue">이스라엘 우선</span></td>
+            </tr>
+            <tr>
+              <td>EU 🇪🇺</td>
+              <td class="desc">두 국가 해법·인도주의 법 준수 요구</td>
+              <td class="desc">일부 회원국 팔레스타인 국가 승인. 이스라엘 압박 증가</td>
+              <td><span class="badge-amber">중립→압박</span></td>
+            </tr>
+            <tr>
+              <td>UN 총회</td>
+              <td class="desc">휴전·팔레스타인 국가 지위 지지 결의 다수</td>
+              <td class="desc">안보리 미국 거부권으로 실효성 한계</td>
+              <td><span class="badge-amber">결의≠집행</span></td>
+            </tr>
+            <tr>
+              <td>ICJ</td>
+              <td class="desc">남아프리카 제소 — 집단학살 예방 임시 조치 명령</td>
+              <td class="desc">이스라엘 가자 작전 제한 요구 (2024.1)</td>
+              <td><span class="badge-red">재판 진행 중</span></td>
+            </tr>
+            <tr>
+              <td>아랍 국가들</td>
+              <td class="desc">팔레스타인 지지 선언 vs. 이스라엘과의 실용 관계</td>
+              <td class="desc">아브라함 협정(UAE·바레인·모로코·수단). 사우디 정상화 논의</td>
+              <td><span class="badge-amber">이중적 입장</span></td>
+            </tr>
+            <tr>
+              <td>한국 🇰🇷</td>
+              <td class="desc">두 국가 해법 지지, 민간인 보호 촉구</td>
+              <td class="desc">인도주의 지원. 실질 개입 제한적</td>
+              <td><span class="badge-blue">중립 지지</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 두 국가 해법 현실 -->
+    <div class="card animate d5">
+      <div class="section-title">🔮 두 국가 해법 — 원칙과 현실의 간극</div>
+      <div class="highlight-box">
+        <strong>이론:</strong> 이스라엘 + 팔레스타인이 1967년 이전 경계선 기준으로 공존. 동예루살렘은 팔레스타인 수도, 서안 정착촌 철수, 난민 귀환 또는 보상.
+      </div>
+      <div class="card-grid-inner" style="grid-template-columns:1fr 1fr;">
+        <div class="inner-card" style="border-color:rgba(244,63,94,0.3);">
+          <div class="inner-card-title" style="color:#f43f5e;">⛔ 장애 요인</div>
+          <div class="inner-card-desc">
+            서안 정착촌 700만 명 → 물리적 분리 불가<br>
+            하마스의 이스라엘 존재 부정<br>
+            이스라엘 우파 정부의 병합 추진<br>
+            예루살렘 공유 합의 불가<br>
+            2026년 이란-이스라엘 전쟁으로 논의 중단
+          </div>
+        </div>
+        <div class="inner-card" style="border-color:rgba(16,185,129,0.3);">
+          <div class="inner-card-title" style="color:#10b981;">✅ 유일한 현실 경로</div>
+          <div class="inner-card-desc">
+            대부분의 국제법·UN 결의 지지<br>
+            아랍 정상화 조건(사우디 요구 포함)<br>
+            미국 양당 공식 입장(실행 없음)<br>
+            일부 이스라엘 야당 지지<br>
+            일국가 해법은 인구학적 딜레마
+          </div>
+        </div>
+      </div>
+      <div class="quote-box">
+        "두 국가 해법은 죽었다고 말하기도 어렵다. 애초에 제대로 태어난 적이 없기 때문이다."
+        <cite>— 다니 도논, 전 이스라엘 UN 대사 (비공식 발언 인용)</cite>
+      </div>
+    </div>
+
+    <!-- 2026 현황 -->
+    <div class="card animate d5">
+      <div class="section-title">🔴 2026년 현재 — 이란-이스라엘 전쟁과의 연동</div>
+      <div class="highlight-box" style="background:rgba(244,63,94,0.08); border-color:rgba(244,63,94,0.2);">
+        이스라엘의 이란 핵시설 공습(2026.2.28)으로 전선이 광역화. 가자 전쟁은 이란·저항의 축 전체와 중첩된 분쟁으로 편입. 헤즈볼라·후티·이라크 민병대의 동시 개입으로 이스라엘 전력 분산. 팔레스타인 정치 협상은 완전 중단.
+      </div>
+      <div class="card-grid-inner">
+        <div class="inner-card">
+          <div class="inner-card-icon">💀</div>
+          <div class="inner-card-title">가자 인도주의 위기</div>
+          <div class="inner-card-desc">사망자 5만+ 명(UN), 실향민 200만 명. 구호 물자 차단·기아 위기. ICJ 임시 조치에도 전투 지속.</div>
+        </div>
+        <div class="inner-card">
+          <div class="inner-card-icon">🏛️</div>
+          <div class="inner-card-title">전후 통치 공백</div>
+          <div class="inner-card-desc">하마스 지도부 와해, PA 실효 통치력 부재. 이스라엘 가자 재점령 계획 공식화했으나 국제 반발.</div>
+        </div>
+        <div class="inner-card">
+          <div class="inner-card-icon">🌍</div>
+          <div class="inner-card-title">국제 압력 증가</div>
+          <div class="inner-card-desc">2025년 아일랜드·스페인·노르웨이 팔레스타인 국가 승인. 유럽 내 이스라엘 제재 요구 증가. ICC 네타냐후 체포영장 발부(2024).</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 관련 지식 -->
+    <div class="related-section animate d5">
+      <h3>🔗 관련 지식 카드</h3>
+      <div class="related-grid">
+        <a class="related-card" href="iran-israel-war-2026.html">
+          <div class="r-label">중동 전쟁 2026 시리즈</div>
+          <div class="r-title">미국·이스라엘 vs 이란 — 2026년 중동 전쟁 완전 정리</div>
+        </a>
+        <a class="related-card" href="axis-of-resistance.html">
+          <div class="r-label">중동 전쟁 2026 시리즈</div>
+          <div class="r-title">저항의 축 — 이란의 중동 대리 세력 네트워크</div>
+        </a>
+        <a class="related-card" href="houthi-ansar-allah.html">
+          <div class="r-label">중동 전쟁 2026 시리즈</div>
+          <div class="r-title">후티(안사르 알라) — 예멘 실질 통치 세력의 실체</div>
+        </a>
+        <a class="related-card" href="iran-houthi-strategy.html">
+          <div class="r-label">중동 전쟁 2026 시리즈</div>
+          <div class="r-title">이란이 후티를 지원하는 이유 — 6가지 전략적 계산</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-note">Al Jazeera · BBC · UN OCHA · 하레츠 · 나무위키 바탕 정리 · 2026-04-08</div>
+  </div>
+
+  <script>
+    var themes = ['dark','light'];
+    var themeIdx = 0;
+    function cycleTheme() {
+      themeIdx = (themeIdx + 1) % themes.length;
+      var t = themes[themeIdx];
+      document.documentElement.className = 'theme-' + t;
+      document.getElementById('themeLabel').textContent = t.charAt(0).toUpperCase() + t.slice(1);
+    }
+    function toggleMenu() {
+      document.getElementById('vizMenuDropdown').classList.toggle('open');
+    }
+    document.addEventListener('click', function(e) {
+      var menu = document.querySelector('.viz-menu');
+      if (menu && !menu.contains(e.target)) {
+        document.getElementById('vizMenuDropdown').classList.remove('open');
+      }
+    });
+    function downloadImage() {
+      var target = document.getElementById('captureTarget');
+      if (!target || typeof htmlToImage === 'undefined') { alert('html-to-image 라이브러리가 로드되지 않았습니다.'); return; }
+      htmlToImage.toPng(target, { backgroundColor: getComputedStyle(document.body).backgroundColor, pixelRatio: 2 })
+        .then(function(dataUrl) {
+          var a = document.createElement('a');
+          a.download = 'israel-palestine-conflict.png';
+          a.href = dataUrl; a.click();
+        }).catch(function(e) { console.error(e); alert('이미지 생성 실패: ' + e.message); });
+    }
+  </script>
+</body>
+</html>

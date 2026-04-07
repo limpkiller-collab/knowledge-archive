@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>손실회피 경향 — 행동경제학의 핵심 비대칭성</title>
+  <meta name="knowledge-id" content="loss-aversion">
+  <meta name="knowledge-tags" content="행동경제학,심리,투자,개념정리">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-08">
+  <meta name="knowledge-source" content="Kahneman & Tversky (1979), Prospect Theory">
+  <meta name="knowledge-category" content="투자·주식">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #8b5cf6; --accent2: #6d28d9;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(139,92,246,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #7c3aed; --accent2: #6d28d9;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(124,58,237,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%,
+        color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* ===== 뷰 메뉴 ===== */
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--menu-border); background: var(--menu-bg);
+      color: var(--menu-text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(12px); transition: all 0.2s;
+    }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px;
+      background: var(--menu-bg); backdrop-filter: blur(16px);
+      border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px;
+      opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border: none; background: transparent;
+      color: var(--menu-text); font-size: 14px; font-family: inherit;
+      cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left;
+    }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    /* ===== 뒤로가기 ===== */
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      margin-bottom: 24px; padding: 6px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface); transition: background 0.15s;
+    }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    /* ===== 히어로 ===== */
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--text-secondary);
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 540px; margin: 0 auto; line-height: 1.7; }
+
+    /* ===== 메타 바 ===== */
+    .meta-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 36px;
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .diff-badge {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      border: 1px solid var(--border);
+    }
+    .diff-intermediate { background: var(--chip-amber); color: var(--warning); }
+    .tag-chip {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500;
+      background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary);
+    }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+
+    /* ===== 카테고리 뱃지 ===== */
+    .category-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.02em; white-space: nowrap;
+    }
+    .cat-투자주식 { background: rgba(16,185,129,0.12); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+    html.theme-light .cat-투자주식 { background: rgba(16,185,129,0.08); }
+
+    /* ===== 카드 ===== */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease;
+    }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title {
+      font-size: 12px; font-weight: 700; color: var(--text-secondary);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px;
+    }
+
+    /* ===== KPI 행 ===== */
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    /* ===== 인용 박스 ===== */
+    .quote-box {
+      padding: 16px 20px; border-radius: 10px; border-left: 3px solid var(--accent);
+      background: var(--surface); font-size: 14px; line-height: 1.75;
+      color: var(--text-secondary); margin-bottom: 16px; font-style: italic;
+    }
+    .quote-box cite { display: block; margin-top: 8px; font-style: normal; font-weight: 600; font-size: 12px; color: var(--accent); }
+
+    /* ===== 하이라이트 박스 ===== */
+    .highlight-box {
+      padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--chip-accent); font-size: 13.5px; line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .highlight-box strong { color: var(--accent); }
+
+    /* ===== 비교 그리드 ===== */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+    .era-card { border-radius: 12px; padding: 22px; border: 1px solid var(--border); position: relative; overflow: hidden; }
+    .era-card .top-line { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+    .era-card.old .top-line { background: #64748b; }
+    .era-card.new .top-line { background: var(--accent); }
+    .era-label { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 10px; margin-top: 4px; }
+    .era-card.old .era-label { color: #64748b; }
+    .era-card.new .era-label { color: var(--accent); }
+    .era-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; }
+    .era-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; margin-bottom: 8px; color: var(--text-secondary); }
+    .era-item strong { color: var(--text); font-weight: 600; }
+    .era-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+    .era-card.old .era-dot { background: #64748b; }
+    .era-card.new .era-dot { background: var(--accent); }
+
+    /* ===== 내부 카드 그리드 ===== */
+    .card-grid-inner { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 12px; margin-bottom: 20px; }
+    .inner-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+    .inner-card-icon { font-size: 1.4rem; margin-bottom: 8px; }
+    .inner-card-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    .inner-card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+    /* ===== 특성 목록 ===== */
+    .feature-list { display: flex; flex-direction: column; gap: 10px; }
+    .feature-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 16px; border-radius: 10px;
+      background: var(--surface); border: 1px solid var(--border);
+    }
+    .feature-num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--chip-accent); color: var(--accent);
+      font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .feature-body { flex: 1; }
+    .feature-title { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+    .feature-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+    /* ===== 한계 목록 ===== */
+    .limit-list { display: flex; flex-direction: column; gap: 8px; }
+    .limit-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 12px 14px; border-radius: 8px;
+      background: rgba(244,63,94,0.05); border: 1px solid rgba(244,63,94,0.12);
+      font-size: 13px; line-height: 1.6; color: var(--text-secondary);
+    }
+    .limit-icon { color: var(--negative); flex-shrink: 0; font-size: 14px; margin-top: 1px; }
+    .limit-item strong { color: var(--text); font-weight: 600; }
+
+    /* ===== 테이블 ===== */
+    th { white-space: nowrap; }
+    td { white-space: nowrap; }
+    table { min-width: 560px; width: 100%; border-collapse: collapse; }
+    table th {
+      background: var(--surface); font-size: 11px; font-weight: 700;
+      letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-secondary);
+      padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border);
+    }
+    table td {
+      font-size: 13px; padding: 11px 14px;
+      border-bottom: 1px solid var(--border); color: var(--text-secondary);
+    }
+    table tr:last-child td { border-bottom: none; }
+    table tr:hover td { background: var(--surface-hover); }
+    table td:first-child, table th:first-child { color: var(--text); font-weight: 600; }
+
+    /* ===== 관련 지식 ===== */
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    /* ===== 푸터 ===== */
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    /* ===== 간격 ===== */
+    .mb-16 { margin-bottom: 16px; }
+    .mb-20 { margin-bottom: 20px; }
+
+    /* ===== 애니메이션 ===== */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+    /* ===== 반응형 ===== */
+    @media (max-width: 640px) {
+      .compare-grid, .kpi-row { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+      th { font-size: 10px !important; padding-left: 8px !important; padding-right: 8px !important; }
+      td { font-size: 12px !important; padding-left: 8px !important; padding-right: 8px !important; }
+    }
+    @media print {
+      body { background: white !important; }
+      .viz-menu { display: none !important; }
+      .card { break-inside: avoid; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 뷰 메뉴 -->
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        지식 Archive
+      </a>
+
+      <!-- 히어로 -->
+      <header class="hero animate">
+        <div class="hero-badge">🧠 행동경제학 · 투자 심리</div>
+        <h1>손실회피 경향<br><span style="color:var(--accent)">Loss Aversion</span></h1>
+        <p class="hero-sub">같은 크기의 이득보다 손실을 약 2~2.5배 더 크게 느끼는 심리적 비대칭성 — Kahneman & Tversky 전망이론의 핵심 원리</p>
+      </header>
+
+      <!-- 메타 바 -->
+      <div class="meta-bar animate d1">
+        <span class="category-badge cat-투자주식">📈 투자·주식</span>
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="tag-chip">#행동경제학</span>
+        <span class="tag-chip">#심리</span>
+        <span class="tag-chip">#투자</span>
+        <span class="tag-chip">#개념정리</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.08
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Kahneman &amp; Tversky
+        </span>
+      </div>
+
+      <!-- KPI 행 -->
+      <div class="kpi-row animate d2">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">λ ≈ 2~2.5</div>
+          <div class="kpi-label">손실회피 계수</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--text-secondary)">1979년</div>
+          <div class="kpi-label">전망이론 발표</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--positive)">2002년</div>
+          <div class="kpi-label">노벨경제학상</div>
+        </div>
+      </div>
+
+      <!-- 인용 박스 -->
+      <div class="quote-box animate d2">
+        "손실의 고통은 이득의 기쁨보다 약 2배 강하다 — 같은 금액을 잃는 것이 얻는 것보다 훨씬 더 고통스럽게 느껴진다."
+        <cite>— Daniel Kahneman &amp; Amos Tversky, Prospect Theory (1979), Econometrica</cite>
+      </div>
+
+      <!-- 이론적 배경: 기대효용이론 vs 전망이론 -->
+      <div class="mb-20 animate d3">
+        <p class="section-title" style="margin-bottom:12px">이론적 배경 — 기대효용이론 vs 전망이론</p>
+        <div class="compare-grid">
+          <div class="era-card old card">
+            <div class="top-line"></div>
+            <div style="padding-top:8px">
+              <div class="era-label">고전 경제학</div>
+              <div class="era-title">기대효용이론</div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>기준점:</strong> 절대적 자산 수준</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>이득·손실 감도:</strong> 대칭적 — 같은 크기는 같은 효용</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>확률 처리:</strong> 객관적 확률 그대로 적용</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>인간 모델:</strong> 합리적 경제인 (Homo Economicus)</div></div>
+            </div>
+          </div>
+          <div class="era-card new card">
+            <div class="top-line"></div>
+            <div style="padding-top:8px">
+              <div class="era-label">행동경제학</div>
+              <div class="era-title">전망이론 (Prospect Theory)</div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>기준점:</strong> 현재 기준점 (Reference Point) 대비 변화</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>이득·손실 감도:</strong> <strong>비대칭</strong> — 손실 기울기 &gt; 이득 기울기</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>확률 처리:</strong> 확률 가중치 함수 (낮은 확률 과대평가)</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>인간 모델:</strong> 심리적 편향을 가진 실제 인간</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 핵심 특성 3가지 -->
+      <div class="card animate d3 mb-20">
+        <div class="section-title">핵심 특성</div>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-num">1</div>
+            <div class="feature-body">
+              <div class="feature-title">준거점 의존성 (Reference Dependence)</div>
+              <div class="feature-desc">사람은 절대적 가치가 아닌 <strong style="color:var(--text)">기준점 대비 변화</strong>로 가치를 평가한다. 동일한 10만원이라도 100만원에서 110만원이 된 것과 1000만원에서 1010만원이 된 것은 느낌이 다르다.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-num">2</div>
+            <div class="feature-body">
+              <div class="feature-title">감소하는 민감성 (Diminishing Sensitivity)</div>
+              <div class="feature-desc">변화량이 커질수록 민감도가 줄어든다. <strong style="color:var(--text)">한계효용 체감</strong>의 법칙. 100만원 → 110만원의 기쁨과 1000만원 → 1010만원의 기쁨은 같지 않다.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-num">3</div>
+            <div class="feature-body">
+              <div class="feature-title">손실 가중 (Loss Aversion)</div>
+              <div class="feature-desc">손실 구간의 가치함수 기울기가 이득 구간보다 <strong style="color:var(--accent)">약 2~2.5배 가파르다</strong>. 이것이 손실회피 계수 λ가 2~2.5인 이유다. "득의 기쁨 < 실의 고통"이 핵심.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 전망이론 가치함수 시각화 -->
+      <div class="card animate d3 mb-20">
+        <div class="section-title">가치함수 (Value Function) 개념도</div>
+        <div style="display:flex; justify-content:center; padding: 20px 0 10px;">
+          <svg viewBox="0 0 400 300" width="100%" max-width="400" style="max-width:400px; font-family: 'Inter', sans-serif;">
+            <!-- 축 -->
+            <line x1="200" y1="20" x2="200" y2="280" stroke="var(--border)" stroke-width="1.5"/>
+            <line x1="20" y1="150" x2="380" y2="150" stroke="var(--border)" stroke-width="1.5"/>
+            <!-- 축 레이블 -->
+            <text x="205" y="18" font-size="11" fill="var(--text-secondary)">가치</text>
+            <text x="355" y="163" font-size="11" fill="var(--text-secondary)">결과</text>
+            <text x="155" y="163" font-size="10" fill="var(--text-secondary)">손실 ←</text>
+            <text x="210" y="163" font-size="10" fill="var(--text-secondary)">→ 이득</text>
+            <!-- 원점 -->
+            <circle cx="200" cy="150" r="4" fill="var(--accent)"/>
+            <text x="207" y="168" font-size="10" fill="var(--accent)" font-weight="600">준거점</text>
+            <!-- 이득 곡선 (완만한 증가 - 위로) -->
+            <path d="M200,150 Q240,100 280,80 Q320,65 360,55" stroke="#10b981" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- 손실 곡선 (급격한 하락 - 아래로, 더 가파름) -->
+            <path d="M200,150 Q160,210 120,240 Q80,263 40,273" stroke="var(--negative)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- 레이블 -->
+            <text x="320" y="48" font-size="11" fill="#10b981" font-weight="600">이득 구간</text>
+            <text x="42" y="270" font-size="11" fill="var(--negative)" font-weight="600">손실 구간</text>
+            <!-- 비대칭 표시 -->
+            <line x1="260" y1="150" x2="260" y2="73" stroke="#10b981" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="140" y1="150" x2="140" y2="236" stroke="var(--negative)" stroke-width="1" stroke-dasharray="3,3"/>
+            <text x="265" y="108" font-size="9" fill="#10b981">+x</text>
+            <text x="145" y="200" font-size="9" fill="var(--negative)">−x (2배↑)</text>
+            <!-- 화살표 비교 -->
+            <line x1="255" y1="73" x2="255" y2="150" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrow-g)"/>
+            <line x1="135" y1="236" x2="135" y2="150" stroke="var(--negative)" stroke-width="1.5" marker-end="url(#arrow-l)"/>
+            <defs>
+              <marker id="arrow-g" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 Z" fill="#10b981"/>
+              </marker>
+              <marker id="arrow-l" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 Z" fill="var(--negative)"/>
+              </marker>
+            </defs>
+            <!-- λ 표시 -->
+            <text x="160" y="40" font-size="13" fill="var(--accent)" font-weight="700">λ ≈ 2~2.5</text>
+            <text x="155" y="55" font-size="10" fill="var(--text-secondary)">손실의 기울기 / 이득의 기울기</text>
+          </svg>
+        </div>
+        <p style="font-size:12px; color:var(--text-secondary); text-align:center; margin-top:4px;">동일한 x크기의 손실(적색)이 이득(녹색)보다 약 2~2.5배 더 큰 고통으로 지각됨</p>
+      </div>
+
+      <!-- 실생활 사례 -->
+      <div class="mb-20 animate d4">
+        <p class="section-title" style="margin-bottom:12px">실생활 적용 사례</p>
+        <div class="card-grid-inner">
+          <div class="inner-card">
+            <div class="inner-card-icon">📉</div>
+            <div class="inner-card-title">처분효과 (Disposition Effect)</div>
+            <div class="inner-card-desc">손실 종목은 매도 못하고 보유, 이익 종목은 너무 일찍 매도. 손실 확정을 피하려는 심리.</div>
+          </div>
+          <div class="inner-card">
+            <div class="inner-card-icon">🏷️</div>
+            <div class="inner-card-title">가격 프레이밍</div>
+            <div class="inner-card-desc">"10% 할인"보다 "10% 추가 부담 없음" 프레이밍이 더 효과적. 손실 회피를 자극하는 마케팅.</div>
+          </div>
+          <div class="inner-card">
+            <div class="inner-card-icon">🛡️</div>
+            <div class="inner-card-title">보험 과잉 가입</div>
+            <div class="inner-card-desc">기대값보다 높은 보험료를 납부. 소액 손실 보장을 위한 비합리적 지출도 수용.</div>
+          </div>
+          <div class="inner-card">
+            <div class="inner-card-icon">🖱️</div>
+            <div class="inner-card-title">마케팅 FOMO</div>
+            <div class="inner-card-desc">"지금 놓치면 손해" 문구가 "지금 얻을 수 있어요"보다 클릭률·전환율 높음.</div>
+          </div>
+          <div class="inner-card">
+            <div class="inner-card-icon">🤝</div>
+            <div class="inner-card-title">협상 전략</div>
+            <div class="inner-card-desc">이미 가진 것을 지키려는 성향이 새것을 얻으려는 성향보다 강함. 앵커링 효과와 결합.</div>
+          </div>
+          <div class="inner-card">
+            <div class="inner-card-icon">🏠</div>
+            <div class="inner-card-title">보유효과 (Endowment Effect)</div>
+            <div class="inner-card-desc">일단 소유한 물건에 더 높은 가치를 부여. 손실회피의 한 표현 형태.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 이론 상세 표 -->
+      <div class="card animate d4 mb-20">
+        <div class="section-title">기대효용이론 vs 전망이론 비교표</div>
+        <div style="overflow-x:auto; -webkit-overflow-scrolling:touch; margin-top:10px;">
+          <table>
+            <thead>
+              <tr>
+                <th style="min-width:100px">구분</th>
+                <th>기대효용이론</th>
+                <th>전망이론</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>기준점</td>
+                <td>절대적 자산 수준</td>
+                <td style="white-space:normal; min-width:160px; color:var(--accent)">현재 기준점 (reference point)</td>
+              </tr>
+              <tr>
+                <td>이득·손실 감도</td>
+                <td>대칭적</td>
+                <td style="white-space:normal; min-width:160px; color:var(--accent)">비대칭 — 손실 &gt; 이득 (λ≈2~2.5)</td>
+              </tr>
+              <tr>
+                <td>확률 처리</td>
+                <td>객관적 확률</td>
+                <td style="white-space:normal; min-width:160px;">확률 가중치 함수 적용</td>
+              </tr>
+              <tr>
+                <td>함수 형태</td>
+                <td>오목 (Concave)</td>
+                <td style="white-space:normal; min-width:160px;">이득: 오목 / 손실: 볼록 (S자형)</td>
+              </tr>
+              <tr>
+                <td>인간 가정</td>
+                <td>합리적 경제인</td>
+                <td style="white-space:normal; min-width:160px;">심리적 편향을 가진 실제 인간</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 한계 및 비판 -->
+      <div class="card animate d5 mb-20">
+        <div class="section-title">한계 및 비판</div>
+        <div class="limit-list" style="margin-top:10px">
+          <div class="limit-item">
+            <span class="limit-icon">⚠</span>
+            <div><strong>맥락 의존성:</strong> 손실회피 계수 λ ≈ 2~2.5는 평균값이며, 맥락·문화·개인에 따라 상당히 다르다. 일률적 적용에 주의 필요.</div>
+          </div>
+          <div class="limit-item">
+            <span class="limit-icon">⚠</span>
+            <div><strong>재현성 문제:</strong> Gal &amp; Rucker (2018) 등 일부 연구에서 재현성 한계 제기. "손실회피는 실제로 과장됐다"는 반론도 존재.</div>
+          </div>
+          <div class="limit-item">
+            <span class="limit-icon">⚠</span>
+            <div><strong>소액·친숙 영역 약화:</strong> 작은 금액이나 익숙한 영역에서는 손실회피 효과가 약화되는 경향이 있음.</div>
+          </div>
+          <div class="limit-item">
+            <span class="limit-icon">⚠</span>
+            <div><strong>진화적 설명 논쟁:</strong> "생존에 유리한 진화적 산물"이라는 주장과 "단순한 인지 편향"이라는 시각이 대립 중.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 투자 실전 적용 -->
+      <div class="highlight-box animate d5">
+        <strong>투자 실전 포인트:</strong> 손실회피는 처분효과(손실 종목 보유, 이익 종목 조기 매도)의 근원이다. 이를 극복하려면 <strong>기계적 리밸런싱 규칙</strong>이나 <strong>손절선 사전 설정</strong>이 필요하다. "팔아야 하는지 아닌지" 매번 감정으로 판단하는 순간, 손실회피 편향이 의사결정을 지배한다.
+      </div>
+
+      <!-- 관련 지식 -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="behavioral-economics-investing.html" class="related-card">
+            <div class="r-label">→ 연관</div>
+            <div class="r-title">행동경제학의 실전 적용 — 투자자의 뇌는 왜 실수를 반복하는가</div>
+          </a>
+          <a href="risk-metrics-mdd-sharpe.html" class="related-card">
+            <div class="r-label">→ 연관</div>
+            <div class="r-title">리스크 관리의 수학 — MDD와 샤프 지수 이해하기</div>
+          </a>
+          <a href="analyst-investment-framework.html" class="related-card">
+            <div class="r-label">→ 연관</div>
+            <div class="r-title">기관 투자자 분석 프레임워크 — ROIC·FCF·밸류에이션</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">출처: Kahneman, D. &amp; Tversky, A. (1979). Prospect Theory: An Analysis of Decision under Risk. Econometrica, 47(2), 263–291. | Kahneman, D. (2011). Thinking, Fast and Slow.</p>
+
+    </div>
+  </main>
+
+  <script>
+    var THEMES = ['theme-dark', 'theme-light'];
+    var THEME_LABELS = { 'theme-dark': 'Dark', 'theme-light': 'Light' };
+
+    (function() {
+      var saved = localStorage.getItem('ka-theme') || 'theme-dark';
+      document.documentElement.className = saved;
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[saved];
+    })();
+
+    function cycleTheme() {
+      var cur = document.documentElement.className;
+      var next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+      document.documentElement.className = next;
+      localStorage.setItem('ka-theme', next);
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[next];
+      closeMenu();
+    }
+
+    function toggleMenu() {
+      document.getElementById('vizMenuDropdown').classList.toggle('open');
+    }
+    function closeMenu() {
+      document.getElementById('vizMenuDropdown').classList.remove('open');
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.viz-menu')) closeMenu();
+    });
+
+    function downloadImage() {
+      closeMenu();
+      if (typeof htmlToImage === 'undefined') { alert('라이브러리 로딩 중...'); return; }
+      htmlToImage.toPng(document.getElementById('main'), { pixelRatio: 2 })
+        .then(function(dataUrl) {
+          var a = document.createElement('a');
+          a.download = 'loss-aversion.png';
+          a.href = dataUrl;
+          a.click();
+        });
+    }
+  </script>
+</body>
+</html>

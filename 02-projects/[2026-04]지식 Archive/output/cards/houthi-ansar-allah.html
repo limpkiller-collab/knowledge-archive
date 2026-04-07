@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>후티(안사르 알라) — 예멘 실질 통치 세력의 실체</title>
+  <meta name="knowledge-id" content="houthi-ansar-allah">
+  <meta name="knowledge-tags" content="국제정치,중동,전쟁,시사,분쟁">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-08">
+  <meta name="knowledge-source" content="Pennmike·Namu Wiki·Wikipedia·채텀하우스">
+  <meta name="knowledge-category" content="시사·컬처">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #f43f5e; --accent2: #3b82f6;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(244,63,94,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #dc2626; --accent2: #2563eb;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(220,38,38,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%,
+        color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* 뷰 메뉴 */
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--menu-border); background: var(--menu-bg);
+      color: var(--menu-text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(12px); transition: all 0.2s;
+    }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px;
+      background: var(--menu-bg); backdrop-filter: blur(16px);
+      border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px;
+      opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border: none; background: transparent;
+      color: var(--menu-text); font-size: 14px; font-family: inherit;
+      cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left;
+    }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    /* 뒤로가기 */
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      margin-bottom: 24px; padding: 6px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface); transition: background 0.15s;
+    }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    /* 히어로 */
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--text-secondary);
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 540px; margin: 0 auto; line-height: 1.7; }
+
+    /* 메타 바 */
+    .meta-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 36px;
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .diff-badge {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      border: 1px solid var(--border);
+    }
+    .diff-intermediate { background: var(--chip-amber); color: var(--warning); }
+    .tag-chip {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500;
+      background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary);
+    }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+    .category-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.02em; white-space: nowrap;
+    }
+    .cat-시사컬처 { background:rgba(244,63,94,0.12); color:#f43f5e; border:1px solid rgba(244,63,94,0.3); }
+    html.theme-light .cat-시사컬처 { background:rgba(244,63,94,0.08); }
+
+    /* 카드 */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease;
+      margin-bottom: 16px;
+    }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title {
+      font-size: 12px; font-weight: 700; color: var(--text-secondary);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px;
+    }
+
+    /* KPI 행 */
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    /* 하이라이트 박스 */
+    .highlight-box {
+      padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--chip-accent); font-size: 13.5px; line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .highlight-box strong { color: var(--accent); }
+
+    /* 인용 박스 */
+    .quote-box {
+      padding: 16px 20px; border-radius: 10px; border-left: 3px solid var(--accent);
+      background: var(--surface); font-size: 13px; line-height: 1.7;
+      color: var(--text-secondary); margin-bottom: 16px; font-style: italic;
+    }
+    .quote-box cite { display: block; margin-top: 6px; font-style: normal; font-weight: 600; font-size: 12px; color: var(--accent); }
+
+    /* 내부 카드 그리드 */
+    .card-grid-inner { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 12px; margin-bottom: 16px; }
+    .inner-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+    .inner-card-icon { font-size: 1.4rem; margin-bottom: 8px; }
+    .inner-card-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    .inner-card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+    /* 타임라인 */
+    .timeline { display: flex; flex-direction: column; gap: 0; margin-bottom: 4px; }
+    .timeline-item { display: flex; gap: 16px; }
+    .timeline-left { display: flex; flex-direction: column; align-items: center; width: 32px; flex-shrink: 0; }
+    .timeline-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); flex-shrink: 0; margin-top: 4px; }
+    .timeline-dot.gray { background: #64748b; }
+    .timeline-line { width: 2px; flex: 1; background: var(--border); margin: 4px 0; min-height: 20px; }
+    .timeline-item:last-child .timeline-line { display: none; }
+    .timeline-right { padding-bottom: 20px; flex: 1; }
+    .timeline-year { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .timeline-year.gray { color: var(--text-secondary); }
+    .timeline-content { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+    .timeline-content strong { color: var(--text); }
+
+    /* 테이블 */
+    th { white-space: nowrap; }
+    td { white-space: nowrap; }
+    table { min-width: 560px; width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: var(--surface); color: var(--text-secondary); font-size: 11px; font-weight: 700;
+         text-transform: uppercase; letter-spacing: 0.05em; padding: 10px 14px; text-align: left;
+         border-bottom: 1px solid var(--border); }
+    td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+    td:first-child { color: var(--accent); font-weight: 700; font-size: 12px; }
+    td.desc { white-space: normal; min-width: 200px; }
+    tr:last-child td { border-bottom: none; }
+
+    /* 경고/이슈 배지 */
+    .badge-red { display: inline-block; padding: 1px 8px; border-radius: 99px; font-size: 11px; font-weight: 600; background: rgba(244,63,94,0.15); color: #f43f5e; border: 1px solid rgba(244,63,94,0.3); }
+    .badge-amber { display: inline-block; padding: 1px 8px; border-radius: 99px; font-size: 11px; font-weight: 600; background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+    .badge-blue { display: inline-block; padding: 1px 8px; border-radius: 99px; font-size: 11px; font-weight: 600; background: rgba(59,130,246,0.15); color: #3b82f6; border: 1px solid rgba(59,130,246,0.3); }
+
+    /* 관련 지식 */
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    /* 푸터 */
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    /* 막대 차트 */
+    .bar-chart { display: flex; flex-direction: column; gap: 12px; }
+    .bar-item { display: flex; flex-direction: column; gap: 5px; }
+    .bar-header { display: flex; justify-content: space-between; font-size: 13px; }
+    .bar-label { font-weight: 500; }
+    .bar-value { font-weight: 700; color: var(--accent); }
+    .bar-track { height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 99px; }
+
+    /* 애니메이션 */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+    @media (max-width: 640px) {
+      .kpi-row { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+      th { font-size: 10px !important; padding-left: 8px !important; padding-right: 8px !important; }
+      td { font-size: 12px !important; padding-left: 8px !important; padding-right: 8px !important; }
+    }
+    @media print {
+      body { background: white !important; }
+      .viz-menu { display: none !important; }
+      .card { break-inside: avoid; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">🌍 중동 분쟁 · 시사</div>
+        <h1>후티(안사르 알라)<br>예멘 실질 통치 세력의 실체</h1>
+        <p class="hero-sub">"반군"이라는 표현이 오히려 축소시키는, 예멘 인구 70%를 통치하는 사실상의 국가 — 군사력·이념·홍해 전략까지 완전 정리</p>
+      </header>
+
+      <!-- 메타 바 -->
+      <div class="meta-bar animate d1">
+        <span class="category-badge cat-시사컬처">🌍 시사·컬처</span>
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="tag-chip">#국제정치</span>
+        <span class="tag-chip">#중동</span>
+        <span class="tag-chip">#전쟁</span>
+        <span class="tag-chip">#홍해</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.08
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Pennmike · Namu Wiki · Wikipedia
+        </span>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-row animate d2">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">~70%</div>
+          <div class="kpi-label">예멘 인구 통치 비율</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:#f59e0b">−60%</div>
+          <div class="kpi-label">수에즈 운하 통항량 감소</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--positive)">2014</div>
+          <div class="kpi-label">사나아 수도 점령 연도</div>
+        </div>
+      </div>
+
+      <!-- 핵심 하이라이트 -->
+      <div class="highlight-box animate d2">
+        <strong>"반군"이 아닌 사실상의 국가</strong> — 예멘 인구의 약 70%인 2,500만~3,000만 명이 후티 정부 통치 하에 있다. 국제사회가 관습적으로 쓰는 '반군'이라는 표현이 이들의 실질적 규모를 오히려 축소시킨다는 지적이 제기되어 왔다.
+      </div>
+
+      <!-- 조직 역사 타임라인 -->
+      <div class="card animate d3">
+        <div class="section-title">📅 후티의 역사적 궤적</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot gray"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year gray">1990년대 후반</div>
+              <div class="timeline-content"><strong>조직 창설</strong> — 자이드파(시아파 일파) 종교 운동으로 출발. 창립자 후세인 바드레딘 알후티의 이름을 따 '후티'로 불림. 공식 명칭은 안사르 알라(신의 지지자들).</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">2014년</div>
+              <div class="timeline-content"><strong>수도 사나아 점령</strong> — 쿠데타를 통해 예멘 수도를 장악. 이란의 지원을 받아 예멘 내 다른 세력을 압도.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">2015년 1월</div>
+              <div class="timeline-content"><strong>대통령궁 장악 → 내전 시작</strong> — 하디 대통령이 남부로 도피, 남예멘 지방정부들이 복종 거부하며 예멘 내전 개시. 사우디아라비아 주도 아랍연합군 개입.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">2023년 10월~</div>
+              <div class="timeline-content"><strong>홍해 봉쇄 작전 개시</strong> — 가자 전쟁을 계기로 이스라엘 관련 선박 공격 시작. 수에즈 운하 물동량을 절반으로 감소시키는 고강도 해상봉쇄. 2024년 7월 이스라엘 에일라트항 파산 신청.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">2025년 5월</div>
+              <div class="timeline-content"><strong>미국과 휴전 합의</strong> — 단, 미국 선박 제외 홍해 공격은 지속. 화물선 Magic Seas 침몰(7월), Eternity C 공격으로 선원 4명 사망.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">2026년 3월</div>
+              <div class="timeline-content"><strong>이란-이스라엘 전쟁 공식 참전</strong> — 이란-이스라엘 전쟁 발발 후 이스라엘에 탄도미사일 발사. 홍해 봉쇄 재개 선언, 바브엘만데브 해협 폐쇄 카드 사용 위협.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 군사력 -->
+      <div class="card animate d3">
+        <div class="section-title">⚔️ 핵심 무기 체계 & 전술</div>
+        <div class="card-grid-inner">
+          <div class="inner-card">
+            <div class="inner-card-icon">🚀</div>
+            <div class="inner-card-title">탄도·순항 미사일</div>
+            <div class="inner-card-desc">이란제 순항미사일과 탄도미사일. 이스라엘 본토, 사우디, 홍해 선박까지 타격 가능한 장거리 능력 보유.</div>
+          </div>
+          <div class="inner-card">
+            <div class="inner-card-icon">🛡️</div>
+            <div class="inner-card-title">지대공 미사일</div>
+            <div class="inner-card-desc">구 예멘군에서 흡수한 소련제 지대공 미사일 체계. 미·영 전투기 및 드론 요격 시도에 활용.</div>
+          </div>
+          <div class="inner-card">
+            <div class="inner-card-icon">🚢</div>
+            <div class="inner-card-title">대함 미사일</div>
+            <div class="inner-card-desc">중국제 대함미사일 포함. 홍해·아덴만 통과 상선 및 군함 공격에 사용. 컨테이너선 납치·격침 사례 다수.</div>
+          </div>
+          <div class="inner-card">
+            <div class="inner-card-icon">🤖</div>
+            <div class="inner-card-title">자폭 드론 (UAV)</div>
+            <div class="inner-card-desc">이란 기술 기반 장거리 자폭 드론. 이스라엘까지 도달 가능한 샤헤드 계열 활용. 저비용 고효과 비대칭 전술.</div>
+          </div>
+        </div>
+
+        <div class="highlight-box" style="margin-top:8px">
+          <strong>'비용 부과' 전략</strong> — 후티는 해협을 물리적으로 완전히 폐쇄하지 않더라도, 선박 통과 위험을 높여 항로를 <strong>경제적으로 사용 불가능</strong>하게 만드는 전략을 구사한다. 이 전략이 효과를 발휘하면 실질적인 봉쇄와 다를 바 없다. 2026년 현재 수에즈 운하 통항량은 위기 이전 대비 여전히 <strong>60% 낮은 수준</strong>으로, 단순한 일시적 혼란이 아닌 세계 물류 구조의 구조적 재편이 시작됐음을 보여준다.
+        </div>
+      </div>
+
+      <!-- 홍해 영향 -->
+      <div class="card animate d4">
+        <div class="section-title">🌊 홍해 봉쇄의 글로벌 파급력</div>
+        <div class="bar-chart">
+          <div class="bar-item">
+            <div class="bar-header">
+              <span class="bar-label">수에즈 운하 통항량 감소 (위기 이전 대비, 2026년 현재)</span>
+              <span class="bar-value">−60%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:60%; background:var(--accent)"></div></div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-header">
+              <span class="bar-label">우회 항로 (희망봉) 추가 비용 및 시간 증가</span>
+              <span class="bar-value">+7~14일</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:75%; background:#f59e0b"></div></div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-header">
+              <span class="bar-label">에일라트항 (이스라엘) 영향</span>
+              <span class="bar-value">2024.07 파산</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:100%; background:#6366f1"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 이념 및 내부 통치 -->
+      <div class="card animate d4">
+        <div class="section-title">☪️ 이념 & 내부 통치 실상</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div>
+            <p style="font-size:13px; font-weight:600; margin-bottom:8px;">정교일체 이슬람 원리주의</p>
+            <p style="font-size:13px; color:var(--text-secondary); line-height:1.7;">후티가 지향하는 목표는 <strong style="color:var(--text)">정교일체 이슬람 국가 건설</strong>로, 종파만 다를 뿐 이슬람 원리주의 집단이다. 다만 그 목표가 예멘 북부 지역에 한정되어 있어 알카에다·ISIS에 비해 국제적 부정적 시선을 덜 끌었다.</p>
+          </div>
+          <div>
+            <p style="font-size:13px; font-weight:600; margin-bottom:8px;">극단적 통제 사례</p>
+            <p style="font-size:13px; color:var(--text-secondary); line-height:1.7;">2021년 히잡 미착용 여배우를 체포·학대하고 <strong style="color:var(--text)">외설·마약 혐의로 징역 5년</strong>을 선고. 지인들도 연루시키는 방식으로 사회 전반의 극단적 통제를 실시.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 최신 동향 테이블 -->
+      <div class="card animate d5">
+        <div class="section-title">📡 최신 동향 (2025~2026)</div>
+        <div style="overflow-x:auto; -webkit-overflow-scrolling:touch">
+          <table>
+            <thead>
+              <tr>
+                <th>시점</th>
+                <th>사건</th>
+                <th style="white-space:normal; min-width:140px;">의미</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2025년 5월</td>
+                <td>미국과 휴전 합의</td>
+                <td class="desc">미국 선박 제외 홍해 공격은 지속. 부분적·선택적 휴전.</td>
+              </tr>
+              <tr>
+                <td>2025년 7월</td>
+                <td>화물선 Magic Seas 침몰</td>
+                <td class="desc">Eternity C 공격으로 선원 4명 사망. 휴전 후에도 작전 지속.</td>
+              </tr>
+              <tr>
+                <td>2026년 3월</td>
+                <td>이스라엘에 탄도미사일 발사</td>
+                <td class="desc">이란-이스라엘 전쟁 발발 후 공식 참전 선언. 저항의 축 결집.</td>
+              </tr>
+              <tr>
+                <td>2026년 현재</td>
+                <td>홍해 봉쇄 재개 선언</td>
+                <td class="desc">바브엘만데브 해협 폐쇄 카드 사용 위협. 물류 리스크 재상승.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-box" style="margin-top:16px">
+          "후티가 지난해 미군의 공습으로 상당한 타격을 입은 후 아직 회복 단계에 있다."
+          <cite>— 파레아 알 무슬라미, 영국 채텀하우스 중동 전문가</cite>
+        </div>
+      </div>
+
+      <!-- 균열 신호 -->
+      <div class="card animate d5" style="border-color:rgba(245,158,11,0.3)">
+        <div class="section-title">⚠️ 최근 균열 신호</div>
+        <div class="highlight-box" style="background:rgba(245,158,11,0.08); border-color:rgba(245,158,11,0.3)">
+          영국 텔레그래프는 이란 관료들을 인용해 <strong style="color:#f59e0b">"후티가 더 이상 이란의 지시를 따르지 않고 있다"</strong>고 전했다. 한 이란 고위 관리는 "이란의 지원을 받아 온 이라크 시아파 민병대들 중 일부에 대한 통제력도 약해진 상황"이라고 말했다. 미군 공습으로 인한 지도부 타격 이후 자율성이 확대되는 양상.
+        </div>
+      </div>
+
+      <!-- 관련 지식 -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="iran-houthi-strategy.html" class="related-card">
+            <div class="r-label">→ 연관 카드</div>
+            <div class="r-title">이란이 후티를 지원하는 이유 — 6가지 전략적 계산</div>
+          </a>
+          <a href="middle-east-wars-overview.html" class="related-card">
+            <div class="r-label">→ 배경 지식</div>
+            <div class="r-title">중동전쟁 1~4차 — 아랍-이스라엘 전쟁의 역사</div>
+          </a>
+          <a href="israel-palestine-conflict.html" class="related-card">
+            <div class="r-label">→ 배경 지식</div>
+            <div class="r-title">이스라엘 건국과 팔레스타인 분쟁</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">출처: Pennmike · Namu Wiki · Wikipedia · 채텀하우스(파레아 알 무슬라미) · 영국 텔레그래프 (2026.04.08 기준)</p>
+
+    </div>
+  </main>
+
+  <script>
+    var THEMES = ['theme-dark', 'theme-light'];
+    var THEME_LABELS = { 'theme-dark': 'Dark', 'theme-light': 'Light' };
+    (function() {
+      var saved = localStorage.getItem('ka-theme') || 'theme-dark';
+      document.documentElement.className = saved;
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[saved];
+    })();
+    function cycleTheme() {
+      var cur = document.documentElement.className;
+      var next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+      document.documentElement.className = next;
+      localStorage.setItem('ka-theme', next);
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[next];
+      closeMenu();
+    }
+    function toggleMenu() { document.getElementById('vizMenuDropdown').classList.toggle('open'); }
+    function closeMenu() { document.getElementById('vizMenuDropdown').classList.remove('open'); }
+    document.addEventListener('click', function(e) { if (!e.target.closest('.viz-menu')) closeMenu(); });
+    function downloadImage() {
+      closeMenu();
+      if (typeof htmlToImage === 'undefined') { alert('라이브러리 로딩 중...'); return; }
+      htmlToImage.toPng(document.getElementById('main'), { pixelRatio: 2 })
+        .then(function(dataUrl) {
+          var a = document.createElement('a'); a.download = 'houthi-ansar-allah.png'; a.href = dataUrl; a.click();
+        });
+    }
+  </script>
+</body>
+</html>

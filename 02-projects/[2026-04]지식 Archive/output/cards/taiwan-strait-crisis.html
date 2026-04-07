@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>대만 해협 위기 — TSMC와 지정학적 뇌관</title>
+  <meta name="knowledge-id" content="taiwan-strait-crisis">
+  <meta name="knowledge-category" content="시사·국제">
+  <meta name="knowledge-series" content="미-중 패권 경쟁 시리즈">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-08">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html.theme-dark{
+      --bg:#0A0A0A;--surface:#141414;--surface-hover:#1C1C1C;
+      --border:rgba(255,255,255,0.06);--text:#EDEDED;--text-secondary:#888;
+      --accent:#ef4444;
+      --chip-accent:color-mix(in srgb,var(--accent),transparent 88%);
+      --chip-amber:rgba(245,158,11,0.12);
+      --menu-bg:rgba(10,10,10,0.85);--menu-border:rgba(255,255,255,0.08);
+      --menu-text:#EDEDED;--menu-item-hover:rgba(255,255,255,0.06);
+    }
+    html.theme-light{
+      --bg:#FAFAF9;--surface:#FFF;--surface-hover:#F5F5F4;
+      --border:#e5e5e5;--text:#1a1a1a;--text-secondary:#666;
+      --accent:color-mix(in srgb,#ef4444,#000 20%);
+      --chip-accent:color-mix(in srgb,var(--accent),transparent 92%);
+      --chip-amber:rgba(217,119,6,0.08);
+      --menu-bg:rgba(255,255,255,0.92);--menu-border:rgba(0,0,0,0.08);
+      --menu-text:#1a1a1a;--menu-item-hover:rgba(0,0,0,0.04);
+    }
+    body{font-family:'Noto Sans KR','Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:-0.011em;transition:background 0.3s,color 0.3s;min-height:100vh}
+    body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 70% 50% at 50% 10%,color-mix(in srgb,var(--accent),transparent 88%),transparent)}
+    h1{font-weight:700;letter-spacing:-0.03em;line-height:1.08} h2{font-weight:600} h3{font-weight:600}
+    *:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+    .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+    .viz-menu{position:fixed;top:16px;right:16px;z-index:9999}
+    .viz-menu-toggle{width:40px;height:40px;border-radius:10px;border:1px solid var(--menu-border);background:var(--menu-bg);color:var(--menu-text);cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px);transition:all 0.2s}
+    .viz-menu-toggle:hover{background:var(--menu-item-hover)}
+    .viz-menu-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:196px;background:var(--menu-bg);backdrop-filter:blur(16px);border:1px solid var(--menu-border);border-radius:12px;padding:6px;opacity:0;visibility:hidden;transform:translateY(-8px) scale(0.96);transition:all 0.2s cubic-bezier(0.4,0,0.2,1);box-shadow:0 8px 32px rgba(0,0,0,0.25)}
+    .viz-menu-dropdown.open{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+    .viz-menu-dropdown button{width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;border:none;background:transparent;color:var(--menu-text);font-size:14px;font-family:inherit;cursor:pointer;border-radius:8px;transition:background 0.15s;text-align:left}
+    .viz-menu-dropdown button:hover{background:var(--menu-item-hover)}
+    main#main .container{max-width:860px;margin:0 auto;padding:64px 24px 80px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--accent);text-decoration:none;margin-bottom:24px;padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface);transition:background 0.15s}
+    .nav-back:hover{background:var(--surface-hover)}
+    .hero{text-align:center;margin-bottom:32px}
+    .hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:500;letter-spacing:0.04em;color:var(--text-secondary);text-transform:uppercase;margin-bottom:20px}
+    .hero h1{font-size:clamp(1.8rem,4.5vw,2.8rem);margin-bottom:12px}
+    .hero-sub{font-size:15px;color:var(--text-secondary);max-width:540px;margin:0 auto;line-height:1.7}
+    .meta-bar{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:36px;font-size:12px;color:var(--text-secondary)}
+    .diff-badge{padding:2px 10px;border-radius:99px;font-size:11px;font-weight:600;border:1px solid var(--border)}
+    .diff-intermediate{background:var(--chip-amber);color:#f59e0b}
+    .diff-beginner{background:rgba(16,185,129,0.12);color:#10b981;border:1px solid rgba(16,185,129,0.3)}
+    .tag-chip{padding:2px 10px;border-radius:99px;font-size:11px;font-weight:500;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary)}
+    .meta-item{display:inline-flex;align-items:center;gap:4px}
+    .category-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:600;letter-spacing:0.02em;white-space:nowrap}
+    .cat-경제거시{background:rgba(16,185,129,0.12);color:#10b981;border:1px solid rgba(16,185,129,0.3)}
+    .cat-기술산업{background:rgba(59,130,246,0.12);color:#3b82f6;border:1px solid rgba(59,130,246,0.3)}
+    .cat-시사컬처{background:rgba(244,63,94,0.12);color:#f43f5e;border:1px solid rgba(244,63,94,0.3)}
+    html.theme-light .cat-경제거시{background:rgba(16,185,129,0.08)}
+    html.theme-light .cat-기술산업{background:rgba(59,130,246,0.08)}
+    html.theme-light .cat-시사컬처{background:rgba(244,63,94,0.08)}
+    .series-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 11px;border-radius:99px;font-size:11px;font-weight:600;background:color-mix(in srgb,var(--accent),transparent 90%);color:var(--accent);border:1px solid color-mix(in srgb,var(--accent),transparent 75%)}
+    .kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+    .kpi-item{text-align:center;padding:18px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--border)}
+    .kpi-value{font-size:1.5rem;font-weight:700;letter-spacing:-0.03em}
+    .kpi-label{font-size:11px;color:var(--text-secondary);font-weight:500;margin-top:4px;text-transform:uppercase;letter-spacing:0.04em}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;transition:box-shadow 0.2s ease;margin-bottom:16px}
+    html.theme-dark .card{box-shadow:0 0 0 1px var(--border)}
+    html.theme-light .card{box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+    .section-title{font-size:12px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px}
+    .highlight-box{padding:14px 18px;border-radius:10px;border:1px solid var(--border);background:var(--chip-accent);font-size:13.5px;line-height:1.7;margin-bottom:16px}
+    .highlight-box strong{color:var(--accent)}
+    .quote-box{padding:16px 20px;border-radius:10px;border-left:3px solid var(--accent);background:var(--surface);font-size:13px;line-height:1.7;color:var(--text-secondary);margin-bottom:16px;font-style:italic}
+    .quote-box cite{display:block;margin-top:6px;font-style:normal;font-weight:600;font-size:12px;color:var(--accent)}
+    .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:16px}
+    .inner-card{background:var(--surface-hover);border:1px solid var(--border);border-radius:10px;padding:16px}
+    .inner-card-icon{font-size:1.5rem;margin-bottom:8px}
+    .inner-card-title{font-size:13px;font-weight:700;margin-bottom:6px}
+    .inner-card-desc{font-size:12px;color:var(--text-secondary);line-height:1.6}
+    .vs-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;margin-bottom:16px}
+    .vs-side{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+    .vs-side-a{border-radius:12px 0 0 12px;border-right:none}
+    .vs-side-b{border-radius:0 12px 12px 0;border-left:none}
+    .vs-divider{display:flex;align-items:center;justify-content:center;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0 12px;font-weight:800;font-size:1rem;color:var(--accent);writing-mode:vertical-rl;text-orientation:mixed}
+    .vs-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-secondary);margin-bottom:8px}
+    .vs-name{font-size:1.1rem;font-weight:800;margin-bottom:12px}
+    .vs-item{font-size:12.5px;color:var(--text-secondary);padding:4px 0;border-bottom:1px solid var(--border);line-height:1.5}
+    .vs-item:last-child{border-bottom:none}
+    .vs-item strong{color:var(--text)}
+    table.data-table{width:100%;border-collapse:collapse;font-size:13px}
+    table.data-table th{background:var(--surface-hover);color:var(--text-secondary);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:8px 12px;border-bottom:2px solid var(--border);text-align:left}
+    table.data-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+    table.data-table tr:last-child td{border-bottom:none}
+    table.data-table .desc{color:var(--text-secondary)}
+    table.data-table tr:hover td{background:var(--surface-hover)}
+    .timeline{display:flex;flex-direction:column;gap:0}
+    .tl-item{display:flex;gap:16px;min-height:72px}
+    .tl-left{display:flex;flex-direction:column;align-items:center;width:16px;flex-shrink:0}
+    .tl-dot{width:12px;height:12px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:4px}
+    .tl-dot.gray{background:var(--text-secondary)}
+    .tl-line{width:2px;flex:1;background:var(--border);margin:4px 0}
+    .tl-right{padding-bottom:16px;flex:1}
+    .tl-year{font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.04em}
+    .tl-year.gray{color:var(--text-secondary)}
+    .tl-content{font-size:13px;color:var(--text-secondary);line-height:1.6}
+    .tl-content strong{color:var(--text)}
+    .step-flow{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+    .step-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--surface-hover);border:1px solid var(--border);border-radius:10px}
+    .step-num{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+    .step-content{flex:1}
+    .step-title{font-size:13px;font-weight:700;margin-bottom:3px}
+    .step-desc{font-size:12px;color:var(--text-secondary);line-height:1.6}
+    .related-section{margin-top:40px;padding-top:24px;border-top:1px solid var(--border)}
+    .related-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-secondary);margin-bottom:12px}
+    .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+    .related-card{display:block;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:var(--text);transition:background 0.15s,border-color 0.15s}
+    .related-card:hover{background:var(--surface-hover);border-color:var(--accent)}
+    .r-label{font-size:10px;color:var(--text-secondary);font-weight:600;letter-spacing:0.04em;margin-bottom:4px;text-transform:uppercase}
+    .r-title{font-size:12.5px;font-weight:600;line-height:1.4}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+    .animate{animation:fadeUp 0.5s ease both}
+    .d1{animation-delay:.05s}.d2{animation-delay:.1s}.d3{animation-delay:.15s}.d4{animation-delay:.2s}.d5{animation-delay:.25s}.d6{animation-delay:.3s}
+  </style>
+</head>
+<body>
+  <nav class="viz-menu" aria-label="메뉴">
+    <button class="viz-menu-toggle" id="menuToggle" aria-haspopup="true" aria-expanded="false" aria-label="메뉴 열기">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+    </button>
+    <div class="viz-menu-dropdown" id="menuDropdown" role="menu">
+      <button onclick="toggleTheme()" role="menuitem"><span>🌓</span>테마 전환</button>
+      <button onclick="downloadPng()" role="menuitem"><span>🖼</span>PNG 다운로드</button>
+      <button onclick="window.print()" role="menuitem"><span>🖨</span>인쇄</button>
+      <button onclick="window.location.href='../index.html'" role="menuitem"><span>🏠</span>아카이브 홈</button>
+    </div>
+  </nav>
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back">← 지식 아카이브</a>
+      <div class="hero animate d1">
+        <div class="hero-badge">🏝️ 시사·국제 · 지정학</div>
+        <h1>대만 해협 위기 — TSMC와 지정학적 뇌관</h1>
+        <p class="hero-sub">세계 첨단 파운드리 90%를 보유한 대만 — 반도체 허브·해상 교통로·제1도련선 요충으로서의 전략적 가치와 미-중 군사 긴장 고조의 시나리오</p>
+      </div>
+      <div class="meta-bar animate d2">
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="category-badge cat-시사컬처">시사·국제</span>
+        <span class="series-badge">📚 미-중 패권 경쟁 시리즈</span>
+        <span class="meta-item">📅 2026-04-08</span>
+        <span class="meta-item">📎 CSIS · RAND · CFR · 미 국방부 중국 군사력 보고서</span>
+      </div>
+      <div class="kpi-row animate d2">
+        <div class="kpi-item"><div class="kpi-value" style="color:var(--accent)">90%</div><div class="kpi-label">TSMC 첨단 파운드리 점유</div></div>
+<div class="kpi-item"><div class="kpi-value" style="color:#f59e0b">2027년</div><div class="kpi-label">PLA 목표 완성 시점</div></div>
+<div class="kpi-item"><div class="kpi-value" style="color:#8b5cf6">$2.6조</div><div class="kpi-label">대만 유사시 GDP 손실 추정</div></div>
+      </div>
+      
+<div class="card animate d3">
+  <div class="section-title">🗺 대만의 전략적 가치</div>
+  <div class="card-grid">
+    <div class="inner-card" style="border-color:rgba(239,68,68,0.3)">
+      <div class="inner-card-icon">💻</div>
+      <div class="inner-card-title">반도체 허브</div>
+      <div class="inner-card-desc">TSMC — 세계 첨단 파운드리(3nm·5nm) 약 90% 점유. 대만 분쟁 = 글로벌 전자산업 전면 중단.</div>
+    </div>
+    <div class="inner-card" style="border-color:rgba(239,68,68,0.3)">
+      <div class="inner-card-icon">🚢</div>
+      <div class="inner-card-title">해상 교통로</div>
+      <div class="inner-card-desc">대만 해협 — 연간 선박 통항량 세계 Top3. 중동·유럽→동아시아 물류의 핵심 통로.</div>
+    </div>
+    <div class="inner-card" style="border-color:rgba(239,68,68,0.3)">
+      <div class="inner-card-icon">🛡️</div>
+      <div class="inner-card-title">제1도련선 요충</div>
+      <div class="inner-card-desc">중국 입장에서 서태평양 진출의 관문. 미국 입장에서 인도-태평양 동맹망의 핵심 거점.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card animate d3">
+  <div class="section-title">📅 긴장 고조 타임라인</div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-right"><div class="tl-year">2022년 8월</div><div class="tl-content"><strong>펠로시 하원의장 방문 → 대규모 군사훈련</strong> — 중국 PLA, 대만 봉쇄 모의 훈련. 탄도미사일 5발 일본 EEZ 낙하. 미 항공모함 레이건호 인근 배치.</div></div></div>
+    <div class="tl-item"><div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-right"><div class="tl-year">2023년 8월</div><div class="tl-content"><strong>대만 부통령 미국 경유 → 군사훈련 반복</strong> — 뤄이청 부통령 뉴욕·샌프란시스코 경유. 중국, "연습 동원(연합이검)" 군사훈련 재개.</div></div></div>
+    <div class="tl-item"><div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-right"><div class="tl-year">2024년 1월</div><div class="tl-content"><strong>라이칭더 총통 당선</strong> — 민진당 3연속 집권. 중국, "분열주의자"로 규정. 대만 해협 중간선 무력화 시도 강화.</div></div></div>
+    <div class="tl-item"><div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-right"><div class="tl-year">2024~2025년</div><div class="tl-content"><strong>그레이존 작전 일상화</strong> — 기구·드론 침투, 해저 케이블 절단 의심, ADIZ 침범 일일화. 무력 충돌 직전 수준의 심리전.</div></div></div>
+    <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#ef4444;box-shadow:0 0 8px #ef4444"></div></div><div class="tl-right"><div class="tl-year" style="color:#ef4444">2026년 현재</div><div class="tl-content"><strong>이란-이스라엘 전쟁 속 대만 리스크 재부상</strong> — 미군 중동 집중 상황에서 "대만 창문 기회론" 중국 내 강경파 주장. 미국, AUKUS·Quad 태평양 억제력 강화로 대응.</div></div></div>
+  </div>
+</div>
+
+<div class="card animate d4">
+  <div class="section-title">🔴 3가지 시나리오</div>
+  <div class="card-grid">
+    <div class="inner-card" style="border-color:rgba(16,185,129,0.3)">
+      <div class="inner-card-icon">🟢</div>
+      <div class="inner-card-title">현상 유지 (高확률)</div>
+      <div class="inner-card-desc">중국, 경제 불황·군사 준비 미완 등으로 무력 침공 자제. 그레이존 압박 지속. 미-중 암묵적 경계선 유지.</div>
+    </div>
+    <div class="inner-card" style="border-color:rgba(245,158,11,0.3)">
+      <div class="inner-card-icon">🟡</div>
+      <div class="inner-card-title">해상 봉쇄 (中확률)</div>
+      <div class="inner-card-desc">전면 침공 없이 해상·항공 봉쇄로 경제·정치 압박. 반도체 수출 차단 → 글로벌 공급망 위기. 미 개입 여부 테스트.</div>
+    </div>
+    <div class="inner-card" style="border-color:rgba(239,68,68,0.3)">
+      <div class="inner-card-icon">🔴</div>
+      <div class="inner-card-title">전면 침공 (低확률)</div>
+      <div class="inner-card-desc">2027년 이후 PLA 능력 고도화 후 가능성. 미군 개입 시 미-중 직접 충돌. 글로벌 반도체 생산 80% 이상 중단 추정.</div>
+    </div>
+  </div>
+</div>
+
+      <div class="related-section animate d6">
+        <div class="related-title">관련 지식</div>
+        <div class="related-grid">
+          <a href="us-china-semiconductor-war.html" class="related-card"><div class="r-label">📚 같은 시리즈</div><div class="r-title">미-중 반도체 전쟁 — 기술 패권의 핵심 전선</div></a>
+<a href="us-china-rivalry-infographic.html" class="related-card"><div class="r-label">🗺 시리즈 인포그래픽</div><div class="r-title">미-중 패권 경쟁 종합 세력 관계도</div></a>
+<a href="supply-chain-restructuring.html" class="related-card"><div class="r-label">📚 같은 시리즈</div><div class="r-title">공급망 재편 — 프렌드쇼어링과 China+1</div></a>
+<a href="us-china-ai-race.html" class="related-card"><div class="r-label">📚 같은 시리즈</div><div class="r-title">미-중 AI 패권 경쟁 — DeepSeek 쇼크</div></a>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script>
+    const toggle = document.getElementById('menuToggle');
+    const dropdown = document.getElementById('menuDropdown');
+    toggle.addEventListener('click', e => {
+      e.stopPropagation();
+      const open = dropdown.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+    });
+    document.addEventListener('click', () => { dropdown.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); });
+    function toggleTheme() {
+      const html = document.documentElement;
+      html.className = html.className.includes('dark') ? 'theme-light' : 'theme-dark';
+      localStorage.setItem('ka-theme', html.className);
+      dropdown.classList.remove('open');
+    }
+    (function() {
+      const t = localStorage.getItem('ka-theme');
+      if (t) document.documentElement.className = t;
+    })();
+    function downloadPng() {
+      dropdown.classList.remove('open');
+      const el = document.getElementById('main');
+      htmlToImage.toPng(el, {quality:1, pixelRatio:2})
+        .then(url => { const a = document.createElement('a'); a.download = 'taiwan-strait-crisis.png'; a.href = url; a.click(); })
+        .catch(err => console.error(err));
+    }
+  </script>
+</body>
+</html>

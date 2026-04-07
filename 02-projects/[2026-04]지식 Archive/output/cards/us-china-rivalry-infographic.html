@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>미-중 패권 경쟁 인포그래픽 — 세력 관계도와 10년 타임라인</title>
+  <meta name="knowledge-id" content="us-china-rivalry-infographic">
+  <meta name="knowledge-series" content="미-중 패권 경쟁 시리즈">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html.theme-dark{
+      --bg:#0A0A0A;--surface:#141414;--surface-hover:#1C1C1C;
+      --border:rgba(255,255,255,0.06);--text:#EDEDED;--text-secondary:#888;
+      --usa:#3b82f6;--china:#ef4444;--neutral:#f59e0b;--green:#10b981;--purple:#8b5cf6;--orange:#f97316;
+      --menu-bg:rgba(10,10,10,0.85);--menu-border:rgba(255,255,255,0.08);
+      --menu-text:#EDEDED;--menu-item-hover:rgba(255,255,255,0.06);
+    }
+    html.theme-light{
+      --bg:#FAFAF9;--surface:#FFF;--surface-hover:#F5F5F4;
+      --border:#e5e5e5;--text:#1a1a1a;--text-secondary:#666;
+      --usa:#2563eb;--china:#dc2626;--neutral:#d97706;--green:#059669;--purple:#7c3aed;--orange:#ea580c;
+      --menu-bg:rgba(255,255,255,0.92);--menu-border:rgba(0,0,0,0.08);
+      --menu-text:#1a1a1a;--menu-item-hover:rgba(0,0,0,0.04);
+    }
+    body{font-family:'Noto Sans KR','Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:-0.011em;min-height:100vh}
+    body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 80% 40% at 50% 0%,rgba(59,130,246,0.08),transparent 50%),radial-gradient(ellipse 80% 40% at 80% 100%,rgba(239,68,68,0.06),transparent 50%)}
+    .viz-menu{position:fixed;top:16px;right:16px;z-index:9999}
+    .viz-menu-toggle{width:40px;height:40px;border-radius:10px;border:1px solid var(--menu-border);background:var(--menu-bg);color:var(--menu-text);cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px);transition:all 0.2s}
+    .viz-menu-toggle:hover{background:var(--menu-item-hover)}
+    .viz-menu-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:196px;background:var(--menu-bg);backdrop-filter:blur(16px);border:1px solid var(--menu-border);border-radius:12px;padding:6px;opacity:0;visibility:hidden;transform:translateY(-8px) scale(0.96);transition:all 0.2s;box-shadow:0 8px 32px rgba(0,0,0,0.25)}
+    .viz-menu-dropdown.open{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+    .viz-menu-dropdown button{width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;border:none;background:transparent;color:var(--menu-text);font-size:14px;font-family:inherit;cursor:pointer;border-radius:8px;transition:background 0.15s;text-align:left}
+    .viz-menu-dropdown button:hover{background:var(--menu-item-hover)}
+    main#main .container{max-width:1000px;margin:0 auto;padding:64px 24px 80px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--usa);text-decoration:none;margin-bottom:24px;padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface);transition:background 0.15s}
+    .nav-back:hover{background:var(--surface-hover)}
+    .page-hero{text-align:center;margin-bottom:40px}
+    .page-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:500;color:var(--text-secondary);text-transform:uppercase;margin-bottom:18px}
+    .page-title{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:10px}
+    .page-sub{font-size:15px;color:var(--text-secondary);max-width:600px;margin:0 auto;line-height:1.7}
+    .section-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:20px}
+    .section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:16px}
+
+    /* ─── RELATION MAP ─── */
+    .relation-wrap{position:relative;width:100%;aspect-ratio:16/9;min-height:420px}
+    .relation-wrap svg{width:100%;height:100%;overflow:visible}
+    .actor-node{cursor:default}
+    .actor-circle{transition:filter 0.2s}
+    .actor-node:hover .actor-circle{filter:brightness(1.15)}
+    .node-label{font-family:'Noto Sans KR','Inter',sans-serif;font-size:11px;font-weight:700;fill:var(--text)}
+    .edge-label{font-family:'Noto Sans KR','Inter',sans-serif;font-size:9px;fill:var(--text-secondary)}
+    .legend-item text{font-family:'Noto Sans KR','Inter',sans-serif;font-size:10px;fill:var(--text-secondary)}
+
+    /* ─── POWER BALANCE ─── */
+    .power-bar-wrap{margin-bottom:20px}
+    .power-row{display:grid;grid-template-columns:130px 1fr 130px;gap:8px;align-items:center;margin-bottom:10px}
+    .power-label-usa{font-size:12px;font-weight:600;color:var(--usa);text-align:right}
+    .power-label-cn{font-size:12px;font-weight:600;color:var(--china);text-align:left}
+    .power-bar-track{height:10px;background:var(--border);border-radius:99px;overflow:hidden;display:flex}
+    .power-bar-usa{height:100%;background:var(--usa);border-radius:99px 0 0 99px;transition:width 0.8s ease}
+    .power-bar-cn{height:100%;background:var(--china);border-radius:0 99px 99px 0;transition:width 0.8s ease}
+
+    /* ─── TIMELINE ─── */
+    .timeline-grid{display:grid;grid-template-columns:80px 1fr 1fr;gap:0}
+    .tl-year-col{display:flex;align-items:flex-start;justify-content:flex-end;padding-right:16px;padding-top:16px}
+    .tl-year-badge{font-size:11px;font-weight:800;color:var(--usa);background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.25);padding:3px 8px;border-radius:6px;white-space:nowrap}
+    .tl-year-badge.cn{color:var(--china);background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.25)}
+    .tl-year-badge.now{color:var(--green);background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.3);box-shadow:0 0 8px rgba(16,185,129,0.3)}
+    .tl-event{padding:12px 14px;border-radius:10px;margin:6px 4px;font-size:12px;line-height:1.5;border:1px solid var(--border);background:var(--surface-hover)}
+    .tl-event strong{font-weight:700;font-size:12px}
+    .tl-event.usa-event{border-left:3px solid var(--usa)}
+    .tl-event.cn-event{border-left:3px solid var(--china)}
+    .tl-event.both{border-left:3px solid var(--neutral)}
+    .tl-col-header{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-secondary);padding:0 4px 8px;text-align:center}
+
+    /* ─── TOPIC CARDS ─── */
+    .topic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    @media(max-width:680px){.topic-grid{grid-template-columns:1fr}}
+    .topic-card{display:block;padding:18px;border-radius:12px;border:1px solid var(--border);background:var(--surface);text-decoration:none;color:var(--text);transition:all 0.2s}
+    .topic-card:hover{background:var(--surface-hover);border-color:var(--usa);transform:translateY(-2px);box-shadow:0 4px 20px rgba(59,130,246,0.12)}
+    .tc-icon{font-size:1.6rem;margin-bottom:8px}
+    .tc-series{font-size:10px;color:var(--text-secondary);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px}
+    .tc-title{font-size:13px;font-weight:700;line-height:1.4;margin-bottom:4px}
+    .tc-desc{font-size:11px;color:var(--text-secondary);line-height:1.5}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+    .animate{animation:fadeUp 0.5s ease both}
+    .d1{animation-delay:.05s}.d2{animation-delay:.1s}.d3{animation-delay:.15s}.d4{animation-delay:.2s}.d5{animation-delay:.25s}.d6{animation-delay:.3s}.d7{animation-delay:.35s}.d8{animation-delay:.4s}
+  </style>
+</head>
+<body>
+  <nav class="viz-menu">
+    <button class="viz-menu-toggle" id="menuToggle" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+    </button>
+    <div class="viz-menu-dropdown" id="menuDropdown">
+      <button onclick="toggleTheme()"><span>🌓</span>테마 전환</button>
+      <button onclick="downloadPng()"><span>🖼</span>PNG 다운로드</button>
+      <button onclick="window.print()"><span>🖨</span>인쇄</button>
+      <button onclick="window.location.href='../index.html'"><span>🏠</span>아카이브 홈</button>
+    </div>
+  </nav>
+
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back">← 지식 아카이브</a>
+
+      <div class="page-hero animate d1">
+        <div class="page-badge">🌐 미-중 패권 경쟁 시리즈 · 종합 인포그래픽</div>
+        <h1 class="page-title">미-중 패권 경쟁</h1>
+        <p class="page-sub">기술·경제·군사·통화 4대 전선에서 펼쳐지는 21세기 패권 경쟁의 전체 구조 — 세력 관계도·10년 타임라인·6대 의제 종합</p>
+      </div>
+
+      <!-- ── 세력 관계도 ── -->
+      <div class="section-card animate d2">
+        <div class="section-label">🌐 세력 관계도 — 미국 진영 vs 중국 진영</div>
+        <div class="relation-wrap">
+          <svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arr-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#3b82f6" opacity="0.7"/>
+              </marker>
+              <marker id="arr-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#ef4444" opacity="0.7"/>
+              </marker>
+              <marker id="arr-gray" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#888" opacity="0.6"/>
+              </marker>
+              <marker id="arr-amber" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#f59e0b" opacity="0.7"/>
+              </marker>
+            </defs>
+
+            <!-- Background zones -->
+            <rect x="10" y="30" width="340" height="420" rx="16" fill="#3b82f6" opacity="0.04" stroke="#3b82f6" stroke-width="1" stroke-dasharray="4,4" stroke-opacity="0.2"/>
+            <text x="24" y="54" font-family="Noto Sans KR,Inter,sans-serif" font-size="11" font-weight="700" fill="#3b82f6" opacity="0.7" letter-spacing="1">🇺🇸 미국 진영</text>
+            <rect x="550" y="30" width="340" height="420" rx="16" fill="#ef4444" opacity="0.04" stroke="#ef4444" stroke-width="1" stroke-dasharray="4,4" stroke-opacity="0.2"/>
+            <text x="564" y="54" font-family="Noto Sans KR,Inter,sans-serif" font-size="11" font-weight="700" fill="#ef4444" opacity="0.7" letter-spacing="1">🇨🇳 중국 진영</text>
+
+            <!-- Center conflict zone -->
+            <ellipse cx="450" cy="240" rx="55" ry="130" fill="none" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.4"/>
+            <text x="450" y="118" font-family="Noto Sans KR,Inter,sans-serif" font-size="10" fill="#f59e0b" opacity="0.8" text-anchor="middle" font-weight="700">분쟁 전선</text>
+
+            <!-- ── EDGES (behind nodes) ── -->
+            <!-- US-Taiwan (supply) -->
+            <line x1="168" y1="200" x2="420" y2="200" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="6,3" opacity="0.5" marker-end="url(#arr-blue)"/>
+            <text x="290" y="193" class="edge-label" text-anchor="middle" fill="#3b82f6" opacity="0.8" font-family="Noto Sans KR,Inter,sans-serif" font-size="9">TSMC 공급</text>
+
+            <!-- China-Taiwan (threat) -->
+            <line x1="540" y1="240" x2="500" y2="240" stroke="#ef4444" stroke-width="2" opacity="0.6" marker-end="url(#arr-red)"/>
+            <text x="520" y="233" class="edge-label" text-anchor="middle" fill="#ef4444" opacity="0.8" font-family="Noto Sans KR,Inter,sans-serif" font-size="9">무력 압박</text>
+
+            <!-- US-Korea (alliance) -->
+            <line x1="190" y1="340" x2="420" y2="270" stroke="#3b82f6" stroke-width="1.5" opacity="0.5" marker-end="url(#arr-blue)"/>
+
+            <!-- US-Japan (alliance) -->
+            <line x1="200" y1="130" x2="420" y2="210" stroke="#3b82f6" stroke-width="1.5" opacity="0.5" marker-end="url(#arr-blue)"/>
+
+            <!-- China-Russia (partnership) -->
+            <line x1="620" y1="130" x2="480" y2="200" stroke="#ef4444" stroke-width="1.8" opacity="0.5" marker-end="url(#arr-red)"/>
+            <text x="560" y="158" class="edge-label" text-anchor="middle" fill="#ef4444" opacity="0.8" font-family="Noto Sans KR,Inter,sans-serif" font-size="9">전략 협력</text>
+
+            <!-- China-BRICS (expand) -->
+            <line x1="650" y1="360" x2="520" y2="290" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.5" marker-end="url(#arr-red)"/>
+
+            <!-- US-EU (G7) -->
+            <line x1="140" y1="340" x2="168" y2="200" stroke="#3b82f6" stroke-width="1.2" opacity="0.4"/>
+
+            <!-- Korea-China (trade) -->
+            <path d="M 215 340 Q 370 320 600 330" stroke="#f59e0b" stroke-width="1.2" stroke-dasharray="4,4" fill="none" opacity="0.5" marker-end="url(#arr-amber)"/>
+            <text x="400" y="318" class="edge-label" text-anchor="middle" fill="#f59e0b" opacity="0.8" font-family="Noto Sans KR,Inter,sans-serif" font-size="9">무역 의존</text>
+
+            <!-- ── NODES ── -->
+            <!-- USA -->
+            <g class="actor-node">
+              <circle cx="168" cy="200" r="44" fill="#1a2744" stroke="#3b82f6" stroke-width="2.5" class="actor-circle"/>
+              <text x="168" y="192" class="node-label" text-anchor="middle" font-size="20" fill="#3b82f6">🇺🇸</text>
+              <text x="168" y="208" class="node-label" text-anchor="middle" font-size="12" font-weight="800" fill="#3b82f6">USA</text>
+              <text x="168" y="222" class="node-label" text-anchor="middle" font-size="9" fill="#888">GDP $27.4조</text>
+            </g>
+
+            <!-- CHINA -->
+            <g class="actor-node">
+              <circle cx="630" cy="230" r="44" fill="#2a1010" stroke="#ef4444" stroke-width="2.5" class="actor-circle"/>
+              <text x="630" y="222" class="node-label" text-anchor="middle" font-size="20" fill="#ef4444">🇨🇳</text>
+              <text x="630" y="238" class="node-label" text-anchor="middle" font-size="12" font-weight="800" fill="#ef4444">중국</text>
+              <text x="630" y="252" class="node-label" text-anchor="middle" font-size="9" fill="#888">GDP $18.5조</text>
+            </g>
+
+            <!-- TAIWAN -->
+            <g class="actor-node">
+              <circle cx="460" cy="225" r="32" fill="#18181b" stroke="#f59e0b" stroke-width="2" class="actor-circle"/>
+              <text x="460" y="218" class="node-label" text-anchor="middle" font-size="16" fill="#f59e0b">🇹🇼</text>
+              <text x="460" y="234" class="node-label" text-anchor="middle" font-size="10" font-weight="700" fill="#f59e0b">대만</text>
+              <text x="460" y="246" class="node-label" text-anchor="middle" font-size="8" fill="#888">TSMC</text>
+            </g>
+
+            <!-- JAPAN -->
+            <g class="actor-node">
+              <circle cx="160" cy="110" r="28" fill="#1a1a1a" stroke="#3b82f6" stroke-width="1.5" class="actor-circle"/>
+              <text x="160" y="104" class="node-label" text-anchor="middle" font-size="14">🇯🇵</text>
+              <text x="160" y="120" class="node-label" text-anchor="middle" font-size="9" font-weight="700" fill="#3b82f6">일본</text>
+            </g>
+
+            <!-- SOUTH KOREA -->
+            <g class="actor-node">
+              <circle cx="215" cy="345" r="30" fill="#1a1a1a" stroke="#3b82f6" stroke-width="1.5" class="actor-circle"/>
+              <text x="215" y="338" class="node-label" text-anchor="middle" font-size="16">🇰🇷</text>
+              <text x="215" y="356" class="node-label" text-anchor="middle" font-size="9" font-weight="700" fill="#3b82f6">한국</text>
+            </g>
+
+            <!-- EU -->
+            <g class="actor-node">
+              <circle cx="100" cy="345" r="28" fill="#1a1a1a" stroke="#3b82f6" stroke-width="1.5" class="actor-circle"/>
+              <text x="100" y="338" class="node-label" text-anchor="middle" font-size="14">🇪🇺</text>
+              <text x="100" y="354" class="node-label" text-anchor="middle" font-size="9" font-weight="700" fill="#3b82f6">EU</text>
+            </g>
+
+            <!-- RUSSIA -->
+            <g class="actor-node">
+              <circle cx="660" cy="110" r="28" fill="#1a1a1a" stroke="#ef4444" stroke-width="1.5" class="actor-circle"/>
+              <text x="660" y="104" class="node-label" text-anchor="middle" font-size="14">🇷🇺</text>
+              <text x="660" y="120" class="node-label" text-anchor="middle" font-size="9" font-weight="700" fill="#ef4444">러시아</text>
+            </g>
+
+            <!-- BRICS -->
+            <g class="actor-node">
+              <circle cx="700" cy="370" r="32" fill="#1a1a1a" stroke="#10b981" stroke-width="1.5" class="actor-circle"/>
+              <text x="700" y="362" class="node-label" text-anchor="middle" font-size="16">🌍</text>
+              <text x="700" y="378" class="node-label" text-anchor="middle" font-size="9" font-weight="700" fill="#10b981">BRICS+</text>
+            </g>
+
+            <!-- Legend -->
+            <g transform="translate(24, 440)">
+              <line x1="0" y1="5" x2="20" y2="5" stroke="#3b82f6" stroke-width="2" marker-end="url(#arr-blue)"/>
+              <text x="26" y="9" font-family="Noto Sans KR,Inter,sans-serif" font-size="9" fill="#888">미국 진영 연결</text>
+              <line x1="120" y1="5" x2="140" y2="5" stroke="#ef4444" stroke-width="2" marker-end="url(#arr-red)"/>
+              <text x="146" y="9" font-family="Noto Sans KR,Inter,sans-serif" font-size="9" fill="#888">중국 진영 연결</text>
+              <line x1="250" y1="5" x2="270" y2="5" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-amber)"/>
+              <text x="276" y="9" font-family="Noto Sans KR,Inter,sans-serif" font-size="9" fill="#888">무역/경제 관계</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- ── 패권 지표 비교 ── -->
+      <div class="section-card animate d3">
+        <div class="section-label">⚖️ 미-중 패권 지표 비교</div>
+        <div class="power-bar-wrap">
+          <div style="display:grid;grid-template-columns:130px 1fr 130px;gap:8px;margin-bottom:8px">
+            <div style="text-align:right;font-size:11px;font-weight:700;color:var(--usa)">🇺🇸 미국</div>
+            <div style="text-align:center;font-size:11px;color:var(--text-secondary);font-weight:600">지표</div>
+            <div style="text-align:left;font-size:11px;font-weight:700;color:var(--china)">🇨🇳 중국</div>
+          </div>
+
+          <!-- GDP 명목 -->
+          <div class="power-row">
+            <div class="power-label-usa">$27.4조 (25%)</div>
+            <div>
+              <div style="text-align:center;font-size:10px;color:var(--text-secondary);margin-bottom:3px">GDP 명목</div>
+              <div class="power-bar-track">
+                <div class="power-bar-usa" style="width:55%"></div>
+                <div class="power-bar-cn" style="width:38%"></div>
+              </div>
+            </div>
+            <div class="power-label-cn">$18.5조 (17%)</div>
+          </div>
+
+          <!-- 군사비 -->
+          <div class="power-row">
+            <div class="power-label-usa">$8,860억 (39%)</div>
+            <div>
+              <div style="text-align:center;font-size:10px;color:var(--text-secondary);margin-bottom:3px">국방비</div>
+              <div class="power-bar-track">
+                <div class="power-bar-usa" style="width:65%"></div>
+                <div class="power-bar-cn" style="width:16%"></div>
+              </div>
+            </div>
+            <div class="power-label-cn">$2,250억 (10%)</div>
+          </div>
+
+          <!-- AI 논문 -->
+          <div class="power-row">
+            <div class="power-label-usa" style="font-size:11px">선도 (모델·인프라)</div>
+            <div>
+              <div style="text-align:center;font-size:10px;color:var(--text-secondary);margin-bottom:3px">AI 논문·특허</div>
+              <div class="power-bar-track">
+                <div class="power-bar-usa" style="width:40%"></div>
+                <div class="power-bar-cn" style="width:45%"></div>
+              </div>
+            </div>
+            <div class="power-label-cn" style="font-size:11px">추월 (양적)</div>
+          </div>
+
+          <!-- 반도체 -->
+          <div class="power-row">
+            <div class="power-label-usa" style="font-size:11px">설계·장비 독점</div>
+            <div>
+              <div style="text-align:center;font-size:10px;color:var(--text-secondary);margin-bottom:3px">반도체 공급망</div>
+              <div class="power-bar-track">
+                <div class="power-bar-usa" style="width:70%"></div>
+                <div class="power-bar-cn" style="width:15%"></div>
+              </div>
+            </div>
+            <div class="power-label-cn" style="font-size:11px">자급화 추진</div>
+          </div>
+
+          <!-- 무역 -->
+          <div class="power-row">
+            <div class="power-label-usa">$3.0조 (수출)</div>
+            <div>
+              <div style="text-align:center;font-size:10px;color:var(--text-secondary);margin-bottom:3px">상품 무역</div>
+              <div class="power-bar-track">
+                <div class="power-bar-usa" style="width:30%"></div>
+                <div class="power-bar-cn" style="width:55%"></div>
+              </div>
+            </div>
+            <div class="power-label-cn">$3.4조 (수출)</div>
+          </div>
+
+          <!-- 달러 패권 -->
+          <div class="power-row">
+            <div class="power-label-usa" style="font-size:11px">달러(58% 준비)</div>
+            <div>
+              <div style="text-align:center;font-size:10px;color:var(--text-secondary);margin-bottom:3px">통화 패권</div>
+              <div class="power-bar-track">
+                <div class="power-bar-usa" style="width:80%"></div>
+                <div class="power-bar-cn" style="width:8%"></div>
+              </div>
+            </div>
+            <div class="power-label-cn" style="font-size:11px">위안화(4.5%)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 10년 타임라인 ── -->
+      <div class="section-card animate d4">
+        <div class="section-label">📅 미-중 패권 경쟁 10년 타임라인 (2017 → 2026)</div>
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0;margin-bottom:8px">
+          <div></div>
+          <div class="tl-col-header" style="color:var(--usa)">🇺🇸 미국 주요 행동</div>
+          <div class="tl-col-header" style="color:var(--china)">🇨🇳 중국 주요 행동</div>
+        </div>
+
+        <!-- 2017 -->
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0">
+          <div class="tl-year-col"><span class="tl-year-badge">2017</span></div>
+          <div class="tl-event usa-event"><strong>트럼프 301조 조사 착수</strong><br>중국산 불공정 무역 관행 조사 시작. 무역전쟁 서막.</div>
+          <div class="tl-event cn-event"><strong>19차 당대회</strong><br>시진핑 2기 집권 확정. "2050년 강대국" 중국몽 선언. AI·반도체 굴기 방침.</div>
+        </div>
+
+        <!-- 2018~2019 -->
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0">
+          <div class="tl-year-col"><span class="tl-year-badge">2018~19</span></div>
+          <div class="tl-event usa-event"><strong>미-중 무역전쟁 본격화</strong><br>$2,500억 중국산 관세 부과. 화웨이 Entity List 등재. 기술 디커플링 시작.</div>
+          <div class="tl-event cn-event"><strong>보복관세 + 희토류 카드</strong><br>$1,100억 미국산 보복관세. 희토류 수출 제한 경고. 제조업 이전 시작.</div>
+        </div>
+
+        <!-- 2020 -->
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0">
+          <div class="tl-year-col"><span class="tl-year-badge">2020</span></div>
+          <div class="tl-event usa-event"><strong>틱톡·위챗 금지 시도</strong><br>중국 앱 국가안보 위협 인정. TSMC 화웨이 공급 차단 압박.</div>
+          <div class="tl-event cn-event"><strong>코로나 확산 + 반응</strong><br>공급망 무기화 우려 현실화. 백신 외교·일대일로 강화 시도.</div>
+        </div>
+
+        <!-- 2022 -->
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0">
+          <div class="tl-year-col"><span class="tl-year-badge">2022</span></div>
+          <div class="tl-event usa-event"><strong>CHIPS Act + 10월 BIS 규제</strong><br>미국 반도체 제조 부활. 14nm 이하 대중 수출 금지. 네덜란드·일본 동참.</div>
+          <div class="tl-event cn-event"><strong>펠로시 방문 → 군사훈련</strong><br>대만 봉쇄 모의. 20차 당대회 시진핑 3기 집권. 국산화 빅펀드 2기.</div>
+        </div>
+
+        <!-- 2023~2024 -->
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0">
+          <div class="tl-year-col"><span class="tl-year-badge">2023~24</span></div>
+          <div class="tl-event usa-event"><strong>IRA·CHIPS 이행 + AI 규제</strong><br>NVIDIA AI칩 추가 통제. AUKUS·Quad 강화. Stargate $5,000억 발표(2025).</div>
+          <div class="tl-event cn-event"><strong>DeepSeek R1 + BRICS 확장</strong><br>저비용 AI로 서방 충격. BRICS+ 이란·UAE 가입. 화웨이 Kirin 복귀.</div>
+        </div>
+
+        <!-- 2026 NOW -->
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0">
+          <div class="tl-year-col"><span class="tl-year-badge now">2026 현재</span></div>
+          <div class="tl-event usa-event" style="border-color:var(--green);border-left-color:var(--green)"><strong>트럼프 2기 관세 전쟁 재점화</strong><br>대중 관세 60%+. 반도체·AI·배터리 동맹 압박 강화. 이란 전쟁 중동 집중.</div>
+          <div class="tl-event cn-event" style="border-color:var(--green);border-left-color:var(--green)"><strong>자급화 가속 + 외교 확장</strong><br>SMIC 7nm 양산. 위안화 결제 확산. 중동 이란 지원 vs 미국 견제.</div>
+        </div>
+      </div>
+
+      <!-- ── 6대 의제 카드 ── -->
+      <div class="section-card animate d5">
+        <div class="section-label">📚 미-중 패권 경쟁 시리즈 — 6대 의제 카드</div>
+        <div class="topic-grid">
+          <a href="us-china-semiconductor-war.html" class="topic-card">
+            <div class="tc-icon">💻</div>
+            <div class="tc-series">반도체</div>
+            <div class="tc-title">미-중 반도체 전쟁</div>
+            <div class="tc-desc">CHIPS Act · BIS 수출통제 · SMIC 7nm 자급화</div>
+          </a>
+          <a href="us-china-ai-race.html" class="topic-card">
+            <div class="tc-icon">🤖</div>
+            <div class="tc-series">AI</div>
+            <div class="tc-title">미-중 AI 패권 경쟁</div>
+            <div class="tc-desc">DeepSeek 쇼크 · Stargate $5,000억 · AI 군사화</div>
+          </a>
+          <a href="taiwan-strait-crisis.html" class="topic-card">
+            <div class="tc-icon">🏝️</div>
+            <div class="tc-series">대만·군사</div>
+            <div class="tc-title">대만 해협 위기</div>
+            <div class="tc-desc">TSMC 90% 점유 · 3가지 충돌 시나리오</div>
+          </a>
+          <a href="yuan-internationalization.html" class="topic-card">
+            <div class="tc-icon">💴</div>
+            <div class="tc-series">통화</div>
+            <div class="tc-title">위안화 국제화</div>
+            <div class="tc-desc">페트로위안 · CIPS · e-CNY · 탈달러화</div>
+          </a>
+          <a href="brics-expansion.html" class="topic-card">
+            <div class="tc-icon">🌍</div>
+            <div class="tc-series">다극화</div>
+            <div class="tc-title">BRICS 확장</div>
+            <div class="tc-desc">10개국+ · NDB · 글로벌 사우스 재편</div>
+          </a>
+          <a href="supply-chain-restructuring.html" class="topic-card">
+            <div class="tc-icon">🏭</div>
+            <div class="tc-series">공급망</div>
+            <div class="tc-title">공급망 재편</div>
+            <div class="tc-desc">프렌드쇼어링 · China+1 · 니어쇼어링</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- ── 3대 시나리오 ── -->
+      <div class="section-card animate d6">
+        <div class="section-label">🔮 미-중 패권 경쟁 3대 시나리오 (2030년 전망)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+          <div style="padding:18px;border-radius:12px;border:1px solid rgba(16,185,129,0.3);background:rgba(16,185,129,0.05)">
+            <div style="font-size:1.2rem;margin-bottom:8px">🟢</div>
+            <div style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:6px">경쟁적 공존</div>
+            <div style="font-size:12px;color:var(--text-secondary);line-height:1.5">기술·군사 경쟁 지속, 무역·금융 부분 협력 유지. G2 체제 아래 "관리된 경쟁"으로 수렴.</div>
+          </div>
+          <div style="padding:18px;border-radius:12px;border:1px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.05)">
+            <div style="font-size:1.2rem;margin-bottom:8px">🟡</div>
+            <div style="font-size:12px;font-weight:700;color:#f59e0b;margin-bottom:6px">블록 분열</div>
+            <div style="font-size:12px;color:var(--text-secondary);line-height:1.5">반도체·AI·금융 완전 분리. 달러 vs 위안화 통화 블록. G7 vs BRICS+ 진영화 심화.</div>
+          </div>
+          <div style="padding:18px;border-radius:12px;border:1px solid rgba(239,68,68,0.3);background:rgba(239,68,68,0.05)">
+            <div style="font-size:1.2rem;margin-bottom:8px">🔴</div>
+            <div style="font-size:12px;font-weight:700;color:#ef4444;margin-bottom:6px">대만 충돌</div>
+            <div style="font-size:12px;color:var(--text-secondary);line-height:1.5">대만 유사 시 미-중 직접 충돌. 글로벌 반도체·무역 마비. 냉전 2.0 현실화. 최악 시나리오.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const toggle = document.getElementById('menuToggle');
+    const dropdown = document.getElementById('menuDropdown');
+    toggle.addEventListener('click', e => {
+      e.stopPropagation();
+      dropdown.classList.toggle('open');
+    });
+    document.addEventListener('click', () => dropdown.classList.remove('open'));
+    function toggleTheme() {
+      const html = document.documentElement;
+      html.className = html.className.includes('dark') ? 'theme-light' : 'theme-dark';
+      localStorage.setItem('ka-theme', html.className);
+      dropdown.classList.remove('open');
+    }
+    (function() {
+      const t = localStorage.getItem('ka-theme');
+      if (t) document.documentElement.className = t;
+    })();
+    function downloadPng() {
+      dropdown.classList.remove('open');
+      htmlToImage.toPng(document.getElementById('main'), {quality:1, pixelRatio:2})
+        .then(url => { const a = document.createElement('a'); a.download = 'us-china-rivalry-infographic.png'; a.href = url; a.click(); })
+        .catch(err => console.error(err));
+    }
+  </script>
+</body>
+</html>

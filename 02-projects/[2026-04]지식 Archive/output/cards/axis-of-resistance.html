@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>저항의 축 — 이란의 중동 대리 세력 네트워크 완전 해부</title>
+  <meta name="knowledge-id" content="axis-of-resistance">
+  <meta name="knowledge-tags" content="국제정치,이란,중동,대리전,지정학">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-08">
+  <meta name="knowledge-source" content="조선일보·연합뉴스·ISW·나무위키">
+  <meta name="knowledge-category" content="시사·컬처">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html.theme-dark{
+      --bg:#0A0A0A;--surface:#141414;--surface-hover:#1C1C1C;
+      --border:rgba(255,255,255,0.06);--text:#EDEDED;--text-secondary:#888;
+      --accent:#8b5cf6;--accent2:#6366f1;
+      --positive:#10b981;--negative:#f43f5e;--warning:#f59e0b;
+      --chip-accent:rgba(139,92,246,0.12);
+      --chip-green:rgba(16,185,129,0.12);--chip-amber:rgba(245,158,11,0.12);
+      --menu-bg:rgba(10,10,10,0.85);--menu-border:rgba(255,255,255,0.08);
+      --menu-text:#EDEDED;--menu-item-hover:rgba(255,255,255,0.06);
+    }
+    html.theme-light{
+      --bg:#FAFAF9;--surface:#FFFFFF;--surface-hover:#F5F5F4;
+      --border:#e5e5e5;--text:#1a1a1a;--text-secondary:#666;
+      --accent:#7c3aed;--accent2:#4f46e5;
+      --positive:#059669;--negative:#e11d48;--warning:#d97706;
+      --chip-accent:rgba(124,58,237,0.08);
+      --chip-green:rgba(5,150,105,0.08);--chip-amber:rgba(217,119,6,0.08);
+      --menu-bg:rgba(255,255,255,0.92);--menu-border:rgba(0,0,0,0.08);
+      --menu-text:#1a1a1a;--menu-item-hover:rgba(0,0,0,0.04);
+    }
+    body{font-family:'Noto Sans KR','Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:-0.011em;transition:background 0.3s,color 0.3s;min-height:100vh}
+    body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 70% 50% at 50% 10%,color-mix(in srgb,var(--accent),transparent 88%),transparent)}
+    h1{font-weight:700;letter-spacing:-0.03em;line-height:1.08}
+    h2{font-weight:600;letter-spacing:-0.02em}
+    h3{font-weight:600;letter-spacing:-0.02em}
+    *:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+    .container{max-width:860px;margin:0 auto;padding:64px 24px 80px}
+
+    /* 뷰 메뉴 */
+    .viz-menu{position:fixed;top:16px;right:16px;z-index:9999}
+    .viz-menu-toggle{width:40px;height:40px;border-radius:10px;border:1px solid var(--menu-border);background:var(--menu-bg);color:var(--menu-text);cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px);transition:all 0.2s}
+    .viz-menu-toggle:hover{background:var(--menu-item-hover)}
+    .viz-menu-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:196px;background:var(--menu-bg);backdrop-filter:blur(16px);border:1px solid var(--menu-border);border-radius:12px;padding:6px;opacity:0;visibility:hidden;transform:translateY(-8px) scale(0.96);transition:all 0.2s cubic-bezier(0.4,0,0.2,1);box-shadow:0 8px 32px rgba(0,0,0,0.25)}
+    .viz-menu-dropdown.open{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+    .viz-menu-dropdown button{width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;border:none;background:transparent;color:var(--menu-text);font-size:14px;font-family:inherit;cursor:pointer;border-radius:8px;transition:background 0.15s;text-align:left}
+    .viz-menu-dropdown button:hover{background:var(--menu-item-hover)}
+
+    /* 뒤로가기 */
+    .nav-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--accent);text-decoration:none;margin-bottom:24px;padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface);transition:background 0.15s}
+    .nav-back:hover{background:var(--surface-hover)}
+
+    /* 히어로 */
+    .hero{text-align:center;margin-bottom:32px}
+    .hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:500;letter-spacing:0.04em;color:var(--text-secondary);text-transform:uppercase;margin-bottom:20px}
+    .hero h1{font-size:clamp(1.8rem,4.5vw,2.8rem);margin-bottom:12px}
+    .hero-sub{font-size:15px;color:var(--text-secondary);max-width:560px;margin:0 auto;line-height:1.7}
+
+    /* 메타 바 */
+    .meta-bar{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:36px;font-size:12px;color:var(--text-secondary)}
+    .diff-badge{padding:2px 10px;border-radius:99px;font-size:11px;font-weight:600;border:1px solid var(--border)}
+    .diff-intermediate{background:var(--chip-amber);color:var(--warning)}
+    .tag-chip{padding:2px 10px;border-radius:99px;font-size:11px;font-weight:500;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary)}
+    .meta-item{display:inline-flex;align-items:center;gap:4px}
+    .category-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:600;letter-spacing:0.02em;white-space:nowrap}
+    .cat-시사컬처{background:rgba(244,63,94,0.12);color:#f43f5e;border:1px solid rgba(244,63,94,0.3)}
+    html.theme-light .cat-시사컬처{background:rgba(244,63,94,0.08)}
+
+    /* 카드 */
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;transition:box-shadow 0.2s ease;margin-bottom:16px}
+    html.theme-dark .card{box-shadow:0 0 0 1px var(--border)}
+    html.theme-light .card{box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+    .card:hover{box-shadow:0 0 0 1px var(--border),0 8px 24px rgba(0,0,0,0.1)}
+    .section-title{font-size:12px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px}
+
+    /* KPI */
+    .kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+    .kpi-item{text-align:center;padding:18px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--border)}
+    .kpi-value{font-size:1.5rem;font-weight:700;letter-spacing:-0.03em}
+    .kpi-label{font-size:11px;color:var(--text-secondary);font-weight:500;margin-top:4px;text-transform:uppercase;letter-spacing:0.04em}
+
+    /* 하이라이트 */
+    .highlight-box{padding:14px 18px;border-radius:10px;border:1px solid var(--border);background:var(--chip-accent);font-size:13.5px;line-height:1.7;margin-bottom:16px}
+    .highlight-box strong{color:var(--accent)}
+
+    /* 인용 */
+    .quote-box{padding:16px 20px;border-radius:10px;border-left:3px solid var(--accent);background:var(--surface);font-size:13px;line-height:1.7;color:var(--text-secondary);margin-bottom:12px;font-style:italic}
+    .quote-box cite{display:block;margin-top:6px;font-style:normal;font-weight:600;font-size:12px;color:var(--accent)}
+
+    /* 세력 카드 */
+    .force-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:14px;position:relative;overflow:hidden}
+    .force-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0}
+    .force-hezb::after{background:#f59e0b}
+    .force-hamas::after{background:#10b981}
+    .force-houthi::after{background:#f43f5e}
+    .force-iraq::after{background:#3b82f6}
+    .force-header{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px}
+    .force-flag{font-size:2rem;flex-shrink:0;margin-top:2px}
+    .force-name{font-size:16px;font-weight:700;margin-bottom:3px}
+    .force-location{font-size:12px;color:var(--text-secondary)}
+    .force-status-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+    .force-badge{display:inline-block;padding:1px 7px;border-radius:99px;font-size:11px;font-weight:600;border:1px solid}
+    .fb-amber{background:rgba(245,158,11,0.12);color:#f59e0b;border-color:rgba(245,158,11,0.3)}
+    .fb-green{background:rgba(16,185,129,0.12);color:#10b981;border-color:rgba(16,185,129,0.3)}
+    .fb-red{background:rgba(244,63,94,0.12);color:#f43f5e;border-color:rgba(244,63,94,0.3)}
+    .fb-blue{background:rgba(59,130,246,0.12);color:#3b82f6;border-color:rgba(59,130,246,0.3)}
+    .force-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px}
+    .force-item{color:var(--text-secondary);line-height:1.65}
+    .force-item strong{color:var(--text)}
+    .force-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-secondary);margin-bottom:3px}
+
+    /* 비교 테이블 */
+    table{min-width:560px;width:100%;border-collapse:collapse;font-size:13px}
+    th{background:var(--surface);color:var(--text-secondary);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+    td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-secondary);white-space:nowrap}
+    td.wide{white-space:normal;min-width:150px}
+    td:first-child{font-weight:700;color:var(--text)}
+    tr:last-child td{border-bottom:none}
+
+    /* 관련 지식 */
+    .related-section{margin-top:32px;padding-top:20px;border-top:1px solid var(--border)}
+    .related-section h3{font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.05em}
+    .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+    .related-card{display:block;text-decoration:none;padding:12px 14px;border-radius:10px;border:1px solid var(--border);background:var(--surface);transition:background 0.15s}
+    .related-card:hover{background:var(--surface-hover)}
+    .related-card .r-label{font-size:11px;color:var(--accent);font-weight:600;margin-bottom:3px}
+    .related-card .r-title{font-size:13px;font-weight:500;color:var(--text);line-height:1.4}
+
+    .footer-note{text-align:center;font-size:12px;color:var(--text-secondary);margin-top:20px}
+
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .animate{animation:fadeInUp 0.6s ease-out both}
+    .d1{animation-delay:0.06s}.d2{animation-delay:0.12s}.d3{animation-delay:0.18s}
+    .d4{animation-delay:0.24s}.d5{animation-delay:0.30s}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+    @media(max-width:640px){
+      .kpi-row{grid-template-columns:1fr}
+      .force-grid{grid-template-columns:1fr}
+      .container{padding:48px 16px 60px}
+      th{font-size:10px!important;padding-left:8px!important;padding-right:8px!important}
+      td{font-size:12px!important;padding-left:8px!important;padding-right:8px!important}
+    }
+    @media print{body{background:white!important}.viz-menu{display:none!important}.card{break-inside:avoid}*{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">🌙 초승달 벨트 · 이란의 대리 네트워크</div>
+        <h1>저항의 축<br>이란의 중동 대리 세력 네트워크</h1>
+        <p class="hero-sub">헤즈볼라·하마스·후티·이라크 민병대 — 이란이 1979년 이후 구축한 반미·반이스라엘 무장 연합의 구조, 현황, 균열 신호까지</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="category-badge cat-시사컬처">🌍 시사·컬처</span>
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="tag-chip">#저항의축</span>
+        <span class="tag-chip">#이란</span>
+        <span class="tag-chip">#대리전</span>
+        <span class="tag-chip">#중동</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.08
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          조선일보 · ISW · 나무위키
+        </span>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-row animate d2">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">4개</div>
+          <div class="kpi-label">핵심 대리 세력</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:#f59e0b">1979년</div>
+          <div class="kpi-label">이슬람 혁명 후 구축 시작</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:#10b981">초승달</div>
+          <div class="kpi-label">벨트 지리적 연결 구도</div>
+        </div>
+      </div>
+
+      <!-- 개요 -->
+      <div class="highlight-box animate d2">
+        <strong>'저항의 축'</strong>은 이란이 중동 전역에 구축한 반미·반이스라엘 무장 연합 네트워크. 이란에서 이라크→시리아→레바논으로 이어지며, 예멘과 팔레스타인까지 포괄하는 <strong>초승달 벨트</strong>를 형성. 명칭 유래: 2002년 부시 미 대통령이 이란·이라크·북한을 '악의 축'으로 규정하자, 이란이 "우리는 미국 패권에 맞서는 저항의 주체"라고 반박하며 사용 시작.
+      </div>
+
+      <!-- 4대 세력 -->
+      <div class="animate d3">
+        <div class="section-title" style="margin-bottom:12px">⚔️ 4대 핵심 세력 현황</div>
+
+        <!-- 헤즈볼라 -->
+        <div class="force-card force-hezb">
+          <div class="force-header">
+            <div class="force-flag">🇱🇧</div>
+            <div style="flex:1">
+              <div class="force-name">헤즈볼라 (حزب الله)</div>
+              <div class="force-location">레바논 전역 / 남부 집중</div>
+              <div class="force-status-row">
+                <span class="force-badge fb-amber">1982년 창설</span>
+                <span class="force-badge fb-red">이스라엘 북부 교전 중</span>
+                <span class="force-badge fb-green">가장 강력한 세력</span>
+              </div>
+            </div>
+          </div>
+          <div class="force-grid">
+            <div class="force-item">
+              <div class="force-label">병력 / 무장</div>
+              <strong>6만 명</strong> 병력 (레바논 정규군 능가). 미사일·로켓·드론 <strong>1만기 이상</strong>. 정밀유도무기 다수 보유.
+            </div>
+            <div class="force-item">
+              <div class="force-label">현황 (2026년 4월)</div>
+              이스라엘 북부 <strong>하이파</strong> 지속 공격. 2024년 '삐삐 작전'으로 수뇌부 다수 제거됐으나 <strong>점조직 방식</strong>으로 전투 지속. 모즈타바에 충성 맹세.
+            </div>
+            <div class="force-item">
+              <div class="force-label">전략적 역할</div>
+              이란의 가장 강력한 대리 세력. 레바논→이스라엘 북부 제2전선. 이란 내 체제 위기 시 IRGC 피난처 역할.
+            </div>
+            <div class="force-item">
+              <div class="force-label">이란 의존도</div>
+              재정·무기·훈련 전반을 이란에 의존. IRGC 쿠드스군이 직접 지휘 체계에 관여. <strong>의존도: 매우 높음</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- 하마스 -->
+        <div class="force-card force-hamas">
+          <div class="force-header">
+            <div class="force-flag">🇵🇸</div>
+            <div style="flex:1">
+              <div class="force-name">하마스 (حماس)</div>
+              <div class="force-location">팔레스타인 가자지구</div>
+              <div class="force-status-row">
+                <span class="force-badge fb-green">1987년 창설</span>
+                <span class="force-badge fb-amber">세력 약화·재건 중</span>
+                <span class="force-badge fb-blue">균열 신호 있음</span>
+              </div>
+            </div>
+          </div>
+          <div class="force-grid">
+            <div class="force-item">
+              <div class="force-label">최근 역사</div>
+              2023년 10월 7일 이스라엘 기습. 2년 이상 전쟁 지속. 현재 <strong>세력 크게 약화</strong>. 상당수 지도부 사망.
+            </div>
+            <div class="force-item">
+              <div class="force-label">현황 (2026년 4월)</div>
+              가자 전쟁 지속. 이란 자위권 지지 성명 발표. 단, <strong>걸프 국가 공격 자제 요청</strong> — 휴전 중재국(카타르·사우디) 배려.
+            </div>
+            <div class="force-item">
+              <div class="force-label">균열 신호</div>
+              이란에 "카타르·사우디 등 걸프 국가 군사 공격 자제해달라" 이례적 요청. <strong>저항의 축 내 이견 최초 공개 표출.</strong>
+            </div>
+            <div class="force-item">
+              <div class="force-label">이란 의존도</div>
+              무기 지원 의존. 단, 걸프 아랍 국가들의 중재도 필요. <strong>의존도: 중간 (복수 후원자)</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- 후티 -->
+        <div class="force-card force-houthi">
+          <div class="force-header">
+            <div class="force-flag">🇾🇪</div>
+            <div style="flex:1">
+              <div class="force-name">후티 — 안사르 알라 (أنصار الله)</div>
+              <div class="force-location">예멘 / 홍해·바브엘만데브 해협</div>
+              <div class="force-status-row">
+                <span class="force-badge fb-red">이스라엘 참전 선언</span>
+                <span class="force-badge fb-amber">홍해 봉쇄 재개</span>
+                <span class="force-badge fb-blue">자율성 확대 중</span>
+              </div>
+            </div>
+          </div>
+          <div class="force-grid">
+            <div class="force-item">
+              <div class="force-label">지정학적 가치</div>
+              <strong>바브엘만데브 해협</strong> 통제. 이란 호르무즈 + 후티 바브엘만데브 = 세계 에너지 이중 봉쇄 카드. 예멘 인구 70% 통치.
+            </div>
+            <div class="force-item">
+              <div class="force-label">현황 (2026년 4월)</div>
+              이스라엘에 탄도미사일 발사. 홍해 봉쇄 재개 선언. 수에즈 운하 통항량 여전히 -60% 수준. 이란·헤즈볼라와 4월 6일 <strong>협조 공격</strong>.
+            </div>
+            <div class="force-item">
+              <div class="force-label">균열 신호</div>
+              텔레그래프: "후티, 더 이상 이란 지시 따르지 않는다." 미군 공습 이후 독자 행동 확대. <strong>통제 이탈 부분적 진행 중.</strong>
+            </div>
+            <div class="force-item">
+              <div class="force-label">이란 의존도</div>
+              무기·훈련·재정 의존도 높으나 독자 목표(예멘 북부 이슬람 국가) 있어 완전 종속 아님. <strong>의존도: 높음→자율화 추세</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- 이라크 민병대 -->
+        <div class="force-card force-iraq">
+          <div class="force-header">
+            <div class="force-flag">🇮🇶</div>
+            <div style="flex:1">
+              <div class="force-name">이라크이슬람저항 (IRI) / 인민동원군 (PMF)</div>
+              <div class="force-location">이라크 / 이라크-시리아 국경</div>
+              <div class="force-status-row">
+                <span class="force-badge fb-blue">제2전선 본격화</span>
+                <span class="force-badge fb-amber">미군 기지 공격 중</span>
+              </div>
+            </div>
+          </div>
+          <div class="force-grid">
+            <div class="force-item">
+              <div class="force-label">조직 구성</div>
+              시아파 민병대 연합체. 카타이브 헤즈볼라·아사이브 아흘 알하크 등 <strong>다수 파벌</strong>. 이라크 국가 내 준군사 조직으로 반공식화.
+            </div>
+            <div class="force-item">
+              <div class="force-label">현황 (2026년 4월)</div>
+              바그다드 미 대사관 미사일 공격. 미군 위치 제보 상금(약 1.6억원) 공고. 미 대사관 최고 수준 보안 경보, 자국민 <strong>철수령</strong>.
+            </div>
+            <div class="force-item">
+              <div class="force-label">전략적 역할</div>
+              이라크 내 미군 기지·대사관 위협. 시리아-이라크 육상 통로 확보(이란-레바논 연결). <strong>이란의 서쪽 땅길 관리.</strong>
+            </div>
+            <div class="force-item">
+              <div class="force-label">이란 의존도</div>
+              이란 IRGC 쿠드스군의 직접 지시 받음. 일부 파벌은 이라크 주권 논리로 독자 노선도 모색. <strong>의존도: 높음</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 비교 테이블 -->
+      <div class="card animate d4">
+        <div class="section-title">📊 4대 세력 비교표</div>
+        <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+          <table>
+            <thead>
+              <tr>
+                <th>세력</th>
+                <th>근거지</th>
+                <th>이란 의존도</th>
+                <th>2026년 전황</th>
+                <th style="white-space:normal;min-width:140px;">균열·자율화</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>헤즈볼라</td>
+                <td>레바논</td>
+                <td>매우 높음</td>
+                <td><span style="color:#ef4444">교전 중</span></td>
+                <td class="wide">수뇌부 타격 후 점조직 운영. 아직 이란 노선 유지.</td>
+              </tr>
+              <tr>
+                <td>하마스</td>
+                <td>가자지구</td>
+                <td>중간</td>
+                <td><span style="color:#f59e0b">약화·재건</span></td>
+                <td class="wide">걸프 국가 공격 자제 요청 — 첫 공개 이견.</td>
+              </tr>
+              <tr>
+                <td>후티</td>
+                <td>예멘</td>
+                <td>높음→자율화</td>
+                <td><span style="color:#ef4444">참전 선언</span></td>
+                <td class="wide">이란 지시 이탈 신호. 독자 목표 있음.</td>
+              </tr>
+              <tr>
+                <td>이라크 민병대</td>
+                <td>이라크</td>
+                <td>높음</td>
+                <td><span style="color:#ef4444">제2전선 가동</span></td>
+                <td class="wide">일부 파벌 이라크 주권 논리로 독자 모색.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 명칭 유래 & 역사 -->
+      <div class="card animate d4">
+        <div class="section-title">📖 명칭 유래 & 구축 역사</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:13px;color:var(--text-secondary)">
+          <div>
+            <p style="font-weight:600;color:var(--text);margin-bottom:8px">명칭 유래</p>
+            <p style="line-height:1.75">2002년 부시 미 대통령이 이란·이라크·북한을 '<strong style="color:var(--text)">악의 축(Axis of Evil)</strong>'으로 규정하자, 이란이 "우리는 미국 패권에 맞서는 저항의 주체"라고 반박하며 '<strong style="color:var(--accent)">저항의 축(Axis of Resistance)</strong>' 용어 사용 시작. 이후 자국 네트워크를 지칭하는 공식 표현으로 정착.</p>
+          </div>
+          <div>
+            <p style="font-weight:600;color:var(--text);margin-bottom:8px">구축 역사</p>
+            <p style="line-height:1.75">1979년 이슬람 혁명 후 호메이니의 '<strong style="color:var(--text)">혁명 수출</strong>' 기치 아래 레바논·이라크·예멘 시아파 무장 세력 집중 육성. 제2대 하메네이 → 현 최고지도자 <strong style="color:var(--text)">모즈타바 하메네이</strong>(하메네이의 아들)로 이어지는 세습 체제 속에 네트워크 강화.</p>
+          </div>
+        </div>
+        <div class="quote-box" style="margin-top:14px;margin-bottom:0">
+          "적이 경험하지 못했고, 대비가 취약한 '제2전선'의 검토가 끝났다. '저항의 축' 전사들에게 깊은 감사를 전한다."
+          <cite>— 모즈타바 하메네이, 이란 새 최고지도자 (2026.03)</cite>
+        </div>
+      </div>
+
+      <!-- 균열과 전망 -->
+      <div class="card animate d5" style="border-color:rgba(245,158,11,0.3)">
+        <div class="section-title">⚠️ 내부 균열 신호 & 전망</div>
+        <div class="highlight-box" style="background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.3);margin-bottom:12px">
+          저항의 축은 단일 명령 체계가 아닌 <strong style="color:#f59e0b">이익 연합</strong>이다. 이란의 군사력이 약화될수록 각 세력의 독자성이 강해지는 구조. 하마스의 공개 이견, 후티의 지시 이탈, 이란 본토 타격으로 인한 통제력 약화가 복합적으로 작용하며 결속력이 시험대에 올라있다.
+        </div>
+        <div style="font-size:13px;color:var(--text-secondary);line-height:1.75">
+          2026년 전쟁이 장기화될수록 각 세력의 자율화 가능성은 높아진다. 이란의 재건 능력과 모즈타바 하메네이의 리더십이 네트워크 재결집의 핵심 변수다. 이란이 협상을 선택할 경우, 대리 세력들이 이란의 양보를 거부하고 독자 행동을 선택할 가능성도 배제할 수 없다.
+        </div>
+      </div>
+
+      <!-- 관련 지식 -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="iran-israel-war-2026.html" class="related-card">
+            <div class="r-label">→ 연관 카드</div>
+            <div class="r-title">미국·이스라엘 vs 이란 — 2026년 전쟁 완전 정리</div>
+          </a>
+          <a href="houthi-ansar-allah.html" class="related-card">
+            <div class="r-label">→ 연관 카드</div>
+            <div class="r-title">후티(안사르 알라) — 예멘 실질 통치 세력</div>
+          </a>
+          <a href="iran-houthi-strategy.html" class="related-card">
+            <div class="r-label">→ 연관 카드</div>
+            <div class="r-title">이란이 후티를 지원하는 이유 — 6가지 전략</div>
+          </a>
+          <a href="israel-palestine-conflict.html" class="related-card">
+            <div class="r-label">→ 배경 지식</div>
+            <div class="r-title">이스라엘 건국과 팔레스타인 분쟁</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">출처: 조선일보(2026.03.16) · 연합뉴스(2026.03.24) · ISW 특별보고서(2026.04.06) · 나무위키 (2026.04.08 기준)</p>
+    </div>
+  </main>
+
+  <script>
+    var THEMES=['theme-dark','theme-light'];
+    var THEME_LABELS={'theme-dark':'Dark','theme-light':'Light'};
+    (function(){var s=localStorage.getItem('ka-theme')||'theme-dark';document.documentElement.className=s;var l=document.getElementById('themeLabel');if(l)l.textContent=THEME_LABELS[s];})();
+    function cycleTheme(){var c=document.documentElement.className;var n=THEMES[(THEMES.indexOf(c)+1)%THEMES.length];document.documentElement.className=n;localStorage.setItem('ka-theme',n);var l=document.getElementById('themeLabel');if(l)l.textContent=THEME_LABELS[n];closeMenu();}
+    function toggleMenu(){document.getElementById('vizMenuDropdown').classList.toggle('open');}
+    function closeMenu(){document.getElementById('vizMenuDropdown').classList.remove('open');}
+    document.addEventListener('click',function(e){if(!e.target.closest('.viz-menu'))closeMenu();});
+    function downloadImage(){closeMenu();if(typeof htmlToImage==='undefined'){alert('라이브러리 로딩 중...');return;}htmlToImage.toPng(document.getElementById('main'),{pixelRatio:2}).then(function(d){var a=document.createElement('a');a.download='axis-of-resistance.png';a.href=d;a.click();});}
+  </script>
+</body>
+</html>

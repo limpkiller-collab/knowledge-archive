@@ -1,0 +1,9 @@
+﻿이름,설명(시간),주소,구글지도URL
+아침 & 짐 정리,08:30 ~ 09:30,,
+체크아웃 & 짐 보관,09:30 ~ 10:00,,
+타이중 오페라하우스 or 공원 산책,10:00 ~ 11:30,臺中國家歌劇院 National Taichung Theater,https://www.google.com/maps/search/臺中國家歌劇院+National+Taichung+Theater
+마지막 점심,11:30 ~ 12:30,,
+숙소 → 공항 이동,13:30 ~ 14:30,Taichung Railway Station/Taichung Airport,https://www.google.com/maps/dir/Taichung+Railway+Station/Taichung+Airport
+체크인 & 면세 쇼핑,15:00 ~ 17:10,,
+TW670 타이중 → 인천,17:10 → 20:55 KST,Incheon International Airport,https://www.google.com/maps/search/Incheon+International+Airport
+'+d.title+','+d.time+',,

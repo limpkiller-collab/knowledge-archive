@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>미국·이스라엘 vs 이란 — 2026년 중동 전쟁 완전 정리</title>
+  <meta name="knowledge-id" content="iran-israel-war-2026">
+  <meta name="knowledge-tags" content="국제정치,중동,전쟁,핵,미국">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-08">
+  <meta name="knowledge-source" content="연합뉴스·조선일보·ISW·YTN·나무위키">
+  <meta name="knowledge-category" content="시사·컬처">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #ef4444; --accent2: #f97316;
+      --positive: #10b981; --negative: #ef4444; --warning: #f59e0b;
+      --chip-accent: rgba(239,68,68,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #dc2626; --accent2: #ea580c;
+      --positive: #059669; --negative: #dc2626; --warning: #d97706;
+      --chip-accent: rgba(220,38,38,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif; background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased; letter-spacing: -0.011em;
+      transition: background 0.3s, color 0.3s; min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%, color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1{font-weight:700;letter-spacing:-0.03em;line-height:1.08}
+    h2{font-weight:600;letter-spacing:-0.02em}
+    h3{font-weight:600;letter-spacing:-0.02em}
+    *:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+    .container{max-width:860px;margin:0 auto;padding:64px 24px 80px}
+
+    /* 뷰 메뉴 */
+    .viz-menu{position:fixed;top:16px;right:16px;z-index:9999}
+    .viz-menu-toggle{width:40px;height:40px;border-radius:10px;border:1px solid var(--menu-border);background:var(--menu-bg);color:var(--menu-text);cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px);transition:all 0.2s}
+    .viz-menu-toggle:hover{background:var(--menu-item-hover)}
+    .viz-menu-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:196px;background:var(--menu-bg);backdrop-filter:blur(16px);border:1px solid var(--menu-border);border-radius:12px;padding:6px;opacity:0;visibility:hidden;transform:translateY(-8px) scale(0.96);transition:all 0.2s cubic-bezier(0.4,0,0.2,1);box-shadow:0 8px 32px rgba(0,0,0,0.25)}
+    .viz-menu-dropdown.open{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+    .viz-menu-dropdown button{width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;border:none;background:transparent;color:var(--menu-text);font-size:14px;font-family:inherit;cursor:pointer;border-radius:8px;transition:background 0.15s;text-align:left}
+    .viz-menu-dropdown button:hover{background:var(--menu-item-hover)}
+
+    /* 뒤로가기 */
+    .nav-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--accent);text-decoration:none;margin-bottom:24px;padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface);transition:background 0.15s}
+    .nav-back:hover{background:var(--surface-hover)}
+
+    /* 히어로 */
+    .hero{text-align:center;margin-bottom:32px}
+    .hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:500;letter-spacing:0.04em;color:var(--text-secondary);text-transform:uppercase;margin-bottom:20px}
+    .hero h1{font-size:clamp(1.8rem,4.5vw,2.8rem);margin-bottom:12px}
+    .hero-sub{font-size:15px;color:var(--text-secondary);max-width:560px;margin:0 auto;line-height:1.7}
+
+    /* 메타 바 */
+    .meta-bar{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:36px;font-size:12px;color:var(--text-secondary)}
+    .diff-badge{padding:2px 10px;border-radius:99px;font-size:11px;font-weight:600;border:1px solid var(--border)}
+    .diff-intermediate{background:var(--chip-amber);color:var(--warning)}
+    .tag-chip{padding:2px 10px;border-radius:99px;font-size:11px;font-weight:500;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary)}
+    .meta-item{display:inline-flex;align-items:center;gap:4px}
+    .category-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:600;letter-spacing:0.02em;white-space:nowrap}
+    .cat-시사컬처{background:rgba(244,63,94,0.12);color:#f43f5e;border:1px solid rgba(244,63,94,0.3)}
+    html.theme-light .cat-시사컬처{background:rgba(244,63,94,0.08)}
+
+    /* 카드 */
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;transition:box-shadow 0.2s ease;margin-bottom:16px}
+    html.theme-dark .card{box-shadow:0 0 0 1px var(--border)}
+    html.theme-light .card{box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+    .card:hover{box-shadow:0 0 0 1px var(--border),0 8px 24px rgba(0,0,0,0.1)}
+    .section-title{font-size:12px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px}
+
+    /* KPI */
+    .kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+    .kpi-item{text-align:center;padding:18px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--border)}
+    .kpi-value{font-size:1.5rem;font-weight:700;letter-spacing:-0.03em}
+    .kpi-label{font-size:11px;color:var(--text-secondary);font-weight:500;margin-top:4px;text-transform:uppercase;letter-spacing:0.04em}
+
+    /* 하이라이트 */
+    .highlight-box{padding:14px 18px;border-radius:10px;border:1px solid var(--border);background:var(--chip-accent);font-size:13.5px;line-height:1.7;margin-bottom:16px}
+    .highlight-box strong{color:var(--accent)}
+
+    /* 인용 */
+    .quote-box{padding:16px 20px;border-radius:10px;border-left:3px solid var(--accent);background:var(--surface);font-size:13px;line-height:1.7;color:var(--text-secondary);margin-bottom:12px;font-style:italic}
+    .quote-box cite{display:block;margin-top:6px;font-style:normal;font-weight:600;font-size:12px;color:var(--accent)}
+
+    /* 타임라인 */
+    .timeline{display:flex;flex-direction:column;gap:0;margin-bottom:4px}
+    .timeline-item{display:flex;gap:16px}
+    .timeline-left{display:flex;flex-direction:column;align-items:center;width:32px;flex-shrink:0}
+    .timeline-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--bg);flex-shrink:0;margin-top:4px}
+    .timeline-dot.blue{background:#3b82f6}
+    .timeline-dot.amber{background:#f59e0b}
+    .timeline-line{width:2px;flex:1;background:var(--border);margin:4px 0;min-height:20px}
+    .timeline-item:last-child .timeline-line{display:none}
+    .timeline-right{padding-bottom:20px;flex:1}
+    .timeline-year{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px}
+    .timeline-year.blue{color:#3b82f6}
+    .timeline-year.amber{color:#f59e0b}
+    .timeline-content{font-size:13px;color:var(--text-secondary);line-height:1.6}
+    .timeline-content strong{color:var(--text)}
+
+    /* 전선 그리드 */
+    .front-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px}
+    .front-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px}
+    .front-icon{font-size:1.3rem;margin-bottom:8px}
+    .front-title{font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text)}
+    .front-title span{font-size:11px;font-weight:500;color:var(--text-secondary);margin-left:6px}
+    .front-desc{font-size:12px;color:var(--text-secondary);line-height:1.65}
+    .front-desc strong{color:var(--text)}
+
+    /* 테이블 */
+    table{min-width:480px;width:100%;border-collapse:collapse;font-size:13px}
+    th{background:var(--surface);color:var(--text-secondary);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+    td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-secondary);white-space:nowrap}
+    td.wide{white-space:normal;min-width:160px}
+    td:first-child{color:var(--accent);font-weight:700;font-size:12px}
+    tr:last-child td{border-bottom:none}
+
+    /* 배지 */
+    .badge-red{display:inline-block;padding:1px 7px;border-radius:99px;font-size:11px;font-weight:600;background:rgba(239,68,68,0.15);color:#ef4444;border:1px solid rgba(239,68,68,0.3)}
+    .badge-blue{display:inline-block;padding:1px 7px;border-radius:99px;font-size:11px;font-weight:600;background:rgba(59,130,246,0.15);color:#3b82f6;border:1px solid rgba(59,130,246,0.3)}
+    .badge-amber{display:inline-block;padding:1px 7px;border-radius:99px;font-size:11px;font-weight:600;background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.3)}
+
+    /* 관련 지식 */
+    .related-section{margin-top:32px;padding-top:20px;border-top:1px solid var(--border)}
+    .related-section h3{font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.05em}
+    .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+    .related-card{display:block;text-decoration:none;padding:12px 14px;border-radius:10px;border:1px solid var(--border);background:var(--surface);transition:background 0.15s}
+    .related-card:hover{background:var(--surface-hover)}
+    .related-card .r-label{font-size:11px;color:var(--accent);font-weight:600;margin-bottom:3px}
+    .related-card .r-title{font-size:13px;font-weight:500;color:var(--text);line-height:1.4}
+
+    .footer-note{text-align:center;font-size:12px;color:var(--text-secondary);margin-top:20px}
+
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .animate{animation:fadeInUp 0.6s ease-out both}
+    .d1{animation-delay:0.06s}.d2{animation-delay:0.12s}.d3{animation-delay:0.18s}
+    .d4{animation-delay:0.24s}.d5{animation-delay:0.30s}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+    @media(max-width:640px){
+      .kpi-row,.front-grid{grid-template-columns:1fr}
+      .container{padding:48px 16px 60px}
+      th{font-size:10px!important;padding-left:8px!important;padding-right:8px!important}
+      td{font-size:12px!important;padding-left:8px!important;padding-right:8px!important}
+    }
+    @media print{body{background:white!important}.viz-menu{display:none!important}.card{break-inside:avoid}*{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">💥 2026 중동 전쟁 · 진행 중</div>
+        <h1>미국·이스라엘 vs 이란<br>2026년 중동 전쟁 완전 정리</h1>
+        <p class="hero-sub">2026년 2월 28일 선제 타격으로 시작된 전면전 — 핵시설·에너지 인프라 공방, 저항의 축 가세, 호르무즈 봉쇄 위기까지</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="category-badge cat-시사컬처">🌍 시사·컬처</span>
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="tag-chip">#중동전쟁</span>
+        <span class="tag-chip">#이란</span>
+        <span class="tag-chip">#핵</span>
+        <span class="tag-chip">#미국</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.08
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          연합뉴스 · 조선일보 · ISW
+        </span>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-row animate d2">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">2026.2.28</div>
+          <div class="kpi-label">전쟁 개시일</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:#f59e0b">3개</div>
+          <div class="kpi-label">핵시설 타격 (나탄즈·포르도·부셰르)</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:#3b82f6">진행 중</div>
+          <div class="kpi-label">전쟁 상태 (2026.04 기준)</div>
+        </div>
+      </div>
+
+      <!-- 핵심 요약 -->
+      <div class="highlight-box animate d2">
+        <strong>선전포고 없는 기습 공격으로 시작</strong> — 2026년 2월 28일 미국·이스라엘이 이란 내 반정부 시위 세력 지원 및 핵무기 개발 저지를 명분으로 이란을 선제 타격하며 개전. 이란은 이스라엘과 미군 기지에 탄도미사일·드론 보복 공격. <strong>저항의 축(헤즈볼라·후티·이라크 민병대)이 제2전선 가세</strong>하며 전황이 중동 전역으로 확산 중.
+      </div>
+
+      <!-- 전쟁 타임라인 -->
+      <div class="card animate d3">
+        <div class="section-title">📅 전쟁 진행 타임라인</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">2026년 2월 28일 — 개전</div>
+              <div class="timeline-content"><strong>미국·이스라엘 선제 타격</strong> — 선전포고 없이 이란 핵시설 및 군사 인프라 기습 공습. 명분: ① 이란 핵무기 개발 저지 ② 반정부 시위 세력 지원. 중동 내 미국 기지에서 전폭기 출격.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">2026년 3월 1~2주차</div>
+              <div class="timeline-content"><strong>핵시설 집중 타격</strong> — 나탄즈(우라늄 농축), 포르도(지하 핵시설) 대규모 공습. 이란의 원유 수출 90%를 담당하는 <strong>하르그섬 공습</strong>으로 에너지 인프라 전쟁 격화. IAEA 확인 이란 보유 60% 고농축 우라늄 약 972파운드 일부 폐쇄 지하에 매몰.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot amber"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year amber">2026년 3월 3주차</div>
+              <div class="timeline-content"><strong>이란 보복 + 저항의 축 가세</strong> — 이란이 이스라엘 텔아비브에 탄도미사일 발사(아이언돔 대부분 요격). 헤즈볼라가 이스라엘 북부 하이파에 드론·미사일 공세. 이라크 시아파 민병대 바그다드 미 대사관 로켓 공격. <strong>호르무즈 해협 봉쇄 위협</strong> 본격화.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot amber"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year amber">2026년 3월 말</div>
+              <div class="timeline-content"><strong>석유화학 전쟁 확대</strong> — IDF, 이란 수출의 85%를 차지하는 2대 석유화학 단지(사우스파르스 포함) 타격. 이란 새 최고지도자 <strong>모즈타바 하메네이</strong> 등장, '피의 복수' 선언. 미국 공수부대 투입 승인. 이란 "과거 유가 다시는 못 볼 것" 경고.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot blue"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year blue">2026년 4월 6~7일 — 현재</div>
+              <div class="timeline-content"><strong>이란 휴전 거부·트럼프 데드라인</strong> — 파키스탄 중재 휴전안 이란 거부. 이란, 10개 조건(영구 휴전·재건 지원·제재 해제) 역제안. 트럼프 "받아들일 수 없다" 거부. 트럼프 4월 7일 데드라인 설정 — 불응 시 에너지 인프라 추가 타격 위협. 이란·헤즈볼라·후티 <strong>4월 6일 이스라엘 협조 공격</strong> 감행.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 주요 전선 -->
+      <div class="card animate d3">
+        <div class="section-title">🗺️ 주요 전선 현황 (2026.04 기준)</div>
+        <div class="front-grid">
+          <div class="front-card">
+            <div class="front-icon">🇮🇷</div>
+            <div class="front-title">이란 본토 전선 <span class="badge-red">공습 중</span></div>
+            <div class="front-desc">나탄즈·포르도 핵시설, 하르그섬 원유 터미널, 사우스파르스 석유화학단지 파괴. <strong>이란 수출 능력 심각 타격</strong>. 호르무즈 해협 봉쇄 카드로 서방 압박.</div>
+          </div>
+          <div class="front-card">
+            <div class="front-icon">🇱🇧</div>
+            <div class="front-title">레바논 전선 <span class="badge-amber">교전 중</span></div>
+            <div class="front-desc">헤즈볼라, 이스라엘 북부 하이파 집중 공격. 드론·미사일 1만기 이상 보유. 2024년 '삐삐 작전'으로 수뇌부 타격받았으나 <strong>점조직으로 전투 지속</strong>. 이스라엘도 레바논 헤즈볼라 거점 공습.</div>
+          </div>
+          <div class="front-card">
+            <div class="front-icon">🇮🇶</div>
+            <div class="front-title">이라크 전선 <span class="badge-red">고조 중</span></div>
+            <div class="front-desc">이라크이슬람저항(IRI) 바그다드 미 대사관 미사일 공격. 미군 위치 제보 상금 걸고 추가 공격 예고. 미 대사관 <strong>최고 수준 보안 경보, 자국민 철수령</strong>.</div>
+          </div>
+          <div class="front-card">
+            <div class="front-icon">🇾🇪</div>
+            <div class="front-title">예멘·홍해 전선 <span class="badge-amber">확전 중</span></div>
+            <div class="front-desc">후티, 이스라엘에 탄도미사일 발사, 공식 참전 선언. 홍해 봉쇄 재개, 바브엘만데브 해협 폐쇄 위협. 이란 호르무즈 + 후티 바브엘만데브 = <strong>세계 에너지 이중 위협</strong>.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 국제사회 반응 -->
+      <div class="card animate d4">
+        <div class="section-title">🌐 국제사회 반응</div>
+        <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+          <table>
+            <thead>
+              <tr>
+                <th>주체</th>
+                <th>입장</th>
+                <th style="white-space:normal;min-width:180px;">내용</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>미국 (트럼프)</td>
+                <td><span class="badge-red">주도</span></td>
+                <td class="wide">공습 주도, 4월 7일 데드라인 설정. 이란이 불응 시 에너지 인프라 추가 타격 위협. 공수부대 투입 승인.</td>
+              </tr>
+              <tr>
+                <td>이스라엘</td>
+                <td><span class="badge-red">공동 작전</span></td>
+                <td class="wide">핵시설·석유화학 타격. 헤즈볼라·이란 동시 대응. 아이언돔으로 탄도미사일 다수 요격.</td>
+              </tr>
+              <tr>
+                <td>이란</td>
+                <td><span class="badge-amber">보복 + 협상</span></td>
+                <td class="wide">이스라엘·미군 보복 공격, 호르무즈 봉쇄 위협. 영구 휴전·재건·제재 해제 10조건 역제안.</td>
+              </tr>
+              <tr>
+                <td>파키스탄</td>
+                <td><span class="badge-blue">중재</span></td>
+                <td class="wide">즉각 휴전 후 협상 진행 중재안 제시. 이란 거부.</td>
+              </tr>
+              <tr>
+                <td>하마스</td>
+                <td><span class="badge-blue">조건부 지지</span></td>
+                <td class="wide">이란 자위권 지지, 단 걸프 국가 공격 자제 요청. 휴전 중재국(카타르·사우디) 배려.</td>
+              </tr>
+              <tr>
+                <td>러시아·중국</td>
+                <td><span class="badge-blue">중립/반대</span></td>
+                <td class="wide">미국 선제 공격 비판. UN 안보리 논의 촉구. 에너지 공급 차질 우려.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 핵 문제 핵심 -->
+      <div class="card animate d4" style="border-color:rgba(245,158,11,0.3)">
+        <div class="section-title">☢️ 전쟁의 핵심: 이란 핵 문제</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <p style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--text)">전쟁 전 이란 핵 능력</p>
+            <ul style="font-size:13px;color:var(--text-secondary);line-height:1.8;padding-left:16px">
+              <li>60% 고농축 우라늄 <strong style="color:var(--text)">972파운드</strong> 비축 (IAEA)</li>
+              <li>무기급(90%) 도달까지 수 개월 소요 추정</li>
+              <li>나탄즈·포르도 지하 시설 — 벙커버스터 필요</li>
+              <li>핵무기 보유 여부 불명확 (공식 미보유)</li>
+            </ul>
+          </div>
+          <div>
+            <p style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--text)">공습 후 현황</p>
+            <ul style="font-size:13px;color:var(--text-secondary);line-height:1.8;padding-left:16px">
+              <li>지하 시설 상당량 <strong style="color:var(--text)">지하에 매몰</strong></li>
+              <li>핵 활동 완전 차단 여부 <strong style="color:var(--accent)">불확실</strong></li>
+              <li>한국: "핵 제거냐 협상이냐" 트럼프 갈림길</li>
+              <li>이란 협상 조건에 핵 포기 명시 없음</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 관련 지식 -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="axis-of-resistance.html" class="related-card">
+            <div class="r-label">→ 연관 카드</div>
+            <div class="r-title">저항의 축 — 이란의 중동 대리 세력 네트워크</div>
+          </a>
+          <a href="houthi-ansar-allah.html" class="related-card">
+            <div class="r-label">→ 연관 카드</div>
+            <div class="r-title">후티(안사르 알라) — 예멘 실질 통치 세력의 실체</div>
+          </a>
+          <a href="iran-houthi-strategy.html" class="related-card">
+            <div class="r-label">→ 연관 카드</div>
+            <div class="r-title">이란이 후티를 지원하는 이유 — 6가지 전략적 계산</div>
+          </a>
+          <a href="middle-east-wars-overview.html" class="related-card">
+            <div class="r-label">→ 배경 지식</div>
+            <div class="r-title">중동전쟁 1~4차 역사</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">출처: 연합뉴스(2026.03.24) · 조선일보(2026.03.16·26) · ISW 특별보고서(2026.04.06) · YTN · 나무위키 (2026.04.08 기준, 전쟁 진행 중)</p>
+    </div>
+  </main>
+
+  <script>
+    var THEMES=['theme-dark','theme-light'];
+    var THEME_LABELS={'theme-dark':'Dark','theme-light':'Light'};
+    (function(){var s=localStorage.getItem('ka-theme')||'theme-dark';document.documentElement.className=s;var l=document.getElementById('themeLabel');if(l)l.textContent=THEME_LABELS[s];})();
+    function cycleTheme(){var c=document.documentElement.className;var n=THEMES[(THEMES.indexOf(c)+1)%THEMES.length];document.documentElement.className=n;localStorage.setItem('ka-theme',n);var l=document.getElementById('themeLabel');if(l)l.textContent=THEME_LABELS[n];closeMenu();}
+    function toggleMenu(){document.getElementById('vizMenuDropdown').classList.toggle('open');}
+    function closeMenu(){document.getElementById('vizMenuDropdown').classList.remove('open');}
+    document.addEventListener('click',function(e){if(!e.target.closest('.viz-menu'))closeMenu();});
+    function downloadImage(){closeMenu();if(typeof htmlToImage==='undefined'){alert('라이브러리 로딩 중...');return;}htmlToImage.toPng(document.getElementById('main'),{pixelRatio:2}).then(function(d){var a=document.createElement('a');a.download='iran-israel-war-2026.png';a.href=d;a.click();});}
+  </script>
+</body>
+</html>

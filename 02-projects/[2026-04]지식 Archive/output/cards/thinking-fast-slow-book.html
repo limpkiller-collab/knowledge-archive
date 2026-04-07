@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>《생각에 관한 생각》 — Kahneman 5부 핵심 요약</title>
+  <meta name="knowledge-id" content="thinking-fast-slow-book">
+  <meta name="knowledge-tags" content="행동경제학,심리,투자,도서">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-08">
+  <meta name="knowledge-source" content="Daniel Kahneman, Thinking Fast and Slow (2011)">
+  <meta name="knowledge-category" content="투자·주식">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #8b5cf6; --accent2: #7c3aed;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(139,92,246,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+      --p1-bg: #0d0a1e; --p1-border: #3730a3; --p1-text: #a5b4fc;
+      --p2-bg: #0a1a10; --p2-border: #14532d; --p2-text: #4ade80;
+      --p3-bg: #1a1005; --p3-border: #78350f; --p3-text: #fbbf24;
+      --p4-bg: #1a0510; --p4-border: #9f1239; --p4-text: #fb7185;
+      --p5-bg: #0a0e1a; --p5-border: #1e3a5f; --p5-text: #60a5fa;
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #7c3aed; --accent2: #6d28d9;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(124,58,237,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+      --p1-bg: #eef2ff; --p1-border: #c7d2fe; --p1-text: #4338ca;
+      --p2-bg: #f0fdf4; --p2-border: #bbf7d0; --p2-text: #166534;
+      --p3-bg: #fffbeb; --p3-border: #fde68a; --p3-text: #92400e;
+      --p4-bg: #fff1f2; --p4-border: #fecdd3; --p4-text: #9f1239;
+      --p5-bg: #eff6ff; --p5-border: #bfdbfe; --p5-text: #1d4ed8;
+    }
+    body { font-family: 'Noto Sans KR','Inter',sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; letter-spacing: -0.011em; transition: background 0.3s, color 0.3s; min-height: 100vh; }
+    body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse 70% 50% at 50% 10%, color-mix(in srgb, var(--accent), transparent 88%), transparent); }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+
+    /* Menu */
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--menu-border); background: var(--menu-bg); color: var(--menu-text); cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(12px); transition: all 0.2s; }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px; background: var(--menu-bg); backdrop-filter: blur(16px); border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px; opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96); transition: all 0.2s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: none; background: transparent; color: var(--menu-text); font-size: 14px; font-family: inherit; cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left; }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    /* Nav / Hero */
+    .nav-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent); text-decoration: none; margin-bottom: 24px; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .nav-back:hover { background: var(--surface-hover); }
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(1.6rem, 4.5vw, 2.4rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 580px; margin: 0 auto; line-height: 1.7; }
+
+    /* Meta */
+    .meta-bar { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 36px; font-size: 12px; color: var(--text-secondary); }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-intermediate { background: var(--chip-amber); color: var(--warning); }
+    .tag-chip { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+    .category-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
+    .cat-투자주식 { background: rgba(16,185,129,0.12); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+    html.theme-light .cat-투자주식 { background: rgba(16,185,129,0.08); }
+
+    /* Card */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease; }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
+    .mb-20 { margin-bottom: 20px; }
+
+    /* Book overview */
+    .book-cover { display: flex; align-items: flex-start; gap: 20px; padding: 20px; border-radius: 12px; background: var(--chip-accent); border: 1px solid rgba(139,92,246,0.2); margin-bottom: 20px; }
+    .book-spine { flex-shrink: 0; width: 56px; height: 80px; border-radius: 4px; background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%); display: flex; align-items: center; justify-content: center; box-shadow: 3px 3px 10px rgba(0,0,0,0.3); }
+    .book-spine span { writing-mode: vertical-rl; text-orientation: mixed; font-size: 9px; font-weight: 700; color: white; letter-spacing: 0.1em; transform: rotate(180deg); }
+    .book-info { flex: 1; }
+    .book-title { font-size: 17px; font-weight: 800; color: var(--accent); margin-bottom: 4px; letter-spacing: -0.02em; }
+    .book-en { font-size: 12px; color: var(--text-secondary); font-style: italic; margin-bottom: 8px; }
+    .book-meta { font-size: 12px; color: var(--text-secondary); line-height: 1.7; }
+    .book-meta strong { color: var(--text); }
+
+    /* Part header */
+    .part-header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px; margin-bottom: 14px; }
+    .part-num { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; flex-shrink: 0; }
+    .part-title { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+    .part-sub { font-size: 11px; opacity: 0.75; margin-top: 1px; }
+
+    .part-1 { background: var(--p1-bg); border: 1.5px solid var(--p1-border); }
+    .part-1 .part-num { background: var(--p1-border); color: var(--p1-text); }
+    .part-1 .part-title { color: var(--p1-text); }
+
+    .part-2 { background: var(--p2-bg); border: 1.5px solid var(--p2-border); }
+    .part-2 .part-num { background: var(--p2-border); color: var(--p2-text); }
+    .part-2 .part-title { color: var(--p2-text); }
+
+    .part-3 { background: var(--p3-bg); border: 1.5px solid var(--p3-border); }
+    .part-3 .part-num { background: var(--p3-border); color: var(--p3-text); }
+    .part-3 .part-title { color: var(--p3-text); }
+
+    .part-4 { background: var(--p4-bg); border: 1.5px solid var(--p4-border); }
+    .part-4 .part-num { background: var(--p4-border); color: var(--p4-text); }
+    .part-4 .part-title { color: var(--p4-text); }
+
+    .part-5 { background: var(--p5-bg); border: 1.5px solid var(--p5-border); }
+    .part-5 .part-num { background: var(--p5-border); color: var(--p5-text); }
+    .part-5 .part-title { color: var(--p5-text); }
+
+    /* Concept items */
+    .concept-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 4px; }
+    .concept-item { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); }
+    .concept-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .concept-desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.65; }
+    .concept-example { margin-top: 8px; padding: 8px 12px; border-radius: 7px; background: var(--surface-hover); font-size: 12px; color: var(--text-secondary); border-left: 2px solid var(--border); }
+    .concept-example strong { color: var(--text); }
+
+    /* Quote */
+    .quote-box { padding: 16px 20px; border-radius: 10px; border-left: 3px solid var(--accent); background: var(--surface); font-size: 13px; line-height: 1.75; color: var(--text-secondary); margin-bottom: 16px; font-style: italic; }
+    .quote-box cite { display: block; margin-top: 6px; font-style: normal; font-weight: 600; font-size: 12px; color: var(--accent); }
+
+    /* Highlight */
+    .highlight-box { padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border); background: var(--chip-accent); font-size: 13.5px; line-height: 1.7; margin-bottom: 16px; }
+    .highlight-box strong { color: var(--accent); }
+
+    /* Two-self diagram */
+    .self-diagram { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+    .self-box { padding: 18px; border-radius: 12px; }
+    .self-exp { background: var(--p5-bg); border: 1.5px solid var(--p5-border); }
+    .self-mem { background: var(--p4-bg); border: 1.5px solid var(--p4-border); }
+    .self-title { font-size: 14px; font-weight: 800; margin-bottom: 8px; }
+    .self-title-exp { color: var(--p5-text); }
+    .self-title-mem { color: var(--p4-text); }
+    .self-item { font-size: 12px; color: var(--text-secondary); display: flex; gap: 6px; align-items: flex-start; margin-bottom: 5px; line-height: 1.5; }
+    .self-dot { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+    .self-dot-exp { background: var(--p5-text); }
+    .self-dot-mem { background: var(--p4-text); }
+
+    /* KPI row */
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.45rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    /* Takeaway */
+    .takeaway-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 0; }
+    .takeaway-box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); }
+    .takeaway-part { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 4px; }
+    .takeaway-text { font-size: 12.5px; line-height: 1.6; }
+
+    /* Related */
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 16px; }
+    table { min-width: 480px; width: 100%; border-collapse: collapse; }
+    table th { background: var(--surface); font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-secondary); padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    table td { font-size: 13px; padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+    table tr:last-child td { border-bottom: none; }
+    table tr:hover td { background: var(--surface-hover); }
+    table td:first-child, table th:first-child { color: var(--text); font-weight: 600; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}.d4{animation-delay:.24s}.d5{animation-delay:.30s}.d6{animation-delay:.36s}.d7{animation-delay:.42s}.d8{animation-delay:.48s}
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+    @media (max-width: 640px) {
+      .kpi-row, .self-diagram, .takeaway-grid { grid-template-columns: 1fr; }
+      .book-cover { flex-direction: column; align-items: center; text-align: center; }
+      .container { padding: 48px 16px 60px; }
+    }
+    @media print { body { background: white !important; } .viz-menu { display: none !important; } .card { break-inside: avoid; } * { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/></svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">📚 도서 요약 · 행동경제학</div>
+        <h1>《생각에 관한 생각》<br><span style="color:var(--accent); font-size:0.7em; font-weight:500">Thinking, Fast and Slow</span></h1>
+        <p class="hero-sub">노벨 경제학상 수상자 Kahneman이 집대성한 인간 판단의 과학 — 빠른 System 1과 느린 System 2, 두 사고 체계가 어떻게 우리를 오류로 이끄는가</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="category-badge cat-투자주식">📈 투자·주식</span>
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="tag-chip">#행동경제학</span>
+        <span class="tag-chip">#심리</span>
+        <span class="tag-chip">#투자</span>
+        <span class="tag-chip">#도서</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.08
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Daniel Kahneman
+        </span>
+      </div>
+
+      <!-- Book Overview -->
+      <div class="animate d2 mb-20">
+        <div class="book-cover">
+          <div class="book-spine">
+            <span>Thinking Fast & Slow</span>
+          </div>
+          <div class="book-info">
+            <div class="book-title">《생각에 관한 생각》</div>
+            <div class="book-en">Thinking, Fast and Slow — Daniel Kahneman (2011)</div>
+            <div class="book-meta">
+              <strong>저자:</strong> Daniel Kahneman (프린스턴 대학, 2002년 노벨 경제학상) &nbsp;|&nbsp;
+              <strong>원서:</strong> Farrar, Straus and Giroux, 2011 &nbsp;|&nbsp;
+              <strong>핵심:</strong> 40년간의 심리학·행동경제학 연구를 5부로 집대성. 인간이 불확실성 속에서 어떻게 판단·결정하며, 그 과정에서 왜 체계적으로 오류를 범하는지 해명.
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI -->
+        <div class="kpi-row">
+          <div class="kpi-item">
+            <div class="kpi-value" style="color:var(--accent)">5부</div>
+            <div class="kpi-label">구성 체계</div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-value" style="color:var(--text-secondary)">40년</div>
+            <div class="kpi-label">연구 집대성</div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-value" style="color:var(--accent)">2002</div>
+            <div class="kpi-label">노벨상 수상</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Part 1 -->
+      <div class="card mb-20 animate d3">
+        <p class="section-title">Part 1</p>
+        <div class="part-header part-1">
+          <div class="part-num">1</div>
+          <div>
+            <div class="part-title">두 시스템 — Two Systems</div>
+            <div class="part-sub" style="color:var(--p1-text)">인간 인지의 이중 구조</div>
+          </div>
+        </div>
+
+        <div class="concept-list">
+          <div class="concept-item">
+            <div class="concept-name">System 1 vs System 2</div>
+            <div class="concept-desc">System 1은 자동적·빠름·무의식 — 감각 입력을 즉시 해석하고 직관적 판단을 생성. System 2는 느림·의도적·논리적 — 복잡한 계산과 규칙 적용을 담당하지만 에너지 소비가 크다. 대부분 판단은 System 1이 초안을 쓰고 System 2가 수정(하지 않는다).</div>
+            <div class="concept-example"><strong>투자 적용:</strong> 주가 차트를 보는 순간 "오를 것 같다"는 느낌 = System 1. DCF 모델을 돌리는 행위 = System 2.</div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-name">인지 용이성 (Cognitive Ease)</div>
+            <div class="concept-desc">처리하기 쉬운 정보는 더 친숙하고, 더 진실처럼, 더 좋은 것처럼 느껴진다. 반복 노출·선명한 폰트·예측 가능한 패턴이 인지 용이성을 높인다.</div>
+            <div class="concept-example"><strong>Mere Exposure Effect (단순 노출 효과):</strong> 이전에 본 주식 ticker만으로 더 긍정적으로 평가하는 경향. IPO 후 미디어에 많이 노출된 종목이 단기 프리미엄 형성.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Part 2 -->
+      <div class="card mb-20 animate d4">
+        <p class="section-title">Part 2</p>
+        <div class="part-header part-2">
+          <div class="part-num">2</div>
+          <div>
+            <div class="part-title">휴리스틱과 편향 — Heuristics &amp; Biases</div>
+            <div class="part-sub" style="color:var(--p2-text)">판단의 지름길과 그 대가</div>
+          </div>
+        </div>
+
+        <div class="concept-list">
+          <div class="concept-item">
+            <div class="concept-name">회귀(Regression to the Mean)</div>
+            <div class="concept-desc">극단적 성과는 부분적으로 우연에 기인하며, 다음 측정에서는 평균으로 회귀하는 경향이 있다. 그러나 우리는 극단적 결과에 인과적 설명을 붙이고 지속성을 기대한다.</div>
+            <div class="concept-example"><strong>투자 함의:</strong> 올해 수익률 상위 10% 펀드가 내년에도 상위 10%일 확률은 통계적으로 기대보다 낮다. Hot-hand 믿음의 근원.</div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-name">후광 효과 (Halo Effect)</div>
+            <div class="concept-desc">한 가지 긍정적 특성이 다른 특성에 대한 판단을 오염시킨다. 첫인상이 이후 모든 평가에 영향을 미치며, 정보를 독립적으로 처리하지 못하게 만든다.</div>
+            <div class="concept-example"><strong>투자 함의:</strong> 좋아하는 CEO나 브랜드의 기업은 재무제표 분석 없이도 매수하고 싶어진다.</div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-name">WYSIATI (What You See Is All There Is)</div>
+            <div class="concept-desc">"보이는 것이 전부다." System 1은 부재(不在)하는 정보를 고려하지 않고, 현재 가용한 증거만으로 서사를 구성하고 결론을 내린다.</div>
+            <div class="concept-example"><strong>투자 함의:</strong> IR 자료와 경영진 발표만 보고 매수 결정 — 공개되지 않은 리스크, 경쟁자 상황, 거시 변수를 자동으로 무시.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Part 3 -->
+      <div class="card mb-20 animate d5">
+        <p class="section-title">Part 3</p>
+        <div class="part-header part-3">
+          <div class="part-num">3</div>
+          <div>
+            <div class="part-title">과신 — Overconfidence</div>
+            <div class="part-sub" style="color:var(--p3-text)">우리는 얼마나 자신을 모르는가</div>
+          </div>
+        </div>
+
+        <div class="quote-box" style="border-left-color:var(--p3-text)">
+          "우리가 틀렸을 때 우리는 대체로 왜 틀렸는지 이해하지 못한다. 우리는 스스로 알고 있다고 착각한다."
+          <cite>— Kahneman</cite>
+        </div>
+
+        <div class="concept-list">
+          <div class="concept-item">
+            <div class="concept-name">계획 오류 (Planning Fallacy)</div>
+            <div class="concept-desc">프로젝트 비용·시간을 체계적으로 낙관적으로 추정하는 현상. 내부 관점(자신의 계획)에만 집중하고 통계적 기저율(유사 프로젝트의 실제 결과)을 무시한다.</div>
+            <div class="concept-example"><strong>투자 함의:</strong> 스타트업 기업 가치 평가 시 창업자 및 VC의 성장률 가정은 실현율이 낮다. 기저율(같은 섹터 기업들의 성장 분포)로 보정 필요.</div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-name">생존 편향 (Survivorship Bias)</div>
+            <div class="concept-desc">성공한 사례만 기록에 남고 실패한 사례는 사라지기 때문에, 가용한 데이터가 현실보다 낙관적으로 편향된다. 패자는 역사를 쓰지 않는다.</div>
+            <div class="concept-example"><strong>투자 함의:</strong> 상장 폐지·합병된 기업이 제외된 지수 수익률, 폐업한 펀드가 제외된 펀드 평균 수익률은 모두 과대평가.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Part 4 -->
+      <div class="card mb-20 animate d6">
+        <p class="section-title">Part 4</p>
+        <div class="part-header part-4">
+          <div class="part-num">4</div>
+          <div>
+            <div class="part-title">선택 — Choices</div>
+            <div class="part-sub" style="color:var(--p4-text)">전망이론과 손실회피</div>
+          </div>
+        </div>
+
+        <div class="concept-list">
+          <div class="concept-item">
+            <div class="concept-name">전망이론 (Prospect Theory)</div>
+            <div class="concept-desc">이익과 손실을 절대값이 아닌 기준점(reference point) 대비 상대값으로 평가. 가치함수는 이익 구간 오목(위험 회피), 손실 구간 볼록(위험 선호)하며 비대칭적이다.</div>
+            <div class="concept-example"><strong>핵심 공식:</strong> 손실의 고통 ≈ 동등 이익 기쁨의 2~2.5배 (λ ≈ 2~2.5)</div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-name">확실성 효과 (Certainty Effect)</div>
+            <div class="concept-desc">확실한 결과를 불확실한 결과보다 과도하게 선호하는 경향. 95% 확률의 큰 이익보다 확실한 작은 이익을 선택하지만, 손실 구간에서는 확실한 손실보다 불확실한 큰 손실을 감수한다.</div>
+            <div class="concept-example"><strong>투자 함의:</strong> 작은 이익에서 일찍 익절 (확실성 효과) + 큰 손실에서 버티기 (손실회피) = 프로스펙트 이론의 전형적 투자 오류.</div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-name">프레이밍 효과 (Framing Effect)</div>
+            <div class="concept-desc">동일한 정보라도 표현 방식(프레임)에 따라 판단이 달라진다. "생존율 90%"와 "사망률 10%"는 수학적으로 동일하지만 전자에 더 긍정적 반응을 보인다.</div>
+            <div class="concept-example"><strong>투자 함의:</strong> "수익률 +15%"와 "시장 대비 -3%"는 같은 결과일 수 있지만 전혀 다른 감정적 반응을 유발한다.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Part 5 -->
+      <div class="card mb-20 animate d7">
+        <p class="section-title">Part 5</p>
+        <div class="part-header part-5">
+          <div class="part-num">5</div>
+          <div>
+            <div class="part-title">두 자아 — Two Selves</div>
+            <div class="part-sub" style="color:var(--p5-text)">경험하는 자아 vs 기억하는 자아</div>
+          </div>
+        </div>
+
+        <div class="self-diagram">
+          <div class="self-box self-exp">
+            <div class="self-title self-title-exp">경험하는 자아<br><span style="font-size:11px;font-weight:400">Experiencing Self</span></div>
+            <div class="self-item"><span class="self-dot self-dot-exp"></span>현재 이 순간을 살아감</div>
+            <div class="self-item"><span class="self-dot self-dot-exp"></span>약 3초 단위의 현재 경험</div>
+            <div class="self-item"><span class="self-dot self-dot-exp"></span>실제로 느끼는 고통과 기쁨</div>
+            <div class="self-item"><span class="self-dot self-dot-exp"></span>지속 시간을 인식함</div>
+          </div>
+          <div class="self-box self-mem">
+            <div class="self-title self-title-mem">기억하는 자아<br><span style="font-size:11px;font-weight:400">Remembering Self</span></div>
+            <div class="self-item"><span class="self-dot self-dot-mem"></span>과거를 평가하고 기록함</div>
+            <div class="self-item"><span class="self-dot self-dot-mem"></span>이야기를 만들어 저장</div>
+            <div class="self-item"><span class="self-dot self-dot-mem"></span>의사결정을 지배함</div>
+            <div class="self-item"><span class="self-dot self-dot-mem"></span>지속 시간을 무시함</div>
+          </div>
+        </div>
+
+        <div class="concept-list">
+          <div class="concept-item">
+            <div class="concept-name">Peak-End Rule</div>
+            <div class="concept-desc">경험의 전체 지속 시간을 무시하고, <strong>가장 강렬했던 순간(Peak)과 마지막 순간(End)</strong>의 평균으로 전체 경험을 평가한다.</div>
+            <div class="concept-example">
+              <strong>찬물 실험 (Kahneman et al.):</strong><br>
+              A: 14°C 물에 60초 손 담금<br>
+              B: 14°C 물에 60초 + 이후 60초 동안 15°C로 서서히 상승<br>
+              대부분이 B(더 오래 고통)를 재선택 → 끝이 조금 나아지면 전체 경험을 더 좋게 기억
+            </div>
+            <div class="concept-example" style="margin-top:6px"><strong>투자 함의:</strong> 장기 수익이 좋았어도 직전 고점에서 큰 손실을 보면 전체 투자 경험을 부정적으로 기억. 투자 끝맺음의 중요성.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Takeaways for investors -->
+      <div class="card mb-20 animate d8">
+        <p class="section-title">투자자를 위한 핵심 교훈 — 5부 요약</p>
+        <div class="takeaway-grid">
+          <div class="takeaway-box">
+            <div class="takeaway-part" style="color:var(--p1-text)">1부 · 두 시스템</div>
+            <div class="takeaway-text">System 1이 생성한 직관적 판단을 System 2로 검증하는 절차를 갖출 것. 체크리스트·투자노트 활용.</div>
+          </div>
+          <div class="takeaway-box">
+            <div class="takeaway-part" style="color:var(--p2-text)">2부 · 휴리스틱·편향</div>
+            <div class="takeaway-text">후광 효과를 경계하고, WYSIATI를 극복하기 위해 보이지 않는 정보(경쟁사, 거시)를 의도적으로 탐색.</div>
+          </div>
+          <div class="takeaway-box">
+            <div class="takeaway-part" style="color:var(--p3-text)">3부 · 과신</div>
+            <div class="takeaway-text">기저율을 먼저 확인하고 내부 관점과 결합. 생존 편향을 피하기 위해 실패 사례를 포함한 데이터 탐색.</div>
+          </div>
+          <div class="takeaway-box">
+            <div class="takeaway-part" style="color:var(--p4-text)">4부 · 선택</div>
+            <div class="takeaway-text">손절과 이익 실현 기준을 사전에 정해 프레이밍·손실회피 영향을 차단. 규칙 기반 매매.</div>
+          </div>
+          <div class="takeaway-box" style="grid-column: span 2;">
+            <div class="takeaway-part" style="color:var(--p5-text)">5부 · 두 자아</div>
+            <div class="takeaway-text">투자 일지를 작성하여 경험하는 자아의 기록을 남길 것. 기억하는 자아는 Peak-End로 왜곡하므로, 실제 데이터 기반 회고가 필수적이다.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="related-section animate d8">
+        <h3>관련 카드</h3>
+        <div class="related-grid">
+          <a href="heuristics-cognitive.html" class="related-card">
+            <div class="r-label">연관 개념</div>
+            <div class="r-title">휴리스틱 & System 1/2 프레임워크</div>
+          </a>
+          <a href="heuristics-deep-dive.html" class="related-card">
+            <div class="r-label">연관 개념</div>
+            <div class="r-title">3대 휴리스틱 심화 실험</div>
+          </a>
+          <a href="loss-aversion.html" class="related-card">
+            <div class="r-label">연관 개념</div>
+            <div class="r-title">손실회피 경향</div>
+          </a>
+          <a href="probability-weighting-function.html" class="related-card">
+            <div class="r-label">연관 개념</div>
+            <div class="r-title">확률 가중치 함수</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d8">
+        출처: Daniel Kahneman, <em>Thinking, Fast and Slow</em> (Farrar, Straus and Giroux, 2011) · 국내 번역: 김영사, 2012
+      </p>
+    </div>
+  </main>
+
+  <script>
+    const themes = ['dark','light'];
+    let ti = 0;
+    const savedTheme = localStorage.getItem('ka-theme');
+    if(savedTheme){ ti = themes.indexOf(savedTheme); if(ti<0)ti=0; }
+    applyTheme(themes[ti]);
+    function applyTheme(t){
+      document.documentElement.className = 'theme-'+t;
+      const lbl = document.getElementById('themeLabel');
+      if(lbl) lbl.textContent = t==='dark'?'Dark':'Light';
+      localStorage.setItem('ka-theme',t);
+    }
+    function cycleTheme(){ ti=(ti+1)%themes.length; applyTheme(themes[ti]); }
+    function toggleMenu(){
+      const d=document.getElementById('vizMenuDropdown');
+      d.classList.toggle('open');
+    }
+    document.addEventListener('click',function(e){
+      if(!e.target.closest('.viz-menu')){
+        const d=document.getElementById('vizMenuDropdown');
+        if(d) d.classList.remove('open');
+      }
+    });
+    function downloadImage(){
+      const el=document.getElementById('main');
+      htmlToImage.toPng(el,{quality:0.95,backgroundColor:getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()})
+        .then(function(dataUrl){
+          const a=document.createElement('a');
+          a.download='thinking-fast-slow-book.png';
+          a.href=dataUrl; a.click();
+        });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>이란이 후티를 지원하는 이유 — 6가지 전략적 계산</title>
+  <meta name="knowledge-id" content="iran-houthi-strategy">
+  <meta name="knowledge-tags" content="국제정치,중동,지정학,전략,이란">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-08">
+  <meta name="knowledge-source" content="Pennmike·MEI·NBC뉴스·First News·Namu Wiki">
+  <meta name="knowledge-category" content="시사·컬처">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #f97316; --accent2: #f43f5e;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(249,115,22,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #ea580c; --accent2: #dc2626;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(234,88,12,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%,
+        color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* 뷰 메뉴 */
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--menu-border); background: var(--menu-bg);
+      color: var(--menu-text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(12px); transition: all 0.2s;
+    }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px;
+      background: var(--menu-bg); backdrop-filter: blur(16px);
+      border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px;
+      opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border: none; background: transparent;
+      color: var(--menu-text); font-size: 14px; font-family: inherit;
+      cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left;
+    }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    /* 뒤로가기 */
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      margin-bottom: 24px; padding: 6px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface); transition: background 0.15s;
+    }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    /* 히어로 */
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--text-secondary);
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 540px; margin: 0 auto; line-height: 1.7; }
+
+    /* 메타 바 */
+    .meta-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 36px;
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .diff-badge {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      border: 1px solid var(--border);
+    }
+    .diff-intermediate { background: var(--chip-amber); color: var(--warning); }
+    .tag-chip {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500;
+      background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary);
+    }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+    .category-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.02em; white-space: nowrap;
+    }
+    .cat-시사컬처 { background:rgba(244,63,94,0.12); color:#f43f5e; border:1px solid rgba(244,63,94,0.3); }
+    html.theme-light .cat-시사컬처 { background:rgba(244,63,94,0.08); }
+
+    /* 카드 */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease;
+      margin-bottom: 16px;
+    }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title {
+      font-size: 12px; font-weight: 700; color: var(--text-secondary);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px;
+    }
+
+    /* KPI 행 */
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    /* 하이라이트 박스 */
+    .highlight-box {
+      padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--chip-accent); font-size: 13.5px; line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .highlight-box strong { color: var(--accent); }
+
+    /* 인용 박스 */
+    .quote-box {
+      padding: 16px 20px; border-radius: 10px; border-left: 3px solid var(--accent);
+      background: var(--surface); font-size: 13px; line-height: 1.7;
+      color: var(--text-secondary); margin-bottom: 12px; font-style: italic;
+    }
+    .quote-box cite { display: block; margin-top: 6px; font-style: normal; font-weight: 600; font-size: 12px; color: var(--accent); }
+
+    /* 6가지 이유 카드 그리드 */
+    .reason-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+    .reason-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 20px; position: relative; overflow: hidden;
+    }
+    .reason-card::before {
+      content: attr(data-num);
+      position: absolute; top: 14px; right: 16px;
+      font-size: 2.5rem; font-weight: 900; color: var(--accent);
+      opacity: 0.08; line-height: 1; letter-spacing: -0.04em;
+    }
+    .reason-num {
+      display: inline-block; width: 22px; height: 22px; border-radius: 50%;
+      background: var(--accent); color: white; font-size: 11px; font-weight: 700;
+      text-align: center; line-height: 22px; margin-bottom: 10px; flex-shrink: 0;
+    }
+    .reason-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+    .reason-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+    .reason-desc strong { color: var(--text); }
+
+    /* 지도 개념 카드 */
+    .geo-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 20px; margin-bottom: 16px;
+    }
+    .geo-title { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+    .geo-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+    .geo-desc strong { color: var(--text); }
+
+    /* 상호 의존 다이어그램 */
+    .depend-grid { display: grid; grid-template-columns: 1fr 40px 1fr; align-items: center; gap: 8px; margin: 16px 0; }
+    .depend-box {
+      padding: 16px; border-radius: 10px; border: 1px solid var(--border);
+      text-align: center; font-size: 13px;
+    }
+    .depend-box .name { font-size: 15px; font-weight: 700; margin-bottom: 8px; color: var(--accent); }
+    .depend-box .items { font-size: 12px; color: var(--text-secondary); line-height: 1.7; }
+    .depend-arrow { text-align: center; font-size: 18px; color: var(--text-secondary); }
+
+    /* 관련 지식 */
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    /* 푸터 */
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    /* 애니메이션 */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+    @media (max-width: 640px) {
+      .kpi-row { grid-template-columns: 1fr; }
+      .reason-grid { grid-template-columns: 1fr; }
+      .depend-grid { grid-template-columns: 1fr; }
+      .depend-arrow { transform: rotate(90deg); }
+      .container { padding: 48px 16px 60px; }
+    }
+    @media print {
+      body { background: white !important; }
+      .viz-menu { display: none !important; }
+      .card { break-inside: avoid; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">🕵️ 중동 지정학 · 대리전</div>
+        <h1>이란이 후티를 지원하는 이유<br>6가지 전략적 계산</h1>
+        <p class="hero-sub">사우디 포위·저항의 축·홍해 카드·저비용 대리전 — 이란이 후티를 포기할 수 없는 구조적 이유 완전 분석</p>
+      </header>
+
+      <!-- 메타 바 -->
+      <div class="meta-bar animate d1">
+        <span class="category-badge cat-시사컬처">🌍 시사·컬처</span>
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="tag-chip">#지정학</span>
+        <span class="tag-chip">#이란</span>
+        <span class="tag-chip">#중동</span>
+        <span class="tag-chip">#대리전</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.08
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Pennmike · MEI · NBC뉴스
+        </span>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-row animate d2">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">6</div>
+          <div class="kpi-label">이란의 지원 전략 이유</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:#f43f5e">2개</div>
+          <div class="kpi-label">이란이 통제하는 해협</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--positive)">저비용</div>
+          <div class="kpi-label">직접 개입 없는 대리전</div>
+        </div>
+      </div>
+
+      <!-- 핵심 하이라이트 -->
+      <div class="highlight-box animate d2">
+        이란이 후티를 지원하는 것은 단순한 종파적 연대가 아니다. <strong>사우디 포위, 홍해 통제, 미국·이스라엘 압박 카드, 저비용 대리전력 확보</strong>라는 다층적 전략 목표가 맞물린 결과다. 이란 본토를 직접 노출시키지 않고도 세계 에너지 시장과 물류를 압박할 수 있는 구조.
+      </div>
+
+      <!-- 지정학적 배경: 두 해협 -->
+      <div class="card animate d3">
+        <div class="section-title">🗺️ 핵심 지정학 개념: 두 개의 목줄</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="geo-card" style="margin-bottom:0">
+            <div class="geo-title">🛢️ 호르무즈 해협 (이란 직접 통제)</div>
+            <div class="geo-desc">페르시아만 입구. <strong>걸프산 원유의 관문</strong>. 막히면 사우디·UAE·이라크·쿠웨이트 원유가 빠져나오지 못한다. 이란이 직접 위협 가능.</div>
+          </div>
+          <div class="geo-card" style="margin-bottom:0">
+            <div class="geo-title">⚓ 바브엘만데브 해협 (후티가 통제)</div>
+            <div class="geo-desc">홍해와 아덴만 사이. <strong>유럽행 원유·물자의 마지막 관문</strong>. 후티를 통해 이란이 간접 통제. 막히면 희망봉으로 우회 필요.</div>
+          </div>
+        </div>
+        <div class="highlight-box" style="margin-top:12px; margin-bottom:0">
+          호르무즈가 막히면 걸프산 원유가 <strong>빠져나오지 못하고</strong>, 바브엘만데브가 막히면 <strong>유럽까지 도달하지 못한다</strong>. 이란은 두 목줄을 동시에 쥠으로써 세계 에너지 시장 전체를 압박하는 구조를 보유.
+        </div>
+      </div>
+
+      <!-- 6가지 이유 -->
+      <div class="card animate d3">
+        <div class="section-title">⚙️ 이란이 후티를 지원하는 6가지 이유</div>
+        <div class="reason-grid">
+          <div class="reason-card" data-num="1">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px">
+              <div class="reason-num">1</div>
+              <div class="reason-title">사우디아라비아 포위 전략</div>
+            </div>
+            <div class="reason-desc">이란이 사우디를 포위하기 위해 대리전을 이끌고자 후티를 지원. 메카·메디나 바로 남쪽에 강력한 시아파 세력이 존재하는 것은 <strong>사우디에 심각한 안보 위협</strong>. 이란의 숙적인 사우디를 남쪽에서 옥죄는 전략적 위치.</div>
+          </div>
+          <div class="reason-card" data-num="2">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px">
+              <div class="reason-num">2</div>
+              <div class="reason-title">'저항의 축' 핵심 거점 확보</div>
+            </div>
+            <div class="reason-desc">중동연구소(MEI) 나드와 알다우사리 위원은 "후티는 IRGC에 포기할 수 없는 핵심 자산"이라고 분석. <strong>"이란 내부에 격변이 발생해도 예멘·소말리아를 거점으로 혁명수비대가 재결집할 수 있는 전략적 요충지"</strong>이기 때문.</div>
+          </div>
+          <div class="reason-card" data-num="3">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px">
+              <div class="reason-num">3</div>
+              <div class="reason-title">홍해·바브엘만데브라는 지정학적 무기</div>
+            </div>
+            <div class="reason-desc">이란 본토를 직접 노출시키지 않고도 <strong>후티를 통해 세계 에너지 시장을 압박</strong>할 수 있다. 수에즈 운하 통항량 60% 감소, 에일라트항 파산 등 실제 효과 입증. 간접 통제로 리스크를 최소화.</div>
+          </div>
+          <div class="reason-card" data-num="4">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px">
+              <div class="reason-num">4</div>
+              <div class="reason-title">미국·이스라엘 협상 카드</div>
+            </div>
+            <div class="reason-desc">NBC뉴스 전문가 분석: "이란이 후티 카드를 지금까지 아껴온 것은 <strong>미국과의 협상에서 쓸 수 있는 압박 수단으로 남겨두기 위한 것</strong>." 후티의 실제 참전은 이란이 협상보다 장기전을 택했다는 신호일 수 있다.</div>
+          </div>
+          <div class="reason-card" data-num="5">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px">
+              <div class="reason-num">5</div>
+              <div class="reason-title">저비용·고효율 비대칭 전력</div>
+            </div>
+            <div class="reason-desc">이란 입장에서 후티는 <strong>직접 군사 개입 없이도</strong> 지역 내 영향력을 행사하고 적국을 소모시킬 수 있는 대리 세력. 무기·훈련·정치적 후방을 제공하는 것만으로 수에즈 운하를 마비시키는 전략적 효과를 달성.</div>
+          </div>
+          <div class="reason-card" data-num="6">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px">
+              <div class="reason-num">6</div>
+              <div class="reason-title">상호 의존 구조 — 서로가 필요</div>
+            </div>
+            <div class="reason-desc">이란이 무너지면 후티의 존립도 급속히 불투명해진다. 반면 이란도 저항의 축이 약화되면 지역 패권을 잃는다. <strong>양측 모두 서로를 필요로 하는 구조</strong>적 결속 관계. 단순 지원이 아닌 공생 관계.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 상호 의존 구조 -->
+      <div class="card animate d4">
+        <div class="section-title">🔄 이란 ↔ 후티 상호 의존 구조</div>
+        <div class="depend-grid">
+          <div class="depend-box">
+            <div class="name">🇮🇷 이란</div>
+            <div class="items">
+              후티에게 제공<br>
+              · 무기 및 군사 기술<br>
+              · 혁명수비대(IRGC) 훈련<br>
+              · 정치적 외교적 후방<br>
+              · 재정 지원
+            </div>
+          </div>
+          <div class="depend-arrow">⇄</div>
+          <div class="depend-box">
+            <div class="name">🇾🇪 후티</div>
+            <div class="items">
+              이란에게 제공<br>
+              · 홍해·바브엘만데브 통제<br>
+              · 사우디 남쪽 압박 거점<br>
+              · 저항의 축 전략 공간<br>
+              · IRGC 재결집 예비 거점
+            </div>
+          </div>
+        </div>
+        <div class="quote-box" style="margin-top:4px">
+          "후티는 이란 혁명수비대에 있어 포기할 수 없는 핵심 자산이다. 이란 내부 체제에 격변이 발생하더라도 예멘이나 소말리아를 거점으로 혁명수비대가 재결집할 수 있는 전략적 요충지이기 때문이다."
+          <cite>— 나드와 알다우사리, 중동연구소(MEI) 위원</cite>
+        </div>
+        <div class="quote-box">
+          "이란이 후티 카드를 지금까지 아껴온 것은 미국과의 협상에서 쓸 수 있는 압박 수단으로 남겨두기 위한 것."
+          <cite>— 분야 전문가, NBC뉴스 인터뷰</cite>
+        </div>
+      </div>
+
+      <!-- 최근 균열과 전망 -->
+      <div class="card animate d5" style="border-color:rgba(245,158,11,0.3)">
+        <div class="section-title">⚠️ 최근 균열 — 통제 이탈 신호</div>
+        <div class="highlight-box" style="background:rgba(245,158,11,0.08); border-color:rgba(245,158,11,0.3); margin-bottom:12px">
+          영국 텔레그래프(이란 관료 인용): <strong style="color:#f59e0b">"후티가 더 이상 이란의 지시를 따르지 않고 있다."</strong> 이라크 시아파 민병대 일부에 대한 통제력도 약화된 상황. 미군 공습으로 인한 지도부 타격 이후 자율성 확대 — 이란에게 통제와 활용 사이의 딜레마.
+        </div>
+        <div style="font-size:13px; color:var(--text-secondary); line-height:1.7;">
+          이란의 딜레마: 후티가 독자 행동을 늘릴수록 <strong style="color:var(--text)">협상 카드로서의 가치는 올라가지만</strong>, 이란이 원치 않는 전면전으로 끌려갈 위험도 함께 상승한다. 2026년 이란-이스라엘 전쟁 발발 이후 후티의 독자 참전은 이란의 의도와 무관하게 확전의 기폭제가 될 수 있다.
+        </div>
+      </div>
+
+      <!-- 관련 지식 -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="houthi-ansar-allah.html" class="related-card">
+            <div class="r-label">→ 연관 카드</div>
+            <div class="r-title">후티(안사르 알라) — 예멘 실질 통치 세력의 실체</div>
+          </a>
+          <a href="middle-east-wars-overview.html" class="related-card">
+            <div class="r-label">→ 배경 지식</div>
+            <div class="r-title">중동전쟁 1~4차 — 아랍-이스라엘 전쟁의 역사</div>
+          </a>
+          <a href="israel-palestine-conflict.html" class="related-card">
+            <div class="r-label">→ 배경 지식</div>
+            <div class="r-title">이스라엘 건국과 팔레스타인 분쟁</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">출처: Pennmike · 중동연구소(MEI) 나드와 알다우사리 · NBC뉴스 · First News · Namu Wiki (2026.04.08 기준)</p>
+
+    </div>
+  </main>
+
+  <script>
+    var THEMES = ['theme-dark', 'theme-light'];
+    var THEME_LABELS = { 'theme-dark': 'Dark', 'theme-light': 'Light' };
+    (function() {
+      var saved = localStorage.getItem('ka-theme') || 'theme-dark';
+      document.documentElement.className = saved;
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[saved];
+    })();
+    function cycleTheme() {
+      var cur = document.documentElement.className;
+      var next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+      document.documentElement.className = next;
+      localStorage.setItem('ka-theme', next);
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[next];
+      closeMenu();
+    }
+    function toggleMenu() { document.getElementById('vizMenuDropdown').classList.toggle('open'); }
+    function closeMenu() { document.getElementById('vizMenuDropdown').classList.remove('open'); }
+    document.addEventListener('click', function(e) { if (!e.target.closest('.viz-menu')) closeMenu(); });
+    function downloadImage() {
+      closeMenu();
+      if (typeof htmlToImage === 'undefined') { alert('라이브러리 로딩 중...'); return; }
+      htmlToImage.toPng(document.getElementById('main'), { pixelRatio: 2 })
+        .then(function(dataUrl) {
+          var a = document.createElement('a'); a.download = 'iran-houthi-strategy.png'; a.href = dataUrl; a.click();
+        });
+    }
+  </script>
+</body>
+</html>

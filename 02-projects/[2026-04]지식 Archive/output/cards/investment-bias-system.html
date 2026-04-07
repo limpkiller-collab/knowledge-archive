@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>투자 편향 극복 시스템 — 감정을 차단하는 규칙 기반 투자법</title>
+  <meta name="knowledge-id" content="investment-bias-system">
+  <meta name="knowledge-tags" content="투자,위험관리,행동경제학,시스템">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-08">
+  <meta name="knowledge-source" content="행동경제학 투자 전략 연구">
+  <meta name="knowledge-category" content="투자·주식">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #10b981; --accent2: #059669;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(16,185,129,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #059669; --accent2: #047857;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(5,150,105,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+    body { font-family: 'Noto Sans KR','Inter',sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; letter-spacing: -0.011em; transition: background 0.3s, color 0.3s; min-height: 100vh; }
+    body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse 70% 50% at 50% 10%, color-mix(in srgb, var(--accent), transparent 88%), transparent); }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--menu-border); background: var(--menu-bg); color: var(--menu-text); cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(12px); transition: all 0.2s; }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px; background: var(--menu-bg); backdrop-filter: blur(16px); border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px; opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96); transition: all 0.2s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: none; background: transparent; color: var(--menu-text); font-size: 14px; font-family: inherit; cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left; }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+    .nav-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent); text-decoration: none; margin-bottom: 24px; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .nav-back:hover { background: var(--surface-hover); }
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.6rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 540px; margin: 0 auto; line-height: 1.7; }
+    .meta-bar { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 36px; font-size: 12px; color: var(--text-secondary); }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-intermediate { background: var(--chip-amber); color: var(--warning); }
+    .tag-chip { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+    .category-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
+    .cat-투자주식 { background: rgba(16,185,129,0.12); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+    html.theme-light .cat-투자주식 { background: rgba(16,185,129,0.08); }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease; }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .highlight-box { padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border); background: var(--chip-accent); font-size: 13.5px; line-height: 1.7; margin-bottom: 16px; }
+    .highlight-box strong { color: var(--accent); }
+
+    /* 시스템 스텝 */
+    .system-step {
+      display: flex; gap: 16px; padding: 20px; border-radius: 12px;
+      background: var(--surface); border: 1px solid var(--border);
+      margin-bottom: 12px; transition: box-shadow 0.2s;
+    }
+    .system-step:hover { box-shadow: 0 0 0 1px var(--border), 0 4px 16px rgba(0,0,0,0.08); }
+    .step-num {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--chip-accent); color: var(--accent);
+      font-size: 15px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-body { flex: 1; }
+    .step-title { font-size: 15px; font-weight: 700; margin-bottom: 5px; }
+    .step-title span { color: var(--accent); }
+    .step-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 8px; }
+    .step-action {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 600; color: var(--accent);
+      padding: 4px 10px; border-radius: 6px;
+      background: var(--chip-accent); border: 1px solid rgba(16,185,129,0.2);
+    }
+    .step-badge {
+      font-size: 11px; padding: 2px 8px; border-radius: 99px;
+      font-weight: 600; margin-left: 8px;
+      background: rgba(244,63,94,0.1); color: var(--negative);
+      border: 1px solid rgba(244,63,94,0.2);
+    }
+    .step-badge.ok { background: rgba(16,185,129,0.1); color: var(--positive); border-color: rgba(16,185,129,0.2); }
+
+    /* 체크리스트 */
+    .checklist { display: flex; flex-direction: column; gap: 8px; }
+    .check-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 11px 14px; border-radius: 8px;
+      background: var(--surface); border: 1px solid var(--border);
+      font-size: 13px; line-height: 1.6;
+    }
+    .check-icon { color: var(--accent); flex-shrink: 0; font-size: 15px; margin-top: 1px; }
+    .check-item strong { color: var(--text); font-weight: 600; }
+
+    /* 관련 */
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+    .mb-20 { margin-bottom: 20px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}.d4{animation-delay:.24s}.d5{animation-delay:.30s}
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+    @media (max-width: 640px) { .kpi-row { grid-template-columns: 1fr; } .container { padding: 48px 16px 60px; } .system-step { flex-direction: column; } }
+    @media print { body { background: white !important; } .viz-menu { display: none !important; } .card { break-inside: avoid; } * { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/></svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">⚙️ 투자 시스템 · 행동경제학 적용</div>
+        <h1>투자 편향 극복 시스템</h1>
+        <p class="hero-sub">감정이 아닌 규칙이 결정하게 만들어라 — 손절 규칙·리밸런싱 자동화·체크리스트로 편향을 차단하는 5단계 시스템</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="category-badge cat-투자주식">📈 투자·주식</span>
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="tag-chip">#투자</span>
+        <span class="tag-chip">#위험관리</span>
+        <span class="tag-chip">#행동경제학</span>
+        <span class="tag-chip">#시스템</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.08
+        </span>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-row animate d2">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">Pre-commit</div>
+          <div class="kpi-label">핵심 원리</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--text-secondary)">5단계</div>
+          <div class="kpi-label">극복 시스템</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--positive)">자동화</div>
+          <div class="kpi-label">감정 개입 차단</div>
+        </div>
+      </div>
+
+      <div class="highlight-box animate d2">
+        핵심 원칙: <strong>"판단이 필요한 순간을 없애라."</strong> 시장이 급락하는 공황 상황에서 "팔까 말까"를 고민하면 이미 늦다. 모든 규칙은 <strong>냉정한 상태일 때 사전에 설정</strong>해야 한다. 이것이 Pre-commitment(사전 공약) 전략의 핵심이다.
+      </div>
+
+      <!-- 5단계 시스템 -->
+      <div class="mb-20 animate d3">
+        <p class="section-title" style="margin-bottom:12px">편향 극복 5단계 시스템</p>
+
+        <div class="system-step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title"><span>손절선 사전 설정</span> — Pre-committed Stop-Loss<span class="step-badge">앵커링·손실회피 차단</span></div>
+            <div class="step-desc">매수 직후, 냉정한 상태에서 손절 기준을 <strong style="color:var(--text)">숫자로 명문화</strong>한다. "마음이 불안하면 판다"가 아니라 "-15% 하락 시 자동 매도" 같은 구체적 규칙으로. 감정이 개입할 여지를 없앤다.</div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+              <div class="step-action">✓ 매수가 대비 -10~20% 손절선 설정</div>
+              <div class="step-action">✓ 지정가 주문 또는 스탑로스 주문 활용</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="system-step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title"><span>정기 리밸런싱 자동화</span> — Scheduled Rebalancing<span class="step-badge">현상유지편향 차단</span></div>
+            <div class="step-desc">포트폴리오 비중이 목표에서 벗어날 때 감정 개입 없이 기계적으로 조정. <strong style="color:var(--text)">캘린더 기반(분기 1회)</strong> 또는 <strong style="color:var(--text)">밴드 기반(±5% 이탈 시)</strong> 두 방식 중 선택. 로보어드바이저·정액 적립식 활용.</div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+              <div class="step-action">✓ 분기 말 고정 리밸런싱 일정 캘린더 등록</div>
+              <div class="step-action">✓ 비중 ±5~10% 이탈 시 트리거 규칙</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="system-step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title"><span>진입 전 반증 체크리스트</span> — Devil's Advocate<span class="step-badge ok">확증편향 차단</span></div>
+            <div class="step-desc">매수 전 <strong style="color:var(--text)">"이 투자가 틀렸다면 이유 3가지는?"</strong> 을 의무적으로 작성한다. 반대 의견을 가진 리포트를 최소 1개 이상 읽는다. 확증편향은 반증 탐색으로만 극복된다.</div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+              <div class="step-action">✓ 반대 의견 3가지 의무 작성</div>
+              <div class="step-action">✓ 반대 리포트/의견 1개 이상 검색</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="system-step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title"><span>투자 일지 작성</span> — Investment Journal<span class="step-badge ok">과신편향·가용성편향 차단</span></div>
+            <div class="step-desc">매수·매도마다 <strong style="color:var(--text)">판단 근거와 당시 감정 상태</strong>를 기록한다. 6개월 후 돌아보면 어떤 편향이 판단을 왜곡했는지 명확히 보인다. 과거 예측 정확도를 데이터로 확인하면 과신편향이 줄어든다.</div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+              <div class="step-action">✓ 매수 근거 + 목표가 + 손절선 기록</div>
+              <div class="step-action">✓ 감정 상태(공포/탐욕) 0~10 점수화</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="system-step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <div class="step-title"><span>포지션 규모 규칙</span> — Position Sizing<span class="step-badge">군중심리·과신편향 차단</span></div>
+            <div class="step-desc">단일 종목 최대 비중 상한을 <strong style="color:var(--text)">사전에 제한</strong>(예: 포트폴리오의 10~20%). 군중심리에 휩쓸려 버블 종목에 올인하는 것을 구조적으로 방지한다. Kelly Criterion 변형 적용 가능.</div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+              <div class="step-action">✓ 단일 종목 최대 비중 10~20% 제한</div>
+              <div class="step-action">✓ 섹터 집중도 30% 이하 유지</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 매수 전 체크리스트 -->
+      <div class="card animate d4 mb-20">
+        <div class="section-title">매수 전 필수 체크리스트 (5점 이하 시 보류)</div>
+        <div class="checklist" style="margin-top:10px;">
+          <div class="check-item">
+            <span class="check-icon">□</span>
+            <div><strong>손절선 설정:</strong> 매수 전 손절 기준(-___%)을 숫자로 정했는가?</div>
+          </div>
+          <div class="check-item">
+            <span class="check-icon">□</span>
+            <div><strong>반증 탐색:</strong> 이 투자가 틀렸을 경우 이유 3가지를 작성했는가?</div>
+          </div>
+          <div class="check-item">
+            <span class="check-icon">□</span>
+            <div><strong>포지션 크기:</strong> 단일 종목 비중이 포트폴리오의 20% 이하인가?</div>
+          </div>
+          <div class="check-item">
+            <span class="check-icon">□</span>
+            <div><strong>정보의 질:</strong> SNS·유튜브가 아닌 공시·재무제표 기반 정보인가?</div>
+          </div>
+          <div class="check-item">
+            <span class="check-icon">□</span>
+            <div><strong>감정 상태:</strong> 현재 공포(급락 시 충동 매수)나 탐욕(급등 시 FOMO) 상태가 아닌가?</div>
+          </div>
+          <div class="check-item">
+            <span class="check-icon">□</span>
+            <div><strong>투자 목적:</strong> 단기 시세차익 vs 장기 가치 투자 여부를 명확히 했는가?</div>
+          </div>
+        </div>
+        <p style="margin-top:12px; font-size:12px; color:var(--text-secondary); padding:10px 12px; border-radius:8px; background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.15);">💡 <strong style="color:var(--accent)">활용법:</strong> 6개 항목 모두 ✓ 시에만 매수 실행. 하나라도 불확실하면 24시간 대기 후 재검토.</p>
+      </div>
+
+      <!-- 편향별 대응 요약 -->
+      <div class="card animate d4 mb-20">
+        <div class="section-title">편향별 시스템 대응 요약</div>
+        <div style="overflow-x:auto; -webkit-overflow-scrolling:touch; margin-top:10px;">
+          <table style="min-width:560px; width:100%; border-collapse:collapse;">
+            <thead>
+              <tr>
+                <th style="white-space:nowrap; background:var(--surface); font-size:11px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:var(--text-secondary); padding:10px 14px; text-align:left; border-bottom:1px solid var(--border);">편향</th>
+                <th style="white-space:nowrap; background:var(--surface); font-size:11px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:var(--text-secondary); padding:10px 14px; text-align:left; border-bottom:1px solid var(--border);">핵심 위험</th>
+                <th style="white-space:nowrap; background:var(--surface); font-size:11px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:var(--text-secondary); padding:10px 14px; text-align:left; border-bottom:1px solid var(--border);">시스템 대응</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="white-space:nowrap; font-size:13px; padding:11px 14px; border-bottom:1px solid var(--border); color:var(--text); font-weight:600;">손실회피</td><td style="white-space:nowrap; font-size:13px; padding:11px 14px; border-bottom:1px solid var(--border); color:var(--text-secondary);">손절 못 함</td><td style="white-space:normal; min-width:160px; font-size:13px; padding:11px 14px; border-bottom:1px solid var(--border); color:var(--text-secondary);">진입 전 스탑로스 주문 자동 등록</td></tr>
+              <tr><td style="white-space:nowrap; font-size:13px; padding:11px 14px; border-bottom:1px solid var(--border); color:var(--text); font-weight:600;">확증편향</td><td style="white-space:nowrap; font-size:13px; padding:11px 14px; border-bottom:1px solid var(--border); color:var(--text-secondary);">나쁜 정보 무시</td><td style="white-space:normal; min-width:160px; font-size:13px; padding:11px 14px; border-bottom:1px solid var(--border); color:var(--text-secondary);">반증 3가지 의무 작성, 반대 리포트 탐색</td></tr>
+              <tr><td style="white-space:nowrap; font-size:13px; padding:11px 14px; border-bottom:1px solid var(--border); color:var(--text); font-weight:600;">현상유지편향</td><td style="white-space:nowrap; font-size:13px; padding:11px 14px; border-bottom:1px solid var(--border); color:var(--text-secondary);">리밸런싱 미루기</td><td style="white-space:normal; min-width:160px; font-size:13px; padding:11px 14px; border-bottom:1px solid var(--border); color:var(--text-secondary);">분기 말 캘린더 알림 + 자동 리밸런싱</td></tr>
+              <tr><td style="white-space:nowrap; font-size:13px; padding:11px 14px; border-bottom:1px solid var(--border); color:var(--text); font-weight:600;">과신편향</td><td style="white-space:nowrap; font-size:13px; padding:11px 14px; border-bottom:1px solid var(--border); color:var(--text-secondary);">집중 투자·과도 매매</td><td style="white-space:normal; min-width:160px; font-size:13px; padding:11px 14px; border-bottom:1px solid var(--border); color:var(--text-secondary);">포지션 크기 상한 + 투자 일지 기록</td></tr>
+              <tr><td style="white-space:nowrap; font-size:13px; padding:11px 14px; color:var(--text); font-weight:600;">군중심리</td><td style="white-space:nowrap; font-size:13px; padding:11px 14px; color:var(--text-secondary);">버블 고점 진입</td><td style="white-space:normal; min-width:160px; font-size:13px; padding:11px 14px; color:var(--text-secondary);">밸류에이션 기준 진입 + 비중 상한 규칙</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 관련 지식 -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="loss-aversion.html" class="related-card">
+            <div class="r-label">→ 연관</div>
+            <div class="r-title">손실회피 경향 — 손실의 고통은 이득의 기쁨보다 2배 강하다</div>
+          </a>
+          <a href="cognitive-bias-6types.html" class="related-card">
+            <div class="r-label">→ 연관</div>
+            <div class="r-title">투자자의 6대 인지 편향 — 확증편향·앵커링·과신편향</div>
+          </a>
+          <a href="risk-metrics-mdd-sharpe.html" class="related-card">
+            <div class="r-label">→ 연관</div>
+            <div class="r-title">리스크 관리의 수학 — MDD와 샤프 지수</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">출처: Thaler, R. & Sunstein, C. (2008). Nudge. | Kahneman, D. (2011). Thinking, Fast and Slow. | Zweig, J. (2007). Your Money and Your Brain.</p>
+    </div>
+  </main>
+
+  <script>
+    var THEMES=['theme-dark','theme-light'];
+    var THEME_LABELS={'theme-dark':'Dark','theme-light':'Light'};
+    (function(){var s=localStorage.getItem('ka-theme')||'theme-dark';document.documentElement.className=s;var l=document.getElementById('themeLabel');if(l)l.textContent=THEME_LABELS[s];})();
+    function cycleTheme(){var c=document.documentElement.className;var n=THEMES[(THEMES.indexOf(c)+1)%THEMES.length];document.documentElement.className=n;localStorage.setItem('ka-theme',n);var l=document.getElementById('themeLabel');if(l)l.textContent=THEME_LABELS[n];closeMenu();}
+    function toggleMenu(){document.getElementById('vizMenuDropdown').classList.toggle('open');}
+    function closeMenu(){document.getElementById('vizMenuDropdown').classList.remove('open');}
+    document.addEventListener('click',function(e){if(!e.target.closest('.viz-menu'))closeMenu();});
+    function downloadImage(){closeMenu();if(typeof htmlToImage==='undefined'){alert('라이브러리 로딩 중...');return;}htmlToImage.toPng(document.getElementById('main'),{pixelRatio:2}).then(function(d){var a=document.createElement('a');a.download='investment-bias-system.png';a.href=d;a.click();});}
+  </script>
+</body>
+</html>

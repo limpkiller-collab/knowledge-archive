@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>리스크 관리의 수학: MDD와 샤프 지수</title>
+  <meta name="knowledge-id" content="risk-metrics-mdd-sharpe">
+  <meta name="knowledge-tags" content="투자,위험관리,개념정리">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-05">
+  <meta name="knowledge-source" content="투자 리스크 관리 이론">
+  <meta name="knowledge-category" content="투자·주식">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #f43f5e; --accent2: #3b82f6;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: #f43f5e20;
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #f43f5e; --accent2: #2563eb;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: #f43f5e15;
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+    body { font-family: 'Noto Sans KR','Inter',sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; letter-spacing: -0.011em; transition: background 0.3s, color 0.3s; min-height: 100vh; }
+    body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse 70% 50% at 50% 10%, color-mix(in srgb, var(--accent), transparent 88%), transparent); }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--menu-border); background: var(--menu-bg); color: var(--menu-text); cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(12px); transition: all 0.2s; }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px; background: var(--menu-bg); backdrop-filter: blur(16px); border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px; opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96); transition: all 0.2s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: none; background: transparent; color: var(--menu-text); font-size: 14px; font-family: inherit; cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left; }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+    .nav-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent); text-decoration: none; margin-bottom: 24px; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .nav-back:hover { background: var(--surface-hover); }
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.6rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 560px; margin: 0 auto; line-height: 1.7; }
+    .meta-bar { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 36px; font-size: 12px; color: var(--text-secondary); }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); background: rgba(245,158,11,0.12); color: #f59e0b; }
+    .tag-chip { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease; margin-bottom: 16px; }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .highlight-box { padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border); background: var(--chip-accent); font-size: 13.5px; line-height: 1.7; margin-bottom: 16px; }
+    .highlight-box strong { color: var(--accent); }
+    .quote-box { padding: 16px 20px; border-left: 3px solid var(--accent); background: var(--surface); border-radius: 0 10px 10px 0; margin-bottom: 16px; font-size: 14px; line-height: 1.7; color: var(--text-secondary); font-style: italic; }
+    .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .grid-card { padding: 16px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .grid-card-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .grid-card-body { font-size: 12.5px; color: var(--text-secondary); line-height: 1.6; }
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .timeline-item { display: flex; gap: 16px; padding-bottom: 20px; position: relative; }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: 5px; position: relative; z-index: 1; }
+    .timeline-item:not(:last-child)::before { content: ''; position: absolute; left: 4px; top: 14px; bottom: 0; width: 2px; background: var(--border); }
+    .timeline-content { flex: 1; }
+    .timeline-year { font-size: 11px; font-weight: 700; color: var(--accent); margin-bottom: 3px; }
+    .timeline-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+    .timeline-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+    .era-card { border-radius: 12px; padding: 20px; border: 1px solid var(--border); background: var(--surface); }
+    .era-card.old { border-top: 3px solid #64748b; }
+    .era-card.new { border-top: 3px solid var(--accent); }
+    .era-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+    .era-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .era-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .era-list li { font-size: 12.5px; color: var(--text-secondary); display: flex; gap: 8px; }
+    .era-list li::before { content: '•'; color: var(--accent); flex-shrink: 0; }
+    .metric-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .metric-table th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    .metric-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+    .metric-table tr:last-child td { border-bottom: none; }
+    .metric-table td:first-child { font-weight: 600; color: var(--accent); }
+    .bar-chart { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+    .bar-row { display: flex; align-items: center; gap: 12px; }
+    .bar-label { width: 120px; font-size: 12px; font-weight: 500; flex-shrink: 0; }
+    .bar-wrap { flex: 1; background: var(--surface-hover); border-radius: 99px; overflow: hidden; }
+    .bar-fill { height: 20px; border-radius: 99px; background: var(--accent); display: flex; align-items: center; padding-left: 10px; font-size: 11px; font-weight: 700; color: white; min-width: 40px; }
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+    .category-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
+    .cat-투자주식 { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.3); }
+    .cat-경제거시 { background:rgba(59,130,246,0.12); color:#3b82f6; border:1px solid rgba(59,130,246,0.3); }
+    .cat-기술산업 { background:rgba(139,92,246,0.12); color:#8b5cf6; border:1px solid rgba(139,92,246,0.3); }
+    .cat-부동산   { background:rgba(245,158,11,0.12); color:#f59e0b; border:1px solid rgba(245,158,11,0.3); }
+    .cat-시사컬처 { background:rgba(244,63,94,0.12);  color:#f43f5e; border:1px solid rgba(244,63,94,0.3);  }
+    html.theme-light .cat-투자주식 { background:rgba(16,185,129,0.08); }
+    html.theme-light .cat-경제거시 { background:rgba(59,130,246,0.08); }
+    html.theme-light .cat-기술산업 { background:rgba(139,92,246,0.08); }
+    html.theme-light .cat-부동산   { background:rgba(245,158,11,0.08); }
+    html.theme-light .cat-시사컬처 { background:rgba(244,63,94,0.08); }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+    @media (max-width: 640px) {
+      .kpi-row, .card-grid, .compare-grid { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+      th { white-space: nowrap !important; font-size: 10px !important; padding: 6px 8px !important; }
+      td { font-size: 12px !important; padding: 8px !important; }
+    }
+    @media print { body { background: white !important; } .viz-menu { display: none !important; } * { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/></svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+  <main id="main"><div class="container">
+    <a href="../index.html" class="nav-back animate">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      지식 Archive
+    </a>
+      <header class="hero animate">
+        <div class="hero-badge">📉 리스크 관리</div>
+        <h1>리스크 관리의 수학</h1>
+        <p class="hero-sub">MDD(최대 낙폭)와 샤프 지수(Sharpe Ratio) — 수익률만큼 중요한 리스크 지표를 이해하면 포트폴리오의 진짜 실력이 보인다.</p>
+      </header>
+    <div class="meta-bar animate d1">
+        <span class="category-badge cat-투자주식">📈 투자·주식</span>
+        <span class="diff-badge">중급</span>
+        <span class="tag-chip">#투자</span><span class="tag-chip">#위험관리</span><span class="tag-chip">#개념정리</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.05
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          투자 리스크 관리 이론
+        </span>
+      </div>
+      <!-- KPI -->
+      <div class="kpi-row animate d2">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:#f43f5e">MDD</div>
+          <div class="kpi-label">최대 낙폭 — 최악의 손실</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:#10b981">샤프 지수</div>
+          <div class="kpi-label">위험 대비 수익 효율</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:#f59e0b">1.0+</div>
+          <div class="kpi-label">샤프 지수 양호 기준</div>
+        </div>
+      </div>
+
+      <!-- MDD -->
+      <div class="card animate d2">
+        <div class="section-title">📉 MDD (Maximum Drawdown) — 최대 낙폭</div>
+        <div class="highlight-box">
+          <strong>MDD = (저점 - 직전 고점) ÷ 직전 고점 × 100</strong><br>
+          포트폴리오가 고점에서 저점까지 <strong>최대 얼마나 하락했는가</strong>를 나타낸다. 수익률이 같더라도 MDD가 크면 투자자가 버티지 못하고 손절할 가능성이 높다.
+        </div>
+        <div class="card-grid">
+          <div class="grid-card">
+            <div class="grid-card-title" style="color:#f43f5e">MDD가 중요한 이유</div>
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:8px; margin-top:8px;">
+              <li style="font-size:12.5px; color:var(--text-secondary); display:flex; gap:8px;"><span style="color:#f43f5e">•</span>고점 대비 -50% 하락 시, 원금 회복에 +100% 수익 필요</li>
+              <li style="font-size:12.5px; color:var(--text-secondary); display:flex; gap:8px;"><span style="color:#f43f5e">•</span>심리적 손절선을 넘으면 장기 복리 효과 차단</li>
+              <li style="font-size:12.5px; color:var(--text-secondary); display:flex; gap:8px;"><span style="color:#f43f5e">•</span>MDD가 작을수록 자산의 변동성·리스크가 낮은 증거</li>
+            </ul>
+          </div>
+          <div class="grid-card">
+            <div class="grid-card-title">자산별 역사적 MDD</div>
+            <div style="overflow-x:auto; -webkit-overflow-scrolling:touch; margin-top:8px;">
+              <table class="metric-table" style="min-width:220px;">
+                <tr><th>자산</th><th>최대 MDD</th></tr>
+                <tr><td>S&P 500</td><td style="color:#f43f5e">-56% (2008)</td></tr>
+                <tr><td>나스닥</td><td style="color:#f43f5e">-78% (2000~02)</td></tr>
+                <tr><td>비트코인</td><td style="color:#f43f5e">-83% (2017~18)</td></tr>
+                <tr><td>채권 ETF</td><td style="color:#f59e0b">-20% 내외</td></tr>
+                <tr><td>분산 포트</td><td style="color:#10b981">-30% 이내 목표</td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-box" style="background:rgba(244,63,94,0.08); border-color:rgba(244,63,94,0.2);">
+          💡 <strong>실전 활용:</strong> 전략 백테스트 시 MDD가 -30%를 초과하면 투자자 대부분이 버티지 못한다. 시스템 트레이딩·펀드 선택 시 수익률만큼 MDD를 반드시 확인할 것.
+        </div>
+      </div>
+
+      <!-- 샤프 지수 -->
+      <div class="card animate d3">
+        <div class="section-title">📊 샤프 지수 (Sharpe Ratio) — 위험 대비 수익 효율</div>
+        <div class="highlight-box">
+          <strong>샤프 지수 = (포트폴리오 수익률 - 무위험 수익률) ÷ 수익률의 표준편차</strong><br>
+          감수한 위험 1단위당 <strong>얼마의 초과수익을 냈는가</strong>. 단순 수익률 비교의 함정을 피하는 핵심 도구.
+        </div>
+        <div style="overflow-x:auto; -webkit-overflow-scrolling:touch;">
+          <table class="metric-table" style="min-width:480px; margin-bottom:16px;">
+            <tr><th>샤프 지수</th><th>평가</th><th>해석</th><th>대표 사례</th></tr>
+            <tr><td>&lt; 0</td><td style="color:#f43f5e">최악</td><td>무위험 자산보다 못한 수익</td><td>실패한 헤지펀드</td></tr>
+            <tr><td>0 ~ 0.5</td><td style="color:#888">미흡</td><td>리스크 대비 수익 불충분</td><td>대부분 개인 포트</td></tr>
+            <tr><td>0.5 ~ 1.0</td><td style="color:#f59e0b">보통</td><td>합격 수준, 개선 여지 있음</td><td>일반 액티브 펀드</td></tr>
+            <tr><td>1.0 ~ 2.0</td><td style="color:#10b981">양호</td><td>리스크 대비 좋은 수익</td><td>우량 퀀트 전략</td></tr>
+            <tr><td>2.0 이상</td><td style="color:#10b981; font-weight:700;">우수</td><td>탁월한 리스크 조정 수익</td><td>르네상스 메달리온</td></tr>
+          </table>
+        </div>
+        <div class="card-grid">
+          <div class="grid-card">
+            <div class="grid-card-title">구성 요소 이해</div>
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:8px; margin-top:8px;">
+              <li style="font-size:12.5px; color:var(--text-secondary); display:flex; gap:8px;"><span style="color:var(--accent)">•</span><span><strong>무위험 수익률:</strong> 미국 단기 국채(T-bill) 금리 (~5%, 2024 기준)</span></li>
+              <li style="font-size:12.5px; color:var(--text-secondary); display:flex; gap:8px;"><span style="color:var(--accent)">•</span><span><strong>표준편차:</strong> 수익률의 변동성. 클수록 위험 큼</span></li>
+              <li style="font-size:12.5px; color:var(--text-secondary); display:flex; gap:8px;"><span style="color:var(--accent)">•</span><span><strong>초과수익:</strong> 무위험 대비 얼마나 더 벌었는가</span></li>
+            </ul>
+          </div>
+          <div class="grid-card">
+            <div class="grid-card-title">계산 예시</div>
+            <div style="font-size:12.5px; color:var(--text-secondary); line-height:1.8; margin-top:8px;">
+              A 펀드: 연수익 15%, 표준편차 20%<br>
+              B 펀드: 연수익 10%, 표준편차 5%<br>
+              무위험 수익률: 5%<br><br>
+              <strong style="color:var(--accent)">A 샤프 = (15-5)÷20 = 0.5</strong><br>
+              <strong style="color:#10b981">B 샤프 = (10-5)÷5 = 1.0</strong><br>
+              → 수익률은 A가 높지만 리스크 효율은 B가 2배 우수
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MDD + 샤프 지수 조합 활용 -->
+      <div class="card animate d4">
+        <div class="section-title">🎯 두 지표를 함께 쓰는 법</div>
+        <div class="bar-chart">
+          <div style="font-size:12px; font-weight:700; color:var(--text-secondary); margin-bottom:8px;">포트폴리오 유형별 리스크 프로파일</div>
+          <div class="bar-row">
+            <div class="bar-label">공격형 성장주</div>
+            <div class="bar-wrap"><div class="bar-fill" style="width:85%; background:#f43f5e;">MDD -50%대, 샤프 0.6</div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">균형형(60/40)</div>
+            <div class="bar-wrap"><div class="bar-fill" style="width:55%; background:#f59e0b;">MDD -30%대, 샤프 0.9</div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">퀀트 전략</div>
+            <div class="bar-wrap"><div class="bar-fill" style="width:40%; background:#10b981;">MDD -15%대, 샤프 1.5</div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">채권·현금</div>
+            <div class="bar-wrap"><div class="bar-fill" style="width:20%; background:#3b82f6;">MDD -10%대, 샤프 0.4</div></div>
+          </div>
+        </div>
+        <div class="highlight-box">
+          💡 <strong>이상적 포트폴리오:</strong> MDD -20% 이내 + 샤프 지수 1.0 이상. 두 조건을 동시에 충족하면 하락장에서도 심리적 버팀목이 되어 <strong>장기 복리 효과를 온전히 누릴 수 있다.</strong>
+        </div>
+      </div>
+
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="analyst-investment-framework.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">기관 투자자 분석 프레임워크 — ROIC·FCF·밸류에이션</div>
+          </a>
+          <a href="behavioral-economics-investing.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">행동경제학의 실전 적용 — 투자자의 편향과 손실 회피</div>
+          </a>
+          <a href="stock-valuation-per-pbr.html" class="related-card">
+            <div class="r-label">→ 기초</div>
+            <div class="r-title">PER·PBR·EPS — 주식 밸류에이션 핵심 3지표</div>
+          </a>
+        </div>
+      </div>
+      <p class="footer-note animate d5">투자 리스크 관리 이론 정리 (2026.04.05)</p>
+  </div></main>
+  <script>
+    var THEMES = ['theme-dark', 'theme-light'];
+    var THEME_LABELS = {'theme-dark': 'Dark', 'theme-light': 'Light'};
+    (function() {
+      var saved = localStorage.getItem('ka-theme') || 'theme-dark';
+      document.documentElement.className = saved;
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[saved];
+    })();
+    function cycleTheme() {
+      var cur = document.documentElement.className;
+      var next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+      document.documentElement.className = next;
+      localStorage.setItem('ka-theme', next);
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[next];
+      closeMenu();
+    }
+    function toggleMenu() { document.getElementById('vizMenuDropdown').classList.toggle('open'); }
+    function closeMenu() { document.getElementById('vizMenuDropdown').classList.remove('open'); }
+    document.addEventListener('click', function(e) { if (!e.target.closest('.viz-menu')) closeMenu(); });
+    function downloadImage() {
+      closeMenu();
+      if (typeof htmlToImage === 'undefined') { alert('라이브러리 로딩 중...'); return; }
+      htmlToImage.toPng(document.getElementById('main'), { pixelRatio: 2 })
+        .then(function(dataUrl) { var a = document.createElement('a'); a.download = 'risk-metrics-mdd-sharpe.png'; a.href = dataUrl; a.click(); });
+    }
+  </script>
+</body></html>

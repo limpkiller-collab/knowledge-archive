@@ -1,0 +1,2475 @@
+<!DOCTYPE html>
+<!-- Version History (최신순) -->
+<!-- v1 (2026.03.29) : 프랑스 여행 대시보드 초기 생성 -->
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>프랑스 여행 대시보드 | 2026년 6월</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- html-to-image CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+
+  <style>
+    /* ===== CSS VARIABLES & THEMING ===== */
+    html.theme-dark {
+      --bg: #0A0A0A;
+      --surface: #141414;
+      --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06);
+      --text: #EDEDED;
+      --text-secondary: #888;
+      --accent: #3b82f6;
+      --accent-secondary: #8b5cf6;
+      --positive: #10b981;
+      --negative: #f43f5e;
+      --warning: #f59e0b;
+      --info: #06b6d4;
+
+      /* Day colors (12 days) */
+      --day1: #3b82f6;
+      --day2: #8b5cf6;
+      --day3: #10b981;
+      --day4: #f59e0b;
+      --day5: #ec4899;
+      --day6: #06b6d4;
+      --day7: #3b82f6;
+      --day8: #8b5cf6;
+      --day9: #10b981;
+      --day10: #f59e0b;
+      --day11: #ec4899;
+      --day12: #06b6d4;
+
+      /* Tag colors */
+      --tag-flight: rgba(59,130,246,0.15);   --tag-flight-text: #60a5fa;
+      --tag-food: rgba(249,115,22,0.15);     --tag-food-text: #fb923c;
+      --tag-cafe: rgba(139,92,246,0.15);     --tag-cafe-text: #a78bfa;
+      --tag-spot: rgba(16,185,129,0.15);     --tag-spot-text: #34d399;
+      --tag-hotel: rgba(236,72,153,0.15);    --tag-hotel-text: #f472b6;
+      --tag-transport: rgba(6,182,212,0.15); --tag-transport-text: #22d3ee;
+      --tag-night: rgba(245,158,11,0.15);    --tag-night-text: #fbbf24;
+    }
+
+    html.theme-light {
+      --bg: #FAFAF9;
+      --surface: #FFFFFF;
+      --surface-hover: #F5F5F4;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --text-secondary: #666;
+      --accent: #2563eb;
+      --accent-secondary: #7c3aed;
+      --positive: #059669;
+      --negative: #e11d48;
+      --warning: #d97706;
+      --info: #0ea5e9;
+
+      --day1: #2563eb;
+      --day2: #7c3aed;
+      --day3: #059669;
+      --day4: #d97706;
+      --day5: #db2777;
+      --day6: #0ea5e9;
+      --day7: #2563eb;
+      --day8: #7c3aed;
+      --day9: #059669;
+      --day10: #d97706;
+      --day11: #db2777;
+      --day12: #0ea5e9;
+
+      --tag-flight: rgba(37,99,235,0.1);
+      --tag-flight-text: #1e40af;
+      --tag-food: rgba(217,119,6,0.1);
+      --tag-food-text: #b45309;
+      --tag-cafe: rgba(124,58,237,0.1);
+      --tag-cafe-text: #6d28d9;
+      --tag-spot: rgba(5,150,105,0.1);
+      --tag-spot-text: #065f46;
+      --tag-hotel: rgba(219,39,119,0.1);
+      --tag-hotel-text: #831843;
+      --tag-transport: rgba(14,165,233,0.1);
+      --tag-transport-text: #075985;
+      --tag-night: rgba(217,119,6,0.1);
+      --tag-night-text: #b45309;
+    }
+
+    /* ===== GLOBAL STYLES ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      font-family: 'Noto Sans KR', 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      transition: background-color 0.3s, color 0.3s;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(-10px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .animate {
+      animation: fadeInUp 0.6s ease-out forwards;
+      opacity: 0;
+    }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+
+    /* ===== MENU (FIXED) ===== */
+    .viz-menu {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+
+    .viz-menu-toggle {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .viz-menu-toggle:hover {
+      background: var(--accent-secondary);
+    }
+
+    .viz-menu-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-top: 8px;
+      min-width: 200px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      animation: slideIn 0.3s ease-out;
+    }
+
+    .viz-menu-dropdown.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .viz-menu-dropdown button, .viz-menu-dropdown a {
+      padding: 12px 16px;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    .viz-menu-dropdown button:hover, .viz-menu-dropdown a:hover {
+      background: var(--surface-hover);
+    }
+
+    .viz-menu-dropdown > div {
+      height: 1px;
+      background: var(--border);
+      margin: 4px 0;
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      padding: 60px 20px 40px;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--tag-flight);
+      color: var(--tag-flight-text);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero .subtitle {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 0;
+    }
+
+    /* ===== KPI GRID ===== */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin: 40px auto;
+      max-width: 1200px;
+      padding: 0 20px;
+    }
+
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      animation: fadeInUp 0.6s ease-out forwards;
+      opacity: 0;
+    }
+
+    .kpi-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .kpi-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+
+    .kpi-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .kpi-sub {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* ===== MAIN TABS ===== */
+    .main-tabs {
+      display: flex;
+      gap: 8px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0;
+      margin: 40px 0 0 0;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      flex-wrap: wrap;
+    }
+
+    .main-tab {
+      padding: 16px 20px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s;
+      white-space: nowrap;
+      border-bottom: 3px solid transparent;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    .main-tab:hover {
+      color: var(--text);
+      background: var(--surface-hover);
+    }
+
+    .main-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      background: transparent;
+    }
+
+    .main-tab span {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-left: 4px;
+    }
+
+    /* ===== PANELS ===== */
+    .main-panel {
+      display: none;
+      padding: 40px 20px;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .main-panel.active {
+      display: block;
+    }
+
+    /* ===== SCHEDULE PANEL ===== */
+    .day-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      margin-bottom: 30px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .day-tab {
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: all 0.3s;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    .day-tab:hover {
+      background: var(--surface-hover);
+      border-color: var(--accent);
+    }
+
+    .day-tab.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .tab-date {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .day-tab.active .tab-date {
+      color: rgba(255,255,255,0.7);
+    }
+
+    .day-content {
+      display: none;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .day-content.active {
+      display: block;
+    }
+
+    .day-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: var(--surface);
+      border-radius: 12px;
+      border-left: 4px solid var(--accent);
+    }
+
+    .day-number {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .day-meta h2 {
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .day-meta p {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    /* ===== TIMELINE ===== */
+    .timeline {
+      position: relative;
+      padding: 20px 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 30px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--accent) 0%, transparent 100%);
+    }
+
+    .tl-item {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .tl-dot {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 3px solid var(--accent);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 4px;
+      font-size: 24px;
+    }
+
+    .tl-card {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      transition: all 0.3s;
+    }
+
+    .tl-card:hover {
+      border-color: var(--accent);
+      background: var(--surface-hover);
+    }
+
+    .tl-time {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .tl-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .tl-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .cost-badge {
+      display: inline-block;
+      background: var(--tag-night);
+      color: var(--tag-night-text);
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+
+    .cost-badge .krw {
+      display: block;
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .tl-tags {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+
+    .tag-flight {
+      background: var(--tag-flight);
+      color: var(--tag-flight-text);
+    }
+
+    .tag-food {
+      background: var(--tag-food);
+      color: var(--tag-food-text);
+    }
+
+    .tag-cafe {
+      background: var(--tag-cafe);
+      color: var(--tag-cafe-text);
+    }
+
+    .tag-spot {
+      background: var(--tag-spot);
+      color: var(--tag-spot-text);
+    }
+
+    .tag-hotel {
+      background: var(--tag-hotel);
+      color: var(--tag-hotel-text);
+    }
+
+    .tag-transport {
+      background: var(--tag-transport);
+      color: var(--tag-transport-text);
+    }
+
+    .tag-night {
+      background: var(--tag-night);
+      color: var(--tag-night-text);
+    }
+
+    .map-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 12px;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+
+    .map-link:hover {
+      color: var(--accent-secondary);
+    }
+
+    /* ===== NEARBY BOX ===== */
+    .nearby-box {
+      margin-top: 12px;
+      padding: 12px;
+      background: var(--bg);
+      border-left: 3px solid var(--info);
+      border-radius: 6px;
+    }
+
+    .nearby-title {
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--info);
+    }
+
+    .nearby-list {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ===== FOOD/CAFE PANELS ===== */
+    .region-filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .region-btn {
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.3s;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    .region-btn:hover {
+      border-color: var(--accent);
+      background: var(--surface-hover);
+    }
+
+    .region-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .region-count {
+      font-size: 11px;
+      margin-left: 4px;
+      opacity: 0.7;
+    }
+
+    #food-list, #cafe-list {
+      display: grid;
+      gap: 0;
+    }
+
+    .region-section {
+      margin-bottom: 40px;
+    }
+
+    .region-section-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .region-emoji {
+      font-size: 20px;
+    }
+
+    .list-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .list-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .list-card:hover {
+      border-color: var(--accent);
+      background: var(--surface-hover);
+    }
+
+    .list-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .list-card-header h3 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .cn-name {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .badge-type {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      text-transform: uppercase;
+    }
+
+    .badge-must {
+      background: rgba(249,115,22,0.2);
+      color: #fb923c;
+    }
+
+    .badge-local {
+      background: rgba(16,185,129,0.2);
+      color: #34d399;
+    }
+
+    .badge-local-rec {
+      background: rgba(5,150,105,0.2);
+      color: #10b981;
+    }
+
+    .badge-cafe-type {
+      background: rgba(139,92,246,0.2);
+      color: #a78bfa;
+    }
+
+    .badge-dessert {
+      background: rgba(236,72,153,0.2);
+      color: #f472b6;
+    }
+
+    .badge-view {
+      background: rgba(6,182,212,0.2);
+      color: #22d3ee;
+    }
+
+    .badge-historic {
+      background: rgba(217,119,6,0.2);
+      color: #fbbf24;
+    }
+
+    .list-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .reco {
+      font-size: 13px;
+      margin-bottom: 8px;
+      padding: 8px;
+      background: var(--bg);
+      border-radius: 6px;
+      border-left: 3px solid var(--positive);
+    }
+
+    .address {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .list-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    .price {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .price .krw {
+      display: block;
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    /* ===== HOTEL CAROUSEL ===== */
+    .hotel-carousel-wrap {
+      margin: 30px 0;
+    }
+
+    .hotel-carousel-viewport {
+      overflow: hidden;
+      border-radius: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .hotel-carousel-track {
+      display: flex;
+      transition: transform 0.4s ease-out;
+    }
+
+    .hotel-card {
+      min-width: 100%;
+      padding: 24px;
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .hotel-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hotel-name {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .hotel-type-badge {
+      display: inline-block;
+      background: var(--tag-hotel);
+      color: var(--tag-hotel-text);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .hotel-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+    }
+
+    .hotel-info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .hotel-info-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .hotel-info-value {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .hotel-nights-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hotel-night-chip {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      text-align: center;
+    }
+
+    .night-date {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .night-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .hotel-price-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+      padding: 16px;
+      background: var(--bg);
+      border-radius: 8px;
+    }
+
+    .hotel-price-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .hotel-price-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .hotel-price-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .hotel-price-krw {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .hotel-footer {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hotel-btn {
+      flex: 1;
+      min-width: 120px;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.3s;
+      text-align: center;
+      text-decoration: none;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    .hotel-btn:hover {
+      background: var(--surface-hover);
+      border-color: var(--accent);
+    }
+
+    .hotel-btn-booking {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .hotel-btn-booking:hover {
+      background: var(--accent-secondary);
+      border-color: var(--accent-secondary);
+    }
+
+    .hotel-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: var(--surface);
+      gap: 12px;
+    }
+
+    .hotel-nav-btn {
+      background: var(--surface-hover);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    .hotel-nav-btn:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .hotel-dots {
+      display: flex;
+      gap: 6px;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .hotel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .hotel-dot.active {
+      background: var(--accent);
+      width: 24px;
+      border-radius: 4px;
+    }
+
+    .hotel-counter {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* ===== BUDGET PANEL ===== */
+    .budget-section h2 {
+      font-size: 24px;
+      margin-bottom: 24px;
+    }
+
+    .budget-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .budget-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .budget-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .budget-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      font-size: 14px;
+    }
+
+    .budget-row .label {
+      color: var(--text-secondary);
+    }
+
+    .budget-row .amount {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .budget-row .krw {
+      display: block;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .budget-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-top: 1px solid var(--border);
+      margin-top: 8px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* ===== EXPENSE PANEL ===== */
+    .expense-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .summary-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .summary-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .summary-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .progress-bar-mini {
+      height: 4px;
+      background: var(--bg);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .progress-bar-mini div {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+      border-radius: 2px;
+      transition: width 0.4s ease-out;
+    }
+
+    .expense-filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .expense-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 24px;
+    }
+
+    .expense-table thead {
+      background: var(--surface);
+      border-bottom: 2px solid var(--border);
+    }
+
+    .expense-table th {
+      padding: 12px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+    }
+
+    .expense-table td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .expense-table tbody tr:hover {
+      background: var(--surface-hover);
+    }
+
+    .expense-table td:last-child {
+      text-align: right;
+    }
+
+    .expense-empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-secondary);
+    }
+
+    /* ===== INFO PANEL ===== */
+    .info-section h2 {
+      font-size: 24px;
+      margin-bottom: 24px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .info-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .info-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 40px 20px;
+      margin-top: 80px;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+
+    /* ===== MODALS ===== */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 32px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+    }
+
+    .modal-header {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 24px;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .modal-close:hover {
+      color: var(--accent);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 10px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 14px;
+      transition: border 0.3s;
+    }
+
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.3s;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    .btn:hover {
+      background: var(--surface-hover);
+      border-color: var(--accent);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-secondary);
+      border-color: var(--accent-secondary);
+    }
+
+    .btn-danger {
+      background: var(--negative);
+      color: white;
+      border-color: var(--negative);
+    }
+
+    .btn-danger:hover {
+      opacity: 0.8;
+    }
+
+    .btn-add {
+      background: var(--positive);
+      color: white;
+      border-color: var(--positive);
+    }
+
+    .btn-add:hover {
+      opacity: 0.8;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .list-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .budget-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-content {
+        width: 95%;
+        padding: 20px;
+      }
+
+      .day-tabs {
+        flex-wrap: nowrap;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- MENU (FIXED) -->
+<div class="viz-menu">
+  <button class="viz-menu-toggle" onclick="toggleMenu()">☰</button>
+  <div class="viz-menu-dropdown" id="vizMenuDropdown">
+    <button onclick="cycleTheme()">🌙 테마 토글</button>
+    <button onclick="downloadImage()">📸 PNG 다운로드</button>
+    <button onclick="window.print()">🖨️ 인쇄 / PDF</button>
+    <div></div>
+    <button onclick="exportData()">📤 데이터 내보내기</button>
+    <button onclick="importFileClick()">📥 데이터 불러오기</button>
+  </div>
+</div>
+
+<!-- HERO SECTION -->
+<section class="hero container">
+  <div class="hero-badge animate">✈ Finnair AY0042 → AY1571</div>
+  <h1 class="animate delay-1">프랑스 여행</h1>
+  <p class="subtitle animate delay-2">2026년 6월 2일 ~ 6월 14일 · 12박 13일 · 프로방스 & 파리</p>
+</section>
+
+<!-- KPI CARDS -->
+<div class="kpi-grid">
+  <div class="kpi-card animate delay-3">
+    <span class="kpi-icon">📅</span>
+    <span class="kpi-label">여행 기간</span>
+    <span class="kpi-value">12박 13일</span>
+    <span class="kpi-sub">2026.06.02 ~ 2026.06.14</span>
+  </div>
+
+  <div class="kpi-card animate delay-4">
+    <span class="kpi-icon">✈</span>
+    <span class="kpi-label">항공편</span>
+    <span class="kpi-value">AY1571 / AY1572</span>
+    <span class="kpi-sub">Finnair</span>
+  </div>
+
+  <div class="kpi-card animate delay-5">
+    <span class="kpi-icon">🍽️</span>
+    <span class="kpi-label">맛집 & 카페</span>
+    <span class="kpi-value">28개</span>
+    <span class="kpi-sub">로컬 맛집 위주</span>
+  </div>
+
+  <div class="kpi-card animate delay-5" id="kpiBudgetCard">
+    <span class="kpi-icon">💰</span>
+    <span class="kpi-label">예상 경비</span>
+    <span class="kpi-value">€980.24</span>
+    <span class="kpi-sub">≈ ₩1,666,408</span>
+    <div id="kpiExpenseActual" style="font-size:12px; color:var(--text-secondary); margin-top:8px;">실제 사용: <strong id="kpiActualVal">0 EUR</strong> <span id="kpiActualKrw">(₩0)</span></div>
+    <div class="progress-bar-mini" style="margin-top:8px;">
+      <div id="kpiExpenseBar" style="width:0%;"></div>
+    </div>
+    <div id="kpiExpensePercent" style="font-size:11px; color:var(--text-secondary); margin-top:6px;">예산 대비 0%</div>
+  </div>
+</div>
+
+<!-- MAIN TABS -->
+<div class="main-tabs" role="tablist">
+  <button class="main-tab active" onclick="showPanel('schedule')">📅 일정</button>
+  <button class="main-tab" onclick="showPanel('food')">🍜 맛집 <span>(14)</span></button>
+  <button class="main-tab" onclick="showPanel('cafe')">☕ 카페 <span>(5)</span></button>
+  <button class="main-tab" onclick="showPanel('hotel')">🏨 숙소</button>
+  <button class="main-tab" onclick="showPanel('budget')">💰 예산</button>
+  <button class="main-tab" onclick="showPanel('expense')">💸 사용경비</button>
+  <button class="main-tab" onclick="showPanel('info')">ℹ️ 정보</button>
+</div>
+
+<!-- ===== SCHEDULE PANEL ===== -->
+<div class="main-panel active" id="panel-schedule">
+  <div class="day-tabs" role="tablist" id="dayTabs"></div>
+  <div id="dayContentsContainer"></div>
+</div>
+
+<!-- ===== FOOD PANEL ===== -->
+<div class="main-panel" id="panel-food">
+  <div class="region-filters" id="food-filters"></div>
+  <div id="food-list"></div>
+</div>
+
+<!-- ===== CAFE PANEL ===== -->
+<div class="main-panel" id="panel-cafe">
+  <div class="region-filters" id="cafe-filters"></div>
+  <div id="cafe-list"></div>
+</div>
+
+<!-- ===== HOTEL PANEL ===== -->
+<div class="main-panel" id="panel-hotel">
+  <div class="hotel-carousel-wrap">
+    <div class="hotel-carousel-viewport" id="hotelViewport">
+      <div class="hotel-carousel-track" id="hotelTrack"></div>
+    </div>
+    <div class="hotel-nav" id="hotelNav">
+      <button class="hotel-nav-btn" id="hotelPrev" onclick="hotelSlide(-1)">◀</button>
+      <div class="hotel-dots" id="hotelDots"></div>
+      <span class="hotel-counter" id="hotelCounter">1 / 5</span>
+      <button class="hotel-nav-btn" id="hotelNext" onclick="hotelSlide(1)">▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BUDGET PANEL ===== -->
+<div class="main-panel" id="panel-budget">
+  <div class="budget-section">
+    <h2>예상 경비 💰</h2>
+    <div class="budget-grid" id="budgetGrid"></div>
+  </div>
+</div>
+
+<!-- ===== EXPENSE PANEL ===== -->
+<div class="main-panel" id="panel-expense">
+  <h2>💸 사용경비</h2>
+  <p style="color:var(--text-secondary);">여행에서 사용한 실제 경비를 추적하세요</p>
+
+  <div class="expense-summary" id="expenseSummaryCards">
+    <div class="summary-card">
+      <div class="summary-label">총 사용액 (EUR)</div>
+      <div class="summary-value" id="totalEUR">€0</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">총 사용액 (KRW)</div>
+      <div class="summary-value" id="totalKRW">₩0</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">예산 대비 사용률</div>
+      <div class="summary-value" id="budgetPercent">0%</div>
+      <div class="progress-bar-mini">
+        <div id="budgetProgressBar" style="width:0%;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="expense-filters" id="expenseDateFilters"></div>
+  <div class="expense-filters" id="expenseCategoryFilters"></div>
+
+  <table class="expense-table">
+    <thead>
+      <tr>
+        <th>사용일자</th>
+        <th>카테고리</th>
+        <th>금액 (EUR)</th>
+        <th>금액 (KRW)</th>
+        <th>사용처</th>
+        <th>링크</th>
+        <th>삭제</th>
+      </tr>
+    </thead>
+    <tbody id="expenseTableBody">
+      <tr id="expenseEmptyState">
+        <td colspan="7" class="expense-empty-state">아직 기록된 경비가 없습니다.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== INFO PANEL ===== -->
+<div class="main-panel" id="panel-info">
+  <div class="info-section">
+    <h2>여행 필수 정보 ℹ️</h2>
+    <div class="info-grid" id="infoGrid"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>프랑스 여행 대시보드 v1 · 2026년 3월 29일 생성</p>
+  <p>모든 데이터는 로컬 저장소에 저장됩니다 · <a href="#" onclick="deleteAllData(); return false;" style="color:var(--negative); text-decoration:none;">전체 데이터 삭제</a></p>
+</footer>
+
+<!-- Hidden file input for import -->
+<input type="file" id="importFileInput" accept=".json" style="display:none;">
+
+<script>
+// ===== CONSTANTS & DATA =====
+const EUR_TO_KRW = 1700;
+const TRIP_CODE = 'france2026';
+const TRIP_NAME = '프랑스';
+
+const REGIONS = {
+  marseille: { emoji: '⚓', name: '마르세유' },
+  provence: { emoji: '💜', name: '프로방스' },
+  cotedazur: { emoji: '🎨', name: '코트다쥐르' },
+  nice: { emoji: '🌊', name: '니스' },
+  paris: { emoji: '🗼', name: '파리' }
+};
+
+const DAYS = [
+  { num: 1, date: '2026-06-02', dow: '화', title: '출발', desc: '인천국제공항 → 헬싱키 경유' },
+  { num: 2, date: '2026-06-03', dow: '수', title: '도착 & 이동', desc: '헬싱키 → 파리 CDG → 마르세유' },
+  { num: 3, date: '2026-06-04', dow: '목', title: '마르세유', desc: '구항구, 성당, 관광열차' },
+  { num: 4, date: '2026-06-05', dow: '금', title: '프로방스 드라이브', desc: '고르드, 루시용, 발랑솔, 무스티에' },
+  { num: 5, date: '2026-06-06', dow: '토', title: '베르동 & 코트다쥐르', desc: '베르동 협곡, 생폴드방스' },
+  { num: 6, date: '2026-06-07', dow: '일', title: '코트다쥐르 해안', desc: '빌프랑슈, 에즈, 망통' },
+  { num: 7, date: '2026-06-08', dow: '월', title: '니스', desc: '구시가지, 프롬나드' },
+  { num: 8, date: '2026-06-09', dow: '화', title: '니스', desc: '살레야 광장, 성곽 공원' },
+  { num: 9, date: '2026-06-10', dow: '수', title: '니스 → 파리', desc: '고속열차 이동, 파리 도착' },
+  { num: 10, date: '2026-06-11', dow: '목', title: '파리', desc: '루브르, 튈르리 정원, 콩코르드' },
+  { num: 11, date: '2026-06-12', dow: '금', title: '파리', desc: '몽마르트르, 오르세, 생제르맹' },
+  { num: 12, date: '2026-06-13', dow: '토', title: '귀국', desc: '파리 CDG → 헬싱키 → 인천' }
+];
+
+const SCHEDULE_DATA = [
+  { day: 1, time: '18:00', title: '인천국제공항 출발', desc: 'Finnair AY0042', type: 'flight', cost: null },
+  { day: 2, time: '10:25', title: '파리 CDG 도착', desc: 'Finnair AY1571', type: 'flight', cost: null },
+  { day: 2, time: '12:34', title: 'CDG → Avignon Centre', desc: 'TGV', type: 'transport', cost: 90.20, currency: 'EUR' },
+  { day: 2, time: '15:30', title: 'Avignon → Marseille St-Charles', desc: 'TGV', type: 'transport', cost: 20.00, currency: 'EUR' },
+  { day: 2, time: '18:00', title: '마르세유 에어비앤비 체크인', desc: 'Rue Saint-Ferreol', type: 'hotel', cost: null },
+  { day: 3, time: '10:00', title: '"Marseille" Landmark 포토스팟', desc: '인생샷 명소', type: 'spot', link: 'https://maps.app.goo.gl/EbrXFiHjm5hw8wSt8' },
+  { day: 3, time: '11:30', title: 'Vieux-Port de Marseille', desc: '구항구 산책', type: 'spot', link: 'https://maps.app.goo.gl/VUi5DAWGWgnm3bUb8' },
+  { day: 3, time: '13:00', title: '점심식사', desc: '로컬 카페', type: 'meal', cost: 15 },
+  { day: 3, time: '14:30', title: 'Les Petits Trains de Marseille', desc: '꼬마관광열차', type: 'spot', link: 'https://maps.app.goo.gl/DP6tXPF2eUWoLiDu5', cost: 10 },
+  { day: 3, time: '17:00', title: 'Notre-Dame de la Garde', desc: '노트르담 드 라 가르드 성당', type: 'spot', link: 'https://maps.app.goo.gl/T79dNKbn1gbrVk4D7' },
+  { day: 4, time: '10:30', title: '렌터카 픽업', desc: 'Marseille St Charles', type: 'transport', cost: 296.44, currency: 'EUR', notes: '3일 렌탈' },
+  { day: 4, time: '12:00', title: '고르드 (Gordes)', desc: '프로방스 절벽 마을', type: 'spot' },
+  { day: 4, time: '14:30', title: '루시용 (Roussillon)', desc: '오렌지빛 절벽 마을', type: 'spot' },
+  { day: 4, time: '16:00', title: '발랑솔 (Valensole)', desc: '라벤더 밭 (6월 초 개화)', type: 'spot' },
+  { day: 4, time: '17:30', title: '무스티에생트마리 (Moustiers-Sainte-Marie)', desc: '도예 마을', type: 'spot' },
+  { day: 5, time: '10:00', title: '무스티에생트마리 마을 산책', desc: '중세 마을 거리', type: 'spot' },
+  { day: 5, time: '12:00', title: '점심식사', desc: 'La Cantine', type: 'meal', cost: 20 },
+  { day: 5, time: '13:30', title: '베르동 협곡 (Gorges du Verdon)', desc: '자연 경관', type: 'spot' },
+  { day: 5, time: '16:00', title: '생폴드방스 (Saint-Paul-de-Vence)', desc: '중세 예술 마을', type: 'spot' },
+  { day: 6, time: '09:00', title: '빌프랑슈쉬르메르 (Villefranche-sur-Mer)', desc: '해안 마을', type: 'spot' },
+  { day: 6, time: '11:30', title: '에즈 (Èze)', desc: '절벽 위 중세 마을, 식물원', type: 'spot' },
+  { day: 6, time: '14:00', title: '점심식사', desc: 'Le Caruso', type: 'meal', cost: 25 },
+  { day: 6, time: '15:30', title: '망통 (Menton)', desc: '해안 도시', type: 'spot' },
+  { day: 7, time: '10:30', title: '렌터카 반납', desc: 'Nice Gare', type: 'transport' },
+  { day: 7, time: '11:30', title: '니스 구시가지 (Vieille Ville)', desc: '오래된 거리 산책', type: 'spot' },
+  { day: 7, time: '13:00', title: '점심식사', desc: 'Chez Thérésa', type: 'meal', cost: 8 },
+  { day: 7, time: '14:30', title: '프롬나드 데 장글레 (Promenade des Anglais)', desc: '해변 산책로', type: 'spot' },
+  { day: 7, time: '17:00', title: '마세나 광장 (Place Masséna)', desc: '광장 구경', type: 'spot' },
+  { day: 8, time: '09:00', title: '살레야 광장 꽃시장 (Cours Saleya)', desc: '전통 시장', type: 'spot' },
+  { day: 8, time: '11:00', title: '카페 & 브레크', desc: 'Oui Jelato', type: 'cafe', cost: 5 },
+  { day: 8, time: '14:00', title: '니스 성곽 공원 (Colline du Château)', desc: '언덕 공원', type: 'spot' },
+  { day: 8, time: '16:00', title: '마티스 미술관 or 샤갈 미술관', desc: '미술관 관광', type: 'spot', cost: 12 },
+  { day: 9, time: '05:58', title: 'Nice → Paris Gare de Lyon', desc: 'TGV', type: 'transport', cost: 73.60, currency: 'EUR' },
+  { day: 9, time: '15:00', title: '파리 도착 후 숙소 체크인', desc: 'Marais District', type: 'hotel' },
+  { day: 9, time: '17:30', title: '에펠탑 (Tour Eiffel) - 야경', desc: '야간 관광', type: 'spot' },
+  { day: 9, time: '19:00', title: '저녁 식사', desc: '근처 레스토랑', type: 'meal', cost: 22 },
+  { day: 10, time: '09:00', title: '루브르 박물관 (Musée du Louvre)', desc: '미술관', type: 'spot', cost: 17 },
+  { day: 10, time: '12:30', title: '점심식사', desc: 'Petit Vendôme', type: 'meal', cost: 8 },
+  { day: 10, time: '14:00', title: '튈르리 정원 (Jardin des Tuileries)', desc: '정원 산책', type: 'spot' },
+  { day: 10, time: '16:00', title: '콩코르드 광장 → 샹젤리제', desc: '거리 쇼핑', type: 'spot' },
+  { day: 11, time: '09:00', title: '몽마르트르 (Montmartre)', desc: '사크레쾨르 성당', type: 'spot', cost: 10 },
+  { day: 11, time: '12:00', title: '점심식사', desc: 'Mamiche', type: 'meal', cost: 5 },
+  { day: 11, time: '14:00', title: '오르세 미술관 or 마레 지구', desc: '미술관/지구 탐방', type: 'spot' },
+  { day: 11, time: '16:00', title: '생제르맹 데 프레 (Saint-Germain-des-Prés)', desc: '카페 문화', type: 'cafe', cost: 8 },
+  { day: 11, time: '18:00', title: '센 강 유람선 (Bateaux Mouches)', desc: '석양 크루즈', type: 'spot', cost: 15 },
+  { day: 12, time: '16:00', title: '파리 CDG → 헬싱키', desc: 'Finnair AY1572', type: 'flight' },
+  { day: 12, time: '21:30', title: '헬싱키 → 인천', desc: 'Finnair AY0041', type: 'flight' }
+];
+
+const FOOD_DATA = [
+  { name: 'Chez Étienne', region: 'marseille', desc: '피자/부야베스', location: '르 파니에 지구', reco: '피자, 부야베스', price: 15, badge: 'badge-local' },
+  { name: 'La Boîte à Sardine', region: 'marseille', desc: '해산물', location: '숨겨진 보석', reco: '정어리 요리, 해산물 플래터', price: 20, badge: 'badge-local-rec' },
+  { name: 'Restaurant Gérard', region: 'marseille', desc: '유기농 프로방스', location: '쿠르줄리앙', reco: '제철 채소 요리', price: 18, badge: 'badge-local' },
+  { name: 'La Cantinetta', region: 'marseille', desc: '이탈리안', location: '쿠르줄리앙', reco: '파스타, 안티파스토', price: 15, badge: 'badge-local' },
+  { name: 'La Cantine', region: 'provence', desc: '프로방스 가정식', location: '무스티에생트마리', reco: '제철 프로방스 요리', price: 20, badge: 'badge-local' },
+  { name: 'Le Couvert', region: 'provence', desc: '현지 특산물', location: '무스티에생트마리', reco: '올리브 타프나드, 치즈', price: 22, badge: 'badge-local-rec' },
+  { name: 'Le Caruso', region: 'cotedazur', desc: '프렌치 전통', location: '생폴드방스 구시가지', reco: '지중해 요리, 와인', price: 25, badge: 'badge-local' },
+  { name: 'Chez Thérésa', region: 'nice', desc: '소카 전문', location: '쿠르살레야 시장 (1925년~)', reco: '소카, 파리나타', price: 8, badge: 'badge-must' },
+  { name: 'Chez Pipo', region: 'nice', desc: '소카', location: '니스 항구 (1923년~)', reco: '소카, 피사라디에르', price: 10, badge: 'badge-local' },
+  { name: 'Chez Acchiardo', region: 'nice', desc: '니스 가정식', location: '구시가지 (1927년~, 5대째)', reco: '라타투이, 니수아즈', price: 18, badge: 'badge-local-rec' },
+  { name: 'La Maison de Marie', region: 'nice', desc: '숨겨진 비스트로', location: '안뜰 테라스', reco: '프렌치 비스트로 런치', price: 22, badge: 'badge-local' },
+  { name: 'Petit Vendôme', region: 'paris', desc: '잠봉뵈르', location: '2구', reco: '잠봉뵈르 샌드위치', price: 8, badge: 'badge-must' },
+  { name: 'Le Moulin de la Croix Nivert', region: 'paris', desc: '빵집/크루아상', location: '15구 에펠탑 근처', reco: '크루아상, 비에누아즈리', price: 5, badge: 'badge-local-rec' }
+];
+
+const CAFE_DATA = [
+  { name: 'Oui Jelato', region: 'nice', desc: '젤라또', location: '구시가지', reco: '시즌 플레이버', price: 5, badge: 'badge-dessert' },
+  { name: 'La maison de celine pâtisserie', region: 'nice', desc: '파티스리', location: '구시가지', reco: '피스타치오 크루아상, 초콜릿 마카롱', price: 6, badge: 'badge-dessert' },
+  { name: 'Café Verlet', region: 'paris', desc: '로스터리 카페', location: '팔레루아얄 근처', reco: '싱글오리진 에스프레소', price: 5, badge: 'badge-cafe-type' },
+  { name: 'I/O Café', region: 'paris', desc: '스페셜티', location: '마레지구', reco: '라떼, 플랫화이트', price: 5, badge: 'badge-cafe-type' },
+  { name: 'Café de Flore', region: 'paris', desc: '역사적 카페', location: '생제르맹 데 프레 (1887년~)', reco: '카페오레, 크루아상', price: 8, badge: 'badge-view' }
+];
+
+const HOTEL_DATA = [
+  { name: '마르세유 에어비앤비', type: 'Airbnb', checkIn: '2026-06-03', checkOut: '2026-06-05', nights: 2, region: 'marseille', priceKRW: 194480 },
+  { name: 'Hôtel - Restaurant Le Relais', type: '호텔', checkIn: '2026-06-05', checkOut: '2026-06-06', nights: 1, region: 'provence', priceEUR: 82, mapUrl: 'https://maps.app.goo.gl/kJ5t46Wh2vWWygXcA', bookingUrl: '#' },
+  { name: 'Saint-Jeannet 에어비앤비', type: 'Airbnb', checkIn: '2026-06-06', checkOut: '2026-06-08', nights: 2, region: 'cotedazur', priceKRW: 178628 },
+  { name: '니스 에어비앤비', type: 'Airbnb', checkIn: '2026-06-08', checkOut: '2026-06-10', nights: 2, region: 'nice', priceKRW: 0 },
+  { name: '파리 에어비앤비', type: 'Airbnb', checkIn: '2026-06-10', checkOut: '2026-06-13', nights: 3, region: 'paris', priceKRW: 699821 }
+];
+
+const BUDGET_DATA = {
+  transport: [
+    { label: 'TGV CDG→Avignon', amount: 90.20, currency: 'EUR' },
+    { label: 'TGV Avignon→Marseille', amount: 20.00, currency: 'EUR' },
+    { label: 'TGV Nice→Paris', amount: 73.60, currency: 'EUR' },
+    { label: '렌터카 (3일)', amount: 296.44, currency: 'EUR' },
+    { label: '파리 교통 (Navigo)', amount: 30, currency: 'EUR' }
+  ],
+  meal: [
+    { label: '외식 (~13끼 × €20)', amount: 260, currency: 'EUR' },
+    { label: '마트/자취 (~26끼)', amount: 130, currency: 'EUR' }
+  ],
+  activity: [
+    { label: '입장료 및 체험', amount: 80, currency: 'EUR' }
+  ],
+  hotel: [
+    { label: '마르세유 (2박)', amount: 194480, currency: 'KRW' },
+    { label: 'Le Relais (1박)', amount: 82, currency: 'EUR' },
+    { label: '생자네 (2박)', amount: 178628, currency: 'KRW' },
+    { label: '파리 (3박)', amount: 699821, currency: 'KRW' }
+  ],
+  flight: [
+    { label: '가는편 (AY0042+AY1571)', amount: 0, currency: 'KRW' },
+    { label: '오는편 (AY1572+AY0041)', amount: 0, currency: 'KRW' }
+  ]
+};
+
+const INFO_DATA = [
+  { emoji: '🕐', title: '시차', desc: '한국보다 -7시간 (서머타임, 6월)' },
+  { emoji: '💱', title: '환율', desc: '1 EUR ≈ 1,700 KRW (2026.03 기준)' },
+  { emoji: '🌤️', title: '날씨', desc: '남부 25~32°C (건조, 맑음), 파리 18~25°C' },
+  { emoji: '🔌', title: '전압', desc: '230V/50Hz, C타입 또는 SE타입 플러그' },
+  { emoji: '🚌', title: '교통', desc: '파리 Navigo 카드 / 남부 렌터카 추천' },
+  { emoji: '💳', title: '결제', desc: 'Visa/Mastercard 광범위 사용, 소규모 상점은 현금' },
+  { emoji: '📱', title: '통신', desc: '유럽 eSIM 또는 로밍 추천' },
+  { emoji: '🚨', title: '긴급', desc: '유럽 112 / 대한민국 대사관 +33 1 47 53 01 01' },
+  { emoji: '💜', title: '라벤더', desc: '6월 중순부터 개화 시작, 발랑솔/고르드 세낭크 수도원 추천' }
+];
+
+// ===== STATE & STORAGE =====
+let currentPanel = 'schedule';
+let currentDay = 1;
+let hotelIndex = 0;
+let expenses = [];
+let expenseFilterDay = 'all';
+let expenseFilterCategory = 'all';
+
+const STORAGE_KEY = `${TRIP_CODE}_v1`;
+
+// ===== INITIALIZATION =====
+document.addEventListener('DOMContentLoaded', function() {
+  loadFromStorage();
+  renderSchedule();
+  renderFoodPanel();
+  renderCafePanel();
+  renderHotelPanel();
+  renderBudgetPanel();
+  renderExpensePanel();
+  renderInfoPanel();
+  updateExpenseUI();
+});
+
+// ===== THEME MANAGEMENT =====
+function cycleTheme() {
+  const html = document.documentElement;
+  if (html.classList.contains('theme-dark')) {
+    html.classList.remove('theme-dark');
+    html.classList.add('theme-light');
+    localStorage.setItem(`${TRIP_CODE}_theme`, 'light');
+  } else {
+    html.classList.remove('theme-light');
+    html.classList.add('theme-dark');
+    localStorage.setItem(`${TRIP_CODE}_theme`, 'dark');
+  }
+  toggleMenu();
+}
+
+// Load theme on init
+if (localStorage.getItem(`${TRIP_CODE}_theme`) === 'light') {
+  document.documentElement.classList.remove('theme-dark');
+  document.documentElement.classList.add('theme-light');
+}
+
+// ===== MENU TOGGLE =====
+function toggleMenu() {
+  const dropdown = document.getElementById('vizMenuDropdown');
+  dropdown.classList.toggle('active');
+}
+
+document.addEventListener('click', function(e) {
+  const menu = document.querySelector('.viz-menu');
+  if (!menu.contains(e.target)) {
+    document.getElementById('vizMenuDropdown').classList.remove('active');
+  }
+});
+
+// ===== PANEL NAVIGATION =====
+function showPanel(panelName) {
+  // Hide all panels
+  document.querySelectorAll('.main-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+
+  // Show selected panel
+  document.getElementById(`panel-${panelName}`).classList.add('active');
+  event.target.closest('.main-tab').classList.add('active');
+
+  currentPanel = panelName;
+}
+
+// ===== SCHEDULE RENDERING =====
+function renderSchedule() {
+  const dayTabsContainer = document.getElementById('dayTabs');
+  const dayContentsContainer = document.getElementById('dayContentsContainer');
+
+  dayTabsContainer.innerHTML = '';
+  dayContentsContainer.innerHTML = '';
+
+  DAYS.forEach(day => {
+    // Tab
+    const tab = document.createElement('button');
+    tab.className = `day-tab ${day.num === 1 ? 'active' : ''}`;
+    tab.style.borderLeft = `3px solid var(--day${day.num})`;
+    tab.onclick = () => showDay(day.num);
+    tab.innerHTML = `DAY ${day.num}<span class="tab-date">${day.date.slice(5)} ${day.dow}</span>`;
+    dayTabsContainer.appendChild(tab);
+
+    // Content
+    const content = document.createElement('div');
+    content.className = `day-content ${day.num === 1 ? 'active' : ''}`;
+    content.id = `day${day.num}`;
+
+    const daySchedule = SCHEDULE_DATA.filter(s => s.day === day.num);
+
+    let html = `
+      <div class="day-header" style="border-left-color: var(--day${day.num});">
+        <div class="day-number" style="background: var(--day${day.num});">${day.num}</div>
+        <div class="day-meta">
+          <h2>${day.title}</h2>
+          <p>${day.date} (${day.dow}) · ${day.desc}</p>
+        </div>
+      </div>
+      <div class="timeline">
+    `;
+
+    daySchedule.forEach((item, idx) => {
+      const icon = getTypeIcon(item.type);
+      const costHTML = item.cost ? `<span class="cost-badge">~${item.currency === 'EUR' ? '€' : ''}${item.cost}${item.currency === 'KRW' ? ' KRW' : ''}<span class="krw">(₩${Math.round(item.currency === 'EUR' ? item.cost * EUR_TO_KRW : item.cost)})</span></span>` : '';
+      const linkHTML = item.link ? `<a class="map-link" href="${item.link}" target="_blank">지도</a>` : '';
+
+      html += `
+        <div class="tl-item">
+          <div class="tl-dot" style="border-color: var(--day${day.num});">${icon}</div>
+          <div class="tl-card">
+            <div class="tl-time">${item.time}</div>
+            <div class="tl-title">${item.title}</div>
+            <div class="tl-desc">${item.desc} ${costHTML}</div>
+            <div class="tl-tags">
+              <span class="tag tag-${item.type}">${getTypeLabel(item.type)}</span>
+              ${linkHTML}
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    html += '</div>';
+    content.innerHTML = html;
+    dayContentsContainer.appendChild(content);
+  });
+}
+
+function showDay(dayNum) {
+  document.querySelectorAll('.day-tab').forEach((t, idx) => {
+    if (DAYS[idx].num === dayNum) {
+      t.classList.add('active');
+    } else {
+      t.classList.remove('active');
+    }
+  });
+
+  document.querySelectorAll('.day-content').forEach((c, idx) => {
+    if (DAYS[idx].num === dayNum) {
+      c.classList.add('active');
+    } else {
+      c.classList.remove('active');
+    }
+  });
+
+  currentDay = dayNum;
+}
+
+function getTypeIcon(type) {
+  const icons = {
+    flight: '✈',
+    transport: '🚂',
+    meal: '🍽',
+    spot: '📍',
+    hotel: '🏨',
+    cafe: '☕',
+    night: '🌙'
+  };
+  return icons[type] || '📌';
+}
+
+function getTypeLabel(type) {
+  const labels = {
+    flight: '항공',
+    transport: '교통',
+    meal: '식사',
+    spot: '관광',
+    hotel: '숙소',
+    cafe: '카페',
+    night: '야경'
+  };
+  return labels[type] || '이벤트';
+}
+
+// ===== FOOD PANEL =====
+function renderFoodPanel() {
+  const filterContainer = document.getElementById('food-filters');
+  const listContainer = document.getElementById('food-list');
+
+  // Filters
+  filterContainer.innerHTML = `
+    <button class="region-btn active" onclick="filterFood('all')">전체 <span class="region-count">${FOOD_DATA.length}</span></button>
+  `;
+
+  Object.entries(REGIONS).forEach(([key, region]) => {
+    const count = FOOD_DATA.filter(f => f.region === key).length;
+    filterContainer.innerHTML += `
+      <button class="region-btn" onclick="filterFood('${key}')">${region.emoji} ${region.name} <span class="region-count">${count}</span></button>
+    `;
+  });
+
+  // List
+  listContainer.innerHTML = '';
+  Object.entries(REGIONS).forEach(([key, region]) => {
+    const items = FOOD_DATA.filter(f => f.region === key);
+    if (items.length === 0) return;
+
+    let html = `
+      <div class="region-section" data-region="${key}">
+        <div class="region-section-title"><span class="region-emoji">${region.emoji}</span> ${region.name}</div>
+        <div class="list-grid">
+    `;
+
+    items.forEach(item => {
+      html += `
+        <div class="list-card">
+          <div class="list-card-header">
+            <div><h3>${item.name}</h3></div>
+            <span class="badge-type ${item.badge}">${getBadgeLabel(item.badge)}</span>
+          </div>
+          <div class="list-desc">${item.desc}</div>
+          <div class="reco">추천: ${item.reco}</div>
+          <div class="address">${item.location}</div>
+          <div class="list-meta">
+            <span class="price">~€${item.price} <span class="krw">(₩${Math.round(item.price * EUR_TO_KRW)})</span></span>
+            <a class="map-link" href="#" onclick="return false;">구글지도</a>
+          </div>
+        </div>
+      `;
+    });
+
+    html += '</div></div>';
+    listContainer.innerHTML += html;
+  });
+}
+
+function filterFood(regionKey) {
+  const buttons = document.querySelectorAll('#food-filters .region-btn');
+  buttons.forEach((btn, idx) => {
+    if ((regionKey === 'all' && idx === 0) || btn.textContent.includes(REGIONS[regionKey]?.name)) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  const sections = document.querySelectorAll('#food-list .region-section');
+  sections.forEach(section => {
+    if (regionKey === 'all') {
+      section.style.display = 'block';
+    } else {
+      section.style.display = section.dataset.region === regionKey ? 'block' : 'none';
+    }
+  });
+}
+
+// ===== CAFE PANEL =====
+function renderCafePanel() {
+  const filterContainer = document.getElementById('cafe-filters');
+  const listContainer = document.getElementById('cafe-list');
+
+  // Filters
+  filterContainer.innerHTML = `
+    <button class="region-btn active" onclick="filterCafe('all')">전체 <span class="region-count">${CAFE_DATA.length}</span></button>
+  `;
+
+  Object.entries(REGIONS).forEach(([key, region]) => {
+    const count = CAFE_DATA.filter(f => f.region === key).length;
+    if (count > 0) {
+      filterContainer.innerHTML += `
+        <button class="region-btn" onclick="filterCafe('${key}')">${region.emoji} ${region.name} <span class="region-count">${count}</span></button>
+      `;
+    }
+  });
+
+  // List
+  listContainer.innerHTML = '';
+  Object.entries(REGIONS).forEach(([key, region]) => {
+    const items = CAFE_DATA.filter(f => f.region === key);
+    if (items.length === 0) return;
+
+    let html = `
+      <div class="region-section" data-region="${key}">
+        <div class="region-section-title"><span class="region-emoji">${region.emoji}</span> ${region.name}</div>
+        <div class="list-grid">
+    `;
+
+    items.forEach(item => {
+      html += `
+        <div class="list-card">
+          <div class="list-card-header">
+            <div><h3>${item.name}</h3></div>
+            <span class="badge-type ${item.badge}">${getBadgeLabel(item.badge)}</span>
+          </div>
+          <div class="list-desc">${item.desc}</div>
+          <div class="reco">추천: ${item.reco}</div>
+          <div class="address">${item.location}</div>
+          <div class="list-meta">
+            <span class="price">~€${item.price} <span class="krw">(₩${Math.round(item.price * EUR_TO_KRW)})</span></span>
+            <a class="map-link" href="#" onclick="return false;">구글지도</a>
+          </div>
+        </div>
+      `;
+    });
+
+    html += '</div></div>';
+    listContainer.innerHTML += html;
+  });
+}
+
+function filterCafe(regionKey) {
+  const buttons = document.querySelectorAll('#cafe-filters .region-btn');
+  buttons.forEach((btn, idx) => {
+    if ((regionKey === 'all' && idx === 0) || btn.textContent.includes(REGIONS[regionKey]?.name)) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  const sections = document.querySelectorAll('#cafe-list .region-section');
+  sections.forEach(section => {
+    if (regionKey === 'all') {
+      section.style.display = 'block';
+    } else {
+      section.style.display = section.dataset.region === regionKey ? 'block' : 'none';
+    }
+  });
+}
+
+function getBadgeLabel(badgeClass) {
+  const labels = {
+    'badge-must': '필수',
+    'badge-local': '로컬',
+    'badge-local-rec': '현지추천',
+    'badge-cafe-type': '스페셜티',
+    'badge-dessert': '디저트',
+    'badge-view': '뷰'
+  };
+  return labels[badgeClass] || '추천';
+}
+
+// ===== HOTEL CAROUSEL =====
+function renderHotelPanel() {
+  const track = document.getElementById('hotelTrack');
+  const dotsContainer = document.getElementById('hotelDots');
+
+  track.innerHTML = '';
+  dotsContainer.innerHTML = '';
+
+  HOTEL_DATA.forEach((hotel, idx) => {
+    const card = document.createElement('div');
+    card.className = 'hotel-card';
+
+    const priceDisplay = hotel.priceEUR ? `€${hotel.priceEUR}` : `₩${hotel.priceKRW}`;
+    const priceKRWDisplay = hotel.priceEUR ? `≈ ₩${Math.round(hotel.priceEUR * EUR_TO_KRW)}` : hotel.priceKRW.toLocaleString();
+    const pricePerNight = hotel.priceEUR ? `€${(hotel.priceEUR / hotel.nights).toFixed(2)}` : `₩${Math.round(hotel.priceKRW / hotel.nights)}`;
+    const pricePerNightKRW = hotel.priceEUR ? `≈ ₩${Math.round((hotel.priceEUR / hotel.nights) * EUR_TO_KRW)}` : hotel.priceKRW / hotel.nights;
+
+    card.innerHTML = `
+      <div class="hotel-card-header">
+        <div class="hotel-name">${hotel.name}</div>
+        <span class="hotel-type-badge">${hotel.type}</span>
+      </div>
+      <div class="hotel-info-grid">
+        <div class="hotel-info-item">
+          <div class="hotel-info-label">지역</div>
+          <div class="hotel-info-value">${REGIONS[hotel.region].name}</div>
+        </div>
+        <div class="hotel-info-item">
+          <div class="hotel-info-label">체크인</div>
+          <div class="hotel-info-value">${hotel.checkIn}</div>
+        </div>
+        <div class="hotel-info-item">
+          <div class="hotel-info-label">체크아웃</div>
+          <div class="hotel-info-value">${hotel.checkOut}</div>
+        </div>
+      </div>
+      <div class="hotel-nights-bar">
+        <div class="hotel-night-chip">
+          <div class="night-date">${hotel.checkIn} ~ ${hotel.checkOut}</div>
+          <div class="night-label">${hotel.nights}박</div>
+        </div>
+      </div>
+      <div class="hotel-price-row">
+        <div class="hotel-price-item">
+          <div class="hotel-price-label">총 금액</div>
+          <div class="hotel-price-value">${priceDisplay}</div>
+          <div class="hotel-price-krw">${priceKRWDisplay}</div>
+        </div>
+        <div class="hotel-price-item">
+          <div class="hotel-price-label">1박 요금</div>
+          <div class="hotel-price-value">${pricePerNight}</div>
+          <div class="hotel-price-krw">${pricePerNightKRW}</div>
+        </div>
+      </div>
+      <div class="hotel-footer">
+        <a class="hotel-btn hotel-btn-booking" href="${hotel.bookingUrl || '#'}" target="_blank">예약</a>
+        ${hotel.mapUrl ? `<a class="hotel-btn hotel-btn-map" href="${hotel.mapUrl}" target="_blank">구글지도</a>` : '<button class="hotel-btn hotel-btn-map" disabled>구글지도</button>'}
+      </div>
+    `;
+
+    track.appendChild(card);
+
+    const dot = document.createElement('div');
+    dot.className = `hotel-dot ${idx === 0 ? 'active' : ''}`;
+    dot.onclick = () => hotelGoto(idx);
+    dotsContainer.appendChild(dot);
+  });
+
+  updateHotelNav();
+}
+
+function hotelSlide(direction) {
+  hotelIndex += direction;
+  if (hotelIndex < 0) hotelIndex = HOTEL_DATA.length - 1;
+  if (hotelIndex >= HOTEL_DATA.length) hotelIndex = 0;
+  updateHotelPosition();
+}
+
+function hotelGoto(idx) {
+  hotelIndex = idx;
+  updateHotelPosition();
+}
+
+function updateHotelPosition() {
+  const track = document.getElementById('hotelTrack');
+  track.style.transform = `translateX(-${hotelIndex * 100}%)`;
+  updateHotelNav();
+}
+
+function updateHotelNav() {
+  document.querySelectorAll('.hotel-dot').forEach((dot, idx) => {
+    dot.classList.toggle('active', idx === hotelIndex);
+  });
+  document.getElementById('hotelCounter').textContent = `${hotelIndex + 1} / ${HOTEL_DATA.length}`;
+}
+
+// ===== BUDGET PANEL =====
+function renderBudgetPanel() {
+  const grid = document.getElementById('budgetGrid');
+  grid.innerHTML = '';
+
+  // Calculate totals
+  let totalEUR = 0;
+  let totalKRW = 0;
+
+  const categories = [
+    { icon: '🚂', name: '교통비', key: 'transport' },
+    { icon: '🍽️', name: '식비', key: 'meal' },
+    { icon: '🎡', name: '관광/체험', key: 'activity' },
+    { icon: '🏨', name: '숙소', key: 'hotel' },
+    { icon: '✈️', name: '항공권', key: 'flight' }
+  ];
+
+  categories.forEach(cat => {
+    const items = BUDGET_DATA[cat.key] || [];
+    let catTotal = 0;
+    let catTotalKRW = 0;
+
+    let html = `<div class="budget-card" ${cat.key === 'flight' ? 'style="border-color: var(--accent); border-width: 2px;"' : ''}>
+      <h3>${cat.icon} ${cat.name}</h3>`;
+
+    items.forEach(item => {
+      const krw = item.currency === 'EUR' ? item.amount * EUR_TO_KRW : item.amount;
+      html += `
+        <div class="budget-row">
+          <span class="label">${item.label}</span>
+          <span class="amount">${item.currency === 'EUR' ? '€' : ''}${item.amount}${item.currency === 'KRW' ? ' KRW' : ''}<span class="krw">${item.currency === 'EUR' ? `≈ ₩${Math.round(krw)}` : ''}</span></span>
+        </div>
+      `;
+
+      if (item.currency === 'EUR') {
+        catTotal += item.amount;
+        catTotalKRW += krw;
+      } else {
+        catTotalKRW += item.amount;
+      }
+    });
+
+    const totalDisplay = catTotal > 0 ? `€${catTotal.toFixed(2)} <span class="krw">≈ ₩${Math.round(catTotalKRW)}` : `₩${Math.round(catTotalKRW)}`;
+    html += `
+      <div class="budget-total">
+        <span>소계</span>
+        <span>${totalDisplay}</span>
+      </div>
+    </div>`;
+
+    grid.innerHTML += html;
+
+    totalEUR += catTotal;
+    totalKRW += catTotalKRW;
+  });
+
+  // Total summary
+  const totalCard = document.createElement('div');
+  totalCard.className = 'budget-card';
+  totalCard.style.borderColor = 'var(--accent)';
+  totalCard.style.borderWidth = '2px';
+  totalCard.innerHTML = `
+    <h3>💰 총 예상 경비</h3>
+    <div class="budget-row"><span class="label">교통비</span><span class="amount">€${BUDGET_DATA.transport.reduce((s, i) => s + (i.currency === 'EUR' ? i.amount : 0), 0).toFixed(2)}<span class="krw">≈ ₩${Math.round(BUDGET_DATA.transport.reduce((s, i) => s + (i.currency === 'EUR' ? i.amount * EUR_TO_KRW : 0), 0))}</span></span></div>
+    <div class="budget-row"><span class="label">식비</span><span class="amount">€${BUDGET_DATA.meal.reduce((s, i) => s + (i.currency === 'EUR' ? i.amount : 0), 0).toFixed(2)}<span class="krw">≈ ₩${Math.round(BUDGET_DATA.meal.reduce((s, i) => s + (i.currency === 'EUR' ? i.amount * EUR_TO_KRW : 0), 0))}</span></span></div>
+    <div class="budget-row"><span class="label">관광/체험</span><span class="amount">€${BUDGET_DATA.activity.reduce((s, i) => s + (i.currency === 'EUR' ? i.amount : 0), 0).toFixed(2)}<span class="krw">≈ ₩${Math.round(BUDGET_DATA.activity.reduce((s, i) => s + (i.currency === 'EUR' ? i.amount * EUR_TO_KRW : 0), 0))}</span></span></div>
+    <div class="budget-row"><span class="label">숙소</span><span class="amount">${BUDGET_DATA.hotel.map(i => i.currency === 'EUR' ? `€${i.amount}` : `₩${i.amount.toLocaleString()}`).join(' + ')}</span></div>
+    <div class="budget-total">
+      <span>총 합계</span>
+      <span style="color:var(--accent);">~€${totalEUR.toFixed(2)} + 숙소<br><span class="krw">약 ₩${Math.round(totalEUR * EUR_TO_KRW + BUDGET_DATA.hotel.reduce((s, i) => s + (i.currency === 'EUR' ? i.amount * EUR_TO_KRW : i.amount), 0))}</span></span>
+    </div>
+  `;
+
+  grid.appendChild(totalCard);
+}
+
+// ===== EXPENSE PANEL =====
+function renderExpensePanel() {
+  // Date filters
+  const dateFilters = document.getElementById('expenseDateFilters');
+  dateFilters.innerHTML = '<button class="region-btn active" onclick="filterExpenseByDate(\'all\')">전체</button>';
+  DAYS.forEach(day => {
+    dateFilters.innerHTML += `<button class="region-btn" onclick="filterExpenseByDate('${day.num}')">DAY ${day.num} (${day.date})</button>`;
+  });
+
+  // Category filters
+  const catFilters = document.getElementById('expenseCategoryFilters');
+  catFilters.innerHTML = `
+    <button class="region-btn active" onclick="filterExpenseByCategory('all')">전체</button>
+    <button class="region-btn" onclick="filterExpenseByCategory('flight')">✈️ 항공</button>
+    <button class="region-btn" onclick="filterExpenseByCategory('hotel')">🏨 숙소</button>
+    <button class="region-btn" onclick="filterExpenseByCategory('meal')">🍜 식사</button>
+    <button class="region-btn" onclick="filterExpenseByCategory('cafe')">☕ 카페</button>
+    <button class="region-btn" onclick="filterExpenseByCategory('transport')">🚌 교통</button>
+    <button class="region-btn" onclick="filterExpenseByCategory('activity')">🎡 관광</button>
+    <button class="region-btn" onclick="filterExpenseByCategory('souvenir')">🎁 기념품</button>
+    <button class="region-btn" onclick="filterExpenseByCategory('etc')">📦 기타</button>
+  `;
+
+  updateExpenseTable();
+}
+
+function filterExpenseByDate(dayNum) {
+  expenseFilterDay = dayNum;
+  updateExpenseTable();
+  document.querySelectorAll('#expenseDateFilters .region-btn').forEach(btn => {
+    btn.classList.toggle('active',
+      (dayNum === 'all' && btn.textContent.includes('전체')) ||
+      (dayNum !== 'all' && btn.textContent.includes(`DAY ${dayNum}`))
+    );
+  });
+}
+
+function filterExpenseByCategory(cat) {
+  expenseFilterCategory = cat;
+  updateExpenseTable();
+  document.querySelectorAll('#expenseCategoryFilters .region-btn').forEach(btn => {
+    btn.classList.toggle('active',
+      (cat === 'all' && btn.textContent.includes('전체')) ||
+      (cat !== 'all' && btn.textContent === cat) ||
+      (cat !== 'all' && btn.textContent.includes(getCategoryLabel(cat)))
+    );
+  });
+}
+
+function updateExpenseTable() {
+  const tbody = document.getElementById('expenseTableBody');
+
+  let filtered = expenses;
+  if (expenseFilterDay !== 'all') {
+    filtered = filtered.filter(e => e.day == expenseFilterDay);
+  }
+  if (expenseFilterCategory !== 'all') {
+    filtered = filtered.filter(e => e.category === expenseFilterCategory);
+  }
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr id="expenseEmptyState"><td colspan="7" class="expense-empty-state">아직 기록된 경비가 없습니다.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = filtered.map((exp, idx) => {
+    const krw = exp.currency === 'EUR' ? exp.amount * EUR_TO_KRW : exp.amount;
+    return `
+      <tr>
+        <td>DAY ${exp.day}</td>
+        <td>${getCategoryLabel(exp.category)}</td>
+        <td>${exp.currency === 'EUR' ? '€' : ''}${exp.amount}</td>
+        <td>₩${Math.round(krw).toLocaleString()}</td>
+        <td>${exp.place}</td>
+        <td>${exp.link ? `<a href="${exp.link}" target="_blank">링크</a>` : '-'}</td>
+        <td><button class="btn btn-danger" onclick="deleteExpense(${expenses.indexOf(exp)})">삭제</button></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function deleteExpense(idx) {
+  expenses.splice(idx, 1);
+  saveToStorage();
+  updateExpenseUI();
+}
+
+function getCategoryLabel(cat) {
+  const labels = {
+    'flight': '✈️ 항공',
+    'hotel': '🏨 숙소',
+    'meal': '🍜 식사',
+    'cafe': '☕ 카페',
+    'transport': '🚌 교통',
+    'activity': '🎡 관광',
+    'souvenir': '🎁 기념품',
+    'etc': '📦 기타'
+  };
+  return labels[cat] || cat;
+}
+
+function updateExpenseUI() {
+  const totalEUR = expenses.filter(e => e.currency === 'EUR').reduce((s, e) => s + e.amount, 0);
+  const totalKRW = expenses.reduce((s, e) => s + (e.currency === 'EUR' ? e.amount * EUR_TO_KRW : e.amount), 0);
+
+  document.getElementById('totalEUR').textContent = `€${totalEUR.toFixed(2)}`;
+  document.getElementById('totalKRW').textContent = `₩${Math.round(totalKRW).toLocaleString()}`;
+
+  // Budget percentage
+  const budgetEUR = 980.24;
+  const budgetKRW = budgetEUR * EUR_TO_KRW;
+  const percent = Math.round((totalKRW / budgetKRW) * 100);
+
+  document.getElementById('budgetPercent').textContent = `${percent}%`;
+  document.getElementById('budgetProgressBar').style.width = `${Math.min(percent, 100)}%`;
+
+  // KPI update
+  document.getElementById('kpiActualVal').textContent = `€${totalEUR.toFixed(2)}`;
+  document.getElementById('kpiActualKrw').textContent = `(₩${Math.round(totalKRW).toLocaleString()})`;
+  document.getElementById('kpiExpenseBar').style.width = `${Math.min(percent, 100)}%`;
+  document.getElementById('kpiExpensePercent').textContent = `예산 대비 ${percent}%`;
+
+  updateExpenseTable();
+}
+
+// ===== INFO PANEL =====
+function renderInfoPanel() {
+  const grid = document.getElementById('infoGrid');
+  grid.innerHTML = '';
+
+  INFO_DATA.forEach(info => {
+    const card = document.createElement('div');
+    card.className = 'info-card';
+    card.innerHTML = `
+      <h3>${info.emoji} ${info.title}</h3>
+      <p>${info.desc}</p>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ===== DOWNLOAD & EXPORT =====
+function downloadImage() {
+  htmlToImage.toPng(document.body).then(dataUrl => {
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = `france-dashboard-${new Date().toISOString().slice(0, 10)}.png`;
+    link.click();
+  });
+}
+
+function exportData() {
+  const data = {
+    expenses,
+    theme: document.documentElement.classList.contains('theme-dark') ? 'dark' : 'light'
+  };
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `france-dashboard-${new Date().toISOString().slice(0, 10)}.json`;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+function importFileClick() {
+  document.getElementById('importFileInput').click();
+}
+
+document.getElementById('importFileInput').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    try {
+      const data = JSON.parse(evt.target.result);
+      expenses = data.expenses || [];
+      if (data.theme) {
+        document.documentElement.classList.toggle('theme-dark', data.theme === 'dark');
+        document.documentElement.classList.toggle('theme-light', data.theme === 'light');
+      }
+      saveToStorage();
+      updateExpenseUI();
+      alert('데이터를 성공적으로 불러왔습니다!');
+    } catch (err) {
+      alert('파일 읽기 실패: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+});
+
+// ===== STORAGE =====
+function saveToStorage() {
+  const data = {
+    expenses,
+    theme: document.documentElement.classList.contains('theme-dark') ? 'dark' : 'light'
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function loadFromStorage() {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    try {
+      const data = JSON.parse(stored);
+      expenses = data.expenses || [];
+      if (data.theme) {
+        document.documentElement.classList.toggle('theme-dark', data.theme === 'dark');
+        document.documentElement.classList.toggle('theme-light', data.theme === 'light');
+      }
+    } catch (e) {
+      console.error('Storage load error:', e);
+    }
+  }
+}
+
+function deleteAllData() {
+  if (confirm('모든 데이터를 삭제하시겠습니까?')) {
+    expenses = [];
+    localStorage.removeItem(STORAGE_KEY);
+    updateExpenseUI();
+    alert('모든 데이터가 삭제되었습니다.');
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thaler 넛지 이론 — 자유주의적 개입주의와 선택 설계</title>
+  <meta name="knowledge-id" content="nudge-theory-thaler">
+  <meta name="knowledge-tags" content="행동경제학,심리,투자,넛지">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-08">
+  <meta name="knowledge-source" content="Thaler & Sunstein, Nudge (2008) · Thaler 노벨경제학상 (2017)">
+  <meta name="knowledge-category" content="투자·주식">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #10b981; --accent2: #059669;
+      --positive: #10b981; --negative: #ef4444; --warning: #f59e0b;
+      --chip-accent: rgba(16,185,129,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+      /* Genealogy colors */
+      --ka-bg: #13103a; --ka-border: #3730a3; --ka-text: #a5b4fc;
+      --th-bg: #0a1e26; --th-border: #0e4f6e; --th-text: #38bdf8;
+      --su-bg: #0a1e12; --su-border: #166534; --su-text: #4ade80;
+      --concept-bg: #1a1205; --concept-border: #78350f; --concept-text: #fbbf24;
+      --arch-bg: #1a1a1a; --arch-border: #374151;
+      --nudge-bg: #0a1e12; --nudge-border: #166534; --nudge-text: #4ade80;
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #059669; --accent2: #047857;
+      --positive: #059669; --negative: #dc2626; --warning: #d97706;
+      --chip-accent: rgba(5,150,105,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+      --ka-bg: #eef2ff; --ka-border: #c7d2fe; --ka-text: #4338ca;
+      --th-bg: #e0f2fe; --th-border: #bae6fd; --th-text: #0369a1;
+      --su-bg: #f0fdf4; --su-border: #bbf7d0; --su-text: #166534;
+      --concept-bg: #fffbeb; --concept-border: #fde68a; --concept-text: #92400e;
+      --arch-bg: #f8fafc; --arch-border: #e2e8f0;
+      --nudge-bg: #f0fdf4; --nudge-border: #bbf7d0; --nudge-text: #166534;
+    }
+    body { font-family: 'Noto Sans KR','Inter',sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; letter-spacing: -0.011em; transition: background 0.3s, color 0.3s; min-height: 100vh; }
+    body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse 70% 50% at 50% 10%, color-mix(in srgb, var(--accent), transparent 88%), transparent); }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+
+    /* Menu */
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--menu-border); background: var(--menu-bg); color: var(--menu-text); cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(12px); transition: all 0.2s; }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px; background: var(--menu-bg); backdrop-filter: blur(16px); border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px; opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96); transition: all 0.2s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: none; background: transparent; color: var(--menu-text); font-size: 14px; font-family: inherit; cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left; }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    /* Nav / Hero */
+    .nav-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent); text-decoration: none; margin-bottom: 24px; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .nav-back:hover { background: var(--surface-hover); }
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.6rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 560px; margin: 0 auto; line-height: 1.7; }
+
+    /* Meta */
+    .meta-bar { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 36px; font-size: 12px; color: var(--text-secondary); }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-intermediate { background: var(--chip-amber); color: var(--warning); }
+    .tag-chip { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+    .category-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
+    .cat-투자주식 { background: rgba(16,185,129,0.12); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+    html.theme-light .cat-투자주식 { background: rgba(16,185,129,0.08); }
+
+    /* Card */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease; }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
+    .mb-20 { margin-bottom: 20px; }
+
+    /* KPI */
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.45rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    /* Quote & Highlight */
+    .quote-box { padding: 16px 20px; border-radius: 10px; border-left: 3px solid var(--accent); background: var(--surface); font-size: 13px; line-height: 1.75; color: var(--text-secondary); margin-bottom: 16px; font-style: italic; }
+    .quote-box cite { display: block; margin-top: 6px; font-style: normal; font-weight: 600; font-size: 12px; color: var(--accent); }
+    .highlight-box { padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border); background: var(--chip-accent); font-size: 13.5px; line-height: 1.7; margin-bottom: 16px; }
+    .highlight-box strong { color: var(--accent); }
+
+    /* ====== Genealogy Diagram ====== */
+    .genealogy { border-radius: 14px; background: var(--surface); border: 1px solid var(--border); padding: 24px; margin-bottom: 20px; }
+    .gen-title { font-size: 13px; font-weight: 700; text-align: center; color: var(--text-secondary); margin-bottom: 20px; letter-spacing: 0.02em; }
+    .gen-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; align-items: stretch; margin-bottom: 10px; }
+    .gen-box { border-radius: 12px; padding: 18px 16px; text-align: center; }
+    .gen-ka { background: var(--ka-bg); border: 2px solid var(--ka-border); }
+    .gen-th { background: var(--th-bg); border: 2px solid var(--th-border); }
+    .gen-su { background: var(--su-bg); border: 2px solid var(--su-border); }
+    .gen-name { font-size: 16px; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 6px; }
+    .gen-ka .gen-name { color: var(--ka-text); }
+    .gen-th .gen-name { color: var(--th-text); }
+    .gen-su .gen-name { color: var(--su-text); }
+    .gen-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.55; }
+    .gen-arrows { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .gen-arrow { display: flex; justify-content: center; align-items: center; font-size: 18px; color: var(--text-secondary); }
+    .gen-concepts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .gen-concept { background: var(--concept-bg); border: 1.5px solid var(--concept-border); border-radius: 10px; padding: 14px 12px; text-align: center; }
+    .gen-concept-name { font-size: 14px; font-weight: 800; color: var(--concept-text); margin-bottom: 4px; }
+    .gen-concept-en { font-size: 10px; color: var(--text-secondary); font-style: italic; margin-bottom: 6px; }
+    .gen-concept-desc { font-size: 11px; color: var(--text-secondary); line-height: 1.5; }
+    .gen-separator { text-align: center; font-size: 13px; font-weight: 700; color: var(--accent); margin: 6px 0 10px; padding: 8px; border-top: 1px dashed var(--border); border-bottom: 1px dashed var(--border); }
+    .gen-arch { background: var(--arch-bg); border: 1.5px solid var(--arch-border); border-radius: 12px; padding: 16px 20px; text-align: center; margin-bottom: 10px; }
+    .gen-arch-title { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+    .gen-arch-desc { font-size: 12px; color: var(--text-secondary); }
+    .gen-nudge-row { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; }
+    .gen-nudge { background: var(--nudge-bg); border: 1.5px solid var(--nudge-border); border-radius: 10px; padding: 12px; text-align: center; }
+    .gen-nudge-name { font-size: 12px; font-weight: 800; color: var(--nudge-text); margin-bottom: 4px; }
+    .gen-nudge-desc { font-size: 11px; color: var(--text-secondary); line-height: 1.5; }
+
+    /* 3대 개념 */
+    .concept-list { display: flex; flex-direction: column; gap: 10px; }
+    .concept-item { padding: 16px 18px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); }
+    .concept-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .concept-icon { font-size: 20px; }
+    .concept-name { font-size: 14px; font-weight: 700; }
+    .concept-en { font-size: 11px; color: var(--text-secondary); font-style: italic; }
+    .concept-desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 8px; }
+    .concept-example { padding: 8px 12px; border-radius: 7px; background: var(--surface-hover); font-size: 12px; color: var(--text-secondary); border-left: 2px solid var(--border); line-height: 1.6; }
+    .concept-example strong { color: var(--accent); }
+
+    /* Nudge examples */
+    .example-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .example-item { padding: 16px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); }
+    .example-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 6px; }
+    .example-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .example-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+    .example-result { margin-top: 8px; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; background: var(--chip-accent); color: var(--accent); }
+
+    /* Connection table */
+    .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 0; }
+    table { min-width: 480px; width: 100%; border-collapse: collapse; }
+    table th { background: var(--surface); font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-secondary); padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    table td { font-size: 13px; padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+    table tr:last-child td { border-bottom: none; }
+    table tr:hover td { background: var(--surface-hover); }
+    table td:first-child, table th:first-child { color: var(--text); font-weight: 600; }
+
+    /* Related */
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}.d4{animation-delay:.24s}.d5{animation-delay:.30s}.d6{animation-delay:.36s}.d7{animation-delay:.42s}.d8{animation-delay:.48s}
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+    @media (max-width: 640px) {
+      .kpi-row, .gen-row, .gen-concepts, .gen-arrows, .example-grid { grid-template-columns: 1fr; }
+      .gen-nudge-row { grid-template-columns: 1fr 1fr; }
+      .container { padding: 48px 16px 60px; }
+    }
+    @media print { body { background: white !important; } .viz-menu { display: none !important; } .card { break-inside: avoid; } * { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/></svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">🌱 행동경제학 · 정책 설계</div>
+        <h1>Thaler 넛지 이론<br><span style="color:var(--accent)">Nudge Theory</span></h1>
+        <p class="hero-sub">Kahneman이 발견한 버그를 Thaler가 운영체제로 설계했다 — 자유주의적 개입주의, 선택 설계, 3대 개념과 실제 넛지 사례</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="category-badge cat-투자주식">📈 투자·주식</span>
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="tag-chip">#행동경제학</span>
+        <span class="tag-chip">#심리</span>
+        <span class="tag-chip">#투자</span>
+        <span class="tag-chip">#넛지</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.08
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Thaler &amp; Sunstein
+        </span>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-row animate d2">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">2008</div>
+          <div class="kpi-label">Nudge 출간</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--text-secondary)">2017</div>
+          <div class="kpi-label">Thaler 노벨상</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--text-secondary)">3대</div>
+          <div class="kpi-label">핵심 개념</div>
+        </div>
+      </div>
+
+      <!-- Genealogy Diagram (Image 2 재현) -->
+      <div class="genealogy animate d2 mb-20">
+        <div class="gen-title">행동경제학의 계보 — Kahneman → Thaler → 넛지</div>
+
+        <!-- Level 1: Three pioneers -->
+        <div class="gen-row">
+          <div class="gen-box gen-ka">
+            <div class="gen-name">Kahneman</div>
+            <div class="gen-desc">인간은 비합리적으로 판단한다<br><span style="font-size:10px;opacity:0.7">(심리학)</span></div>
+          </div>
+          <div class="gen-box gen-th">
+            <div class="gen-name">Thaler</div>
+            <div class="gen-desc">비합리성을 경제학에 통합<br><span style="font-size:10px;opacity:0.7">(행동경제학)</span></div>
+          </div>
+          <div class="gen-box gen-su">
+            <div class="gen-name">Sunstein</div>
+            <div class="gen-desc">넛지를 정책·법으로 설계<br><span style="font-size:10px;opacity:0.7">(자유주의적 개입)</span></div>
+          </div>
+        </div>
+
+        <!-- Arrows -->
+        <div class="gen-arrows">
+          <div class="gen-arrow">↓</div>
+          <div class="gen-arrow" style="font-size:14px;gap:4px;flex-direction:column">
+            <span>↙</span>
+            <span style="font-size:11px;color:var(--text-secondary)">Thaler의 3대 개념</span>
+          </div>
+          <div class="gen-arrow">↓</div>
+        </div>
+
+        <!-- Level 2: Thaler's 3 concepts -->
+        <div class="gen-concepts">
+          <div class="gen-concept">
+            <div class="gen-concept-name">정신 회계</div>
+            <div class="gen-concept-en">Mental Accounting</div>
+            <div class="gen-concept-desc">돈을 칸막이로 구분</div>
+          </div>
+          <div class="gen-concept">
+            <div class="gen-concept-name">소유 효과</div>
+            <div class="gen-concept-en">Endowment Effect</div>
+            <div class="gen-concept-desc">가진 것을 더 높이 평가</div>
+          </div>
+          <div class="gen-concept">
+            <div class="gen-concept-name">현상 유지 편향</div>
+            <div class="gen-concept-en">Status Quo Bias</div>
+            <div class="gen-concept-desc">변화보다 현상 선호</div>
+          </div>
+        </div>
+
+        <!-- Separator -->
+        <div class="gen-separator">↓ 이 편향들을 설계에 활용 → 넛지 (Nudge)</div>
+
+        <!-- Choice Architecture -->
+        <div class="gen-arch">
+          <div class="gen-arch-title">선택 설계 (Choice Architecture)</div>
+          <div class="gen-arch-desc">선택지 자체를 바꾸지 않고, 선택의 맥락·구조를 설계해 더 좋은 결정을 유도</div>
+        </div>
+
+        <!-- Arrow -->
+        <div style="text-align:center;color:var(--text-secondary);font-size:18px;margin:6px 0 10px">↓</div>
+
+        <!-- 4 Nudge mechanisms -->
+        <div class="gen-nudge-row">
+          <div class="gen-nudge">
+            <div class="gen-nudge-name">디폴트 설정</div>
+            <div class="gen-nudge-desc">기본값을 좋은 선택으로 배치 · 연금 자동 가입</div>
+          </div>
+          <div class="gen-nudge">
+            <div class="gen-nudge-name">사회적 규범</div>
+            <div class="gen-nudge-desc">이웃과 비교해 행동 유도 · 전기 사용량</div>
+          </div>
+          <div class="gen-nudge">
+            <div class="gen-nudge-name">실행 의도</div>
+            <div class="gen-nudge-desc">언제·어디서 할지 미리 정하게 · 백신 예약</div>
+          </div>
+          <div class="gen-nudge">
+            <div class="gen-nudge-name">손실 프레이밍</div>
+            <div class="gen-nudge-desc">이득보다 손실로 메시지 설계 · 건강 캠페인</div>
+          </div>
+        </div>
+
+        <p style="text-align:center;font-size:11px;color:var(--text-secondary);margin-top:14px;">
+          Thaler &amp; Sunstein《Nudge》(2008) · Thaler 노벨경제학상 (2017)
+        </p>
+      </div>
+
+      <!-- Libertarian Paternalism -->
+      <div class="card mb-20 animate d3">
+        <p class="section-title">자유주의적 개입주의 — Libertarian Paternalism</p>
+        <div class="quote-box">
+          "어차피 선택지는 어떤 식으로든 배열되어야 한다. 중립적 설계는 없다. 그렇다면 의도적으로 좋은 방향으로 설계하자."
+          <cite>— Thaler &amp; Sunstein, Nudge (2008)</cite>
+        </div>
+        <div class="highlight-box">
+          <strong>자유주의적:</strong> 선택 자체를 금지하거나 강제하지 않는다. 모든 옵션은 열려 있다.<br><br>
+          <strong>개입주의:</strong> 선택의 맥락을 의도적으로 설계해 더 좋은 결정을 유도한다.<br><br>
+          두 가지가 공존할 수 있는 이유: 어떤 설계든 선택지에 영향을 미치므로, 그 설계를 <strong>의식적으로 좋은 결과를 위해</strong> 활용하자는 입장.
+        </div>
+      </div>
+
+      <!-- 3대 개념 심화 -->
+      <div class="card mb-20 animate d4">
+        <p class="section-title">Thaler의 3대 개념 심화</p>
+        <div class="concept-list">
+          <div class="concept-item">
+            <div class="concept-header">
+              <span class="concept-icon">🗂️</span>
+              <div>
+                <div class="concept-name">정신 회계 (Mental Accounting)</div>
+                <div class="concept-en">Thaler (1980) — 경제학에 심리학적 계좌 개념 도입</div>
+              </div>
+            </div>
+            <div class="concept-desc">돈에 라벨을 붙이는 현상. 경제학적으로 1만 원은 어디서 왔든 동일하지만 심리적으로는 다르다. 원천·목적·시기에 따라 다른 가치가 부여된다.</div>
+            <div class="concept-example">
+              <strong>연말정산 환급금:</strong> 같은 금액의 월급보다 쉽게 쓰인다("공돈" 라벨). 도박 이익도 마찬가지.<br>
+              <strong>넛지 활용:</strong> 저축을 "남는 돈"이 아닌 <strong>별도 계좌로 라벨링</strong>해 사용을 막는다.
+            </div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-header">
+              <span class="concept-icon">☕</span>
+              <div>
+                <div class="concept-name">소유 효과 (Endowment Effect)</div>
+                <div class="concept-en">Kahneman·Knetsch·Thaler (1990) — 머그컵 실험</div>
+              </div>
+            </div>
+            <div class="concept-desc">한 번 소유한 물건의 가치를 더 높게 평가한다. 손실 회피의 직접적 표현 — 팔 때는 더 비싸게 요구하고, 살 때는 더 싸게 사려 한다.</div>
+            <div class="concept-example">
+              <strong>머그컵 실험:</strong> 같은 머그컵을 받은 그룹 → 평균 5.25달러에 팔려 함 vs 사려는 그룹 → 2.75달러만 지불 의향. 거의 2배 차이.<br>
+              <strong>투자 함의:</strong> 보유 종목에 대한 집착 → 객관적 평가 불가능.
+            </div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-header">
+              <span class="concept-icon">⚡</span>
+              <div>
+                <div class="concept-name">현상 유지 편향 (Status Quo Bias)</div>
+                <div class="concept-en">Samuelson &amp; Zeckhauser (1988) · Thaler 발전</div>
+              </div>
+            </div>
+            <div class="concept-desc">변화에는 노력과 책임이 따르지만 현상 유지는 아무것도 안 해도 된다. 뇌는 변화를 잠재적 손실로 코딩한다.</div>
+            <div class="concept-example">
+              <strong>디폴트의 힘:</strong> 장기 기증 옵트아웃(기증이 기본) 국가의 동의율이 옵트인 국가보다 약 <strong>30%p 높다</strong>.<br>
+              <strong>연금 설계:</strong> "자동 가입 후 탈퇴 가능"이 "신청 후 가입"보다 가입률 훨씬 높음.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nudge 실제 사례 -->
+      <div class="card mb-20 animate d5">
+        <p class="section-title">실제 넛지 사례</p>
+        <div class="example-grid">
+          <div class="example-item">
+            <div class="example-label">SMarT 프로그램</div>
+            <div class="example-title">Save More Tomorrow</div>
+            <div class="example-desc">Thaler가 설계한 연금 프로그램. "지금 저축률을 올리라"가 아닌 <strong>"다음 월급 인상분부터 자동으로 저축률이 올라간다"</strong>고 설계. 현재 손실 회피를 우회하고 현상 유지 편향을 활용.</div>
+            <div class="example-result">4년 후 저축률 3.5% → 13.6%</div>
+          </div>
+          <div class="example-item">
+            <div class="example-label">장기 기증 디폴트</div>
+            <div class="example-title">영국·스페인·오스트리아</div>
+            <div class="example-desc">디폴트를 "기증 거부"에서 <strong>"기증 동의"로 변경</strong>하는 것만으로 동의율이 극적으로 상승. 선택지는 그대로, 배열만 바꿈.</div>
+            <div class="example-result">옵트아웃 국가 동의율 약 30%p 높음</div>
+          </div>
+          <div class="example-item">
+            <div class="example-label">사회 규범 넛지</div>
+            <div class="example-title">영국 세무청 체납 고지서</div>
+            <div class="example-desc">고지서에 <strong>"귀하 지역 주민의 90%는 이미 납부했습니다"</strong> 추가. 사회적 규범과 동조 심리 활용.</div>
+            <div class="example-result">체납률 유의미하게 감소</div>
+          </div>
+          <div class="example-item">
+            <div class="example-label">손실 프레이밍</div>
+            <div class="example-title">에너지 절약 캠페인</div>
+            <div class="example-desc">"절약 시 월 3만원 절감" vs <strong>"낭비 시 월 3만원 손실"</strong>. 동일 정보지만 손실 프레임이 훨씬 강한 행동 변화 유발. 손실회피 이론의 직접 적용.</div>
+            <div class="example-result">손실 프레임: 에너지 절감 효과 2~3배</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kahneman → Thaler 연결 -->
+      <div class="card mb-20 animate d6">
+        <p class="section-title">Kahneman 발견 → Thaler 설계 연결</p>
+        <div class="highlight-box">
+          <strong>Kahneman이 인간의 버그를 발견했다면, Thaler는 그 버그를 활용하는 운영체제를 설계했다.</strong>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Kahneman이 발견한 것</th>
+                <th>Thaler가 한 것</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>손실 회피 (λ ≈ 2.25)</td>
+                <td>디폴트 설계로 변화의 "손실 느낌" 제거</td>
+              </tr>
+              <tr>
+                <td>현상 유지 편향</td>
+                <td>좋은 선택을 현상 유지로 만들기 (자동 가입)</td>
+              </tr>
+              <tr>
+                <td>정신 회계</td>
+                <td>저축 계좌를 별도 라벨로 분리 설계</td>
+              </tr>
+              <tr>
+                <td>확률 왜곡</td>
+                <td>작은 위험의 과대평가를 역이용한 보험 설계</td>
+              </tr>
+              <tr>
+                <td>WYSIATI (보이는 것이 전부다)</td>
+                <td>정보를 어떻게 프레이밍할지 설계</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="related-section animate d7">
+        <h3>관련 카드</h3>
+        <div class="related-grid">
+          <a href="prospect-theory-investment.html" class="related-card">
+            <div class="r-label">연관 개념</div>
+            <div class="r-title">프로스펙트 이론 × 투자 결정</div>
+          </a>
+          <a href="loss-aversion.html" class="related-card">
+            <div class="r-label">연관 개념</div>
+            <div class="r-title">손실회피 경향 (λ ≈ 2~2.5)</div>
+          </a>
+          <a href="investment-bias-system.html" class="related-card">
+            <div class="r-label">연관 개념</div>
+            <div class="r-title">투자 편향 극복 시스템</div>
+          </a>
+          <a href="cognitive-bias-6types.html" class="related-card">
+            <div class="r-label">연관 개념</div>
+            <div class="r-title">투자자가 알아야 할 6대 인지 편향</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d7">
+        출처: Thaler &amp; Sunstein, <em>Nudge: Improving Decisions About Health, Wealth, and Happiness</em> (Yale UP, 2008) · Thaler, "Mental Accounting Matters" (1999) · 노벨경제학상 2017
+      </p>
+    </div>
+  </main>
+
+  <script>
+    const themes = ['dark','light'];
+    let ti = 0;
+    const savedTheme = localStorage.getItem('ka-theme');
+    if(savedTheme){ ti = themes.indexOf(savedTheme); if(ti<0)ti=0; }
+    applyTheme(themes[ti]);
+    function applyTheme(t){
+      document.documentElement.className = 'theme-'+t;
+      const lbl = document.getElementById('themeLabel');
+      if(lbl) lbl.textContent = t==='dark'?'Dark':'Light';
+      localStorage.setItem('ka-theme',t);
+    }
+    function cycleTheme(){ ti=(ti+1)%themes.length; applyTheme(themes[ti]); }
+    function toggleMenu(){
+      const d=document.getElementById('vizMenuDropdown');
+      d.classList.toggle('open');
+    }
+    document.addEventListener('click',function(e){
+      if(!e.target.closest('.viz-menu')){
+        const d=document.getElementById('vizMenuDropdown');
+        if(d) d.classList.remove('open');
+      }
+    });
+    function downloadImage(){
+      const el=document.getElementById('main');
+      htmlToImage.toPng(el,{quality:0.95,backgroundColor:getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()})
+        .then(function(dataUrl){
+          const a=document.createElement('a');
+          a.download='nudge-theory-thaler.png';
+          a.href=dataUrl; a.click();
+        });
+    }
+  </script>
+</body>
+</html>

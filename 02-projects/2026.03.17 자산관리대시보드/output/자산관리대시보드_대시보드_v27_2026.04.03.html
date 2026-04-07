@@ -1,0 +1,3420 @@
+<!DOCTYPE html>
+<!--
+  ★ 자산관리 대시보드 HTML v27 (2026.04.03)
+
+  ── v27 변경사항 (2026.04.03) ──
+  - [수입/지출관리 > 📈 연간 분석] 탭에 상은·아영 개인별 연간 분석표 추가
+    · 재무 건전성 지표 섹션 하단에 신규 bi-card 삽입
+    · 테이블: 구분(상은/아영/합계) × 수입 / 저축(저축성+여유) / 지출 / 저축률 / 지출률
+    · 저축 분해 카드 3컬럼: 저축성 금액 / 여유자금 금액 / 저축 합계 + 비율 바
+    · budgetCache['상은_yr'] / budgetCache['아영_yr'] 개별 집계 (_calcP 내부 함수)
+    · 저축률·지출률 수준에 따른 색상 코딩 (50%↑녹색, 30~50%주황, 미달적색)
+
+  ── v26 변경사항 ──
+  - 폰트 시스템 전면 교체: Noto Sans KR(한글 본문) + Inter(영문) + JetBrains Mono(숫자/데이터)
+  - Google Fonts CDN 로드 추가 (preconnect 포함)
+  - body font-family를 'Noto Sans KR','Inter' 기반으로 변경
+  - .mono 유틸리티 클래스 추가 (JetBrains Mono 적용)
+  - 기존 font-family:monospace 전체(13곳)를 JetBrains Mono,monospace로 치환
+  - JS 인라인 스타일 내 따옴표 충돌 수정 (CSS는 따옴표 유지, JS는 따옴표 제거)
+  - 기준년월 필터링 강화: latestM/latestPA에 _baseYM(전월) 필터 적용
+  - _baseYM 선언을 서버 데이터 주입 직후로 이동 (latestM보다 앞에 선언)
+  - 달성률 차트(achieveChart), 총자산 요약(renderAssetSummary)에 _baseYM 필터 추가
+  - 수입/지출 현황(applyBudgetPeriod)은 당월까지 표시되도록 curYM 변경
+
+  ── v25 변경사항 ──
+  - (v25 이전 변경사항은 별도 관리)
+-->
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>★ 자산관리 대시보드 (부부합산)</title>
+<!-- PWA / 홈 화면 추가 (iPhone Safari) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="자산관리">
+<meta name="theme-color" content="#f5f6f8" id="meta-theme-color">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── 라이트 테마 (디폴트) ── */
+:root,[data-theme="light"]{--bg:#f5f6f8;--card:#ffffff;--border:#e0e4ed;--accent:#6366f1;--cyan:#0891b2;--green:#059669;--red:#dc2626;--yellow:#d97706;--text:#1a1a2e;--muted:#6b7280;--purple:#7c3aed;--thead-bg:#f0f1f5;--thead-group-bg:#e8eaf0;--chart-grid:rgba(0,0,0,0.06);--tooltip-bg:#ffffff;--tooltip-border:#e0e4ed;--modal-overlay:rgba(0,0,0,.35);--badge-up-bg:rgba(5,150,105,.12);--badge-down-bg:rgba(220,38,38,.1);--badge-info-bg:rgba(99,102,241,.1);--progress-track-bg:#e8eaf0;--progress-div:rgba(255,255,255,.6);--hover-row:rgba(99,102,241,.04);--member-bg:#f0f1f5;--dash-color:rgba(107,114,128,.25);}
+/* ── 다크 테마 ── */
+[data-theme="dark"]{--bg:#0f1117;--card:#1a1d27;--border:#2a2d3e;--accent:#6366f1;--cyan:#22d3ee;--green:#10b981;--red:#f43f5e;--yellow:#f59e0b;--text:#e2e8f0;--muted:#94a3b8;--purple:#a78bfa;--thead-bg:#12151f;--thead-group-bg:#0d1020;--chart-grid:rgba(255,255,255,0.05);--tooltip-bg:#1a1d27;--tooltip-border:#2a2d3e;--modal-overlay:rgba(0,0,0,.72);--badge-up-bg:rgba(16,185,129,.15);--badge-down-bg:rgba(244,63,94,.15);--badge-info-bg:rgba(99,102,241,.15);--progress-track-bg:#0f1117;--progress-div:rgba(0,0,0,.35);--hover-row:rgba(99,102,241,.04);--member-bg:#0f1117;--dash-color:rgba(148,163,184,.3);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR','Inter',-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:0;margin:0;transition:background .3s,color .3s;overflow-x:hidden;}
+.mono{font-family:'JetBrains Mono','Noto Sans KR',monospace!important;}
+
+/* ── 헤더 ── */
+.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+.header h1{font-size:22px;font-weight:700;}.header h1 span{color:var(--accent);}
+.header-sub{font-size:15px;color:var(--muted);margin-top:3px;}
+.header-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.live-badge{display:flex;align-items:center;gap:6px;background:var(--card);padding:6px 12px;border-radius:20px;border:1px solid var(--border);font-size:15px;color:var(--muted);}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.base-month-badge{display:flex;align-items:center;gap:7px;background:var(--card);padding:6px 13px;border-radius:20px;border:1px solid var(--accent);font-size:16px;font-weight:700;color:var(--accent);}
+.base-month-label{font-size:14px;color:var(--muted);font-weight:400;}
+.refresh-btn{display:flex;align-items:center;gap:5px;background:var(--card);padding:6px 12px;border-radius:20px;border:1px solid var(--border);font-size:15px;color:var(--muted);cursor:pointer;transition:all .2s;}
+.refresh-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+/* ── 탭 ── */
+.tab-nav{display:flex;gap:3px;margin-bottom:18px;border-bottom:1px solid var(--border);}
+.tab-btn{padding:9px 20px;border:none;background:transparent;color:var(--muted);font-size:17px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;}
+.tab-btn:hover{color:var(--text);}.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-pane{display:none;}.tab-pane.active{display:block;}
+
+/* ── KPI ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;position:relative;overflow:hidden;}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.kpi.c-accent::before{background:var(--accent);}.kpi.c-green::before{background:var(--green);}
+.kpi.c-yellow::before{background:var(--yellow);}.kpi.c-red::before{background:var(--red);}
+.kpi-label{font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.kpi-value{font-size:24px;font-weight:800;line-height:1.2;margin-bottom:5px;}
+.kpi-sub{font-size:15px;color:var(--muted);}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:9px;font-size:15px;font-weight:600;}
+.badge-up{background:var(--badge-up-bg);color:var(--green);}.badge-down{background:var(--badge-down-bg);color:var(--red);}
+.badge-info{background:var(--badge-info-bg);color:var(--accent);}
+
+/* ── 진행바 ── */
+.progress-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:16px;}
+.progress-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.progress-title{font-size:17px;font-weight:600;}
+.progress-sub{font-size:15px;color:var(--muted);margin-top:2px;}
+.progress-right{display:flex;align-items:center;gap:10px;}
+.progress-pct{font-size:32px;font-weight:800;color:var(--green);}
+.goal-badge{display:flex;align-items:center;gap:6px;background:var(--member-bg);padding:5px 10px;border-radius:10px;border:1px solid var(--border);font-size:15px;color:var(--muted);}
+.goal-val{color:var(--yellow);font-weight:700;}
+.goal-edit-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:2px 4px;border-radius:4px;}
+.goal-edit-btn:hover{color:var(--accent);}
+.progress-marker-area{position:relative;height:28px;margin-bottom:2px;}
+.progress-marker{position:absolute;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;font-size:14px;color:var(--cyan);font-weight:700;white-space:nowrap;bottom:0;}
+.progress-marker::after{content:'▼';font-size:16px;}
+.progress-track{background:var(--progress-track-bg);border-radius:8px;height:14px;overflow:visible;position:relative;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:8px;transition:width 1.2s ease;position:relative;z-index:1;}
+.progress-dividers{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:2;border-radius:8px;overflow:hidden;}
+.progress-div-line{position:absolute;top:0;bottom:0;width:1px;background:var(--progress-div);}
+.progress-scale{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);margin-top:5px;}
+.scale-item{display:flex;flex-direction:column;align-items:center;gap:1px;}
+.scale-tick{width:1px;height:4px;background:var(--border);}
+
+/* ── 카드/레이아웃 ── */
+.row-2{display:grid;grid-template-columns:1.7fr 1fr;gap:16px;margin-bottom:16px;}
+.row-equal{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.row-3{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-bottom:16px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;}
+.card-title{font-size:17px;font-weight:600;margin-bottom:2px;display:flex;justify-content:space-between;align-items:center;}
+.card-sub{font-size:14px;color:var(--muted);margin-bottom:12px;}
+.chart-wrap{position:relative;}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:7px;}
+.leg-item{display:flex;align-items:center;gap:4px;font-size:15px;color:var(--muted);}
+.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.range-btns,.period-btns{display:flex;gap:4px;flex-wrap:wrap;}
+.rbtn{padding:3px 10px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-size:14px;transition:all .15s;}
+.rbtn:hover{border-color:var(--accent);color:var(--accent);}
+.rbtn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);}
+.stat-row:last-child{border-bottom:none;}
+.stat-label{font-size:15px;color:var(--muted);}.stat-value{font-size:16px;font-weight:600;}
+.member-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.member{background:var(--member-bg);border:1px solid var(--border);border-radius:9px;padding:11px;}
+.member-name{font-size:15px;font-weight:700;margin-bottom:7px;}
+.footer{margin-top:16px;text-align:center;font-size:15px;color:var(--muted);padding:9px;border-top:1px solid var(--border);}
+@media(max-width:1100px){.kpi-grid{grid-template-columns:1fr 1fr;}.row-2,.row-equal,.row-3{grid-template-columns:1fr;}}
+
+/* ── 태블릿 (768px 이하) ── */
+@media(max-width:768px){
+  .main-content{padding:12px 14px;}
+  .header{flex-direction:column;gap:8px;}
+  .header-right{width:100%;justify-content:flex-start;flex-wrap:wrap;}
+  .kpi-grid{grid-template-columns:1fr 1fr;gap:10px;}
+  .row-2,.row-equal,.row-3{grid-template-columns:1fr;}
+  .progress-pct{font-size:26px;}
+  .modal{width:96vw!important;max-width:96vw!important;}
+  .tab-nav{overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;}
+  .tab-btn{padding:8px 14px;font-size:16px;}
+  .sub-tab-nav{overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;}
+  .budget-tbl-wrap,.tbl-wrap{overflow-x:auto;}
+}
+
+/* ── 모바일 (480px 이하) ── */
+@media(max-width:480px){
+  .main-content{padding:8px 10px;}
+  .header h1{font-size:19px;}
+  .live-badge{display:none;}
+  .kpi-grid{grid-template-columns:1fr 1fr;gap:8px;}
+  .kpi{padding:10px 11px;}
+  .kpi-value{font-size:21px;}
+  .kpi-label{font-size:13px;}
+  .progress-top{flex-direction:column;gap:8px;}
+  .progress-pct{font-size:24px;}
+  .card{padding:12px 13px;}
+  .card-title{font-size:16px;flex-wrap:wrap;gap:5px;}
+  .chart-wrap canvas{max-height:200px;}
+  /* 모달 → 하단 시트 */
+  .modal{
+    width:100vw!important;max-width:100vw!important;
+    border-radius:14px 14px 0 0;
+    position:fixed!important;bottom:0;top:auto!important;
+    max-height:90vh;overflow-y:auto;
+  }
+  .modal-bg{align-items:flex-end!important;}
+  .tab-nav{overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;padding-bottom:2px;}
+  .tab-btn{padding:7px 12px;font-size:15px;}
+  .rbtn{padding:3px 8px;font-size:13px;}
+  .base-month-badge{font-size:15px;padding:5px 10px;}
+  .refresh-btn{padding:5px 10px;font-size:14px;}
+  .theme-toggle{padding:5px 10px;font-size:14px;}
+  .asset-toolbar{flex-direction:column;gap:8px;align-items:flex-start;}
+  .btn-primary{font-size:15px;padding:6px 12px;}
+  .sum-chip{padding:6px 10px;}
+  .member-cards{grid-template-columns:1fr 1fr;gap:6px;}
+  .budget-header{flex-wrap:wrap;gap:6px;}
+  .form-grid{grid-template-columns:1fr;}
+  .form-group.full{grid-column:1;}
+  .modal-actions{flex-direction:column;gap:6px;}
+  .modal-actions button{width:100%;text-align:center;}
+}
+
+/* ── 목표자산 트래커 ── */
+.tracker-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.tracker-stat-item{background:var(--member-bg);border:1px solid var(--border);border-radius:9px;padding:9px 13px;}
+.tracker-stat-label{font-size:14px;color:var(--muted);margin-bottom:3px;}
+.tracker-stat-value{font-size:17px;font-weight:700;}
+.tracker-eta-val{color:var(--green);font-size:18px;}
+.tracker-neg-val{color:var(--red);}
+/* ── 총자산 탭 ── */
+.asset-summary{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
+.sum-chip{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:16px;}
+.sum-chip .lbl{color:var(--muted);font-size:14px;margin-bottom:2px;}
+.sum-chip .val{font-weight:700;}
+.sum-chip .sub{font-size:14px;color:var(--muted);margin-top:2px;}
+.asset-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.asset-toolbar h2{font-size:19px;font-weight:700;}
+.btn-primary{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:9px;border:none;background:var(--accent);color:#fff;font-size:16px;font-weight:600;cursor:pointer;transition:opacity .2s;}
+.btn-primary:hover{opacity:.85;}
+.btn-sm{padding:3px 9px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid;transition:all .15s;}
+.btn-edit{background:rgba(99,102,241,.12);color:var(--accent);border-color:rgba(99,102,241,.4);}
+.btn-edit:hover{background:rgba(99,102,241,.25);}
+.btn-del{background:rgba(244,63,94,.1);color:var(--red);border-color:rgba(244,63,94,.4);}
+.btn-del:hover{background:rgba(244,63,94,.2);}
+.btn-input{background:rgba(34,211,238,.1);color:var(--cyan);border-color:rgba(34,211,238,.4);}
+.btn-input:hover{background:rgba(34,211,238,.2);}
+.tbl-wrap{overflow-x:auto;border-radius:11px;border:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;font-size:15px;}
+thead th{background:var(--thead-bg);color:var(--muted);font-size:14px;font-weight:600;padding:8px 6px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--border);}
+thead th:first-child{text-align:center;}
+thead th.th-group{text-align:center;background:var(--thead-group-bg);font-size:13px;letter-spacing:.5px;}
+thead th.th-group.g-se{color:#818cf8;}
+thead th.th-group.g-ay{color:#a78bfa;}
+thead th.th-group.g-etc{color:var(--cyan);}
+thead th.th-group.g-sub{color:var(--yellow);}
+thead th.th-group.g-hi{color:var(--green);}
+tbody tr{border-bottom:1px solid var(--border);transition:background .12s;}
+tbody tr:hover{background:var(--hover-row);}
+tbody td{padding:7px 6px;text-align:right;white-space:nowrap;}
+tbody td:first-child{text-align:center;color:var(--muted);font-weight:600;}
+tbody td.formula{color:var(--muted);}
+tbody td.g-se{background:rgba(99,102,241,.04);}
+tbody td.g-ay{background:rgba(167,139,250,.04);}
+tbody td.g-sub{background:rgba(245,158,11,.06);color:var(--yellow);font-weight:700;}
+tbody td.hi{background:rgba(16,185,129,.08);color:var(--green);font-weight:800;}
+tbody td.neg{color:var(--red);}
+tbody td.pos{color:var(--green);}
+.tbl-actions{display:flex;gap:4px;justify-content:center;}
+.tbl-empty,.spin-wrap{text-align:center;padding:36px;color:var(--muted);}
+
+/* ── 모달 공통 ── */
+.modal-bg{display:none;position:fixed;inset:0;background:var(--modal-overlay);z-index:1000;align-items:center;justify-content:center;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;width:580px;max-width:95vw;max-height:90vh;overflow-y:auto;}
+.modal h3{font-size:19px;font-weight:700;margin-bottom:18px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.form-group{display:flex;flex-direction:column;gap:4px;}
+.form-group.full{grid-column:1/-1;}
+.form-group label{font-size:14px;color:var(--muted);font-weight:600;}
+.form-group input,.form-group select{background:var(--member-bg);border:1px solid var(--border);border-radius:7px;padding:7px 9px;color:var(--text);font-size:16px;outline:none;transition:border-color .2s;}
+.form-group input:focus,.form-group select:focus{border-color:var(--accent);}
+.form-divider{grid-column:1/-1;border-top:1px solid var(--border);margin:2px 0;padding-top:6px;font-size:14px;color:var(--muted);font-weight:600;}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;}
+.btn-cancel{padding:7px 14px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:16px;cursor:pointer;}
+.btn-cancel:hover{border-color:var(--text);color:var(--text);}
+.field-hint{font-size:14px;color:var(--muted);margin-top:2px;}
+
+/* ── 토스트 ── */
+.toast{position:fixed;bottom:22px;right:22px;padding:10px 18px;border-radius:9px;font-size:16px;font-weight:600;z-index:2000;opacity:0;transform:translateY(8px);transition:all .3s;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.ok{background:#10b981;color:#fff;}.toast.err{background:#f43f5e;color:#fff;}
+
+/* ── 가계부 탭 ── */
+.sub-tab-nav{display:flex;gap:3px;margin-bottom:14px;}
+.sub-tab-btn{padding:6px 16px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:16px;font-weight:600;cursor:pointer;border-radius:18px;transition:all .2s;}
+.sub-tab-btn:hover{border-color:var(--accent);color:var(--accent);}
+.sub-tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.sub-tab-pane{display:none;}.sub-tab-pane.active{display:block;}
+/* 대시보드 서브탭 — 세그먼트 컨트롤 */
+.dash-sub-nav{display:inline-flex;gap:0;margin-bottom:14px;background:var(--member-bg);border-radius:10px;padding:3px;border:1px solid var(--border);}
+.dash-sub-btn{padding:8px 22px;border:none;background:transparent;color:var(--muted);font-size:17px;font-weight:700;cursor:pointer;border-radius:8px;transition:all .2s;}
+.dash-sub-btn:hover{color:var(--text);}.dash-sub-btn.active{color:#fff;background:var(--accent);box-shadow:0 1px 4px rgba(99,102,241,.3);}
+.dash-sub-pane{display:none;}.dash-sub-pane.active{display:block;}
+/* BI (Budget Insight) 전용 스타일 */
+.bi-toolbar{display:flex;align-items:center;gap:6px;margin-bottom:12px;flex-wrap:wrap;padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:12px;}
+.bi-toolbar-sep{width:1px;height:20px;background:var(--border);margin:0 2px;}
+.bi-yr-nav,.bi-mo-nav{display:flex;gap:2px;flex-wrap:wrap;}
+.bi-yr-btn{padding:4px 10px;border-radius:6px;border:1px solid transparent;background:transparent;color:var(--muted);font-size:15px;font-weight:600;cursor:pointer;transition:all .15s;}
+.bi-yr-btn:hover{background:var(--member-bg);color:var(--text);}
+.bi-yr-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.bi-mo-btn{padding:3px 8px;border-radius:6px;border:1px solid transparent;background:transparent;color:var(--muted);font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;}
+.bi-mo-btn:hover{background:var(--member-bg);color:var(--text);}
+.bi-mo-btn.active{background:var(--text);color:var(--bg);}
+.bi-tab-nav{display:flex;gap:3px;margin-bottom:14px;}
+.bi-tab-btn{padding:7px 16px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--muted);font-size:16px;font-weight:600;cursor:pointer;transition:all .15s;}
+.bi-tab-btn:hover{border-color:var(--accent);color:var(--accent);}
+.bi-tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.bi-panel{display:none;}.bi-panel.active{display:block;}
+.bi-kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+.bi-kpi{background:var(--card);border-radius:12px;padding:14px 16px;border:1px solid var(--border);position:relative;overflow:hidden;}
+.bi-kpi .bi-kpi-bar{position:absolute;top:0;left:0;right:0;height:3px;}
+.bi-kpi-label{font-size:13px;color:var(--muted);font-weight:600;letter-spacing:.5px;text-transform:uppercase;}
+.bi-kpi-value{font-size:24px;font-weight:800;font-family:'JetBrains Mono',monospace;margin:4px 0 2px;}
+.bi-kpi-sub{font-size:14px;color:var(--muted);}
+.bi-card{background:var(--card);border-radius:14px;padding:18px;border:1px solid var(--border);margin-bottom:14px;}
+.bi-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.bi-insight{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;border-left:3px solid var(--accent);}
+.bi-insight-alert{border-left-color:var(--red);}.bi-insight-good{border-left-color:var(--green);}.bi-insight-warn{border-left-color:var(--yellow);}
+.bi-bar-bg{background:var(--member-bg);border-radius:6px;height:14px;overflow:hidden;}
+.bi-bar-fill{height:100%;border-radius:6px;transition:width .4s;}
+.bi-pva-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:15px;}
+.bi-pva-over{background:rgba(244,63,94,.04);border-left:3px solid var(--red);padding-left:5px;border-radius:4px;}
+@media(max-width:768px){.bi-kpi-grid{grid-template-columns:repeat(2,1fr);}.bi-grid-2{grid-template-columns:1fr;}}
+@media(max-width:480px){.bi-kpi-grid{grid-template-columns:1fr;}.dash-sub-btn{font-size:16px;padding:7px 14px;}}
+.budget-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+.budget-year-label{font-size:18px;font-weight:700;color:var(--accent);}
+.year-select{background:var(--member-bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:16px;padding:4px 8px;cursor:pointer;outline:none;}
+.year-select:focus{border-color:var(--accent);}
+/* 가계부 테이블 */
+.budget-tbl-wrap{overflow-x:auto;border-radius:11px;border:1px solid var(--border);margin-bottom:16px;}
+.budget-tbl{width:100%;border-collapse:collapse;font-size:15px;}
+.budget-tbl thead th{background:var(--thead-bg);color:var(--muted);font-size:14px;font-weight:600;padding:7px 5px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--border);}
+.budget-tbl thead th:nth-child(1),.budget-tbl thead th:nth-child(2){text-align:left;min-width:52px;}
+.budget-tbl thead th:nth-child(3),.budget-tbl thead th:nth-child(4){min-width:80px;}
+.budget-tbl thead th.th-center{text-align:center;}
+.budget-tbl tbody td{padding:6px 5px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--border);}
+.budget-tbl tbody td:nth-child(1){text-align:center;color:var(--muted);font-size:14px;font-weight:700;min-width:52px;}
+.budget-tbl tbody td:nth-child(2){text-align:left;font-size:15px;}
+.budget-tbl tbody td.plan-col{font-weight:700;}
+.budget-tbl tbody td.avg-col{color:var(--muted);font-size:14px;}
+.budget-tbl tbody td.dash{color:var(--dash-color);}
+.budget-tbl tr.cat-sep td{border-top:2px solid var(--border);}
+.budget-tbl tr.cat-total-income td{background:rgba(16,185,129,.08);color:var(--green);font-weight:700;}
+.budget-tbl tr.cat-total-save td{background:rgba(244,63,94,.07);color:var(--red);font-weight:700;}
+.budget-tbl tr.cat-total-exp td{background:rgba(244,63,94,.07);color:var(--red);font-weight:700;}
+.budget-tbl tr.cat-total-free td{background:rgba(245,158,11,.08);color:var(--yellow);font-weight:700;}
+/* 가계부 추이 카드 */
+.budget-chart-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px;}
+.budget-chart-card .card-title{font-size:17px;font-weight:600;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center;}
+.budget-chart-card .card-sub{font-size:14px;color:var(--muted);margin-bottom:12px;}
+
+/* ── 테마 토글 ── */
+.theme-toggle{display:flex;align-items:center;gap:5px;background:var(--card);padding:6px 12px;border-radius:20px;border:1px solid var(--border);font-size:15px;color:var(--muted);cursor:pointer;transition:all .2s;user-select:none;-webkit-tap-highlight-color:transparent;}
+.theme-toggle:hover{border-color:var(--accent);color:var(--accent);}
+.theme-toggle .theme-icon{font-size:18px;line-height:1;}
+/* 카드·테이블 등 transition */
+.card,.kpi,.progress-card,.modal,.budget-tbl-wrap,.tbl-wrap,.budget-chart-card,.sum-chip,.member,.footer,.sub-tab-btn,.live-badge,.base-month-badge,.refresh-btn{transition:background .3s,border-color .3s,color .3s;}
+
+/* ══════════════════════════════════════════
+   사이드바 레이아웃
+══════════════════════════════════════════ */
+/* 전체 레이아웃 래퍼 */
+.app-layout{display:flex;min-height:100vh;}
+
+/* 사이드바 */
+.sidebar{
+  position:fixed;top:0;left:0;height:100vh;width:230px;
+  background:var(--card);border-right:1px solid var(--border);
+  z-index:200;display:flex;flex-direction:column;
+  transition:transform .28s cubic-bezier(.4,0,.2,1),box-shadow .28s;
+  overflow:hidden;
+}
+.sidebar.collapsed{transform:translateX(-230px);}
+.sidebar-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 16px 14px;border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.sidebar-logo{display:flex;align-items:center;gap:8px;}
+.sidebar-logo-icon{font-size:20px;line-height:1;}
+.sidebar-logo-text{font-size:17px;font-weight:800;color:var(--accent);}
+.sidebar-close{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:4px 6px;border-radius:6px;line-height:1;transition:all .15s;}
+.sidebar-close:hover{background:var(--member-bg);color:var(--text);}
+
+/* 사이드바 내비게이션 */
+.sidebar-nav{flex:1;overflow-y:auto;padding:10px 8px 20px;}
+.sidebar-nav::-webkit-scrollbar{width:3px;}
+.sidebar-nav::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+/* 그룹 */
+.sn-group{margin-bottom:2px;}
+
+/* 최상위 메뉴 아이템 */
+.sn-top{
+  display:flex;align-items:center;gap:9px;
+  padding:10px 12px;border-radius:9px;
+  cursor:pointer;color:var(--muted);font-size:17px;font-weight:600;
+  transition:all .15s;user-select:none;position:relative;
+}
+.sn-top:hover{background:var(--member-bg);color:var(--text);}
+.sn-top.active{background:rgba(99,102,241,.12);color:var(--accent);}
+.sn-top.active .sn-arrow{color:var(--accent);}
+.sn-icon{font-size:17px;line-height:1;flex-shrink:0;}
+.sn-label{flex:1;}
+.sn-arrow{font-size:15px;color:var(--muted);transition:transform .2s;flex-shrink:0;}
+.sn-arrow.open{transform:rotate(180deg);}
+
+/* 서브 메뉴 컨테이너 */
+.sn-children{overflow:hidden;transition:max-height .25s ease,opacity .2s;max-height:0;opacity:0;}
+.sn-children.open{max-height:400px;opacity:1;}
+
+/* 1단계 서브 아이템 */
+.sn-sub{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 12px 8px 36px;border-radius:8px;
+  cursor:pointer;color:var(--muted);font-size:16px;font-weight:500;
+  transition:all .15s;user-select:none;
+}
+.sn-sub:hover{background:var(--member-bg);color:var(--text);}
+.sn-sub.active{color:var(--accent);font-weight:700;}
+.sn-sub .sn-arrow{font-size:14px;}
+
+/* 2단계 서브 아이템 */
+.sn-children2{overflow:hidden;transition:max-height .22s ease,opacity .18s;max-height:0;opacity:0;}
+.sn-children2.open{max-height:300px;opacity:1;}
+.sn-sub2{
+  display:flex;align-items:center;gap:7px;
+  padding:7px 12px 7px 52px;border-radius:7px;
+  cursor:pointer;color:var(--muted);font-size:15px;font-weight:500;
+  transition:all .15s;user-select:none;
+}
+.sn-sub2:hover{background:var(--member-bg);color:var(--text);}
+.sn-sub2.active{color:var(--accent);font-weight:700;}
+.sn-sub2-dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;opacity:.6;}
+
+/* 사이드바 하단 */
+.sidebar-footer{padding:12px 14px;border-top:1px solid var(--border);flex-shrink:0;}
+.sidebar-footer-text{font-size:13px;color:var(--muted);text-align:center;}
+
+/* 메인 콘텐츠 영역 — 사이드바 열림/닫힘에 따라 shift */
+.main-content{
+  flex:1;
+  margin-left:230px;
+  transition:margin-left .28s cubic-bezier(.4,0,.2,1);
+  min-width:0;
+  padding:env(safe-area-inset-top,18px) env(safe-area-inset-right,22px) env(safe-area-inset-bottom,18px) 22px;
+}
+.main-content.sidebar-closed{margin-left:0;}
+
+/* 햄버거 토글 버튼 */
+.sidebar-toggle{
+  display:flex;align-items:center;justify-content:center;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:6px 10px;
+  cursor:pointer;font-size:18px;color:var(--muted);
+  transition:all .2s;flex-shrink:0;
+}
+.sidebar-toggle:hover{border-color:var(--accent);color:var(--accent);}
+
+/* 기존 상단 탭 — 사이드바 사용 시 숨김 */
+.tab-nav{display:none;}
+
+/* 오버레이 (모바일에서 사이드바 열릴 때 배경 어둡게) */
+.sidebar-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:190;
+}
+.sidebar-overlay.visible{display:block;}
+
+@media(max-width:900px){
+  .sidebar{width:220px;}
+  .sidebar.collapsed{transform:translateX(-220px);}
+  .main-content{margin-left:0;}
+  .main-content.sidebar-open-mobile{margin-left:0;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ 사이드바 오버레이 (모바일) ══ -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- ══ 사이드바 ══ -->
+<nav class="sidebar" id="sidebar">
+  <!-- 헤더 -->
+  <div class="sidebar-header">
+    <div class="sidebar-logo">
+      <span class="sidebar-logo-icon">★</span>
+      <span class="sidebar-logo-text">자산관리</span>
+    </div>
+    <button class="sidebar-close" onclick="closeSidebar()" title="메뉴 닫기">✕</button>
+  </div>
+
+  <!-- 네비게이션 -->
+  <div class="sidebar-nav">
+
+    <!-- 📊 대시보드 -->
+    <div class="sn-group">
+      <div class="sn-top active" id="snm-dashboard" onclick="snToggle('dashboard')">
+        <span class="sn-icon">📊</span>
+        <span class="sn-label">대시보드</span>
+        <span class="sn-arrow open" id="sna-dashboard">▾</span>
+      </div>
+      <div class="sn-children open" id="snc-dashboard">
+        <!-- 💰 자산관리 -->
+        <div class="sn-sub active" id="snm-asset-mgmt" onclick="snGoTo('dashboard','asset-mgmt',null)">
+          <span class="sn-icon">💰</span>
+          <span class="sn-label">자산관리</span>
+        </div>
+        <!-- 📊 수입/지출관리 -->
+        <div class="sn-sub" id="snm-budget-insight" onclick="snToggleSub('budget-insight')">
+          <span class="sn-icon">📊</span>
+          <span class="sn-label">수입/지출관리</span>
+          <span class="sn-arrow" id="sna-budget-insight">▾</span>
+        </div>
+        <div class="sn-children2" id="snc-budget-insight">
+          <div class="sn-sub2" id="snm-bi-overview" onclick="snGoTo('dashboard','budget-insight','overview')">
+            <span class="sn-sub2-dot"></span>월간 분석
+          </div>
+          <div class="sn-sub2" id="snm-bi-yoy" onclick="snGoTo('dashboard','budget-insight','yoy')">
+            <span class="sn-sub2-dot"></span>연간 분석
+          </div>
+          <div class="sn-sub2" id="snm-bi-table" onclick="snGoTo('dashboard','budget-insight','table')">
+            <span class="sn-sub2-dot"></span>상세 내역
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🏦 총자산 -->
+    <div class="sn-group">
+      <div class="sn-top" id="snm-asset" onclick="snGoTo('asset',null,null)">
+        <span class="sn-icon">🏦</span>
+        <span class="sn-label">총자산</span>
+      </div>
+    </div>
+
+    <!-- 📒 가계부 -->
+    <div class="sn-group">
+      <div class="sn-top" id="snm-budget" onclick="snToggle('budget')">
+        <span class="sn-icon">📒</span>
+        <span class="sn-label">가계부</span>
+        <span class="sn-arrow" id="sna-budget">▾</span>
+      </div>
+      <div class="sn-children" id="snc-budget">
+        <div class="sn-sub" id="snm-budget-합계" onclick="snGoTo('budget',null,'합계')">
+          <span class="sn-icon">📋</span>
+          <span class="sn-label">합계</span>
+        </div>
+        <div class="sn-sub" id="snm-budget-상은" onclick="snGoTo('budget',null,'상은')">
+          <span class="sn-icon">👤</span>
+          <span class="sn-label">상은</span>
+        </div>
+        <div class="sn-sub" id="snm-budget-아영" onclick="snGoTo('budget',null,'아영')">
+          <span class="sn-icon">👤</span>
+          <span class="sn-label">아영</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.sidebar-nav -->
+
+  <!-- 하단 -->
+  <div class="sidebar-footer">
+    <div class="sidebar-footer-text">부부합산 자산관리</div>
+  </div>
+</nav>
+
+<!-- ══ 메인 콘텐츠 래퍼 ══ -->
+<div class="main-content" id="main-content">
+
+<!-- ── 헤더 ── -->
+<div class="header">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <button class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()" title="메뉴 열기/닫기">☰</button>
+    <div>
+      <h1>★ 자산관리 대시보드 <span>(부부합산)</span></h1>
+      <div class="header-sub">상은 · 아영 | 스프레드시트 실시간 연동</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()"><span class="theme-icon" id="theme-icon">☀️</span> 라이트</button>
+    <button class="refresh-btn" onclick="window.location.href=window.location.href">🔄 새로고침</button>
+    <div class="live-badge"><div class="live-dot"></div><?!= updatedStr ?> 로드</div>
+    <div class="base-month-badge"><span class="base-month-label">기준년월</span><span id="base-month">—</span></div>
+  </div>
+</div>
+
+<!-- ── 탭 (숨김 — 사이드바로 대체) ── -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('dashboard',this)">📊 대시보드</button>
+  <button class="tab-btn" onclick="switchTab('asset',this)">🏦 총자산</button>
+  <button class="tab-btn" onclick="switchTab('budget',this)">📒 가계부</button>
+</div>
+
+<!-- ══ 대시보드 탭 ══ -->
+<div id="tab-dashboard" class="tab-pane active">
+
+<!-- 대시보드 서브탭 -->
+<div class="dash-sub-nav">
+  <button class="dash-sub-btn active" onclick="switchDashSub('asset-mgmt',this)">💰 자산관리</button>
+  <button class="dash-sub-btn" onclick="switchDashSub('budget-insight',this)">📊 수입/지출관리</button>
+</div>
+
+<!-- ─── 자산관리 서브패널 ─── -->
+<div id="dash-asset-mgmt" class="dash-sub-pane active">
+
+<div class="kpi-grid">
+  <div class="kpi c-accent">
+    <div class="kpi-label">현재 현금성자산</div>
+    <div class="kpi-value" style="color:#a78bfa" id="kpi-total"></div>
+    <div class="kpi-sub" id="kpi-total-sub"></div>
+  </div>
+  <div class="kpi c-green">
+    <div class="kpi-label">목표 달성률</div>
+    <div class="kpi-value" style="color:var(--green)" id="kpi-achieve"></div>
+    <div class="kpi-sub"><span class="badge badge-info" id="kpi-achieve-sub"></span></div>
+  </div>
+  <div class="kpi c-yellow">
+    <div class="kpi-label">이번달 자산 증감</div>
+    <div class="kpi-value" style="color:var(--yellow)" id="kpi-mom"></div>
+    <div class="kpi-sub"><span class="badge" id="kpi-mom-badge"></span></div>
+  </div>
+  <div class="kpi c-red">
+    <div class="kpi-label">주택담보대출 잔액</div>
+    <div class="kpi-value" style="color:var(--red)" id="kpi-loan"></div>
+    <div class="kpi-sub" id="kpi-net"></div>
+  </div>
+</div>
+
+<!-- 진행바 -->
+<div class="progress-card">
+  <div class="progress-top">
+    <div>
+      <div class="progress-title">🎯 목표 자산 달성 트래커</div>
+      <div class="progress-sub">현재 자산 기준 목표 달성 현황 및 예상 도달 시점</div>
+    </div>
+    <div class="progress-right" style="display:flex;align-items:center;gap:10px;">
+      <div class="goal-badge">목표: <span class="goal-val" id="goal-display">—</span>
+        <button class="goal-edit-btn" onclick="openGoalEdit()">✏️</button></div>
+      <button onclick="showSimulationDetail()" style="padding:6px 14px;font-size:14px;font-weight:600;border-radius:8px;background:var(--accent);color:#fff;border:none;cursor:pointer;letter-spacing:.2px;">📋 월별 상세</button>
+    </div>
+  </div>
+  <!-- 트래커 통계 3개 칩 -->
+  <div class="tracker-stats">
+    <div class="tracker-stat-item">
+      <div class="tracker-stat-label">현재 자산</div>
+      <div class="tracker-stat-value" id="tracker-current">—</div>
+    </div>
+    <div class="tracker-stat-item">
+      <div class="tracker-stat-label">목표까지 남은 금액</div>
+      <div class="tracker-stat-value" id="tracker-remaining">—</div>
+    </div>
+    <div class="tracker-stat-item">
+      <div class="tracker-stat-label">예상 달성 시점</div>
+      <div class="tracker-stat-value tracker-eta-val" id="tracker-eta">—</div>
+    </div>
+  </div>
+  <!-- 진행바 -->
+  <div class="progress-marker-area">
+    <div class="progress-marker" id="progress-marker"><span id="progress-marker-text">—</span></div>
+  </div>
+  <div class="progress-track" id="progress-track">
+    <div class="progress-fill" id="progress-bar"></div>
+    <div class="progress-dividers" id="progress-dividers"></div>
+  </div>
+  <div class="progress-scale" id="progress-scale"></div>
+  <!-- 계산 방식 표시 -->
+  <div style="margin-top:10px;">
+    <div style="font-size:14px;color:var(--muted);" id="tracker-method-label">계산 방식을 설정해주세요 ✏️</div>
+  </div>
+</div>
+
+<!-- 계획 vs 실제 + MoM -->
+<div class="row-equal" style="margin-bottom:16px">
+  <div class="card">
+    <div class="card-title">계획 vs 실제 자산 비교
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span style="font-size:14px;color:var(--muted);">표시기간:</span>
+        <select id="plan-end-year" onchange="redrawPlanChart()" style="background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:14px;padding:2px 5px;cursor:pointer;outline:none;">
+          <option value="2026">~2026년</option><option value="2027">~2027년</option>
+          <option value="2028">~2028년</option><option value="2030">~2030년</option>
+          <option value="2032" selected>~2032년</option><option value="2035">~2035년</option>
+        </select>
+      </div>
+    </div>
+    <div class="card-sub">월별 계획 대비 실제 현금성자산 (단위: 억원)</div>
+    <div class="chart-wrap" style="height:240px"><canvas id="planActualChart"></canvas></div>
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:#6366f1;opacity:.5"></div>계획</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#10b981"></div>실제</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">월별 자산 증감 (MoM)</div>
+    <div class="card-sub">전월 대비 증감액 최근 18개월 (단위: 만원)</div>
+    <div class="chart-wrap" style="height:240px"><canvas id="momChart"></canvas></div>
+  </div>
+</div>
+
+<!-- 추이 + 도넛 -->
+<div class="row-2">
+  <div class="card">
+    <div class="card-title">월별 현금성자산 추이
+      <div class="range-btns">
+        <button class="rbtn active" onclick="setRange('all',this)">전체</button>
+        <button class="rbtn" onclick="setRange('3y',this)">최근 3년</button>
+        <button class="rbtn" onclick="setRange('1y',this)">최근 1년</button>
+      </div>
+    </div>
+    <div class="card-sub">현금성자산(계) 월별 기록 (단위: 억원)</div>
+    <div class="chart-wrap" style="height:250px"><canvas id="trendChart"></canvas></div>
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:#6366f1"></div>현금성자산(계)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#22d3ee"></div>주식계좌</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#10b981"></div>현금합산</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">자산 구성 (최신)</div>
+    <div class="card-sub">현금성 자산 분류별 비중</div>
+    <div class="chart-wrap" style="height:185px"><canvas id="donutChart"></canvas></div>
+    <div style="margin-top:10px" id="asset-breakdown"></div>
+  </div>
+</div>
+
+<!-- 수입/지출 + 멤버 -->
+<div class="row-3">
+  <div class="card">
+    <div class="card-title">월별 수입/지출 현황
+      <div class="period-btns" id="budget-period-btns">
+        <button class="rbtn active" onclick="setBudgetPeriod('올해',this)">올해</button>
+        <button class="rbtn" onclick="setBudgetPeriod('1y',this)">최근1년</button>
+        <button class="rbtn" onclick="setBudgetPeriod('2y',this)">최근2년</button>
+        <button class="rbtn" onclick="setBudgetPeriod('3y',this)">최근3년</button>
+        <button class="rbtn" onclick="setBudgetPeriod('all',this)">전체</button>
+      </div>
+    </div>
+    <div class="card-sub">수입 · 저축성 · 순지출 (단위: 만원)</div>
+    <div class="chart-wrap" style="height:190px"><canvas id="budgetChart"></canvas></div>
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:#10b981"></div>수입</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#6366f1"></div>저축성</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#f59e0b"></div>순지출</div>
+    </div>
+    <div style="margin-top:10px;padding:10px;background:var(--bg);border-radius:9px;border:1px solid var(--border);font-size:15px">
+      <div style="color:var(--muted);margin-bottom:4px" id="budget-total-label">올해 누계</div>
+      <div style="display:flex;gap:14px">
+        <div><div style="color:var(--muted)">수입</div><div style="font-weight:700;color:var(--green)" id="budget-income">—</div></div>
+        <div><div style="color:var(--muted)">저축성</div><div style="font-weight:700;color:var(--accent)" id="budget-save">—</div></div>
+        <div><div style="color:var(--muted)">순지출</div><div style="font-weight:700;color:var(--yellow)" id="budget-exp">—</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">부부 현금 자산 (최신)</div>
+    <div class="card-sub">입출금 · 예/적금 상세</div>
+    <div class="member-cards" id="member-detail"></div>
+    <div class="chart-wrap" style="height:125px"><canvas id="memberChart"></canvas></div>
+  </div>
+</div>
+
+<!-- 달성률 추이 -->
+<div class="card" style="margin-bottom:16px">
+  <div class="card-title">목표 달성률 추이 (%)</div>
+  <div class="card-sub">월별 은퇴 목표 자산 달성률 변화</div>
+  <div class="chart-wrap" style="height:130px"><canvas id="achieveChart"></canvas></div>
+</div>
+<div class="footer">★ 자산관리 대시보드 (부부합산) · Google Apps Script 실시간 연동</div>
+</div><!-- /dash-asset-mgmt -->
+
+<!-- ─── 수입/지출관리 서브패널 ─── -->
+<div id="dash-budget-insight" class="dash-sub-pane">
+
+<!-- 상단 연도·월 선택 통합 툴바 -->
+<div class="bi-toolbar">
+  <div class="bi-yr-nav" id="bi-yr-nav"></div>
+  <div class="bi-toolbar-sep"></div>
+  <div class="bi-mo-nav" id="bi-mo-nav"></div>
+</div>
+<div class="bi-tab-nav">
+  <button class="bi-tab-btn active" onclick="setBITab('overview',this)">📊 월간 분석</button>
+  <button class="bi-tab-btn" onclick="setBITab('yoy',this)">📈 연간 분석</button>
+  <button class="bi-tab-btn" onclick="setBITab('table',this)">📝 상세 내역</button>
+</div>
+
+<!-- 서브탭 패널들 -->
+<div id="bi-panel-overview" class="bi-panel active"></div>
+<div id="bi-panel-yoy" class="bi-panel"></div>
+<div id="bi-panel-table" class="bi-panel"></div>
+
+<div class="footer">★ 수입/지출관리 인사이트 (부부합산) · 가계부 합계 연동</div>
+</div><!-- /dash-budget-insight -->
+
+</div><!-- /tab-dashboard -->
+
+
+<!-- ══ 총자산 탭 ══ -->
+<div id="tab-asset" class="tab-pane">
+  <div id="asset-summary" class="asset-summary"></div>
+  <div class="asset-toolbar">
+    <h2>🏦 총자산 기록 <span style="font-size:16px;color:var(--muted);font-weight:400">(최신순)</span></h2>
+    <button class="btn-primary" onclick="openAssetModal()">＋ 새 행 추가</button>
+  </div>
+  <div id="asset-loading" class="spin-wrap">⏳ 데이터 불러오는 중...</div>
+  <div id="asset-table-wrap" style="display:none">
+    <div class="tbl-wrap">
+      <table id="asset-table">
+        <thead>
+          <tr>
+            <th rowspan="2" style="text-align:center">구분</th>
+            <th colspan="4" class="th-group g-se">상 은</th>
+            <th colspan="4" class="th-group g-ay">아 영</th>
+            <th rowspan="2" class="th-group g-sub">소계</th>
+            <th rowspan="2" class="th-group g-etc">주식계좌</th>
+            <th rowspan="2" class="th-group g-hi">현금성자산(계)</th>
+            <th rowspan="2" class="th-group g-etc">주담대</th>
+            <th rowspan="2" class="th-group g-etc">총자산(계)</th>
+            <th rowspan="2" style="text-align:center">관리</th>
+          </tr>
+          <tr>
+            <th class="g-se">입출금</th><th class="g-se">예/적금</th><th class="g-se">마통</th><th class="g-se">계</th>
+            <th class="g-ay">입출금</th><th class="g-ay">예/적금</th><th class="g-ay">벤츠</th><th class="g-ay">계</th>
+          </tr>
+        </thead>
+        <tbody id="asset-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- /tab-asset -->
+
+
+<!-- ══ 가계부 탭 ══ -->
+<div id="tab-budget" class="tab-pane">
+  <div class="sub-tab-nav">
+    <button class="sub-tab-btn active" onclick="switchSubTab('합계',this)">합계</button>
+    <button class="sub-tab-btn" onclick="switchSubTab('상은',this)">상은</button>
+    <button class="sub-tab-btn" onclick="switchSubTab('아영',this)">아영</button>
+  </div>
+  <div id="sub-tab-합계" class="sub-tab-pane active">
+    <div id="budget-합계-loading" class="spin-wrap">⏳ 불러오는 중...</div>
+    <div id="budget-합계-wrap" style="display:none"></div>
+  </div>
+  <div id="sub-tab-상은" class="sub-tab-pane">
+    <div id="budget-상은-loading" class="spin-wrap" style="display:none"></div>
+    <div id="budget-상은-wrap"></div>
+  </div>
+  <div id="sub-tab-아영" class="sub-tab-pane">
+    <div id="budget-아영-loading" class="spin-wrap" style="display:none"></div>
+    <div id="budget-아영-wrap"></div>
+  </div>
+</div><!-- /tab-budget -->
+
+
+<!-- ── 총자산 입력/수정 모달 ── -->
+<div class="modal-bg" id="asset-modal">
+  <div class="modal">
+    <h3 id="modal-title">새 행 추가</h3>
+    <input type="hidden" id="modal-rowIndex">
+    <div class="form-grid">
+      <div class="form-group full">
+        <label>구분 (연월)</label>
+        <input type="month" id="f-date">
+        <div class="field-hint">달력에서 선택하거나 직접 입력 (예: 2026-03)</div>
+      </div>
+      <div class="form-divider">상은</div>
+      <div class="form-group"><label>입출금잔액 (원)</label><input type="text" id="f-상은_입출금" placeholder="0" oninput="fmtInput(this)"></div>
+      <div class="form-group"><label>예/적금 (원)</label><input type="text" id="f-상은_예적금" placeholder="0" oninput="fmtInput(this)"></div>
+      <div class="form-group full">
+        <label>마통 (양수 입력 → 음수 자동처리)</label>
+        <input type="text" id="f-상은_마통" placeholder="0" oninput="fmtInput(this)">
+      </div>
+      <div class="form-divider">아영</div>
+      <div class="form-group"><label>입출금잔액 (원)</label><input type="text" id="f-아영_입출금" placeholder="0" oninput="fmtInput(this)"></div>
+      <div class="form-group"><label>예/적금 (원)</label><input type="text" id="f-아영_예적금" placeholder="0" oninput="fmtInput(this)"></div>
+      <div class="form-group full"><label>벤츠캐피탈 (원)</label><input type="text" id="f-아영_벤츠" placeholder="0" oninput="fmtInput(this)"></div>
+      <div class="form-divider">기타</div>
+      <div class="form-group"><label>주식계좌 평가금액 (원)</label><input type="text" id="f-주식" placeholder="0" oninput="fmtInput(this)"></div>
+      <div class="form-group"><label>주담대 잔액 (양수 입력 → 음수 자동처리)</label><input type="text" id="f-주담대" placeholder="0" oninput="fmtInput(this)"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeAssetModal()">취소</button>
+      <button class="btn-primary" onclick="submitAssetForm()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── 목표금액 설정 모달 ── -->
+<div class="modal-bg" id="goal-modal">
+  <div class="modal" style="width:500px;max-height:90vh;overflow-y:auto;">
+    <h3>🎯 목표자산 트래커 설정</h3>
+
+    <!-- 목표금액 -->
+    <div class="form-group full" style="margin-bottom:14px;">
+      <label>목표 현금성자산 (억 단위)</label>
+      <input type="number" id="goal-input" placeholder="15" step="0.5" min="1" oninput="updateGoalPreview()">
+      <div style="font-size:15px;color:var(--accent);margin-top:4px;" id="goal-preview"></div>
+    </div>
+
+    <!-- 평균증감률 방식 -->
+    <div style="border-top:1px solid var(--border);padding-top:13px;margin-bottom:2px;">
+      <div style="font-size:15px;font-weight:700;color:var(--muted);margin-bottom:9px;">📊 평균 증감률 방식 <span style="font-weight:400;font-size:14px;">(일괄 동일 증감률 적용)</span></div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 8px;border-radius:7px;transition:background .15s;" onmouseover="this.style.background='var(--member-bg)'" onmouseout="this.style.background=''">
+          <input type="radio" name="goalMethod" value="avg6m" onchange="onGoalMethodChange()" style="width:14px;height:14px;accent-color:var(--accent);">
+          <span style="font-size:16px;flex:1;">최근 6개월 평균 증감률</span>
+          <span class="badge badge-info" id="preview-avg6m" style="font-size:14px;min-width:60px;text-align:center;"></span>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 8px;border-radius:7px;transition:background .15s;" onmouseover="this.style.background='var(--member-bg)'" onmouseout="this.style.background=''">
+          <input type="radio" name="goalMethod" value="avg12m" onchange="onGoalMethodChange()" style="width:14px;height:14px;accent-color:var(--accent);">
+          <span style="font-size:16px;flex:1;">최근 12개월 평균 증감률</span>
+          <span class="badge badge-info" id="preview-avg12m" style="font-size:14px;min-width:60px;text-align:center;"></span>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 8px;border-radius:7px;transition:background .15s;" onmouseover="this.style.background='var(--member-bg)'" onmouseout="this.style.background=''">
+          <input type="radio" name="goalMethod" value="avg36m" onchange="onGoalMethodChange()" style="width:14px;height:14px;accent-color:var(--accent);">
+          <span style="font-size:16px;flex:1;">최근 36개월 평균 증감률</span>
+          <span class="badge badge-info" id="preview-avg36m" style="font-size:14px;min-width:60px;text-align:center;"></span>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 8px;border-radius:7px;transition:background .15s;" onmouseover="this.style.background='var(--member-bg)'" onmouseout="this.style.background=''">
+          <input type="radio" name="goalMethod" value="custom" onchange="onGoalMethodChange()" style="width:14px;height:14px;accent-color:var(--accent);">
+          <span style="font-size:16px;">직접 입력</span>
+          <input type="number" id="goal-custom-rate" placeholder="2.0" step="0.1" min="-50" max="50"
+            style="width:68px;padding:4px 7px;background:var(--member-bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:16px;margin-left:6px;display:none;">
+          <span id="goal-custom-pct-label" style="font-size:16px;color:var(--muted);display:none;">%/월</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- 백테스팅 방식 -->
+    <div style="border-top:1px solid var(--border);padding-top:13px;margin-top:13px;margin-bottom:14px;">
+      <div style="font-size:15px;font-weight:700;color:var(--muted);margin-bottom:9px;">📈 백테스팅 방식 <span style="font-weight:400;font-size:14px;">(과거 증감 패턴 주기적 반복)</span></div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 8px;border-radius:7px;transition:background .15s;" onmouseover="this.style.background='var(--member-bg)'" onmouseout="this.style.background=''">
+          <input type="radio" name="goalMethod" value="bt12" onchange="onGoalMethodChange()" style="width:14px;height:14px;accent-color:var(--accent);">
+          <span style="font-size:16px;flex:1;">최근 12개월 패턴 반복</span>
+          <span class="badge badge-info" id="preview-bt12" style="font-size:14px;min-width:60px;text-align:center;"></span>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 8px;border-radius:7px;transition:background .15s;" onmouseover="this.style.background='var(--member-bg)'" onmouseout="this.style.background=''">
+          <input type="radio" name="goalMethod" value="bt24" onchange="onGoalMethodChange()" style="width:14px;height:14px;accent-color:var(--accent);">
+          <span style="font-size:16px;flex:1;">최근 24개월 패턴 반복</span>
+          <span class="badge badge-info" id="preview-bt24" style="font-size:14px;min-width:60px;text-align:center;"></span>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 8px;border-radius:7px;transition:background .15s;" onmouseover="this.style.background='var(--member-bg)'" onmouseout="this.style.background=''">
+          <input type="radio" name="goalMethod" value="bt36" onchange="onGoalMethodChange()" style="width:14px;height:14px;accent-color:var(--accent);">
+          <span style="font-size:16px;flex:1;">최근 36개월 패턴 반복</span>
+          <span class="badge badge-info" id="preview-bt36" style="font-size:14px;min-width:60px;text-align:center;"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeGoalModal()">취소</button>
+      <button class="btn-primary" onclick="saveGoal()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── 가계부 월별 일괄입력 모달 ── -->
+<div class="modal-bg" id="budget-month-modal">
+  <div class="modal" style="width:520px;max-height:85vh;display:flex;flex-direction:column;padding:20px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-shrink:0;">
+      <h3 style="margin:0;font-size:17px;" id="bmm-title">1월 일괄 입력</h3>
+      <button class="btn-cancel" style="padding:4px 10px;border-radius:6px;font-size:16px;" onclick="closeMonthModal()">✕</button>
+    </div>
+    <input type="hidden" id="bmm-person">
+    <input type="hidden" id="bmm-month">
+    <div style="overflow-y:auto;flex:1;margin-bottom:12px;" id="bmm-body"></div>
+    <div style="background:var(--card);border-radius:10px;padding:12px 14px;margin-bottom:12px;flex-shrink:0;" id="bmm-summary"></div>
+    <div class="modal-actions" style="flex-shrink:0;">
+      <button class="btn-cancel" onclick="closeMonthModal()">취소</button>
+      <button class="btn-primary" onclick="submitMonthModal()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── 시뮬레이션 상세 팝업 ── -->
+<div class="modal-bg" id="sim-detail-modal">
+  <div class="modal" style="width:700px;max-height:88vh;display:flex;flex-direction:column;padding:20px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-shrink:0;">
+      <h3 style="margin-bottom:0;font-size:18px;">📋 목표 달성 월별 시뮬레이션</h3>
+      <button class="btn-cancel" style="padding:4px 10px;border-radius:6px;font-size:16px;"
+        onclick="document.getElementById('sim-detail-modal').classList.remove('open')">✕ 닫기</button>
+    </div>
+    <div style="font-size:15px;color:var(--muted);margin-bottom:8px;flex-shrink:0;" id="sim-detail-desc"></div>
+    <div id="sim-detail-achieve"
+      style="padding:11px 14px;background:rgba(16,185,129,.09);border:1px solid rgba(16,185,129,.25);border-radius:9px;margin-bottom:10px;text-align:center;display:none;flex-shrink:0;"></div>
+    <div style="overflow:auto;flex:1;border:1px solid var(--border);border-radius:9px;-webkit-overflow-scrolling:touch;">
+      <table style="width:100%;font-size:15px;border-collapse:collapse;">
+        <thead>
+          <tr>
+            <th style="padding:7px 6px;text-align:center;background:var(--thead-bg);color:var(--muted);font-size:14px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1;">월차</th>
+            <th style="padding:7px 8px;text-align:center;background:var(--thead-bg);color:var(--muted);font-size:14px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1;">날짜</th>
+            <th style="padding:7px 8px;text-align:right;background:var(--thead-bg);color:var(--muted);font-size:14px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1;">기초 자산</th>
+            <th style="padding:7px 8px;text-align:right;background:var(--thead-bg);color:var(--muted);font-size:14px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1;">증감률</th>
+            <th style="padding:7px 8px;text-align:right;background:var(--thead-bg);color:var(--muted);font-size:14px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1;">증감액</th>
+            <th style="padding:7px 8px;text-align:right;background:var(--thead-bg);color:var(--muted);font-size:14px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1;">기말 자산</th>
+            <th style="padding:7px 8px;text-align:right;background:var(--thead-bg);color:var(--muted);font-size:14px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1;">목표 대비</th>
+          </tr>
+        </thead>
+        <tbody id="sim-detail-tbody"></tbody>
+      </table>
+    </div>
+    <!-- 시뮬 vs 계획·실제 비교 차트 -->
+    <div id="sim-compare-section" style="margin-top:14px;flex-shrink:0;display:none;">
+      <div style="font-size:16px;font-weight:700;color:var(--text);padding-bottom:6px;border-bottom:1px solid var(--border);margin-bottom:8px;">
+        📊 시뮬 예상 vs 계획·실제 자산 비교
+        <span style="font-size:14px;color:var(--muted);font-weight:400;margin-left:6px;">
+          <span style="color:#6366f1;">● 시뮬예상</span> &nbsp;
+          <span style="color:rgba(16,185,129,.9);">-- 계획</span> &nbsp;
+          <span style="color:#10b981;">● 실제</span>
+        </span>
+      </div>
+      <div style="height:200px;position:relative;">
+        <canvas id="sim-compare-chart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+// ════════════════════════════════════════════
+// ★ 임베드 모드 (통합 대시보드 iframe용)
+// ════════════════════════════════════════════
+var EMBED_MODE = <?!= embedMode ? 'true' : 'false' ?>;
+var NAV_TARGET = '<?!= navTarget || "" ?>';
+
+(function applyEmbedMode(){
+  if (!EMBED_MODE) return;
+  // 사이드바, 오버레이, 토글 버튼 숨김
+  var style = document.createElement('style');
+  style.textContent = [
+    '#sidebar, #sidebar-overlay, #sidebar-toggle { display:none !important; }',
+    '.main-content { margin-left:0 !important; padding-top:10px !important; }',
+    '.header { padding-top:0; }'
+  ].join('\n');
+  document.head.appendChild(style);
+
+  // 데이터 로드 후 자동 네비게이션
+  document.addEventListener('DOMContentLoaded', function(){
+    if (!NAV_TARGET) return;
+    // nav 포맷: "mainTab.dashSub.subParam" (예: "dashboard.asset-mgmt", "budget..합계")
+    var parts = NAV_TARGET.split('.');
+    var mainTab  = parts[0] || 'dashboard';
+    var dashSub  = parts[1] || null;
+    var subParam = parts[2] || null;
+    // 약간의 지연 후 네비게이션 (렌더링 완료 대기)
+    setTimeout(function(){
+      if (typeof snGoTo === 'function') {
+        snGoTo(mainTab, dashSub, subParam);
+      } else if (typeof switchTab === 'function') {
+        switchTab(mainTab);
+      }
+    }, 300);
+  });
+})();
+
+// ════════════════════════════════════════════
+// 테마 관리 (라이트 디폴트)
+// ★ [v25] 통합대시보드 테마 동기화: AppScript doGet → 스크립틀릿으로 서버사이드 주입
+//   GAS 환경에서는 URL 파라미터가 클라이언트에 직접 전달되지 않으므로
+//   doGet(e)에서 e.parameter.theme 을 읽어 embedTheme 변수로 주입
+//   A(Midnight Violet/다크), C(Deep Emerald/다크) → dark
+//   B(Arctic Blue/라이트)                         → light
+//   embedTheme 없을 시 기존 dashTheme 로직으로 폴백
+// ════════════════════════════════════════════
+(function initTheme(){
+  var uniTheme = '<?= embedTheme ?>' || '';
+  var saved;
+  if (uniTheme === 'B')                         { saved = 'light'; }
+  else if (uniTheme === 'A' || uniTheme === 'C') { saved = 'dark';  }
+  else                                           { saved = localStorage.getItem('dashTheme') || 'light'; }
+  document.documentElement.setAttribute('data-theme', saved);
+  var meta = document.getElementById('meta-theme-color');
+  if (meta) meta.content = saved === 'dark' ? '#0f1117' : '#f5f6f8';
+  // 아이콘/라벨은 DOM ready 후 업데이트
+  document.addEventListener('DOMContentLoaded', function(){
+    updateThemeBtn(saved);
+  });
+})();
+function toggleTheme(){
+  var cur = document.documentElement.getAttribute('data-theme') || 'light';
+  var next = cur === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('dashTheme', next);
+  var meta = document.getElementById('meta-theme-color');
+  if (meta) meta.content = next === 'dark' ? '#0f1117' : '#f5f6f8';
+  updateThemeBtn(next);
+  updateChartTheme(next);
+}
+function updateThemeBtn(theme){
+  var icon = document.getElementById('theme-icon');
+  var btn  = document.getElementById('theme-toggle');
+  if (!icon || !btn) return;
+  if (theme === 'dark') { icon.textContent = '🌙'; btn.lastChild.textContent = ' 다크'; }
+  else                  { icon.textContent = '☀️'; btn.lastChild.textContent = ' 라이트'; }
+}
+
+// ════════════════════════════════════════════
+// 서버 주입 데이터
+// ════════════════════════════════════════════
+const monthly    = <?!= monthlyJSON ?>;
+const planActual = <?!= planActualJSON ?>;
+const budgetInit = <?!= budgetJSON ?>;
+const months12   = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+
+// 기준년월: 전월 (현재월은 미완성이므로 자산 데이터는 전월까지만 유효)
+function baseYYYYMM() {
+  var now = new Date();
+  now.setMonth(now.getMonth() - 1);
+  return now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+}
+var _baseYM = baseYYYYMM();
+
+// latestM: 기준년월(_baseYM) 이하 + 현금성 또는 주식이 0보다 큰 마지막 유효 행
+const latestM  = monthly.filter(function(d){ return d.date<=_baseYM && ((d.현금성||0) > 0 || (d.주식||0) > 0); }).slice(-1)[0]
+              || monthly.filter(function(d){ return d.date<=_baseYM; }).slice(-1)[0]
+              || monthly[monthly.length - 1];
+const latestPA = planActual.filter(function(d){ return d.actual !== null && d.date<=_baseYM; }).slice(-1)[0]
+              || planActual.filter(function(d){ return d.actual !== null; }).slice(-1)[0];
+
+// ════════════════════════════════════════════
+// 유틸
+// ════════════════════════════════════════════
+function fmtMonths(n) {
+  if (n <= 0) return '0개월';
+  var y = Math.floor(n / 12), m = n % 12;
+  if (y === 0) return m + '개월';
+  if (m === 0) return y + '년';
+  return y + '년 ' + m + '개월';
+}
+function fmtAmt(n, showSign) {
+  if (n === null || n === undefined) return '—';
+  var abs  = Math.abs(n);
+  var sign = showSign ? (n >= 0 ? '+' : '-') : (n < 0 ? '-' : '');
+  if (abs >= 1e8) return sign + (abs/1e8).toFixed(2) + '억';
+  if (abs >= 1e4) return sign + Math.round(abs/1e4).toLocaleString() + '만';
+  return sign + Math.round(abs).toLocaleString() + '원';
+}
+function fmtNum(n) {
+  if (n === null || n === undefined || n === 0) return '-';
+  return Math.round(n).toLocaleString();
+}
+function fmtNumFull(n) { // 0도 표시
+  if (n === null || n === undefined) return '—';
+  return Math.round(n).toLocaleString();
+}
+function showToast(msg, ok) {
+  if (ok === undefined) ok = true;
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show ' + (ok?'ok':'err');
+  setTimeout(function(){ t.className='toast'; }, 2800);
+}
+function fmtInput(input) {
+  var raw = input.value.replace(/[^0-9]/g,'');
+  if (raw === '') { input.value = ''; return; }
+  input.value = parseInt(raw,10).toLocaleString();
+}
+function parseInput(id) {
+  var v = document.getElementById(id).value.replace(/[^0-9]/g,'');
+  return v ? parseInt(v,10) : 0;
+}
+function curYYYYMM() {
+  var now = new Date();
+  return now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+}
+// ════════════════════════════════════════════
+// 사이드바 제어
+// ════════════════════════════════════════════
+var _sidebarOpen = true; // 초기 상태: 열림
+
+function toggleSidebar() {
+  _sidebarOpen ? closeSidebar() : openSidebar();
+}
+function openSidebar() {
+  _sidebarOpen = true;
+  document.getElementById('sidebar').classList.remove('collapsed');
+  document.getElementById('main-content').classList.remove('sidebar-closed');
+  // 모바일에서는 오버레이 표시
+  if (window.innerWidth <= 900) {
+    document.getElementById('sidebar-overlay').classList.add('visible');
+  }
+}
+function closeSidebar() {
+  _sidebarOpen = false;
+  document.getElementById('sidebar').classList.add('collapsed');
+  document.getElementById('main-content').classList.add('sidebar-closed');
+  document.getElementById('sidebar-overlay').classList.remove('visible');
+}
+
+// ── 터치 스와이프 + 드래그 인터랙티브 (모바일) ──
+(function() {
+  var sidebar = document.getElementById('sidebar');
+  var overlay = document.getElementById('sidebar-overlay');
+  var SIDEBAR_W = 230; // px (모바일 220px는 아래서 동적 처리)
+  var EDGE_ZONE = 25; // 왼쪽 가장자리 터치 감지 영역
+  var MIN_DX = 10; // 수평 이동 최소 임계값
+  var _tx0 = 0, _ty0 = 0, _dragging = false, _direction = null, _startOpen = false;
+
+  function getSidebarW() { return window.innerWidth <= 900 ? 220 : 230; }
+
+  function setDragPos(dx) {
+    var w = getSidebarW();
+    sidebar.style.transition = 'none';
+    overlay.style.transition = 'none';
+    if (_startOpen) {
+      // 열린 상태에서 왼쪽으로 드래그 → 닫기
+      var x = Math.max(-w, Math.min(0, dx));
+      sidebar.style.transform = 'translateX(' + x + 'px)';
+      overlay.style.opacity = String(1 + x / w);
+      overlay.style.display = 'block';
+    } else {
+      // 닫힌 상태에서 오른쪽으로 드래그 → 열기
+      var x = Math.max(-w, Math.min(0, -w + dx));
+      sidebar.style.transform = 'translateX(' + x + 'px)';
+      overlay.style.opacity = String((w + x) / w);
+      overlay.style.display = 'block';
+    }
+  }
+
+  function finishDrag(dx) {
+    var w = getSidebarW();
+    sidebar.style.transition = '';
+    sidebar.style.transform = '';
+    overlay.style.transition = '';
+    overlay.style.opacity = '';
+    var threshold = w * 0.35;
+    if (_startOpen) {
+      // 열린 상태: 왼쪽 드래그가 임계값 넘으면 닫기
+      if (dx < -threshold) closeSidebar();
+      else { sidebar.style.transform = ''; overlay.style.display = ''; }
+    } else {
+      // 닫힌 상태: 오른쪽 드래그가 임계값 넘으면 열기
+      if (dx > threshold) openSidebar();
+      else { overlay.style.display = 'none'; }
+    }
+    _dragging = false;
+    _direction = null;
+  }
+
+  document.addEventListener('touchstart', function(e) {
+    if (window.innerWidth > 900) return; // 모바일만
+    var t = e.touches[0];
+    _tx0 = t.clientX; _ty0 = t.clientY;
+    _startOpen = _sidebarOpen;
+    _dragging = false; _direction = null;
+
+    // 닫힌 상태: 왼쪽 가장자리에서만 시작 허용
+    if (!_startOpen && _tx0 > EDGE_ZONE) return;
+    // 열린 상태: 사이드바 내부 링크 클릭 허용 (사이드바 영역 밖에서만 드래그)
+    _dragging = true;
+  }, {passive: true});
+
+  document.addEventListener('touchmove', function(e) {
+    if (!_dragging || window.innerWidth > 900) return;
+    var t = e.touches[0];
+    var dx = t.clientX - _tx0;
+    var dy = t.clientY - _ty0;
+
+    // 방향 판별 (최초 1회)
+    if (!_direction) {
+      if (Math.abs(dx) < MIN_DX && Math.abs(dy) < MIN_DX) return;
+      if (Math.abs(dy) > Math.abs(dx)) { _dragging = false; return; } // 세로 스크롤 우선
+      _direction = dx > 0 ? 'right' : 'left';
+      // 닫힌 상태에서 왼쪽 스와이프 무시 / 열린 상태에서 오른쪽 스와이프 무시
+      if (!_startOpen && _direction === 'left') { _dragging = false; return; }
+      if (_startOpen && _direction === 'right') { _dragging = false; return; }
+    }
+
+    e.preventDefault();
+    setDragPos(dx);
+  }, {passive: false});
+
+  document.addEventListener('touchend', function(e) {
+    if (!_dragging || !_direction || window.innerWidth > 900) { _dragging = false; return; }
+    var t = e.changedTouches[0];
+    var dx = t.clientX - _tx0;
+    finishDrag(dx);
+  }, {passive: true});
+})();
+
+// 최상위 메뉴 아코디언 토글
+function snToggle(groupId) {
+  var children = document.getElementById('snc-'+groupId);
+  var arrow    = document.getElementById('sna-'+groupId);
+  if (!children) return;
+  var isOpen = children.classList.contains('open');
+  if (isOpen) {
+    children.classList.remove('open');
+    if (arrow) arrow.classList.remove('open');
+  } else {
+    children.classList.add('open');
+    if (arrow) arrow.classList.add('open');
+  }
+  // 탭 전환도 함께 처리 (대시보드 → asset-mgmt 기본, 가계부 → 합계 기본)
+  if (!isOpen) {
+    if (groupId === 'dashboard') _snActivateTab('dashboard', 'asset-mgmt', null);
+    if (groupId === 'budget')    _snActivateTab('budget', null, '합계');
+  }
+}
+
+// 수입/지출관리 서브메뉴 2단계 토글
+function snToggleSub(subId) {
+  var children = document.getElementById('snc-'+subId);
+  var arrow    = document.getElementById('sna-'+subId);
+  if (!children) return;
+  var isOpen = children.classList.contains('open');
+  if (isOpen) {
+    children.classList.remove('open');
+    if (arrow) arrow.classList.remove('open');
+  } else {
+    children.classList.add('open');
+    if (arrow) arrow.classList.add('open');
+    // 수입/지출관리 탭 전환
+    _snActivateTab('dashboard', 'budget-insight', 'overview');
+    snUpdateActive('dashboard', 'budget-insight', 'bi-overview');
+  }
+}
+
+// 실제 화면 전환 + 사이드바 활성화 갱신
+function snGoTo(mainTab, dashSub, subParam) {
+  _snActivateTab(mainTab, dashSub, subParam);
+  snUpdateActive(mainTab, dashSub,
+    dashSub === 'budget-insight' ? 'bi-' + subParam :
+    mainTab === 'budget' ? 'budget-' + subParam : null);
+  // 모바일에서 이동 후 사이드바 닫기
+  if (window.innerWidth <= 900) closeSidebar();
+}
+
+// 실제 탭/서브탭 화면 전환 (DOM 직접 조작)
+function _snActivateTab(mainTab, dashSub, subParam) {
+  // 1) 메인 탭
+  document.querySelectorAll('.tab-pane').forEach(function(p){ p.classList.remove('active'); });
+  var tp = document.getElementById('tab-'+mainTab);
+  if (tp) tp.classList.add('active');
+  if (mainTab === 'asset'  && !assetLoaded)  loadAssetData();
+  if (mainTab === 'budget' && !budgetTabInited) initBudgetTab();
+
+  // 2) 대시보드 서브
+  if (mainTab === 'dashboard' && dashSub) {
+    document.querySelectorAll('.dash-sub-pane').forEach(function(p){ p.classList.remove('active'); });
+    document.querySelectorAll('.dash-sub-btn').forEach(function(b){ b.classList.remove('active'); });
+    var dp = document.getElementById('dash-'+dashSub);
+    if (dp) dp.classList.add('active');
+    var db = document.querySelector('[onclick*="switchDashSub(\''+dashSub+'\'"]');
+    if (db) db.classList.add('active');
+    if (dashSub === 'budget-insight' && !biInited) { biInited=true; initBI(); }
+  }
+
+  // 3) BI 서브탭
+  if (mainTab === 'dashboard' && dashSub === 'budget-insight' && subParam) {
+    biTab = subParam;
+    document.querySelectorAll('.bi-tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelectorAll('.bi-panel').forEach(function(p){ p.classList.remove('active'); });
+    var bPanel = document.getElementById('bi-panel-'+subParam);
+    if (bPanel) bPanel.classList.add('active');
+    var bBtn = document.querySelector('[onclick*="setBITab(\''+subParam+'\'"]');
+    if (bBtn) bBtn.classList.add('active');
+    if (biInited) biRender();
+  }
+
+  // 4) 가계부 서브탭
+  if (mainTab === 'budget' && subParam) {
+    document.querySelectorAll('.sub-tab-pane').forEach(function(p){ p.classList.remove('active'); });
+    document.querySelectorAll('.sub-tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    var sp = document.getElementById('sub-tab-'+subParam);
+    if (sp) sp.classList.add('active');
+    var sb = document.querySelector('[onclick*="switchSubTab(\''+subParam+'\'"]');
+    if (sb) sb.classList.add('active');
+    if (subParam === '합계') renderBudgetSum();
+  }
+}
+
+// 사이드바 활성 상태 갱신
+function snUpdateActive(mainTab, dashSub, subItem) {
+  // 모든 active 초기화
+  document.querySelectorAll('.sn-top,.sn-sub,.sn-sub2').forEach(function(el){ el.classList.remove('active'); });
+  // 메인 탭
+  var topEl = document.getElementById('snm-'+mainTab);
+  if (topEl) topEl.classList.add('active');
+  // 대시보드 서브
+  if (dashSub) {
+    var subEl = document.getElementById('snm-'+dashSub);
+    if (subEl) subEl.classList.add('active');
+  }
+  // BI 서브탭 / 가계부 서브탭
+  if (subItem) {
+    var sub2El = document.getElementById('snm-'+subItem);
+    if (sub2El) sub2El.classList.add('active');
+  }
+}
+
+// 창 크기 변경 시 처리
+window.addEventListener('resize', function(){
+  if (window.innerWidth > 900) {
+    document.getElementById('sidebar-overlay').classList.remove('visible');
+    if (_sidebarOpen) {
+      document.getElementById('sidebar').classList.remove('collapsed');
+      document.getElementById('main-content').classList.remove('sidebar-closed');
+    }
+  }
+});
+
+// ════════════════════════════════════════════
+// 탭 전환 (기존 — 사이드바와 연동)
+// ════════════════════════════════════════════
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-pane').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('tab-'+id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id==='asset'  && !assetLoaded)  loadAssetData();
+  if (id==='budget' && !budgetTabInited) initBudgetTab();
+  // 사이드바 동기화
+  snUpdateActive(id, null, null);
+}
+function switchSubTab(person, btn) {
+  document.querySelectorAll('.sub-tab-pane').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.sub-tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('sub-tab-'+person).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (person==='합계') renderBudgetSum();
+  // 사이드바 동기화
+  snUpdateActive('budget', null, 'budget-'+person);
+}
+
+// ════════════════════════════════════════════
+// 대시보드 서브탭 전환 (자산관리 ↔ 수입/지출관리)
+// ════════════════════════════════════════════
+var biInited = false;
+function switchDashSub(id, btn) {
+  document.querySelectorAll('.dash-sub-pane').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.dash-sub-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('dash-'+id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'budget-insight' && !biInited) { biInited=true; initBI(); }
+  // 사이드바 동기화
+  snUpdateActive('dashboard', id, id === 'budget-insight' ? 'bi-overview' : null);
+  if (id === 'budget-insight') {
+    var c2 = document.getElementById('snc-budget-insight');
+    var a2 = document.getElementById('sna-budget-insight');
+    if (c2) c2.classList.add('open');
+    if (a2) a2.classList.add('open');
+  }
+}
+
+// ════════════════════════════════════════════
+// 수입/지출관리 (Budget Insight) 전체 로직
+// ════════════════════════════════════════════
+var biYear=2026, biMo=0, biTab='overview';
+var biDataCache={}, biCharts={};
+var _yoyCompData=null, _yoyMode='avg';
+var biCL={"생활비/대출이자":"#ef4444","경조사비":"#f97316","식비":"#facc15","교통비":"#22c55e","의복/미용":"#06b6d4","문화/여가":"#8b5cf6","카페/간식":"#ec4899","주거/통신":"#3b82f6","의료/건강":"#14b8a6","기타":"#94a3b8","이자(일반대)":"#78716c"};
+// 동적 색상 팔레트 (biCL에 없는 항목용)
+var biExtraCL=["#e11d48","#c026d3","#7c3aed","#2563eb","#0891b2","#059669","#65a30d","#ca8a04","#ea580c","#dc2626","#4f46e5","#0d9488"];
+
+function biFmt(n) {
+  if (n==null) return '—';
+  var a=Math.abs(n);
+  if (a>=1e8) return (n/1e8).toFixed(1)+'억';
+  if (a>=1e4) return Math.round(n/1e4).toLocaleString()+'만';
+  return Math.round(n).toLocaleString()+'원';
+}
+function biPct(a,b) { return b ? (a/b*100).toFixed(1)+'%' : '—'; }
+function biPctN(a,b) { return b ? a/b*100 : 0; }
+function biSum(arr) { return arr.reduce(function(s,v){return s+(v||0);},0); }
+
+// ── budgetCache → BI 데이터 변환
+function biBuildData(year) {
+  year = parseInt(year);
+  if (biDataCache[year]) return biDataCache[year];
+  var se = budgetCache['상은_'+year];
+  var ay = budgetCache['아영_'+year];
+  if (!se && !ay) return null;
+  // 합산 items
+  var allItems = new Set([...Object.keys((se&&se.items)||{}), ...Object.keys((ay&&ay.items)||{})]);
+  var 수입={}, 저축성={}, 순지출={};
+  var mc = 12;
+  allItems.forEach(function(item) {
+    var a = se && se.items ? se.items[item] : null;
+    var b = ay && ay.items ? ay.items[item] : null;
+    var cat = (a&&a.cat)||(b&&b.cat)||'';
+    var plan = (a&&a.plan||0)+(b&&b.plan||0);
+    var months = Array(mc).fill(0).map(function(_,i){ return (a&&a.months[i]||0)+(b&&b.months[i]||0); });
+    // 실 데이터 존재 월 수 판단
+    var target;
+    if (cat.includes('수입')) target=수입;
+    else if (cat.includes('저축')) target=저축성;
+    else target=순지출;
+    target[item] = { plan:plan, months:months };
+  });
+  // mc: 실 데이터가 존재하는 마지막 월+1
+  var detectedMc = 1;
+  var allMonthArrays = [].concat(Object.values(수입), Object.values(저축성), Object.values(순지출));
+  allMonthArrays.forEach(function(x) {
+    x.months.forEach(function(v,i) { if (v) detectedMc = Math.max(detectedMc, i+1); });
+  });
+  // 수입계, 저축계, 지출계
+  var 수입계=Array(mc).fill(0), 저축계=Array(mc).fill(0), 지출계=Array(mc).fill(0);
+  Object.values(수입).forEach(function(x){ x.months.forEach(function(v,i){수입계[i]+=v;}); });
+  Object.values(저축성).forEach(function(x){ x.months.forEach(function(v,i){저축계[i]+=v;}); });
+  Object.values(순지출).forEach(function(x){ x.months.forEach(function(v,i){지출계[i]+=v;}); });
+  var 여유=수입계.map(function(v,i){ return v-저축계[i]-지출계[i]; });
+  var d = { year:year, mc:detectedMc, 수입:수입, 저축성:저축성, 순지출:순지출, 수입계:수입계, 저축계:저축계, 지출계:지출계, 여유:여유 };
+  biDataCache[year] = d;
+  return d;
+}
+
+// ── 초기화
+var biAvailableYears = [];
+function initBI() {
+  // 먼저 현재 연도를 로드하여 years 목록 확보
+  var curYr = new Date().getFullYear();
+  biLoadYear(curYr, function() {
+    // years 목록 가져오기 (상은 or 아영 데이터에서)
+    var sample = budgetCache['상은_'+curYr] || budgetCache['아영_'+curYr];
+    biAvailableYears = (sample && sample.years) ? sample.years.map(function(y){ return parseInt(String(y).replace(/[^0-9]/g,'')); }).filter(function(y){return !isNaN(y);}).sort(function(a,b){return a-b;}) : [curYr];
+    biYear = biAvailableYears[biAvailableYears.length - 1]; // 최신 연도
+    biMo = 0;
+    biRenderYearNav();
+    // 전년도도 미리 로드 (연간 분석용)
+    var prevYr = biYear - 1;
+    if (biAvailableYears.indexOf(prevYr) >= 0) {
+      biLoadYear(prevYr, function() { biRender(); });
+    } else {
+      biRender();
+    }
+  });
+}
+
+function biRenderYearNav() {
+  var nav = document.getElementById('bi-yr-nav');
+  var h = '';
+  biAvailableYears.forEach(function(yr) {
+    var numYr = parseInt(yr);
+    h += '<button class="bi-yr-btn' + (numYr === biYear ? ' active' : '') + '" onclick="setBIYear(' + numYr + ',this)">' + numYr + '년</button>';
+  });
+  nav.innerHTML = h;
+}
+
+function biLoadYear(year, cb) {
+  year = parseInt(year);
+  var sk='상은_'+year, ak='아영_'+year;
+  // undefined가 아닌 경우(null 포함) 이미 로드 시도됨
+  var need = (budgetCache[sk]===undefined ? 1 : 0) + (budgetCache[ak]===undefined ? 1 : 0);
+  if (need === 0) { cb(); return; }
+  var done = 0;
+  function check() { done++; if (done >= need) cb(); }
+  if (budgetCache[sk]===undefined) {
+    google.script.run.withSuccessHandler(function(res){
+      if(!res.error && res.data) { budgetCache[sk]=res.data; }
+      else { budgetCache[sk]=null; } // 에러/빈응답 → null 마커 (재호출 방지)
+      check();
+    }).withFailureHandler(function(){
+      budgetCache[sk]=null; check();
+    }).getBudgetPersonData('상은', year);
+  }
+  if (budgetCache[ak]===undefined) {
+    google.script.run.withSuccessHandler(function(res){
+      if(!res.error && res.data) { budgetCache[ak]=res.data; }
+      else { budgetCache[ak]=null; }
+      check();
+    }).withFailureHandler(function(){
+      budgetCache[ak]=null; check();
+    }).getBudgetPersonData('아영', year);
+  }
+}
+
+function setBIYear(yr, btn) {
+  biYear=parseInt(yr); biMo=0;
+  document.querySelectorAll('.bi-yr-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  delete biDataCache[biYear]; // 선택 연도 캐시 갱신
+  var prevYr = biYear - 1;
+  biLoadYear(biYear, function() {
+    // 전년도 데이터도 로드 (연간 분석용)
+    if (biAvailableYears.indexOf(prevYr) >= 0) {
+      biLoadYear(prevYr, function() { biRender(); });
+    } else {
+      biRender();
+    }
+  });
+}
+function setBITab(tab, btn) {
+  biTab=tab;
+  document.querySelectorAll('.bi-tab-btn').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.bi-panel').forEach(function(p){p.classList.remove('active');});
+  if (btn) btn.classList.add('active');
+  document.getElementById('bi-panel-'+tab).classList.add('active');
+  biRender();
+  // 사이드바 동기화
+  snUpdateActive('dashboard', 'budget-insight', 'bi-'+tab);
+}
+
+function biRender() {
+  var data = biBuildData(biYear);
+  if (!data) { document.getElementById('bi-panel-overview').innerHTML='<p style="padding:30px;text-align:center;color:var(--muted)">데이터 로딩 중…</p>'; return; }
+  // 월 네비 갱신
+  var moNav = document.getElementById('bi-mo-nav');
+  var moHtml = '';
+  for (var i=0; i<data.mc; i++) {
+    moHtml += '<button class="bi-mo-btn'+(i===biMo?' active':'')+'" onclick="biSetMo('+i+',this)">'+(i+1)+'월</button>';
+  }
+  moNav.innerHTML = moHtml;
+  var mo = Math.min(biMo, data.mc-1);
+  // 현재 탭에 따라 렌더링
+  if (biTab==='overview') biRenderOverview(data, mo);
+  else if (biTab==='yoy') biRenderYoY(data, mo);
+  else if (biTab==='table') biRenderTable(data, mo);
+}
+// 수입배분 게이지 툴팁
+function biShowGaugeTip(e,label,amount,pct){
+  var tip=document.getElementById('bi-gauge-tooltip');
+  if(!tip)return;
+  tip.innerHTML='<div style="font-weight:700;margin-bottom:2px">'+label+'</div><div style="font-family:JetBrains Mono,monospace;font-size:18px;font-weight:800">'+amount+'</div><div style="color:var(--muted);font-size:14px">비율: '+pct+'</div>';
+  tip.style.display='block';
+  tip.style.left=(e.clientX+12)+'px';
+  tip.style.top=(e.clientY-60)+'px';
+}
+function biHideGaugeTip(){var tip=document.getElementById('bi-gauge-tooltip');if(tip)tip.style.display='none';}
+function biSetMo(m, btn) {
+  biMo=m;
+  document.querySelectorAll('.bi-mo-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  biRender();
+}
+
+// ── 1. 월간 분석
+function biRenderOverview(data, mo) {
+  var 수입=data.수입계[mo], 저축원=data.저축계[mo], 지출=data.지출계[mo], 여유=data.여유[mo];
+  var 저축=저축원+여유; // 저축 = 저축성 + 여유
+  var yr=parseInt(data.year);
+  // KPI (3개로 변경: 수입, 저축(저축성+여유), 지출)
+  var h = '<div class="bi-kpi-grid" style="grid-template-columns:repeat(3,1fr)">';
+  h += biKpiHTML('💵','수입',biFmt(수입),'전체 기준','var(--green)');
+  h += biKpiHTML('🏦','저축',biFmt(저축),'저축률 '+biPct(저축,수입)+' <span style="font-size:13px;opacity:.7">(저축성+여유)</span>','var(--accent)');
+  h += biKpiHTML('💳','지출',biFmt(지출),'지출률 '+biPct(지출,수입),'var(--yellow)');
+  h += '</div>';
+  // 인사이트
+  var ins=[];
+  var 지출률=biPctN(지출,수입), 저축률=biPctN(저축,수입);
+  // ① 지출 비중 진단
+  if(지출률>40)ins.push({t:'alert',s:'⚠️ 지출 비중 '+지출률.toFixed(0)+'% — 수입의 40% 초과',b:'비경상 지출 항목을 확인해보세요.'});
+  else if(지출률<25)ins.push({t:'good',s:'✅ 지출 통제 우수 ('+지출률.toFixed(0)+'%)',b:'25% 미만으로 잘 관리되고 있습니다.'});
+  // ② 저축률 달성 진단
+  if(저축률>=50)ins.push({t:'good',s:'💰 저축률 '+저축률.toFixed(0)+'% 달성',b:'50% 이상의 높은 저축률입니다. (저축성+여유 합산)'});
+  else if(저축률>=30)ins.push({t:'warn',s:'💰 저축률 '+저축률.toFixed(0)+'%',b:'30~50% 구간으로 양호합니다.'});
+  else if(수입>0)ins.push({t:'alert',s:'💰 저축률 '+저축률.toFixed(0)+'% — 목표 미달',b:'30% 미만으로 저축 확대가 필요합니다.'});
+  // ③ 여유자금 적자
+  if(여유<0)ins.push({t:'alert',s:'🔴 여유자금 적자 발생',b:'수입보다 저축+지출이 '+biFmt(Math.abs(여유))+' 초과했습니다.'});
+  // ④ 전월 대비 지출 변화
+  if(mo>0){
+    var pd=data.지출계[mo-1];var ch=pd?(지출-pd)/pd*100:0;
+    if(ch>50)ins.push({t:'alert',s:'📈 전월 대비 지출 '+ch.toFixed(0)+'% 급증',b:mo+'월→'+(mo+1)+'월 지출 '+biFmt(지출-pd)+' 증가'});
+    else if(ch<-20)ins.push({t:'good',s:'📉 전월 대비 지출 '+Math.abs(ch).toFixed(0)+'% 절감',b:mo+'월→'+(mo+1)+'월 지출 '+biFmt(Math.abs(지출-pd))+' 감소'});
+  }
+  // ⑤ 전월 대비 저축률 변화
+  if(mo>0){
+    var prevSav=data.저축계[mo-1]+data.여유[mo-1], prevInc=data.수입계[mo-1];
+    var prevSavR=prevInc?prevSav/prevInc*100:0;
+    var savDiff=저축률-prevSavR;
+    if(savDiff>5)ins.push({t:'good',s:'🔼 저축률 '+savDiff.toFixed(0)+'%p 상승',b:prevSavR.toFixed(0)+'% → '+저축률.toFixed(0)+'%로 개선'});
+    else if(savDiff<-5)ins.push({t:'alert',s:'🔽 저축률 '+Math.abs(savDiff).toFixed(0)+'%p 하락',b:prevSavR.toFixed(0)+'% → '+저축률.toFixed(0)+'%로 감소'});
+  }
+  // ⑥ 저축률 연속 상승/하락 streak
+  if(mo>=2){
+    var streak=0,dir=0;
+    for(var si=mo;si>=1;si--){
+      var sSav=data.저축계[si]+data.여유[si], sInc=data.수입계[si];
+      var pSav=data.저축계[si-1]+data.여유[si-1], pInc=data.수입계[si-1];
+      var sR=sInc?sSav/sInc:0, pR=pInc?pSav/pInc:0;
+      if(dir===0) dir=sR>=pR?1:-1;
+      if((dir>0&&sR>=pR)||(dir<0&&sR<pR)) streak++; else break;
+    }
+    if(streak>=2&&dir>0)ins.push({t:'good',s:'🔥 저축률 '+streak+'개월 연속 상승',b:'꾸준한 저축 습관이 유지되고 있습니다.'});
+    else if(streak>=2&&dir<0)ins.push({t:'alert',s:'📉 저축률 '+streak+'개월 연속 하락',b:'저축 패턴 점검이 필요합니다.'});
+  }
+  // ⑦ 지출 상위 항목 집중도
+  var expItems=Object.entries(data.순지출).map(function(e){return{k:e[0],v:e[1].months[mo]||0};}).sort(function(a,b){return b.v-a.v;});
+  var topCat=expItems[0];
+  if(topCat&&지출&&topCat.v/지출>0.4)ins.push({t:'warn',s:'📊 "'+topCat.k+'" 집중 ('+(topCat.v/지출*100).toFixed(0)+'%)',b:'단일 항목이 지출의 40% 이상입니다.'});
+  // ⑧ 상위 3개 항목 집중도
+  if(expItems.length>=3&&지출){
+    var top3Sum=expItems[0].v+expItems[1].v+expItems[2].v;
+    var top3Pct=top3Sum/지출*100;
+    if(top3Pct>80)ins.push({t:'warn',s:'🎯 상위 3개 항목 지출 집중 ('+top3Pct.toFixed(0)+'%)',b:expItems[0].k+', '+expItems[1].k+', '+expItems[2].k});
+  }
+  // ⑨ 특정 항목 전월 대비 급증
+  if(mo>0){
+    var itemSpike=null,maxSpike=0;
+    Object.entries(data.순지출).forEach(function(e){
+      var cur=e[1].months[mo]||0, prev=e[1].months[mo-1]||0;
+      if(prev>0&&cur>prev){var sp=(cur-prev)/prev*100; if(sp>maxSpike&&sp>40&&cur>500000){maxSpike=sp;itemSpike={k:e[0],cur:cur,prev:prev,sp:sp};}}
+    });
+    if(itemSpike)ins.push({t:'warn',s:'🚨 "'+itemSpike.k+'" +'+itemSpike.sp.toFixed(0)+'%',b:biFmt(itemSpike.prev)+' → '+biFmt(itemSpike.cur)+' (전월 대비)'});
+  }
+  // ⑩ 상은/아영 수입 기여도
+  var seData=budgetCache['상은_'+yr], ayData=budgetCache['아영_'+yr];
+  var seIncome=0, ayIncome=0;
+  if(seData&&seData.items)Object.values(seData.items).forEach(function(d){if(d.cat&&d.cat.includes('수입'))seIncome+=d.months[mo]||0;});
+  if(ayData&&ayData.items)Object.values(ayData.items).forEach(function(d){if(d.cat&&d.cat.includes('수입'))ayIncome+=d.months[mo]||0;});
+  if(수입>0&&seIncome>0&&ayIncome>0){
+    var sePct=seIncome/수입*100, ayPct=ayIncome/수입*100;
+    var balance=Math.min(sePct,ayPct)/Math.max(sePct,ayPct)*100;
+    if(balance>=70)ins.push({t:'good',s:'👫 수입 균형도 양호',b:'상은 '+sePct.toFixed(0)+'% / 아영 '+ayPct.toFixed(0)+'% — 쌍벌이 균형 우수'});
+    else ins.push({t:'warn',s:'👫 수입 편중',b:'상은 '+sePct.toFixed(0)+'% / 아영 '+ayPct.toFixed(0)+'% — 한쪽 의존도가 높습니다'});
+  }
+  // ⑪ 계획 대비 지출 실적
+  var 지출계P=0; Object.values(data.순지출).forEach(function(x){지출계P+=x.plan||0;});
+  var planMonthly=지출계P/12;
+  if(planMonthly>0){
+    var planPct=지출/planMonthly*100;
+    if(planPct>120)ins.push({t:'alert',s:'📋 계획 대비 지출 '+planPct.toFixed(0)+'%',b:'월 지출 계획('+biFmt(planMonthly)+')을 '+(planPct-100).toFixed(0)+'% 초과'});
+    else if(planPct<80)ins.push({t:'good',s:'📋 계획 대비 지출 '+planPct.toFixed(0)+'%',b:'월 지출 계획('+biFmt(planMonthly)+')보다 '+(100-planPct).toFixed(0)+'% 절감'});
+  }
+  // ⑫ 수입 대비 주거비 비율 (30% 룰)
+  var housingExp=0;
+  ['주담대원금','주거/통신'].forEach(function(k){
+    var d=data.저축성[k]||data.순지출[k]; if(d)housingExp+=d.months[mo]||0;
+  });
+  if(수입>0&&housingExp>0){
+    var housingPct=housingExp/수입*100;
+    if(housingPct>30)ins.push({t:'alert',s:'🏠 주거비 비율 '+housingPct.toFixed(0)+'%',b:'수입의 30% 초과 — 주거비 부담이 높습니다'});
+    else ins.push({t:'good',s:'🏠 주거비 비율 '+housingPct.toFixed(0)+'%',b:'수입의 30% 이내로 적정 수준입니다'});
+  }
+  // 최대 6개까지만 표시 (우선순위: alert > warn > good)
+  ins.sort(function(a,b){var ord={alert:0,warn:1,good:2};return(ord[a.t]||1)-(ord[b.t]||1);});
+  if(ins.length>6) ins=ins.slice(0,6);
+  if(ins.length) {
+    h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">';
+    ins.forEach(function(x){h+='<div class="bi-insight bi-insight-'+x.t+'"><div style="font-size:15px;font-weight:700;margin-bottom:2px;">'+x.s+'</div><div style="font-size:14px;color:var(--muted);line-height:1.5;">'+x.b+'</div></div>';});
+    h+='</div>';
+  }
+  // 도넛 + 수입배분 + 여유추이 (2컬럼)
+  h += '<div class="bi-grid-2">';
+  // 도넛 자리
+  h += '<div class="bi-card"><div style="font-size:17px;font-weight:700;margin-bottom:10px;">'+yr+'년 '+(mo+1)+'월 지출 구성</div><div style="display:flex;gap:14px;align-items:center"><div style="height:200px;width:200px;position:relative"><canvas id="bi-donut-chart"></canvas></div><div id="bi-donut-legend" style="flex:1;font-size:14px"></div></div></div>';
+  // 수입배분 + 여유추이
+  h += '<div style="display:flex;flex-direction:column;gap:10px">';
+  // 수입배분 바 (저축=저축성+여유) — 호버 툴팁 포함
+  var pctS=biPct(저축,수입), pctE=biPct(지출,수입);
+  h += '<div style="background:var(--member-bg);border-radius:10px;padding:14px;border:1px solid var(--border)">';
+  h += '<div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px">'+yr+'년 '+(mo+1)+'월 수입 배분</div>';
+  h += '<div style="display:flex;border-radius:6px;overflow:hidden;height:24px;background:var(--border);position:relative">';
+  if(수입>0){
+    h+='<div class="bi-gauge-seg" style="width:'+biPct(저축,수입)+';background:var(--accent);min-width:1px;position:relative;cursor:pointer" onmouseenter="biShowGaugeTip(event,\'🏦 저축(저축성+여유)\',\''+biFmt(저축)+'\',\''+pctS+'\')" onmouseleave="biHideGaugeTip()"></div>';
+    h+='<div class="bi-gauge-seg" style="width:'+biPct(지출,수입)+';background:var(--yellow);min-width:1px;position:relative;cursor:pointer" onmouseenter="biShowGaugeTip(event,\'💳 지출\',\''+biFmt(지출)+'\',\''+pctE+'\')" onmouseleave="biHideGaugeTip()"></div>';
+    var remainPct=수입>0?Math.max(0,100-biPctN(저축,수입)-biPctN(지출,수입)):0;
+    if(remainPct>0.5){h+='<div class="bi-gauge-seg" style="flex:1;min-width:1px;cursor:pointer" onmouseenter="biShowGaugeTip(event,\'⚪ 미배분\',\''+biFmt(수입-저축-지출)+'\',\''+remainPct.toFixed(1)+'%\')" onmouseleave="biHideGaugeTip()"></div>';}
+  }
+  h+='</div>';
+  h+='<div id="bi-gauge-tooltip" style="display:none;position:fixed;z-index:999;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;box-shadow:0 4px 12px rgba(0,0,0,.15);pointer-events:none;font-size:15px"></div>';
+  h+='<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:4px"><span>저축 '+pctS+' (저축성+여유)</span><span>지출 '+pctE+'</span></div></div>';
+  // 월별 수입금액 추이 (상은/아영 스택)
+  h += '<div class="bi-card" style="flex:1"><div style="font-size:16px;font-weight:700;margin-bottom:6px">월별 수입금액 추이</div><div style="height:120px"><canvas id="bi-income-chart"></canvas></div></div>';
+  h += '</div></div>';
+  // ── 계획 vs 실적 섹션 (월간 분석에 통합)
+  var 수입계P=biSum(Object.values(data.수입).map(function(x){return x.plan;}));
+  var 저축성P=biSum(Object.values(data.저축성).map(function(x){return x.plan;}));
+  var 지출계P=biSum(Object.values(data.순지출).map(function(x){return x.plan;}));
+  var 저축계P=수입계P-지출계P;
+  h+='<div class="bi-grid-2">';
+  // 항목별 계획 vs 실적
+  h+='<div class="bi-card"><div style="font-size:17px;font-weight:700;margin-bottom:4px">'+yr+'년 '+(mo+1)+'월 항목별 계획 vs 실적</div><div style="font-size:14px;color:var(--muted);margin-bottom:10px">지출 항목 — 계획 초과 시 빨간색</div>';
+  Object.entries(data.순지출).forEach(function(e){
+    var k=e[0], plan=e[1].plan, actual=e[1].months[mo]||0;
+    var diff=actual-plan, over=actual>plan;
+    var mx=Math.max(plan,actual)*1.15;
+    var col=biCL[k]||'#94a3b8';
+    var planPct=mx?plan/mx*100:0, actPct=mx?actual/mx*100:0;
+    var basePct=Math.min(actPct,planPct), overPct=over?actPct-planPct:0;
+    var pctLabel=plan?(diff/plan*100):0;
+    h+='<div class="bi-pva-row'+(over?' bi-pva-over':'')+'">';
+    h+='<div style="width:10px;height:10px;border-radius:50%;background:'+col+';flex-shrink:0"></div>';
+    h+='<div style="flex:0 0 90px;font-weight:600;color:var(--text);font-size:14px">'+k+'</div>';
+    h+='<div style="flex:0 0 55px;text-align:right;color:var(--muted);font-family:JetBrains Mono,monospace;font-size:14px">'+Math.round(plan/1e4).toLocaleString()+'</div>';
+    h+='<div style="flex:1;position:relative"><div class="bi-bar-bg">';
+    h+='<div class="bi-bar-fill" style="width:'+basePct+'%;background:'+col+';border-radius:6px 0 0 6px"></div>';
+    if(over) h+='<div class="bi-bar-fill" style="width:'+overPct+'%;background:var(--red);border-radius:0 6px 6px 0;opacity:.85"></div>';
+    h+='</div>';
+    if(plan>0) h+='<div style="position:absolute;top:-1px;bottom:-1px;left:'+planPct+'%;width:2px;background:var(--text);opacity:.4;border-radius:1px" title="계획: '+Math.round(plan/1e4).toLocaleString()+'만"></div>';
+    h+='</div>';
+    h+='<div style="flex:0 0 55px;text-align:right;font-weight:700;font-family:JetBrains Mono,monospace;font-size:14px">'+Math.round(actual/1e4).toLocaleString()+'</div>';
+    h+='<div style="flex:0 0 60px;text-align:right;font-size:14px;font-weight:700;padding:1px 6px;border-radius:4px;color:'+(over?'#fff':'var(--green)')+';background:'+(over?'var(--red)':'transparent')+'">'+(diff>=0?'+':'')+pctLabel.toFixed(0)+'%</div></div>';
+  });
+  h+='<div style="border-top:2px solid var(--border);margin-top:4px;padding-top:6px;display:flex;justify-content:space-between;font-size:15px;font-weight:700"><span>합계</span><span style="color:var(--muted)">계획 '+biFmt(지출계P)+'</span><span style="color:'+(지출>지출계P?'var(--red)':'var(--green)')+'">실적 '+biFmt(지출)+' ('+(지출>지출계P?'+':'')+((지출-지출계P)/지출계P*100).toFixed(0)+'%)</span></div>';
+  h+='</div>';
+  // 월 계획 vs 실적
+  var moActInc=수입, moActSav=저축, moActExp=지출;
+  h+='<div class="bi-card"><div style="font-size:17px;font-weight:700;margin-bottom:4px">'+yr+'년 '+(mo+1)+'월 계획 vs 실적</div><div style="font-size:14px;color:var(--muted);margin-bottom:12px">월간 계획금액 대비 실제 달성</div>';
+  [{l:'수입',pa:수입계P,ac:moActInc,c:'var(--green)'},{l:'저축(저축성+여유)',pa:저축계P,ac:moActSav,c:'var(--accent)'},{l:'지출',pa:지출계P,ac:moActExp,c:'var(--yellow)'}].forEach(function(x){
+    var mx=Math.max(x.pa,x.ac)*1.15, isExp=x.l==='지출', good=isExp?x.ac<=x.pa:x.ac>=x.pa;
+    var diff=x.ac-x.pa, diffPct=x.pa?(diff/x.pa*100):0;
+    h+='<div style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:4px"><span style="font-weight:600">'+x.l+'</span><span style="font-size:14px;font-weight:600;color:'+(good?'var(--green)':'var(--red)')+'">'+(good?'✅':'⚠️')+' '+(diff>=0?'+':'')+diffPct.toFixed(0)+'% ('+biFmt(x.ac)+')</span></div>';
+    h+='<div style="position:relative;height:22px;background:var(--member-bg);border-radius:6px"><div style="position:absolute;height:100%;width:'+(mx?x.pa/mx*100:0)+'%;background:rgba(128,128,128,.1);border-radius:6px;border-right:2px dashed var(--muted)"></div><div style="position:absolute;height:100%;width:'+(mx?x.ac/mx*100:0)+'%;background:'+x.c+';border-radius:6px;opacity:.75"></div></div>';
+    h+='<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:2px"><span>계획 '+biFmt(x.pa)+'</span><span>달성률 '+biPct(x.ac,x.pa)+'</span></div></div>';
+  });
+  // 월별 지출 계획선 대비 실적 차트
+  h+='<div style="margin-top:12px;border-top:1px solid var(--border);padding-top:12px"><div style="font-size:15px;font-weight:700;margin-bottom:6px">월별 지출 계획선 대비 실적</div><div style="height:140px"><canvas id="bi-plan-bar-chart"></canvas></div></div>';
+  h+='</div></div>';
+
+  document.getElementById('bi-panel-overview').innerHTML = h;
+  // 도넛 차트
+  var biExtraIdx=0;
+  var items=Object.entries(data.순지출).map(function(e){var c=biCL[e[0]]; if(!c){c=biExtraCL[biExtraIdx%biExtraCL.length];biExtraIdx++;} return{k:e[0],v:e[1].months[mo]||0,c:c};}).filter(function(x){return x.v>0;}).sort(function(a,b){return b.v-a.v;});
+  var total=biSum(items.map(function(x){return x.v;}));
+  if(biCharts.donut)biCharts.donut.destroy();
+  biCharts.donut=new Chart(document.getElementById('bi-donut-chart'),{type:'doughnut',data:{labels:items.map(function(x){return x.k;}),datasets:[{data:items.map(function(x){return x.v;}),backgroundColor:items.map(function(x){return x.c;}),borderColor:_tc.cardBg,borderWidth:2,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'70%',plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:function(c){return ' '+c.label+': '+biFmt(c.parsed)+' ('+biPct(c.parsed,total)+')';}}}}}});
+  var leg='';items.slice(0,7).forEach(function(it){leg+='<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--border)"><span style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:'+it.c+';display:inline-block"></span>'+it.k+'</span><span style="font-weight:600;font-family:JetBrains Mono,monospace">'+biFmt(it.v)+' <span style="color:var(--muted);font-weight:400">('+biPct(it.v,total)+')</span></span></div>';});
+  document.getElementById('bi-donut-legend').innerHTML=leg;
+  // 월별 수입금액 추이 (상은/아영 스택)
+  if(biCharts.income)biCharts.income.destroy();
+  var yr=parseInt(data.year);
+  var se=budgetCache['상은_'+yr], ay=budgetCache['아영_'+yr];
+  var seInc=Array(data.mc).fill(0), ayInc=Array(data.mc).fill(0);
+  if(se&&se.items) Object.values(se.items).forEach(function(d){if(d.cat&&d.cat.includes('수입'))d.months.slice(0,data.mc).forEach(function(v,i){seInc[i]+=v;});});
+  if(ay&&ay.items) Object.values(ay.items).forEach(function(d){if(d.cat&&d.cat.includes('수입'))d.months.slice(0,data.mc).forEach(function(v,i){ayInc[i]+=v;});});
+  var incLabels=Array.from({length:data.mc},function(_,i){return(i+1)+'월';});
+  biCharts.income=new Chart(document.getElementById('bi-income-chart'),{type:'bar',data:{labels:incLabels,datasets:[
+    {label:'상은',data:seInc.map(function(v){return Math.round(v/1e4);}),backgroundColor:'rgba(99,102,241,.7)',borderRadius:3,stack:'s'},
+    {label:'아영',data:ayInc.map(function(v){return Math.round(v/1e4);}),backgroundColor:'rgba(167,139,250,.7)',borderRadius:3,stack:'s'}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{usePointStyle:true,pointStyle:'circle',boxWidth:6,font:{size:11}}},tooltip:{...tt,callbacks:{label:function(c){return ' '+c.dataset.label+': '+c.parsed.y.toLocaleString()+'만원';}}}},scales:{x:{stacked:true,grid:{color:gc}},y:{stacked:true,grid:{color:gc},ticks:{callback:function(v){return v+'만';}}}}}});
+  // 계획선 대비 실적 차트
+  if(biCharts.planBar) biCharts.planBar.destroy();
+  var mc=data.mc;
+  var barData=data.지출계.slice(0,mc).map(function(v){return Math.round(v/1e4);});
+  var planLine=Array(mc).fill(Math.round(지출계P/1e4));
+  var planVal=planLine[0];
+  var baseData=barData.map(function(v){return Math.min(v,planVal);});
+  var overData=barData.map(function(v){return v>planVal?v-planVal:0;});
+  biCharts.planBar=new Chart(document.getElementById('bi-plan-bar-chart'),{type:'bar',data:{labels:barData.map(function(_,i){return(i+1)+'월';}),datasets:[{label:'계획 이하',data:baseData,backgroundColor:'rgba(16,185,129,.65)',borderRadius:{topLeft:4,topRight:4},stack:'s'},{label:'계획 초과',data:overData,backgroundColor:'rgba(244,63,94,.8)',borderRadius:{topLeft:4,topRight:4},stack:'s'},{label:'계획선',data:planLine,type:'line',borderColor:'var(--text)',borderWidth:2,borderDash:[6,3],pointRadius:0,fill:false,order:-1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{usePointStyle:true,pointStyle:'circle',boxWidth:6,font:{size:9}}},tooltip:{...tt,callbacks:{label:function(c){if(c.datasetIndex===2)return ' 계획: '+c.parsed.y.toLocaleString()+'만';return ' '+c.dataset.label+': '+c.parsed.y.toLocaleString()+'만';}}}},scales:{x:{stacked:true,grid:{color:gc}},y:{stacked:true,grid:{color:gc},ticks:{callback:function(v){return v+'만';}}}}}});
+}
+
+function biKpiHTML(icon,label,value,sub,color) {
+  return '<div class="bi-kpi"><div class="bi-kpi-bar" style="background:'+color+'"></div><div class="bi-kpi-label">'+icon+' '+label+'</div><div class="bi-kpi-value" style="color:'+color+'">'+value+'</div><div class="bi-kpi-sub">'+sub+'</div></div>';
+}
+
+// ── 2. 연간 분석 (전년도 대비)
+function biRenderYoY(data, mo) {
+  var yr=parseInt(data.year), prevYr=yr-1;
+  var dPrev=biBuildData(prevYr);
+  if(!dPrev){
+    // 전년도 데이터 미로드 → 로드 시도
+    if(biAvailableYears.indexOf(prevYr)>=0){
+      document.getElementById('bi-panel-yoy').innerHTML='<div class="bi-card" style="text-align:center;padding:40px;color:var(--muted)">⏳ '+(prevYr)+'년 데이터 불러오는 중…</div>';
+      biLoadYear(prevYr, function(){ biRenderYoY(data, mo); });
+      return;
+    }
+    document.getElementById('bi-panel-yoy').innerHTML='<div class="bi-card" style="text-align:center;padding:40px;color:var(--muted)">'+(prevYr)+'년 가계부 데이터가 없습니다.<br><small>해당 연도의 가계부 시트가 존재하지 않습니다.</small></div>';
+    return;
+  }
+  var commonM=Math.min(data.mc,dPrev.mc);
+  var avg=function(arr,mc){return biSum(arr)/mc;};
+  var avgCurInc=avg(data.수입계.slice(0,data.mc),data.mc), avgPrevInc=avg(dPrev.수입계.slice(0,dPrev.mc),dPrev.mc);
+  // 저축 = 저축성 + 여유
+  var curSavArr=data.저축계.slice(0,data.mc).map(function(v,i){return v+data.여유[i];});
+  var prevSavArr=dPrev.저축계.slice(0,dPrev.mc).map(function(v,i){return v+dPrev.여유[i];});
+  var avgCurSav=avg(curSavArr,data.mc), avgPrevSav=avg(prevSavArr,dPrev.mc);
+  var avgCurExp=avg(data.지출계.slice(0,data.mc),data.mc), avgPrevExp=avg(dPrev.지출계.slice(0,dPrev.mc),dPrev.mc);
+
+  var h='<div class="bi-kpi-grid" style="grid-template-columns:repeat(3,1fr)">';
+  [{l:'월평균 수입',vP:avgPrevInc,vC:avgCurInc,c:'var(--green)',icon:'💵'},{l:'월평균 저축',vP:avgPrevSav,vC:avgCurSav,c:'var(--accent)',icon:'🏦'},{l:'월평균 지출',vP:avgPrevExp,vC:avgCurExp,c:'var(--yellow)',icon:'💳'}].forEach(function(x){
+    var d=x.vC-x.vP, dp=x.vP?(d/x.vP*100):0, isExp=x.l.includes('지출'), good=isExp?d<=0:d>=0;
+    h+='<div class="bi-kpi"><div class="bi-kpi-bar" style="background:'+x.c+'"></div>';
+    h+='<div class="bi-kpi-label">'+x.icon+' '+x.l+'</div>';
+    h+='<div style="display:flex;align-items:baseline;gap:6px;margin:4px 0"><span style="font-size:16px;color:var(--muted);font-family:JetBrains Mono,monospace;text-decoration:line-through">'+biFmt(x.vP)+'</span><span style="font-size:16px;color:var(--muted)">→</span><span style="font-size:21px;font-weight:800;color:'+x.c+';font-family:JetBrains Mono,monospace">'+biFmt(x.vC)+'</span></div>';
+    h+='<div style="font-size:14px;font-weight:600;color:'+(good?'var(--green)':'var(--red)')+'">'+(d>=0?'▲':'▼')+' '+Math.abs(dp).toFixed(0)+'% ('+(d>=0?'+':'')+biFmt(d)+')</div>';
+    h+='</div>';
+  });
+  h+='</div>';
+
+  // ── 핵심 인사이트 (KPI 아래 배치)
+  var incChg0=avgPrevInc?(avgCurInc-avgPrevInc)/avgPrevInc*100:0;
+  var expChg0=avgPrevExp?(avgCurExp-avgPrevExp)/avgPrevExp*100:0;
+  var savR25=biPctN(avgPrevSav,avgPrevInc), savR26=biPctN(avgCurSav,avgCurInc);
+  // 고정비 계산 (인사이트용)
+  var _fixCats=['주담대원금','주거/통신','연금보험','연금저축'];
+  var _fixCur=0,_fixPrev=0;
+  _fixCats.forEach(function(fc){
+    var cd=data.저축성[fc]||data.순지출[fc]; if(cd) _fixCur+=biSum(cd.months.slice(0,data.mc))/data.mc;
+    var pd=dPrev.저축성[fc]||dPrev.순지출[fc]; if(pd) _fixPrev+=biSum(pd.months.slice(0,dPrev.mc))/dPrev.mc;
+  });
+  var _fixRCur=avgCurInc?_fixCur/avgCurInc*100:0, _fixRPrev=avgPrevInc?_fixPrev/avgPrevInc*100:0;
+  // 여유자금률
+  var surR25=biPctN(avg(dPrev.여유.slice(0,dPrev.mc),dPrev.mc),avgPrevInc);
+  var surR26=biPctN(avg(data.여유.slice(0,data.mc),data.mc),avgCurInc);
+  // 최대 지출 항목
+  var _topExpCur=null,_topExpPrev=null,_topValCur=0,_topValPrev=0;
+  Object.entries(data.순지출).forEach(function(e){var v=biSum(e[1].months.slice(0,data.mc))/data.mc;if(v>_topValCur){_topValCur=v;_topExpCur=e[0];}});
+  Object.entries(dPrev.순지출).forEach(function(e){var v=biSum(e[1].months.slice(0,dPrev.mc))/dPrev.mc;if(v>_topValPrev){_topValPrev=v;_topExpPrev=e[0];}});
+  var insCards=[
+    {icon:incChg0>0?'📈':'📉',title:'수입 '+(incChg0>0?'+':'')+incChg0.toFixed(0)+'% 변화',body:'월평균 수입 '+biFmt(avgPrevInc)+' → '+biFmt(avgCurInc),color:incChg0>0?'var(--green)':'var(--red)'},
+    {icon:expChg0>0?'⚠️':'✅',title:'지출 '+(expChg0>0?'+':'')+expChg0.toFixed(0)+'% 변화',body:'월평균 지출 '+biFmt(avgPrevExp)+' → '+biFmt(avgCurExp),color:expChg0>0?'var(--red)':'var(--green)'},
+    {icon:savR26>savR25?'💪':'📉',title:'저축률 '+savR25.toFixed(0)+'% → '+savR26.toFixed(0)+'%',body:'수입 대비 저축 비율이 '+(savR26>savR25?'개선':'하락'),color:savR26>savR25?'var(--green)':'var(--yellow)'},
+    {icon:_fixRCur<=_fixRPrev?'✅':'⚠️',title:'고정비 '+_fixRPrev.toFixed(0)+'% → '+_fixRCur.toFixed(0)+'%',body:'고정비 부담이 '+(_fixRCur<=_fixRPrev?'감소하여 재무 유연성 개선':'증가하여 유연성 저하'),color:_fixRCur<=_fixRPrev?'var(--green)':'var(--red)'},
+    {icon:surR26>surR25?'💰':'📉',title:'여유자금률 '+surR25.toFixed(0)+'% → '+surR26.toFixed(0)+'%',body:'자산 축적 여력이 '+(surR26>surR25?'증가하여 자산형성 가속':'감소 — 지출 점검 필요'),color:surR26>surR25?'var(--green)':'var(--yellow)'},
+    {icon:'🏷️',title:'최대지출 변화',body:(_topExpPrev||'-')+' → '+(_topExpCur||'-')+((_topExpCur!==_topExpPrev)?' (항목 변동)':' (동일)'),color:_topExpCur!==_topExpPrev?'var(--yellow)':'var(--accent)'}
+  ];
+  h+='<div class="bi-card"><div style="font-size:17px;font-weight:700;margin-bottom:10px">💡 연도 비교 핵심 인사이트</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">';
+  insCards.forEach(function(x){
+    h+='<div style="background:var(--member-bg);border-radius:10px;padding:12px;border-left:3px solid '+x.color+'"><div style="font-size:15px;font-weight:700;margin-bottom:3px">'+x.icon+' '+x.title+'</div><div style="font-size:14px;color:var(--muted);line-height:1.5">'+x.body+'</div></div>';
+  });
+  h+='</div></div>';
+
+  // ── 섹션1: 동기 비교 + 카테고리 YoY (2컬럼)
+  var curSavFull=data.저축계.map(function(v,i){return v+data.여유[i];});
+  var prevSavFull=dPrev.저축계.map(function(v,i){return v+dPrev.여유[i];});
+  // 비교 데이터 준비
+  // 누적: 전년도도 commonM(올해 데이터 월수)까지만, 평균: 각자 전체 기간
+  var _bldGrp=function(lbl,col,curIt,prevIt,curTot,prevTot,cMc,pMc,cm){
+    var cc=biSum(curTot.slice(0,cMc)), cp=biSum(prevTot.slice(0,cm));
+    var items=[],allK=new Set([].concat(Object.keys(curIt),Object.keys(prevIt)));
+    allK.forEach(function(k){var ci=curIt[k],pi=prevIt[k];
+      var vc=ci?biSum(ci.months.slice(0,cMc)):0;
+      var vpCum=pi?biSum(pi.months.slice(0,cm)):0;
+      var vpAvg=pi?biSum(pi.months.slice(0,pMc))/pMc:0;
+      if(vc||vpCum) items.push({name:k,cumCur:vc,cumPrev:vpCum,avgCur:vc/cMc,avgPrev:vpAvg});
+    });
+    items.sort(function(a,b){return b.cumCur-a.cumCur;});
+    return {label:lbl,color:col,cumCur:cc,cumPrev:cp,avgCur:cc/cMc,avgPrev:biSum(prevTot.slice(0,pMc))/pMc,items:items};
+  };
+  var savGrp=_bldGrp('저축(저축성+여유)','var(--accent)',data.저축성,dPrev.저축성,curSavFull,prevSavFull,data.mc,dPrev.mc,commonM);
+  var curFreeSum=biSum(data.여유.slice(0,data.mc)),prevFreeSum=biSum(dPrev.여유.slice(0,commonM));
+  var prevFreeAvg=biSum(dPrev.여유.slice(0,dPrev.mc))/dPrev.mc;
+  savGrp.items.push({name:'여유자금',cumCur:curFreeSum,cumPrev:prevFreeSum,avgCur:curFreeSum/data.mc,avgPrev:prevFreeAvg});
+  _yoyCompData={yr:yr,prevYr:prevYr,commonM:commonM,
+    groups:[
+      _bldGrp('수입','var(--green)',data.수입,dPrev.수입,data.수입계,dPrev.수입계,data.mc,dPrev.mc,commonM),
+      savGrp,
+      _bldGrp('지출','var(--yellow)',data.순지출,dPrev.순지출,data.지출계,dPrev.지출계,data.mc,dPrev.mc,commonM)
+    ]};
+  h+='<div class="bi-grid-2">';
+  h+='<div class="bi-card" id="bi-yoy-compare-card" style="min-height:200px"></div>';
+  // 카테고리 YoY
+  var allCats=new Set([...Object.keys(dPrev.순지출),...Object.keys(data.순지출)]);
+  var catComp=[];
+  allCats.forEach(function(cat){
+    var avg25=dPrev.순지출[cat]?biSum(dPrev.순지출[cat].months.slice(0,commonM))/commonM:0;
+    var avg26=data.순지출[cat]?biSum(data.순지출[cat].months.slice(0,commonM))/commonM:0;
+    if(avg25>0||avg26>0) catComp.push({cat:cat,avg25:avg25,avg26:avg26,diff:avg26-avg25,pct:avg25?(avg26-avg25)/avg25*100:0});
+  });
+  catComp.sort(function(a,b){return b.diff-a.diff;});
+  var catMax=Math.max.apply(null,catComp.map(function(c){return Math.max(c.avg25,c.avg26);}));
+  h+='<div class="bi-card"><div style="font-size:17px;font-weight:700;margin-bottom:4px">지출 카테고리별 YoY 변화</div><div style="font-size:14px;color:var(--muted);margin-bottom:10px">1~'+commonM+'월 월평균 기준</div>';
+  catComp.forEach(function(x){
+    var up=x.diff>0, col=biCL[x.cat]||'#94a3b8';
+    h+='<div style="padding:6px 0;border-bottom:1px solid var(--border)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px"><span style="font-size:15px;font-weight:600;display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:'+col+'"></span>'+x.cat+'</span><span style="font-size:14px;font-weight:600;color:'+(up?'var(--red)':'var(--green)')+'">'+(up?'▲':'▼')+' '+Math.abs(x.pct).toFixed(0)+'%</span></div>';
+    h+='<div style="display:flex;gap:4px;align-items:center"><div style="flex:1"><div style="height:6px;background:'+col+';opacity:.3;border-radius:3px;width:'+(catMax?x.avg25/catMax*100:0)+'%"></div><div style="height:6px;background:'+col+';border-radius:3px;width:'+(catMax?x.avg26/catMax*100:0)+'%;margin-top:2px"></div></div><div style="font-size:13px;text-align:right;width:80px"><div style="color:var(--muted)">'+biFmt(x.avg25)+'</div><div style="font-weight:600">'+biFmt(x.avg26)+'</div></div></div></div>';
+  });
+  h+='</div></div>';
+
+  // ── 월별 수입/저축/지출 실적 추이 차트 (누적 계획 위에 배치)
+  h+='<div class="bi-card"><div style="font-size:17px;font-weight:700;margin-bottom:4px">'+yr+'년 월별 수입·저축·지출 추이</div><div style="font-size:14px;color:var(--muted);margin-bottom:10px">실적 금액 기준 (저축 = 저축성 + 여유)</div>';
+  h+='<div style="height:240px"><canvas id="bi-yoy-trend-chart"></canvas></div></div>';
+
+  // ── 섹션2: 누적 계획 vs 실적
+  var 수입계P=biSum(Object.values(data.수입).map(function(x){return x.plan;}));
+  var 저축성P=biSum(Object.values(data.저축성).map(function(x){return x.plan;}));
+  var 지출계P=biSum(Object.values(data.순지출).map(function(x){return x.plan;}));
+  var 저축계P=수입계P-지출계P;
+  var ytdActInc=biSum(data.수입계.slice(0,data.mc)), ytdPlanInc=수입계P*data.mc;
+  var ytdActSav=biSum(curSavFull.slice(0,data.mc)), ytdPlanSav=저축계P*data.mc;
+  var ytdActExp=biSum(data.지출계.slice(0,data.mc)), ytdPlanExp=지출계P*data.mc;
+  h+='<div class="bi-card"><div style="font-size:17px;font-weight:700;margin-bottom:4px">'+yr+'년 누적 계획 vs 실적 ('+data.mc+'개월)</div><div style="font-size:14px;color:var(--muted);margin-bottom:12px">월간 계획금액 × '+data.mc+'개월 누적 기준</div>';
+  [{l:'수입',pa:ytdPlanInc,ac:ytdActInc,c:'var(--green)'},{l:'저축(저축성+여유)',pa:ytdPlanSav,ac:ytdActSav,c:'var(--accent)'},{l:'지출',pa:ytdPlanExp,ac:ytdActExp,c:'var(--yellow)'}].forEach(function(x){
+    var mx=Math.max(x.pa,x.ac)*1.15, isExp=x.l==='지출', good=isExp?x.ac<=x.pa:x.ac>=x.pa;
+    var diff=x.ac-x.pa, diffPct=x.pa?(diff/x.pa*100):0;
+    h+='<div style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;font-size:15px;margin-bottom:4px"><span style="font-weight:600">'+x.l+'</span><span style="font-size:14px;font-weight:600;color:'+(good?'var(--green)':'var(--red)')+'">'+(good?'✅':'⚠️')+' '+(diff>=0?'+':'')+diffPct.toFixed(0)+'% ('+biFmt(x.ac)+')</span></div>';
+    h+='<div style="position:relative;height:22px;background:var(--member-bg);border-radius:6px"><div style="position:absolute;height:100%;width:'+(mx?x.pa/mx*100:0)+'%;background:rgba(128,128,128,.1);border-radius:6px;border-right:2px dashed var(--muted)"></div><div style="position:absolute;height:100%;width:'+(mx?x.ac/mx*100:0)+'%;background:'+x.c+';border-radius:6px;opacity:.75"></div></div>';
+    h+='<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:2px"><span>계획 '+biFmt(x.pa)+'</span><span>달성률 '+biPct(x.ac,x.pa)+'</span></div></div>';
+  });
+  h+='</div>';
+
+  // ── 섹션3: 재무 건전성 지표
+  var incChg=avgPrevInc?(avgCurInc-avgPrevInc)/avgPrevInc*100:0;
+  var expChg=avgPrevExp?(avgCurExp-avgPrevExp)/avgPrevExp*100:0;
+  var savRate25=biPctN(avgPrevSav,avgPrevInc), savRate26=biPctN(avgCurSav,avgCurInc);
+  var expRate25=biPctN(avgPrevExp,avgPrevInc), expRate26=biPctN(avgCurExp,avgCurInc);
+  // 고정비(주담대+주거통신+연금보험+연금저축) 비율 계산
+  var fixedCats=['주담대원금','주거/통신','연금보험','연금저축'];
+  var curFixed=0,prevFixed=0;
+  fixedCats.forEach(function(fc){
+    var cd=data.저축성[fc]||data.순지출[fc]; if(cd) curFixed+=biSum(cd.months.slice(0,data.mc))/data.mc;
+    var pd=dPrev.저축성[fc]||dPrev.순지출[fc]; if(pd) prevFixed+=biSum(pd.months.slice(0,dPrev.mc))/dPrev.mc;
+  });
+  var fixRateCur=avgCurInc?curFixed/avgCurInc*100:0, fixRatePrev=avgPrevInc?prevFixed/avgPrevInc*100:0;
+  // 변동비 = 지출 - 고정지출 중 순지출에 해당하는 것
+  var curVarExp=avgCurExp-Object.keys(data.순지출).filter(function(k){return fixedCats.indexOf(k)>=0;}).reduce(function(s,k){return s+biSum(data.순지출[k].months.slice(0,data.mc))/data.mc;},0);
+  var prevVarExp=avgPrevExp-Object.keys(dPrev.순지출).filter(function(k){return fixedCats.indexOf(k)>=0;}).reduce(function(s,k){return s+biSum(dPrev.순지출[k].months.slice(0,dPrev.mc))/dPrev.mc;},0);
+  // 저축 여력 = 수입 - 고정비
+  var savCapCur=avgCurInc-curFixed, savCapPrev=avgPrevInc-prevFixed;
+
+  // 여유자금률 (재무 건전성용)
+  var surpRate25=avgPrevInc?avg(dPrev.여유.slice(0,dPrev.mc),dPrev.mc)/avgPrevInc*100:0;
+  var surpRate26=avgCurInc?avg(data.여유.slice(0,data.mc),data.mc)/avgCurInc*100:0;
+  // 주거비 비율
+  var housCur=0,housPrev=0;
+  ['주담대원금','주거/통신'].forEach(function(k){
+    var cd=data.저축성[k]||data.순지출[k]; if(cd) housCur+=biSum(cd.months.slice(0,data.mc))/data.mc;
+    var pd=dPrev.저축성[k]||dPrev.순지출[k]; if(pd) housPrev+=biSum(pd.months.slice(0,dPrev.mc))/dPrev.mc;
+  });
+  var housRCur=avgCurInc?housCur/avgCurInc*100:0, housRPrev=avgPrevInc?housPrev/avgPrevInc*100:0;
+  // 저축 전환율 = 실제 저축(저축성+여유) / 저축 여력(수입-고정비)
+  var savConvCur=savCapCur>0?avgCurSav/savCapCur*100:0, savConvPrev=savCapPrev>0?avgPrevSav/savCapPrev*100:0;
+  // 수입 안정성 (변동계수 = 표준편차/평균)
+  var incArr=data.수입계.slice(0,data.mc);
+  var incMean=avgCurInc, incStd=Math.sqrt(incArr.reduce(function(s,v){return s+Math.pow(v-incMean,2);},0)/data.mc);
+  var incCV=incMean?incStd/incMean*100:0;
+
+  h+='<div class="bi-card"><div style="font-size:17px;font-weight:700;margin-bottom:12px">📊 재무 건전성 지표</div>';
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">';
+  // 지표 카드들
+  var metrics=[
+    {icon:'🏦',title:'저축률',prev:savRate25,cur:savRate26,unit:'%',good:savRate26>savRate25,desc:'수입 대비 저축(저축성+여유) 비율'},
+    {icon:'💳',title:'지출률',prev:expRate25,cur:expRate26,unit:'%',good:expRate26<=expRate25,desc:'수입 대비 순지출 비율'},
+    {icon:'🔒',title:'고정비 비율',prev:fixRatePrev,cur:fixRateCur,unit:'%',good:fixRateCur<=fixRatePrev,desc:'주담대·통신·연금 등'},
+    {icon:'💪',title:'저축 여력',prev:savCapPrev,cur:savCapCur,unit:'원',good:savCapCur>=savCapPrev,desc:'수입 - 고정비 (월평균)'},
+    {icon:'🏠',title:'주거비 비율',prev:housRPrev,cur:housRCur,unit:'%',good:housRCur<=30,desc:'주담대+주거/통신 (30% 이내 권장)'},
+    {icon:'🔄',title:'저축 전환율',prev:savConvPrev,cur:savConvCur,unit:'%',good:savConvCur>=savConvPrev,desc:'저축여력 중 실제 저축 비율'}
+  ];
+  metrics.forEach(function(m){
+    var chg=m.prev?(m.cur-m.prev)/m.prev*100:0;
+    h+='<div style="background:var(--member-bg);border-radius:10px;padding:12px;border-left:3px solid '+(m.good?'var(--green)':'var(--red)')+'">';
+    h+='<div style="font-size:14px;color:var(--muted);margin-bottom:4px">'+m.icon+' '+m.title+'</div>';
+    if(m.unit==='%'){
+      h+='<div style="display:flex;align-items:baseline;gap:6px"><span style="font-size:15px;color:var(--muted);text-decoration:line-through">'+m.prev.toFixed(1)+'%</span><span style="font-size:16px;color:var(--muted)">→</span><span style="font-size:20px;font-weight:800;font-family:JetBrains Mono,monospace">'+m.cur.toFixed(1)+'%</span></div>';
+    } else {
+      h+='<div style="display:flex;align-items:baseline;gap:6px"><span style="font-size:15px;color:var(--muted);text-decoration:line-through">'+biFmt(m.prev)+'</span><span style="font-size:16px;color:var(--muted)">→</span><span style="font-size:20px;font-weight:800;font-family:JetBrains Mono,monospace">'+biFmt(m.cur)+'</span></div>';
+    }
+    h+='<div style="font-size:13px;color:var(--muted);margin-top:2px">'+m.desc+'</div></div>';
+  });
+  h+='</div>';
+  // 요약 진단
+  var diag=[];
+  // ① 저축률 진단
+  if(savRate26>=50) diag.push({t:'good',s:'저축률 '+savRate26.toFixed(0)+'%로 매우 우수합니다.'});
+  else if(savRate26>=30) diag.push({t:'ok',s:'저축률 '+savRate26.toFixed(0)+'%로 양호합니다.'});
+  else diag.push({t:'warn',s:'저축률 '+savRate26.toFixed(0)+'%로 개선이 필요합니다.'});
+  // ② 저축률 전년 대비 변화
+  if(savRate26>savRate25+5) diag.push({t:'good',s:'저축률이 전년 대비 '+(savRate26-savRate25).toFixed(0)+'%p 개선되었습니다.'});
+  else if(savRate26<savRate25-5) diag.push({t:'warn',s:'저축률이 전년 대비 '+(savRate25-savRate26).toFixed(0)+'%p 하락했습니다.'});
+  // ③ 지출률 증가 경고
+  if(expRate26>expRate25&&expChg>10) diag.push({t:'warn',s:'지출률이 전년 대비 '+Math.abs(expChg).toFixed(0)+'% 증가했습니다.'});
+  else if(expRate26<expRate25&&Math.abs(expChg)>10) diag.push({t:'good',s:'지출률이 전년 대비 '+Math.abs(expChg).toFixed(0)+'% 감소 — 절약 성과가 보입니다.'});
+  // ④ 고정비 진단
+  if(fixRateCur>50) diag.push({t:'warn',s:'고정비가 수입의 '+fixRateCur.toFixed(0)+'%로 부담이 큽니다.'});
+  else if(fixRateCur<30) diag.push({t:'good',s:'고정비 비율 '+fixRateCur.toFixed(0)+'%로 재무 유연성이 좋습니다.'});
+  // ⑤ 변동 지출 증가
+  if(prevVarExp>0&&curVarExp>prevVarExp*1.2) diag.push({t:'warn',s:'변동 지출이 전년 대비 '+((curVarExp/prevVarExp-1)*100).toFixed(0)+'% 증가했습니다.'});
+  else if(prevVarExp>0&&curVarExp<prevVarExp*0.85) diag.push({t:'good',s:'변동 지출이 전년 대비 '+((1-curVarExp/prevVarExp)*100).toFixed(0)+'% 절감되었습니다.'});
+  // ⑥ 주거비 30% 룰
+  if(housRCur>30) diag.push({t:'warn',s:'주거비가 수입의 '+housRCur.toFixed(0)+'% — 30% 기준 초과입니다.'});
+  else if(housRCur>0) diag.push({t:'good',s:'주거비 비율 '+housRCur.toFixed(0)+'%로 적정 수준입니다.'});
+  // ⑦ 저축 전환율
+  if(savConvCur>=80) diag.push({t:'good',s:'저축 전환율 '+savConvCur.toFixed(0)+'% — 저축 여력을 효율적으로 활용 중입니다.'});
+  else if(savConvCur<50&&savCapCur>0) diag.push({t:'warn',s:'저축 전환율 '+savConvCur.toFixed(0)+'% — 저축 여력 대비 실제 저축이 낮습니다.'});
+  // ⑧ 수입 안정성
+  if(data.mc>=3){
+    if(incCV<10) diag.push({t:'good',s:'수입 변동계수 '+incCV.toFixed(1)+'% — 매우 안정적입니다.'});
+    else if(incCV>25) diag.push({t:'warn',s:'수입 변동계수 '+incCV.toFixed(1)+'% — 수입 변동이 큽니다.'});
+  }
+  // ⑨ 여유자금률 진단
+  if(surpRate26>15) diag.push({t:'good',s:'여유자금률 '+surpRate26.toFixed(0)+'% — 자산 축적 속도가 빠릅니다.'});
+  else if(surpRate26<0) diag.push({t:'warn',s:'여유자금률 적자 — 지출 구조 재점검이 필요합니다.'});
+  // ⑩ 종합 재무 등급
+  var scoreSum=0, scoreCnt=0;
+  if(savRate26>=50)scoreSum+=3;else if(savRate26>=30)scoreSum+=2;else scoreSum+=1; scoreCnt++;
+  if(fixRateCur<30)scoreSum+=3;else if(fixRateCur<50)scoreSum+=2;else scoreSum+=1; scoreCnt++;
+  if(expRate26<30)scoreSum+=3;else if(expRate26<50)scoreSum+=2;else scoreSum+=1; scoreCnt++;
+  if(housRCur<=30)scoreSum+=3;else scoreSum+=1; scoreCnt++;
+  var avgScore=scoreCnt?scoreSum/scoreCnt:0;
+  var grade=avgScore>=2.7?'A':avgScore>=2.0?'B':avgScore>=1.5?'C':'D';
+  var gradeLabel={A:'매우 건전',B:'양호',C:'보통',D:'개선 필요'};
+  var gradeColor={A:'var(--green)',B:'var(--accent)',C:'var(--yellow)',D:'var(--red)'};
+  diag.push({t:grade==='A'||grade==='B'?'good':grade==='C'?'ok':'warn',s:'종합 재무 등급: '+grade+' ('+gradeLabel[grade]+') — 저축·고정비·지출·주거비 기반 평가',color:gradeColor[grade]});
+
+  h+='<div style="margin-top:8px">';
+  diag.forEach(function(d){
+    var ico=d.t==='good'?'✅':d.t==='ok'?'💡':'⚠️';
+    var col=d.color||(d.t==='good'?'var(--green)':d.t==='ok'?'var(--accent)':'var(--yellow)');
+    h+='<div style="display:flex;align-items:center;gap:6px;padding:5px 0;font-size:15px"><span>'+ico+'</span><span style="color:'+col+';font-weight:600">'+d.s+'</span></div>';
+  });
+  h+='</div></div>';
+
+
+  // ── 섹션: 상은·아영 개인별 연간 분석표
+  (function(){
+    var _se=budgetCache['상은_'+yr], _ay=budgetCache['아영_'+yr];
+    function _calcP(pd,mc){
+      if(!pd||!pd.items) return {inc:0,savJ:0,yuu:0,sav:0,exp:0};
+      var inc=0,savJ=0,exp=0;
+      Object.values(pd.items).forEach(function(it){
+        var tot=biSum(it.months.slice(0,mc));
+        if(it.cat&&it.cat.includes('수입')) inc+=tot;
+        else if(it.cat&&it.cat.includes('저축')) savJ+=tot;
+        else exp+=tot;
+      });
+      var yuu=inc-savJ-exp;
+      return {inc:inc,savJ:savJ,yuu:yuu,sav:savJ+yuu,exp:exp};
+    }
+    var seT=_calcP(_se,data.mc), ayT=_calcP(_ay,data.mc);
+    var totT={inc:seT.inc+ayT.inc,savJ:seT.savJ+ayT.savJ,yuu:seT.yuu+ayT.yuu,sav:seT.sav+ayT.sav,exp:seT.exp+ayT.exp};
+    var rows=[
+      {lbl:'💙 상은',t:seT,bold:false},
+      {lbl:'💜 아영',t:ayT,bold:false},
+      {lbl:'✅ 합계',t:totT,bold:true}
+    ];
+    h+='<div class="bi-card">';
+    h+='<div style="font-size:17px;font-weight:700;margin-bottom:4px">👤 상은 · 아영 개인별 연간 분석</div>';
+    h+='<div style="font-size:14px;color:var(--muted);margin-bottom:12px">'+yr+'년 1~'+data.mc+'월 누적 합계 기준</div>';
+    h+='<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:14px">';
+    h+='<thead><tr style="background:var(--member-bg);border-bottom:2px solid var(--border)">';
+    h+='<th style="padding:10px;text-align:left;color:var(--muted);font-size:13px;font-weight:600">구분</th>';
+    h+='<th style="padding:10px;text-align:right;color:var(--green);font-size:13px;font-weight:600">💵 수입</th>';
+    h+='<th style="padding:10px;text-align:right;color:var(--accent);font-size:13px;font-weight:600">🏦 저축(저축성+여유)</th>';
+    h+='<th style="padding:10px;text-align:right;color:var(--yellow);font-size:13px;font-weight:600">💳 지출</th>';
+    h+='<th style="padding:10px;text-align:right;color:var(--muted);font-size:13px;font-weight:600">저축률</th>';
+    h+='<th style="padding:10px;text-align:right;color:var(--muted);font-size:13px;font-weight:600">지출률</th>';
+    h+='</tr></thead><tbody>';
+    rows.forEach(function(row){
+      var t=row.t;
+      var sr=t.inc?biPctN(t.sav,t.inc):0;
+      var er=t.inc?biPctN(t.exp,t.inc):0;
+      var ts=row.bold?'border-top:2px solid var(--border);background:var(--member-bg)':'';
+      var fw=row.bold?'font-weight:700':'';
+      h+='<tr style="border-bottom:1px solid var(--border);'+ts+'">';
+      h+='<td style="padding:10px;font-size:15px;font-weight:600">'+row.lbl+'</td>';
+      h+='<td style="padding:10px;text-align:right;font-family:JetBrains Mono,monospace;'+fw+';color:var(--green)">'+biFmt(t.inc)+'</td>';
+      h+='<td style="padding:10px;text-align:right;font-family:JetBrains Mono,monospace;'+fw+';color:var(--accent)">'+biFmt(t.sav)+'</td>';
+      h+='<td style="padding:10px;text-align:right;font-family:JetBrains Mono,monospace;'+fw+';color:var(--yellow)">'+biFmt(t.exp)+'</td>';
+      h+='<td style="padding:10px;text-align:right;'+fw+';color:'+(sr>=50?'var(--green)':sr>=30?'var(--accent)':'var(--red)')+'">'+sr.toFixed(1)+'%</td>';
+      h+='<td style="padding:10px;text-align:right;'+fw+';color:'+(er<=30?'var(--green)':er<=50?'var(--yellow)':'var(--red)')+'">'+er.toFixed(1)+'%</td>';
+      h+='</tr>';
+    });
+    h+='</tbody></table></div>';
+    // 저축 분해 카드 (저축성 vs 여유자금)
+    h+='<div style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">';
+    rows.forEach(function(row){
+      var t=row.t;
+      h+='<div style="background:var(--member-bg);border-radius:8px;padding:10px">';
+      h+='<div style="font-size:14px;font-weight:700;margin-bottom:8px">'+row.lbl+' 저축 분해</div>';
+      h+='<div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border)">';
+      h+='<span style="color:var(--muted)">저축성</span><span style="font-family:JetBrains Mono,monospace">'+biFmt(t.savJ)+'</span></div>';
+      h+='<div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border)">';
+      h+='<span style="color:var(--muted)">여유자금</span><span style="font-family:JetBrains Mono,monospace">'+biFmt(t.yuu)+'</span></div>';
+      h+='<div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;padding:6px 0 2px">';
+      h+='<span>저축 합계</span><span style="font-family:JetBrains Mono,monospace;color:var(--accent)">'+biFmt(t.sav)+'</span></div>';
+      // 저축성/여유 비율 바
+      if(t.sav>0){
+        var savJPct=t.savJ/t.sav*100, yuuPct=t.yuu/t.sav*100;
+        h+='<div style="display:flex;border-radius:4px;overflow:hidden;height:8px;margin-top:4px">';
+        h+='<div style="width:'+savJPct+'%;background:var(--accent);opacity:.7" title="저축성 '+savJPct.toFixed(0)+'%"></div>';
+        h+='<div style="width:'+yuuPct+'%;background:var(--green);opacity:.7" title="여유 '+yuuPct.toFixed(0)+'%"></div>';
+        h+='</div>';
+        h+='<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:3px">';
+        h+='<span>저축성 '+savJPct.toFixed(0)+'%</span><span>여유 '+(yuuPct>0?yuuPct.toFixed(0):'0')+'%</span></div>';
+      }
+      h+='</div>';
+    });
+    h+='</div></div>';
+  })();
+
+  document.getElementById('bi-panel-yoy').innerHTML=h;
+  _renderYoyCompare();
+
+  // 추이 차트 렌더링
+  if(biCharts.yoyTrend) biCharts.yoyTrend.destroy();
+  var trendMc=data.mc;
+  var trendLabels=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  var trendInc=Array(12).fill(null); var trendSav=Array(12).fill(null); var trendExp=Array(12).fill(null);
+  for(var ti=0;ti<trendMc;ti++){
+    trendInc[ti]=Math.round(data.수입계[ti]/1e4);
+    trendSav[ti]=Math.round(curSavFull[ti]/1e4);
+    trendExp[ti]=Math.round(data.지출계[ti]/1e4);
+  }
+  biCharts.yoyTrend=new Chart(document.getElementById('bi-yoy-trend-chart'),{type:'line',data:{labels:trendLabels,datasets:[
+    {label:'수입',data:trendInc,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.08)',fill:true,tension:.3,pointRadius:2.5,pointBackgroundColor:'#3b82f6',borderWidth:2,spanGaps:false},
+    {label:'저축',data:trendSav,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.08)',fill:true,tension:.3,pointRadius:2.5,pointBackgroundColor:'#10b981',borderWidth:2,spanGaps:false},
+    {label:'지출',data:trendExp,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.08)',fill:true,tension:.3,pointRadius:2.5,pointBackgroundColor:'#ef4444',borderWidth:2,spanGaps:false}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:true,position:'bottom',labels:{usePointStyle:true,pointStyle:'circle',boxWidth:6,font:{size:13}}},tooltip:{...tt,callbacks:{label:function(c){return c.parsed.y!=null?' '+c.dataset.label+': '+c.parsed.y.toLocaleString()+'만원':'';}}}},scales:{x:{grid:{color:gc},min:0,max:11},y:{grid:{color:gc},ticks:{callback:function(v){return v.toLocaleString()+'만';},font:{size:12}}}}}});
+}
+
+// ── 동기 비교 동적 렌더링
+function _renderYoyCompare(){
+  var d=_yoyCompData; if(!d) return;
+  var mode=_yoyMode;
+  var h='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">';
+  h+='<div><div style="font-size:17px;font-weight:700">동기 비교 (1~'+d.commonM+'월)</div>';
+  var subDesc=mode==='cum'?d.prevYr+'년 1~'+d.commonM+'월 누적 vs '+d.yr+'년 1~'+d.commonM+'월 누적':d.prevYr+'년 월평균 vs '+d.yr+'년 월평균';
+  h+='<div style="font-size:14px;color:var(--muted)">'+subDesc+'</div></div>';
+  h+='<div style="display:flex;gap:4px">';
+  h+='<button class="rbtn'+(mode==='cum'?' active':'')+'" onclick="_yoyMode=\'cum\';_renderYoyCompare()" style="padding:3px 10px;font-size:13px">누적금액</button>';
+  h+='<button class="rbtn'+(mode==='avg'?' active':'')+'" onclick="_yoyMode=\'avg\';_renderYoyCompare()" style="padding:3px 10px;font-size:13px">평균금액</button>';
+  h+='</div></div>';
+
+  d.groups.forEach(function(g,gi){
+    var vP=mode==='cum'?g.cumPrev:g.avgPrev, vC=mode==='cum'?g.cumCur:g.avgCur;
+    var mx=Math.max(Math.abs(vP),Math.abs(vC),1)*1.2;
+    var diff=vC-vP, pctChg=vP?(diff/vP*100):0;
+    var isExp=g.label==='지출', good=isExp?diff<=0:diff>=0;
+    // 그룹 헤더 (클릭하면 항목 펼치기)
+    h+='<div style="margin-bottom:8px">';
+    h+='<div style="cursor:pointer;padding:6px 0" onclick="var el=document.getElementById(\'yoy-items-'+gi+'\');var a=this.querySelector(\'.ya\');if(el.style.display===\'none\'){el.style.display=\'block\';a.textContent=\'▼\';}else{el.style.display=\'none\';a.textContent=\'▶\';}">';
+    h+='<div style="display:flex;justify-content:space-between;font-size:15px;font-weight:600;margin-bottom:4px"><span><span class="ya" style="font-size:11px;color:var(--muted);margin-right:4px">▶</span>'+g.label+'</span><span style="color:'+(good?'var(--green)':'var(--red)')+'">'+(pctChg>=0?'+':'')+pctChg.toFixed(0)+'%</span></div>';
+    h+='<div style="display:flex;flex-direction:column;gap:3px">';
+    h+='<div style="display:flex;align-items:center;gap:6px"><div style="height:10px;width:'+(mx?Math.abs(vP)/mx*100:0)+'%;background:'+g.color+';opacity:.35;border-radius:4px;min-width:2px"></div><span style="font-size:14px;color:var(--muted);white-space:nowrap">'+biFmt(vP)+'</span></div>';
+    h+='<div style="display:flex;align-items:center;gap:6px"><div style="height:10px;width:'+(mx?Math.abs(vC)/mx*100:0)+'%;background:'+g.color+';border-radius:4px;min-width:2px"></div><span style="font-size:14px;font-weight:700;white-space:nowrap">'+biFmt(vC)+'</span></div>';
+    h+='</div></div>';
+    // 항목별 상세 (접힘 상태)
+    h+='<div id="yoy-items-'+gi+'" style="display:none;padding-left:14px;border-left:2px solid '+g.color+'">';
+    g.items.forEach(function(it){
+      var ivP=mode==='cum'?it.cumPrev:it.avgPrev, ivC=mode==='cum'?it.cumCur:it.avgCur;
+      var imx=Math.max(Math.abs(ivP),Math.abs(ivC),1)*1.2;
+      var idiff=ivC-ivP, ipct=ivP?(idiff/ivP*100):0;
+      var igood=isExp?idiff<=0:idiff>=0;
+      h+='<div style="margin-bottom:5px"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:2px"><span style="color:var(--text)">'+it.name+'</span><span style="font-weight:600;color:'+(igood?'var(--green)':'var(--red)')+'">'+(ipct>=0?'+':'')+ipct.toFixed(0)+'%</span></div>';
+      h+='<div style="display:flex;flex-direction:column;gap:2px">';
+      h+='<div style="display:flex;align-items:center;gap:4px"><div style="height:5px;width:'+(imx?Math.abs(ivP)/imx*100:0)+'%;background:'+g.color+';opacity:.3;border-radius:3px;min-width:1px"></div><span style="font-size:12px;color:var(--muted)">'+biFmt(ivP)+'</span></div>';
+      h+='<div style="display:flex;align-items:center;gap:4px"><div style="height:5px;width:'+(imx?Math.abs(ivC)/imx*100:0)+'%;background:'+g.color+';border-radius:3px;min-width:1px"></div><span style="font-size:12px;font-weight:600">'+biFmt(ivC)+'</span></div>';
+      h+='</div></div>';
+    });
+    h+='</div></div>';
+  });
+  document.getElementById('bi-yoy-compare-card').innerHTML=h;
+}
+
+// ── 3. 상세 내역
+function biRenderTable(data, mo) {
+  var yr=data.year, mc=data.mc;
+  var grandTotal=biSum(data.지출계.slice(0,mc));
+  var h='<div class="bi-card" style="overflow-x:auto"><div style="font-size:17px;font-weight:700;margin-bottom:10px">'+yr+'년 지출 상세 내역</div>';
+  h+='<table style="width:100%;border-collapse:collapse;font-size:14px"><thead><tr style="border-bottom:2px solid var(--border)"><th style="text-align:left;padding:5px 6px;color:var(--muted);font-size:13px;font-weight:600">항목</th>';
+  for(var i=0;i<mc;i++){h+='<th style="text-align:right;padding:5px 3px;color:var(--muted);font-size:13px;font-weight:600;'+(mo===i?'background:rgba(99,102,241,.06)':'')+'">'+(i+1)+'월</th>';}
+  h+='<th style="text-align:right;padding:5px 6px;font-size:13px;font-weight:700;color:var(--text)">계</th><th style="text-align:right;padding:5px 6px;font-size:13px;font-weight:600;color:var(--muted)">비중</th></tr></thead><tbody>';
+  Object.entries(data.순지출).forEach(function(e){
+    var cat=e[0], arr=e[1].months, t=biSum(arr.slice(0,mc)), col=biCL[cat]||'#94a3b8';
+    h+='<tr style="border-bottom:1px solid var(--border)"><td style="padding:4px 6px;font-weight:600;color:var(--text);white-space:nowrap"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:'+col+';margin-right:5px;vertical-align:middle"></span>'+cat+'</td>';
+    for(var i=0;i<mc;i++){var v=arr[i]||0;h+='<td style="padding:4px 3px;text-align:right;font-family:JetBrains Mono,monospace;font-size:13px;color:'+(v?'var(--text)':'var(--muted)')+';'+(mo===i?'background:rgba(99,102,241,.06)':'')+'">'+(v?Math.round(v/1e4).toLocaleString():'—')+'</td>';}
+    h+='<td style="padding:4px 6px;text-align:right;font-weight:700;font-family:JetBrains Mono,monospace;font-size:13px">'+Math.round(t/1e4).toLocaleString()+'</td>';
+    h+='<td style="padding:4px 6px;text-align:right;color:var(--muted);font-size:13px">'+biPct(t,grandTotal)+'</td></tr>';
+  });
+  h+='<tr style="border-top:2px solid var(--border);background:var(--member-bg)"><td style="padding:5px 6px;font-weight:800">합계</td>';
+  for(var i=0;i<mc;i++){h+='<td style="padding:5px 3px;text-align:right;font-weight:700;font-family:JetBrains Mono,monospace;font-size:13px;color:var(--yellow);'+(mo===i?'background:rgba(99,102,241,.06)':'')+'">'+Math.round(data.지출계[i]/1e4).toLocaleString()+'</td>';}
+  h+='<td style="padding:5px 6px;text-align:right;font-weight:800;font-family:JetBrains Mono,monospace;font-size:13px;color:var(--red)">'+Math.round(grandTotal/1e4).toLocaleString()+'</td>';
+  h+='<td style="padding:5px 6px;text-align:right;font-weight:700;font-size:13px">100%</td></tr></tbody></table></div>';
+  document.getElementById('bi-panel-table').innerHTML=h;
+}
+
+// ════════════════════════════════════════════
+// KPI + 진행바
+// ════════════════════════════════════════════
+if (latestM) {
+  var bm = latestM.date.split('-');
+  document.getElementById('base-month').textContent = bm[0]+'년 '+parseInt(bm[1])+'월';
+}
+if (latestM) {
+  var 현금성=latestM.현금성, 주담대=latestM.주담대||0;
+  var 순자산=현금성+주담대, MoM=latestM.MoM합계||0;
+  var prev=(현금성-MoM)||1;
+  var MoMpct=prev?((MoM/Math.abs(prev))*100).toFixed(2):'0.00';
+
+  document.getElementById('kpi-total').textContent = fmtAmt(현금성);
+  document.getElementById('kpi-total-sub').textContent =
+    '현금 '+fmtAmt(latestM.합산현금||0)+' · 주식 '+fmtAmt(latestM.주식||0);
+
+  var ach = latestPA ? (latestPA.achievement||0) : 0;
+  document.getElementById('kpi-achieve').textContent = ach.toFixed(2)+'%';
+  document.getElementById('kpi-achieve-sub').textContent = '은퇴 목표의 '+ach.toFixed(1)+'% 달성';
+
+  document.getElementById('kpi-mom').textContent = fmtAmt(MoM, true);
+  var mb = document.getElementById('kpi-mom-badge');
+  mb.textContent = (MoMpct>=0?'▲ +':'▼ ')+MoMpct+'%';
+  mb.className = 'badge '+(MoMpct>=0?'badge-up':'badge-down');
+
+  document.getElementById('kpi-loan').textContent = fmtAmt(Math.abs(주담대));
+  document.getElementById('kpi-net').innerHTML =
+    '순자산: <strong style="color:'+(순자산>=0?'var(--green)':'var(--red)')+'">'+fmtAmt(순자산,true)+'</strong>';
+
+  var impliedGoal = ach > 0 ? (현금성 / (ach/100)) : 1.5e9;
+  var goalAmt = parseFloat(localStorage.getItem('goalAmount') || '0');
+  if (!goalAmt || goalAmt < 1) goalAmt = impliedGoal / 1e8;
+  drawProgressScale(goalAmt, 현금성, ach);
+
+  document.getElementById('asset-breakdown').innerHTML =
+    '<div class="stat-row"><span class="stat-label">🟣 상은 현금</span><span class="stat-value" style="color:#6366f1">'+fmtAmt(latestM.상은계||0)+'</span></div>'+
+    '<div class="stat-row"><span class="stat-label">🟤 아영 현금</span><span class="stat-value" style="color:#a78bfa">'+fmtAmt(latestM.아영계||0)+'</span></div>'+
+    '<div class="stat-row"><span class="stat-label">🔵 주식계좌</span><span class="stat-value" style="color:#22d3ee">'+fmtAmt(latestM.주식||0)+'</span></div>';
+  document.getElementById('member-detail').innerHTML =
+    '<div class="member"><div class="member-name" style="color:#6366f1">👤 상은</div>'+
+    '<div class="stat-row" style="padding:4px 0"><span class="stat-label">현금 자산</span><span class="stat-value" style="color:#6366f1">'+fmtAmt(latestM.상은계||0)+'</span></div></div>'+
+    '<div class="member"><div class="member-name" style="color:#a78bfa">👤 아영</div>'+
+    '<div class="stat-row" style="padding:4px 0"><span class="stat-label">현금 자산</span><span class="stat-value" style="color:#a78bfa">'+fmtAmt(latestM.아영계||0)+'</span></div></div>';
+}
+
+// ════════════════════════════════════════════
+// 목표자산 트래커 — MoM 증감률 계산
+// ════════════════════════════════════════════
+function getMonthlyReturns(n) {
+  // 총자산SIM(planActual)의 actual(D열) 기반 전월대비 증감률 배열 반환
+  // 증감률 = (D(n) - D(n-1)) / abs(D(n-1))
+  var pa = planActual.filter(function(d){ return d.actual !== null && d.actual !== 0; });
+  if (pa.length < 2) return [];
+  var sorted = pa.slice().sort(function(a,b){ return a.date < b.date ? -1 : 1; });
+  var returns = [];
+  for (var i = 1; i < sorted.length; i++) {
+    var prev = sorted[i-1].actual;
+    var curr = sorted[i].actual;
+    if (prev !== 0) returns.push((curr - prev) / Math.abs(prev));
+  }
+  if (n && n > 0) return returns.slice(-n);
+  return returns;
+}
+
+function calcAvgRate(n) {
+  var r = getMonthlyReturns(n);
+  if (!r.length) return 0;
+  return r.reduce(function(a,b){return a+b;},0) / r.length;
+}
+
+// ════════════════════════════════════════════
+// 목표자산 트래커 — 시뮬레이션 코어
+// ════════════════════════════════════════════
+function runAssetGoalSim(currentEok, goalEok, method) {
+  // currentEok, goalEok: 억 단위
+  var avgRate, btRates = null, methodDesc;
+
+  if (method === 'avg6m') {
+    avgRate = calcAvgRate(6);
+    methodDesc = '최근 6개월 평균 ' + (avgRate*100).toFixed(2) + '%/월';
+  } else if (method === 'avg12m') {
+    avgRate = calcAvgRate(12);
+    methodDesc = '최근 12개월 평균 ' + (avgRate*100).toFixed(2) + '%/월';
+  } else if (method === 'avg36m') {
+    avgRate = calcAvgRate(36);
+    methodDesc = '최근 36개월 평균 ' + (avgRate*100).toFixed(2) + '%/월';
+  } else if (method === 'custom') {
+    var cr = parseFloat(localStorage.getItem('goalCustomRate') || '2.0');
+    avgRate = cr / 100;
+    methodDesc = '직접입력 ' + cr.toFixed(2) + '%/월';
+  } else if (method === 'bt12') {
+    btRates = getMonthlyReturns(12);
+    avgRate = btRates.length ? btRates.reduce(function(a,b){return a+b;},0)/btRates.length : 0;
+    methodDesc = '백테스팅 12개월 반복 (평균 ' + (avgRate*100).toFixed(2) + '%/월)';
+  } else if (method === 'bt24') {
+    btRates = getMonthlyReturns(24);
+    avgRate = btRates.length ? btRates.reduce(function(a,b){return a+b;},0)/btRates.length : 0;
+    methodDesc = '백테스팅 24개월 반복 (평균 ' + (avgRate*100).toFixed(2) + '%/월)';
+  } else if (method === 'bt36') {
+    btRates = getMonthlyReturns(36);
+    avgRate = btRates.length ? btRates.reduce(function(a,b){return a+b;},0)/btRates.length : 0;
+    methodDesc = '백테스팅 36개월 반복 (평균 ' + (avgRate*100).toFixed(2) + '%/월)';
+  } else {
+    avgRate = 0; methodDesc = '방식 미설정';
+  }
+
+  var result = [];
+  var asset = currentEok;
+  var monthCount = 0;
+  var achieveDate = null;
+  var baseDate = new Date();
+
+  while (asset < goalEok && monthCount < 600) {
+    var retRate = btRates && btRates.length ? btRates[monthCount % btRates.length] : avgRate;
+    var startA = asset;
+    var change = asset * retRate;
+    asset = asset + change;
+    monthCount++;
+
+    var date = new Date(baseDate);
+    date.setMonth(date.getMonth() + monthCount);
+    var dateStr = date.getFullYear() + '.' + String(date.getMonth()+1).padStart(2,'0');
+
+    if (!achieveDate && asset >= goalEok) achieveDate = new Date(date);
+
+    result.push({
+      num: monthCount,
+      dateStr: dateStr,
+      startAsset: startA,
+      returnRate: retRate,
+      change: change,
+      endAsset: asset,
+      pctOfGoal: (asset / goalEok) * 100
+    });
+  }
+
+  return {
+    months: result,
+    totalMonths: monthCount,
+    achieveDate: achieveDate,
+    methodDesc: methodDesc,
+    avgRate: avgRate
+  };
+}
+
+// ════════════════════════════════════════════
+// 목표자산 트래커 — 진행바 + ETA 렌더링
+// ════════════════════════════════════════════
+function drawProgressScale(goalAmt, currentAmt, ach) {
+  localStorage.setItem('goalAmount', String(goalAmt));
+  var method = localStorage.getItem('goalMethod') || 'avg12m';
+  var currentEok = currentAmt / 1e8;
+  var pct = Math.min(currentEok / goalAmt * 100, 100);
+
+  // 목표 표시 & 진행바
+  document.getElementById('goal-display').textContent = goalAmt.toFixed(2) + '억';
+  document.getElementById('progress-bar').style.width = pct + '%';
+  // 마커
+  var marker = document.getElementById('progress-marker');
+  marker.style.left = Math.min(pct, 99) + '%';
+  document.getElementById('progress-marker-text').textContent =
+    '▲ ' + currentEok.toFixed(2) + '억 (' + pct.toFixed(1) + '%)';
+
+  // 눈금 분할선
+  var divsEl = document.getElementById('progress-dividers');
+  divsEl.innerHTML = '';
+  [10,20,30,40,50,60,70,80,90].forEach(function(p){
+    var line = document.createElement('div');
+    line.className = 'progress-div-line'; line.style.left = p + '%';
+    divsEl.appendChild(line);
+  });
+
+  // 스케일
+  var ticks = [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0];
+  document.getElementById('progress-scale').innerHTML = ticks.map(function(t){
+    return '<div class="scale-item"><div class="scale-tick"></div><span>' + (goalAmt*t).toFixed(1) + '억</span></div>';
+  }).join('');
+
+  // 트래커 통계 칩
+  var remaining = (goalAmt - currentEok);
+  var remEl = document.getElementById('tracker-remaining');
+  document.getElementById('tracker-current').textContent = currentEok.toFixed(2) + '억';
+  remEl.textContent = remaining > 0 ? '+' + remaining.toFixed(2) + '억' : '🎉 달성!';
+  remEl.className = 'tracker-stat-value' + (remaining > 0 ? '' : ' tracker-eta-val');
+
+  // ETA 시뮬레이션
+  var etaEl = document.getElementById('tracker-eta');
+  var methodLbl = document.getElementById('tracker-method-label');
+
+  if (currentEok >= goalAmt) {
+    etaEl.textContent = '🎉 목표 달성!';
+    methodLbl.textContent = '이미 달성 완료';
+  } else if (monthly && monthly.length >= 3) {
+    var sim = runAssetGoalSim(currentEok, goalAmt, method);
+    if (sim.achieveDate && sim.totalMonths < 600) {
+      var yr = sim.achieveDate.getFullYear();
+      var mo = String(sim.achieveDate.getMonth()+1).padStart(2,'0');
+      etaEl.textContent = yr + '년 ' + mo + '월 (' + fmtMonths(sim.totalMonths) + ')';
+      etaEl.className = 'tracker-stat-value tracker-eta-val';
+    } else if (sim.avgRate <= 0) {
+      etaEl.textContent = '자산 감소 추세';
+      etaEl.className = 'tracker-stat-value tracker-neg-val';
+    } else {
+      etaEl.textContent = '30년 이상 소요';
+      etaEl.className = 'tracker-stat-value tracker-neg-val';
+    }
+    methodLbl.textContent = '계산 방식: ' + sim.methodDesc;
+    window._lastSimResult = sim;
+    window._lastSimGoalEok = goalAmt;
+    window._lastSimCurrentEok = currentEok;
+  } else {
+    etaEl.textContent = '데이터 3개월 이상 필요';
+    methodLbl.textContent = '목표 설정(✏️)에서 방식을 선택해주세요';
+  }
+}
+
+// ════════════════════════════════════════════
+// 목표자산 트래커 — 모달 관련
+// ════════════════════════════════════════════
+function openGoalEdit() {
+  var savedGoal = parseFloat(localStorage.getItem('goalAmount') || '15');
+  var savedMethod = localStorage.getItem('goalMethod') || 'avg12m';
+  var savedCustom = parseFloat(localStorage.getItem('goalCustomRate') || '2.0');
+  document.getElementById('goal-input').value = savedGoal;
+  // 라디오 버튼 복원
+  var radios = document.querySelectorAll('input[name="goalMethod"]');
+  radios.forEach(function(r){ r.checked = (r.value === savedMethod); });
+  // 직접입력 필드 표시/숨김
+  var ci = document.getElementById('goal-custom-rate');
+  var cl = document.getElementById('goal-custom-pct-label');
+  if (ci) { ci.value = savedCustom; ci.style.display = savedMethod === 'custom' ? 'inline-block' : 'none'; }
+  if (cl) cl.style.display = savedMethod === 'custom' ? 'inline' : 'none';
+  // 각 방식별 평균 미리보기 채우기
+  _fillMethodPreviews();
+  updateGoalPreview();
+  document.getElementById('goal-modal').classList.add('open');
+}
+
+function _fillMethodPreviews() {
+  var pairs = [
+    ['preview-avg6m',  calcAvgRate(6)],
+    ['preview-avg12m', calcAvgRate(12)],
+    ['preview-avg36m', calcAvgRate(36)],
+    ['preview-bt12',   calcAvgRate(12)],
+    ['preview-bt24',   calcAvgRate(24)],
+    ['preview-bt36',   calcAvgRate(36)]
+  ];
+  pairs.forEach(function(p){
+    var el = document.getElementById(p[0]);
+    if (el) el.textContent = (p[1]*100).toFixed(2) + '%/월';
+  });
+}
+
+function updateGoalPreview() {
+  var v = parseFloat(document.getElementById('goal-input').value || '0');
+  var el = document.getElementById('goal-preview');
+  if (el) el.textContent = v > 0 ? '= ' + v.toFixed(2) + '억원 (' + (v * 1e8).toLocaleString() + '원)' : '';
+}
+
+function onGoalMethodChange() {
+  var method = (document.querySelector('input[name="goalMethod"]:checked') || {}).value || '';
+  var ci = document.getElementById('goal-custom-rate');
+  var cl = document.getElementById('goal-custom-pct-label');
+  if (ci) ci.style.display = method === 'custom' ? 'inline-block' : 'none';
+  if (cl) cl.style.display = method === 'custom' ? 'inline' : 'none';
+}
+
+function closeGoalModal() { document.getElementById('goal-modal').classList.remove('open'); }
+
+function saveGoal() {
+  var v = parseFloat(document.getElementById('goal-input').value);
+  if (!v || v < 1) { showToast('올바른 금액을 입력해주세요', false); return; }
+  var methodEl = document.querySelector('input[name="goalMethod"]:checked');
+  var method = methodEl ? methodEl.value : 'avg12m';
+  localStorage.setItem('goalAmount', String(v));
+  localStorage.setItem('goalMethod', method);
+  if (method === 'custom') {
+    var cr = parseFloat(document.getElementById('goal-custom-rate').value || '2.0');
+    localStorage.setItem('goalCustomRate', String(cr));
+  }
+  drawProgressScale(v, latestM ? latestM.현금성 : 0, latestPA ? latestPA.achievement : 0);
+  closeGoalModal();
+  showToast('목표 설정이 저장되었습니다.');
+}
+
+// ════════════════════════════════════════════
+// 목표자산 트래커 — 시뮬레이션 상세 팝업
+// ════════════════════════════════════════════
+function showSimulationDetail() {
+  var goalEok = window._lastSimGoalEok || parseFloat(localStorage.getItem('goalAmount') || '15');
+  var currentEok = window._lastSimCurrentEok || (latestM ? latestM.현금성 / 1e8 : 0);
+  var method = localStorage.getItem('goalMethod') || 'avg12m';
+
+  if (!monthly || monthly.length < 3) {
+    showToast('월별 데이터 3개월 이상 필요합니다.', false); return;
+  }
+
+  var sim = window._lastSimResult || runAssetGoalSim(currentEok, goalEok, method);
+  window._lastSimResult = sim;
+
+  // 달성 배지
+  var achieveEl = document.getElementById('sim-detail-achieve');
+  if (sim.achieveDate && sim.totalMonths < 600) {
+    var yr = sim.achieveDate.getFullYear();
+    var mo = String(sim.achieveDate.getMonth()+1).padStart(2,'0');
+    achieveEl.innerHTML =
+      '<strong style="color:var(--green);font-size:19px;">✅ ' + yr + '년 ' + mo + '월 달성 예상</strong>' +
+      ' &nbsp;|&nbsp; <span style="color:var(--muted);font-size:16px;">' + fmtMonths(sim.totalMonths) + ' 소요</span>';
+    achieveEl.style.display = 'block';
+  } else {
+    achieveEl.style.display = 'none';
+  }
+
+  // 방식 설명
+  document.getElementById('sim-detail-desc').textContent =
+    '계산 방식: ' + sim.methodDesc +
+    '  |  목표: ' + goalEok.toFixed(2) + '억  |  현재: ' + currentEok.toFixed(2) + '억';
+
+  // ── 시뮬 월별 테이블
+  var tbody = document.getElementById('sim-detail-tbody');
+  var rows = '';
+  sim.months.forEach(function(m) {
+    var isAchieve = m.endAsset >= goalEok;
+    var bgStyle = isAchieve ? 'background:rgba(16,185,129,.12);' : (m.num % 12 === 0 ? 'background:rgba(99,102,241,.06);' : '');
+    var rateColor = m.returnRate >= 0 ? 'color:var(--green)' : 'color:var(--red)';
+    var changeColor = m.change >= 0 ? 'color:var(--green)' : 'color:var(--red)';
+    rows +=
+      '<tr style="border-bottom:1px solid var(--border);' + bgStyle + '">' +
+        '<td style="padding:6px;text-align:center;color:var(--muted);">' + m.num + '</td>' +
+        '<td style="padding:6px;text-align:center;">' + m.dateStr + '</td>' +
+        '<td style="padding:6px;text-align:right;">' + m.startAsset.toFixed(2) + '억</td>' +
+        '<td style="padding:6px;text-align:right;' + rateColor + '">' + (m.returnRate*100).toFixed(2) + '%</td>' +
+        '<td style="padding:6px;text-align:right;' + changeColor + '">' + (m.change >= 0 ? '+' : '') + (Math.abs(m.change) >= 1 ? m.change.toFixed(2) + '억' : Math.round(m.change * 1e4).toLocaleString() + '만') + '</td>' +
+        '<td style="padding:6px;text-align:right;font-weight:700;color:var(--accent);">' + m.endAsset.toFixed(2) + '억</td>' +
+        '<td style="padding:6px;text-align:right;">' + m.pctOfGoal.toFixed(1) + '%</td>' +
+      '</tr>';
+    // ── 억 단위 마일스톤: startAsset → endAsset 사이 정수 억 경계 통과 시 삽입
+    var prevFloor = Math.floor(m.startAsset);
+    var endFloor  = Math.floor(m.endAsset);
+    for (var eok = prevFloor + 1; eok <= endFloor; eok++) {
+      rows += '<tr style="background:rgba(99,102,241,.13);">' +
+        '<td colspan="7" style="padding:6px 8px;text-align:center;color:var(--accent);font-weight:700;font-size:15px;letter-spacing:.3px;">' +
+        '🎉 ' + m.dateStr + ' 최초 ' + eok + '억 달성!</td></tr>';
+    }
+    // ── 목표 도달 배너
+    if (isAchieve) rows +=
+      '<tr style="background:rgba(16,185,129,.2);">' +
+        '<td colspan="7" style="padding:7px;text-align:center;color:var(--green);font-weight:700;font-size:16px;">' +
+        '🎉 ' + m.dateStr + ' 목표 ' + goalEok.toFixed(1) + '억 달성!</td></tr>';
+  });
+  tbody.innerHTML = rows;
+
+  // ── 시뮬 vs 계획·실제 비교 차트
+  var compareSection = document.getElementById('sim-compare-section');
+  compareSection.style.display = 'block';
+
+  // planActual 날짜 맵 구성 (date: "YYYY-MM")
+  var paMap = {};
+  if (planActual && planActual.length) {
+    planActual.forEach(function(d) {
+      paMap[d.date] = {
+        plan:   d.plan   !== null ? +(d.plan/1e8).toFixed(3)   : null,
+        actual: d.actual !== null ? +(d.actual/1e8).toFixed(3) : null
+      };
+    });
+  }
+
+  // 시뮬 종료 날짜 (목표 달성 월 = sim 마지막 월)
+  var simEndDate = sim.months.length
+    ? sim.months[sim.months.length - 1].dateStr.replace('.', '-')
+    : null;
+
+  // 전체 레이블: planActual 날짜 + 시뮬 날짜 합집합, 시뮬 종료 날짜까지만
+  var allDateSet = {};
+  Object.keys(paMap).forEach(function(d) {
+    if (!simEndDate || d <= simEndDate) allDateSet[d] = true;
+  });
+  sim.months.forEach(function(m) {
+    allDateSet[m.dateStr.replace('.', '-')] = true;
+  });
+  var allDates = Object.keys(allDateSet).sort(); // "YYYY-MM" 오름차순
+
+  // 시뮬 맵 (date "YYYY-MM" → endAsset 억)
+  var simMap = {};
+  sim.months.forEach(function(m) {
+    simMap[m.dateStr.replace('.', '-')] = +m.endAsset.toFixed(3);
+  });
+
+  // 각 레이블 별 값
+  var simLine    = allDates.map(function(d) { return simMap[d]             !== undefined ? simMap[d]          : null; });
+  var planLine   = allDates.map(function(d) { return paMap[d] && paMap[d].plan   !== null ? paMap[d].plan   : null; });
+  var actualLine = allDates.map(function(d) { return paMap[d] && paMap[d].actual !== null ? paMap[d].actual : null; });
+
+  // 이전 차트 삭제
+  if (window._simCompareChart) { window._simCompareChart.destroy(); window._simCompareChart = null; }
+
+  window._simCompareChart = new Chart(document.getElementById('sim-compare-chart'), {
+    type: 'line',
+    data: {
+      labels: allDates,
+      datasets: [
+        { label: '시뮬 예상',
+          data: simLine,
+          borderColor: '#6366f1', backgroundColor: 'rgba(99,102,241,.08)',
+          borderWidth: 2, fill: true, tension: 0.35, pointRadius: 0, spanGaps: false },
+        { label: '계획',
+          data: planLine,
+          borderColor: 'rgba(16,185,129,.85)', borderDash: [6, 4],
+          borderWidth: 1.8, fill: false, tension: 0.3, pointRadius: 0, spanGaps: true },
+        { label: '실제',
+          data: actualLine,
+          borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,.07)',
+          borderWidth: 2.2, fill: false, tension: 0.3, pointRadius: 1.5, spanGaps: false }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: { ...tt, callbacks: { label: function(c) {
+          return c.parsed.y != null ? ' ' + c.dataset.label + ': ' + c.parsed.y.toFixed(2) + '억' : '';
+        }}}
+      },
+      scales: {
+        x: { grid: { color: gc }, ticks: { maxTicksLimit: 10, font: { size: 9 }, color: _tc.text } },
+        y: { grid: { color: gc }, ticks: { callback: function(v) { return v + '억'; }, font: { size: 9 }, color: _tc.text } }
+      }
+    }
+  });
+
+  document.getElementById('sim-detail-modal').classList.add('open');
+}
+
+// ════════════════════════════════════════════
+// 차트 공통
+// ════════════════════════════════════════════
+function getThemeColors(){
+  var s=getComputedStyle(document.documentElement);
+  return {
+    text: s.getPropertyValue('--muted').trim(),
+    grid: s.getPropertyValue('--chart-grid').trim(),
+    ttBg: s.getPropertyValue('--tooltip-bg').trim(),
+    ttBorder: s.getPropertyValue('--tooltip-border').trim(),
+    cardBg: s.getPropertyValue('--card').trim()
+  };
+}
+var _tc=getThemeColors();
+Chart.defaults.color=_tc.text;
+Chart.defaults.font.family="'Segoe UI',sans-serif";
+Chart.defaults.font.size=11;
+var gc=_tc.grid;
+var tt={backgroundColor:_tc.ttBg,borderColor:_tc.ttBorder,borderWidth:1,padding:9,titleColor: _tc.text, bodyColor: _tc.text};
+
+function updateChartTheme(theme){
+  var tc=getThemeColors();
+  Chart.defaults.color=tc.text;
+  gc=tc.grid;
+  tt={backgroundColor:tc.ttBg,borderColor:tc.ttBorder,borderWidth:1,padding:9,titleColor:tc.text,bodyColor:tc.text};
+  // 모든 활성 차트 업데이트
+  Object.values(Chart.instances||{}).forEach(function(ch){
+    if (!ch || !ch.options) return;
+    if (ch.options.scales){
+      ['x','y','r'].forEach(function(axis){
+        if (ch.options.scales[axis]){
+          if (ch.options.scales[axis].grid) ch.options.scales[axis].grid.color=tc.grid;
+          if (ch.options.scales[axis].ticks) ch.options.scales[axis].ticks.color=tc.text;
+        }
+      });
+    }
+    if (ch.options.plugins && ch.options.plugins.tooltip){
+      ch.options.plugins.tooltip.backgroundColor=tc.ttBg;
+      ch.options.plugins.tooltip.borderColor=tc.ttBorder;
+      ch.options.plugins.tooltip.titleColor=tc.text;
+      ch.options.plugins.tooltip.bodyColor=tc.text;
+    }
+    ch.update('none');
+  });
+}
+
+// 계획 vs 실제
+var planChart;
+function buildPlanChart(endYear) {
+  var cutoff=String(endYear)+'-12';
+  var pa=planActual.filter(function(d){ return d.date>='2021-01'&&d.date<=cutoff; });
+  if (planChart) planChart.destroy();
+  planChart=new Chart(document.getElementById('planActualChart'),{
+    type:'line',data:{labels:pa.map(function(d){return d.date;}),
+    datasets:[
+      {label:'계획',data:pa.map(function(d){return d.plan!=null?+(d.plan/1e8).toFixed(3):null;}),
+       borderColor:'rgba(99,102,241,.6)',borderWidth:2,borderDash:[6,4],fill:false,tension:.3,pointRadius:0,spanGaps:true},
+      {label:'실제',data:pa.map(function(d){return d.actual!=null?+(d.actual/1e8).toFixed(3):null;}),
+       borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.08)',borderWidth:2.5,fill:true,tension:.3,pointRadius:1.5,spanGaps:false}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:function(c){return c.parsed.y!=null?' '+c.dataset.label+': '+c.parsed.y.toFixed(2)+'억':'';}}}},
+      scales:{x:{grid:{color:gc},ticks:{maxTicksLimit:14}},y:{grid:{color:gc},ticks:{callback:function(v){return v+'억';}}}}}
+  });
+}
+window.redrawPlanChart=function(){buildPlanChart(+document.getElementById('plan-end-year').value);};
+buildPlanChart(2032);
+
+// 추이
+var trendInst;
+function buildTrend(range) {
+  var base=monthly.filter(function(x){return x.date<=_baseYM;});
+  var d=base, now=new Date(), y=now.getFullYear(), mo=String(now.getMonth()+1).padStart(2,'0');
+  if (range==='3y') d=base.filter(function(x){return x.date>=(y-2)+'-'+mo;});
+  if (range==='1y') d=base.filter(function(x){return x.date>=(y-1)+'-'+mo;});
+  if (trendInst) trendInst.destroy();
+  var ctx=document.getElementById('trendChart').getContext('2d');
+  var g=ctx.createLinearGradient(0,0,0,250);
+  g.addColorStop(0,'rgba(99,102,241,.3)'); g.addColorStop(1,'rgba(99,102,241,0)');
+  trendInst=new Chart(ctx,{type:'line',data:{labels:d.map(function(x){return x.date;}),
+    datasets:[
+      {label:'현금성자산(계)',data:d.map(function(x){return +(x.현금성/1e8).toFixed(3);}),borderColor:'#6366f1',backgroundColor:g,borderWidth:2.5,fill:true,tension:.4,pointRadius:d.length>20?0:3},
+      {label:'주식계좌',data:d.map(function(x){return +(x.주식/1e8).toFixed(3);}),borderColor:'#22d3ee',borderWidth:2,fill:false,tension:.4,pointRadius:0,borderDash:[5,4]},
+      {label:'현금합산',data:d.map(function(x){return +((x.합산현금||0)/1e8).toFixed(3);}),borderColor:'#10b981',borderWidth:1.5,fill:false,tension:.4,pointRadius:0}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:function(c){return ' '+c.dataset.label+': '+c.parsed.y.toFixed(2)+'억원';}}}},
+      scales:{x:{grid:{color:gc},ticks:{maxTicksLimit:12}},y:{grid:{color:gc},ticks:{callback:function(v){return v+'억';}}}}}});
+}
+window.setRange=function(range,btn){
+  document.querySelectorAll('.rbtn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active'); buildTrend(range);
+};
+buildTrend('all');
+
+if (latestM) {
+  new Chart(document.getElementById('donutChart'),{type:'doughnut',data:{
+    labels:['상은 현금','아영 현금','주식계좌'],
+    datasets:[{data:[Math.max(0,latestM.상은계||0),Math.max(0,latestM.아영계||0),Math.max(0,latestM.주식||0)].map(function(v){return Math.round(v/10000);}),
+    backgroundColor:['#6366f1','#a78bfa','#22d3ee'],borderColor:_tc.cardBg,borderWidth:3,hoverOffset:8}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'72%',
+    plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:function(c){return ' '+c.label+': '+fmtAmt(c.parsed*10000);}}}}}});
+}
+
+var mom=monthly.filter(function(d){return d.MoM합계!==null && d.date<=_baseYM;}).slice(-18);
+new Chart(document.getElementById('momChart'),{type:'bar',data:{
+  labels:mom.map(function(d){return d.date;}),
+  datasets:[{label:'전월대비',data:mom.map(function(d){return Math.round(d.MoM합계/10000);}),
+  backgroundColor:mom.map(function(d){return d.MoM합계>=0?'rgba(16,185,129,.75)':'rgba(244,63,94,.75)';}),
+  borderColor:mom.map(function(d){return d.MoM합계>=0?'#10b981':'#f43f5e';}),borderWidth:1,borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,
+  plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:function(c){return ' '+(c.parsed.y>=0?'+':'')+c.parsed.y.toLocaleString()+'만원';}}}},
+  scales:{x:{grid:{color:gc},ticks:{maxTicksLimit:9}},y:{grid:{color:gc},ticks:{callback:function(v){return v+'만';}}}}}});
+
+var memD=monthly.filter(function(d){return d.date>='2024-01' && d.date<=_baseYM;});
+new Chart(document.getElementById('memberChart'),{type:'bar',data:{
+  labels:memD.map(function(d){return d.date;}),
+  datasets:[
+    {label:'상은',data:memD.map(function(d){return Math.round((d.상은계||0)/10000);}),backgroundColor:'rgba(99,102,241,.7)',borderRadius:3},
+    {label:'아영',data:memD.map(function(d){return Math.round((d.아영계||0)/10000);}),backgroundColor:'rgba(167,139,250,.7)',borderRadius:3}
+  ]},options:{responsive:true,maintainAspectRatio:false,
+  plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:function(c){return ' '+c.dataset.label+': '+fmtAmt(c.parsed.y*10000);}}}},
+  scales:{x:{grid:{color:gc},ticks:{maxTicksLimit:8}},y:{grid:{color:gc},ticks:{callback:function(v){return v+'만';}}}}}});
+
+var achData=planActual.filter(function(d){return d.achievement!==null && d.date<=_baseYM;});
+new Chart(document.getElementById('achieveChart'),{type:'line',data:{
+  labels:achData.map(function(d){return d.date;}),
+  datasets:[{label:'달성률',data:achData.map(function(d){return d.achievement;}),
+  borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.1)',borderWidth:2.5,fill:true,tension:.4,pointRadius:0}]},
+  options:{responsive:true,maintainAspectRatio:false,
+  plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:function(c){return ' 달성률: '+c.parsed.y.toFixed(2)+'%';}}}},
+  scales:{x:{grid:{color:gc},ticks:{maxTicksLimit:14}},y:{grid:{color:gc},ticks:{callback:function(v){return v+'%';}}}}}});
+
+// ════════════════════════════════════════════
+// 예산 차트 (올해 + 다년도)
+// ════════════════════════════════════════════
+var budgetChartInst, budgetTimeSeries=null;
+
+function buildBudgetChartFromData(labels, 수입Arr, 저축Arr, 지출Arr, periodLabel) {
+  if (budgetChartInst) budgetChartInst.destroy();
+  var totalI=수입Arr.reduce(function(a,b){return a+b;},0);
+  var totalS=저축Arr.reduce(function(a,b){return a+b;},0);
+  var totalE=지출Arr.reduce(function(a,b){return a+b;},0);
+  document.getElementById('budget-total-label').textContent = periodLabel+' 누계';
+  document.getElementById('budget-income').textContent = fmtAmt(totalI*10000);
+  document.getElementById('budget-save').textContent   = fmtAmt(totalS*10000);
+  document.getElementById('budget-exp').textContent    = fmtAmt(totalE*10000);
+  budgetChartInst=new Chart(document.getElementById('budgetChart'),{type:'bar',data:{
+    labels:labels,
+    datasets:[
+      {label:'수입', data:수입Arr,backgroundColor:'rgba(16,185,129,.75)',borderColor:'#10b981',borderWidth:1,borderRadius:4},
+      {label:'저축성',data:저축Arr,backgroundColor:'rgba(99,102,241,.75)',borderColor:'#6366f1',borderWidth:1,borderRadius:4},
+      {label:'순지출',data:지출Arr,backgroundColor:'rgba(245,158,11,.75)',borderColor:'#f59e0b',borderWidth:1,borderRadius:4}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:function(c){return ' '+c.dataset.label+': '+fmtAmt(c.parsed.y*10000);}}}},
+      scales:{x:{grid:{color:gc},ticks:{maxTicksLimit:16}},y:{grid:{color:gc},ticks:{callback:function(v){return v+'만';}}}}}});
+}
+
+function initBudgetChart() {
+  var now=new Date(), curYM=curYYYYMM();
+  // budgetInit: 서버에서 올해 상은+아영 합산 (월별 원 단위)
+  // 수입/저축성/지출 키가 없으면 0 배열로 fallback
+  var 수입Raw  = budgetInit.수입  || Array(12).fill(0);
+  var 저축Raw  = budgetInit.저축성 || Array(12).fill(0);
+  var 지출Raw  = budgetInit.지출  || Array(12).fill(0);
+  var 수입Arr = 수입Raw.map(function(v,i){
+    var lbl=now.getFullYear()+'-'+String(i+1).padStart(2,'0');
+    return lbl<=curYM ? Math.round(v/10000) : 0;
+  });
+  var 저축Arr = 저축Raw.map(function(v,i){
+    var lbl=now.getFullYear()+'-'+String(i+1).padStart(2,'0');
+    return lbl<=curYM ? Math.round(v/10000) : 0;
+  });
+  var 지출Arr = 지출Raw.map(function(v,i){
+    var lbl=now.getFullYear()+'-'+String(i+1).padStart(2,'0');
+    return lbl<=curYM ? Math.round(v/10000) : 0;
+  });
+  // 데이터가 모두 0이면 서버에서 로드 시도
+  var hasData = 수입Arr.some(function(v){return v>0;}) || 저축Arr.some(function(v){return v>0;}) || 지출Arr.some(function(v){return v>0;});
+  if (!hasData) {
+    // 서버에서 직접 로드 (lazy)
+    if (!budgetTimeSeries) {
+      google.script.run
+        .withSuccessHandler(function(res){
+          if (res.error||!res.data) return;
+          budgetTimeSeries=res.data;
+          applyBudgetPeriod('올해');
+        })
+        .withFailureHandler(function(){})
+        .getBudgetTimeSeries();
+    } else { applyBudgetPeriod('올해'); }
+    buildBudgetChartFromData(months12, 수입Arr, 저축Arr, 지출Arr, '올해');
+    return;
+  }
+  buildBudgetChartFromData(months12, 수입Arr, 저축Arr, 지출Arr, '올해');
+}
+initBudgetChart();
+
+window.setBudgetPeriod=function(period,btn){
+  document.querySelectorAll('#budget-period-btns .rbtn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  if (period==='올해') { initBudgetChart(); return; }
+  if (!budgetTimeSeries) {
+    showToast('다년도 데이터 불러오는 중...');
+    google.script.run
+      .withSuccessHandler(function(res){
+        if (res.error){showToast('오류: '+res.error,false);return;}
+        budgetTimeSeries=res.data; applyBudgetPeriod(period);
+      })
+      .withFailureHandler(function(err){showToast('오류: '+err,false);})
+      .getBudgetTimeSeries();
+  } else { applyBudgetPeriod(period); }
+};
+
+function applyBudgetPeriod(period) {
+  if (!budgetTimeSeries) return;
+  var labels=budgetTimeSeries.labels, 수입=budgetTimeSeries.수입, 저축=budgetTimeSeries.저축성, 지출=budgetTimeSeries.지출;
+  var now=new Date(), y=now.getFullYear(), mo=String(now.getMonth()+1).padStart(2,'0');
+  var curYM=y+'-'+mo; // 수입/지출은 수동입력이므로 당월까지 표시
+  var fromLabel='', periodLabel='';
+  if      (period==='올해') { fromLabel=y+'-01'; periodLabel='올해'; }
+  else if (period==='1y')  { fromLabel=(y-1)+'-'+mo; periodLabel='최근 1년'; }
+  else if (period==='2y')  { fromLabel=(y-2)+'-'+mo; periodLabel='최근 2년'; }
+  else if (period==='3y')  { fromLabel=(y-3)+'-'+mo; periodLabel='최근 3년'; }
+  else                     { fromLabel='0000-00';      periodLabel='전체'; }
+
+  var idxArr=labels.map(function(l,i){return{l:l,i:i};})
+    .filter(function(x){return x.l>=fromLabel && x.l<=curYM;})
+    .map(function(x){return x.i;});
+  if (!idxArr.length) { showToast('해당 기간 데이터 없음',false); return; }
+  var s=idxArr[0], e=idxArr[idxArr.length-1]+1;
+  buildBudgetChartFromData(
+    labels.slice(s,e),
+    수입.slice(s,e).map(function(v){return Math.round(v/10000);}),
+    저축.slice(s,e).map(function(v){return Math.round(v/10000);}),
+    지출.slice(s,e).map(function(v){return Math.round(v/10000);}),
+    periodLabel
+  );
+}
+
+
+// ════════════════════════════════════════════
+// 총자산 탭
+// ════════════════════════════════════════════
+var assetLoaded=false, assetData=[];
+
+function loadAssetData() {
+  google.script.run
+    .withSuccessHandler(function(res){
+      document.getElementById('asset-loading').style.display='none';
+      if (res.error){showToast('오류: '+res.error,false);return;}
+      assetData=res.data.slice().reverse();
+      renderAssetSummary(); renderAssetTable();
+      document.getElementById('asset-table-wrap').style.display='block';
+      assetLoaded=true;
+    })
+    .withFailureHandler(function(err){showToast('오류: '+err,false);})
+    .getAssetFullData();
+}
+
+function renderAssetSummary() {
+  var latest=assetData[0]; if (!latest) return;
+  function avg(arr){return arr.length?arr.reduce(function(a,b){return a+b;},0)/arr.length:0;}
+  var baseM=monthly.filter(function(d){return d.date<=_baseYM;});
+  var 현금Deltas=baseM.slice(1).map(function(d,i){return d.현금성-(baseM[i].현금성||0);});
+  var 주담Deltas=baseM.slice(1).map(function(d,i){return (d.주담대||0)-(baseM[i].주담대||0);});
+  var 총계Deltas=baseM.slice(1).map(function(d,i){return (d.총계||0)-(baseM[i].총계||0);});
+  document.getElementById('asset-summary').innerHTML=
+    '<div class="sum-chip"><div class="lbl">현금성자산(계) (최신)</div><div class="val" style="color:var(--green)">'+fmtAmt(latest.현금성)+'</div><div class="sub">월평균 변동 '+fmtAmt(avg(현금Deltas),true)+'</div></div>'+
+    '<div class="sum-chip"><div class="lbl">주담대 잔액</div><div class="val" style="color:var(--red)">'+fmtAmt(Math.abs(latest.주담대))+'</div><div class="sub">월평균 변동 '+fmtAmt(avg(주담Deltas),true)+'</div></div>'+
+    '<div class="sum-chip"><div class="lbl">총자산(계)</div><div class="val" style="color:var(--accent)">'+fmtAmt(latest.총계)+'</div><div class="sub">월평균 변동 '+fmtAmt(avg(총계Deltas),true)+'</div></div>';
+}
+
+function renderAssetTable() {
+  var tbody=document.getElementById('asset-tbody');
+  if (!assetData.length){tbody.innerHTML='<tr><td colspan="16" class="tbl-empty">데이터가 없습니다</td></tr>';return;}
+  tbody.innerHTML=assetData.map(function(r){
+    var 소계=(r.상은_계||0)+(r.아영_계||0);
+    return '<tr>'+
+      '<td>'+r.date+'</td>'+
+      '<td class="g-se">'+fmtNumFull(r.상은_입출금)+'</td>'+
+      '<td class="g-se">'+fmtNumFull(r.상은_예적금)+'</td>'+
+      '<td class="g-se '+(r.상은_마통<0?'neg':'')+'">'+fmtNumFull(r.상은_마통)+'</td>'+
+      '<td class="g-se formula">'+fmtNumFull(r.상은_계)+'</td>'+
+      '<td class="g-ay">'+fmtNumFull(r.아영_입출금)+'</td>'+
+      '<td class="g-ay">'+fmtNumFull(r.아영_예적금)+'</td>'+
+      '<td class="g-ay">'+fmtNumFull(r.아영_벤츠)+'</td>'+
+      '<td class="g-ay formula">'+fmtNumFull(r.아영_계)+'</td>'+
+      '<td class="g-sub">'+fmtNumFull(소계)+'</td>'+
+      '<td>'+fmtNumFull(r.주식)+'</td>'+
+      '<td class="hi">'+fmtNumFull(r.현금성)+'</td>'+
+      '<td class="'+(r.주담대<0?'neg':'')+'">'+fmtNumFull(r.주담대)+'</td>'+
+      '<td class="pos">'+fmtNumFull(r.총계)+'</td>'+
+      '<td><div class="tbl-actions">'+
+        '<button class="btn-sm btn-edit" onclick="editAssetRow('+r.rowIndex+')">수정</button>'+
+        '<button class="btn-sm btn-del" onclick="confirmZeroAsset('+r.rowIndex+',\''+r.date+'\')">초기화</button>'+
+      '</div></td></tr>';
+  }).join('');
+}
+
+function openAssetModal() {
+  document.getElementById('modal-title').textContent='새 행 추가';
+  document.getElementById('modal-rowIndex').value='';
+  ['상은_입출금','상은_예적금','상은_마통','아영_입출금','아영_예적금','아영_벤츠','주식','주담대']
+    .forEach(function(k){document.getElementById('f-'+k).value='';});
+  document.getElementById('f-date').value='';
+  document.getElementById('asset-modal').classList.add('open');
+}
+function editAssetRow(rowIndex) {
+  var r=assetData.find(function(x){return x.rowIndex===rowIndex;}); if (!r) return;
+  document.getElementById('modal-title').textContent='행 수정 — '+r.date;
+  document.getElementById('modal-rowIndex').value=rowIndex;
+  document.getElementById('f-date').value=r.date;
+  document.getElementById('f-상은_입출금').value=(r.상은_입출금||0).toLocaleString();
+  document.getElementById('f-상은_예적금').value=(r.상은_예적금||0).toLocaleString();
+  document.getElementById('f-상은_마통').value=Math.abs(r.상은_마통||0).toLocaleString();
+  document.getElementById('f-아영_입출금').value=(r.아영_입출금||0).toLocaleString();
+  document.getElementById('f-아영_예적금').value=(r.아영_예적금||0).toLocaleString();
+  document.getElementById('f-아영_벤츠').value=(r.아영_벤츠||0).toLocaleString();
+  document.getElementById('f-주식').value=(r.주식||0).toLocaleString();
+  document.getElementById('f-주담대').value=Math.abs(r.주담대||0).toLocaleString();
+  document.getElementById('asset-modal').classList.add('open');
+}
+function closeAssetModal(){ document.getElementById('asset-modal').classList.remove('open'); }
+function submitAssetForm() {
+  var dateVal=document.getElementById('f-date').value.trim();
+  if (!dateVal.match(/^20\d\d-\d\d?$/)){showToast('구분 형식 오류 (예: 2026-03)',false);return;}
+  var rowIndex=document.getElementById('modal-rowIndex').value;
+  var data={date:dateVal,상은_입출금:parseInput('f-상은_입출금'),상은_예적금:parseInput('f-상은_예적금'),
+    상은_마통:parseInput('f-상은_마통'),아영_입출금:parseInput('f-아영_입출금'),아영_예적금:parseInput('f-아영_예적금'),
+    아영_벤츠:parseInput('f-아영_벤츠'),주식:parseInput('f-주식'),주담대:parseInput('f-주담대')};
+  closeAssetModal();
+  var fn=rowIndex?'updateAssetRow':'addAssetRow';
+  var args=rowIndex?[Number(rowIndex),data]:[data];
+  google.script.run
+    .withSuccessHandler(function(res){
+      if (res.error){showToast('오류: '+res.error,false);return;}
+      showToast(rowIndex?'수정 완료!':'추가 완료!');
+      assetLoaded=false; loadAssetData();
+    })
+    .withFailureHandler(function(err){showToast('오류: '+err,false);})
+    [fn](...args);
+}
+function confirmZeroAsset(rowIndex,dateStr) {
+  if (!confirm(dateStr+' 행의 모든 값을 0으로 초기화할까요?')) return;
+  google.script.run
+    .withSuccessHandler(function(res){
+      if (res.error){showToast('오류: '+res.error,false);return;}
+      showToast('초기화 완료!'); assetLoaded=false; loadAssetData();
+    })
+    .withFailureHandler(function(err){showToast('오류: '+err,false);})
+    .deleteAssetRow(rowIndex);
+}
+
+
+// ════════════════════════════════════════════
+// 가계부 탭
+// ════════════════════════════════════════════
+var budgetLoaded=false, budgetCache={};
+var budgetChartInstances={}; // person별 추이 차트
+var budgetTabInited=false;
+
+// ── 가계부 탭 초기화 (biLoadYear 패턴 동일 구조)
+function initBudgetTab() {
+  budgetTabInited=true;
+  budgetLoaded=true;
+  var year = new Date().getFullYear();
+  // 로딩 스피너 표시
+  document.getElementById('budget-합계-loading').style.display='block';
+  document.getElementById('budget-상은-loading').style.display='block';
+  document.getElementById('budget-아영-loading').style.display='block';
+  // biLoadYear와 동일한 구조로 데이터 로드
+  biLoadYear(year, function() {
+    var se = budgetCache['상은_'+year];
+    var ay = budgetCache['아영_'+year];
+    // _default 캐시 설정
+    if (se) budgetCache['상은_default']=se;
+    if (ay) budgetCache['아영_default']=ay;
+    // years 목록 확보
+    var sample = se || ay;
+    if (sample && sample.years) {
+      var latestYr = sample.years[sample.years.length-1];
+      if (parseInt(latestYr) !== year) {
+        // 최신 연도가 현재 연도와 다르면 최신 연도도 로드
+        biLoadYear(parseInt(latestYr), function() {
+          var se2 = budgetCache['상은_'+latestYr];
+          var ay2 = budgetCache['아영_'+latestYr];
+          if (se2) budgetCache['상은_default']=se2;
+          if (ay2) budgetCache['아영_default']=ay2;
+          _renderAllBudgetTabs();
+        });
+        return;
+      }
+    }
+    _renderAllBudgetTabs();
+  });
+}
+
+// ── 가계부 전체 탭 렌더링 (로드 완료 후 호출)
+function _renderAllBudgetTabs() {
+  var se = budgetCache['상은_default'];
+  var ay = budgetCache['아영_default'];
+  // 로딩 스피너 숨기기
+  document.getElementById('budget-합계-loading').style.display='none';
+  document.getElementById('budget-상은-loading').style.display='none';
+  document.getElementById('budget-아영-loading').style.display='none';
+  document.getElementById('budget-합계-wrap').style.display='block';
+  // 개인 탭 렌더링
+  if (se) renderBudgetPerson('상은', se);
+  else document.getElementById('budget-상은-wrap').innerHTML='<p style="color:var(--muted);padding:20px;text-align:center">상은 데이터 없음</p>';
+  if (ay) renderBudgetPerson('아영', ay);
+  else document.getElementById('budget-아영-wrap').innerHTML='<p style="color:var(--muted);padding:20px;text-align:center">아영 데이터 없음</p>';
+  // 합계 렌더링
+  renderBudgetSum();
+}
+
+// ── 개인별 연도 변경 시 로드 (biLoadYear 패턴)
+function loadBudgetPerson(person, year) {
+  year = parseInt(year);
+  document.getElementById('budget-'+person+'-loading').style.display='block';
+  biLoadYear(year, function() {
+    document.getElementById('budget-'+person+'-loading').style.display='none';
+    var data = budgetCache[person+'_'+year];
+    if (data) {
+      budgetCache[person+'_default']=data;
+      renderBudgetPerson(person, data);
+      renderBudgetSum();
+    } else {
+      document.getElementById('budget-'+person+'-wrap').innerHTML=
+        '<p style="color:var(--red);padding:20px">오류: 데이터를 불러올 수 없습니다.</p>';
+    }
+  });
+}
+
+function renderBudgetPerson(person, data) {
+  var years=data.years||[data.year];
+  var yearOpts=years.map(function(y){var yn=parseInt(y);return '<option value="'+yn+'" '+(yn===parseInt(data.year)?'selected':'')+'>'+yn+'년</option>';}).join('');
+  var html='<div class="budget-header">'+
+    '<span class="budget-year-label">'+parseInt(data.year)+'년 '+person+' 가계부</span>'+
+    '<select class="year-select" onchange="changeBudgetYear(\''+person+'\',this.value)">'+yearOpts+'</select>'+
+    '</div>';
+  html+=buildBudgetTable(person, data, true);
+  html+=buildBudgetTrendChartHTML(person);
+  document.getElementById('budget-'+person+'-wrap').innerHTML=html;
+  buildBudgetTrendChart(person, data);
+}
+
+function changeBudgetYear(person, year) {
+  var key=person+'_'+year;
+  if (budgetCache[key]) renderBudgetPerson(person, budgetCache[key]);
+  else loadBudgetPerson(person, year);
+}
+
+function renderBudgetSum() {
+  var se=budgetCache['상은_default'], ay=budgetCache['아영_default'];
+  if (!se&&!ay) return;
+  var merged={year:(se||ay).year, years:(se||ay).years||[], items:{}};
+  var allItems=new Set([...Object.keys((se&&se.items)||{}), ...Object.keys((ay&&ay.items)||{})]);
+  allItems.forEach(function(item){
+    var a=se&&se.items?se.items[item]:null, b=ay&&ay.items?ay.items[item]:null;
+    if (!a&&!b) return;
+    merged.items[item]={rowIndex:0,plan:(a&&a.plan||0)+(b&&b.plan||0),
+      actualAvg:(a&&a.actualAvg||0)+(b&&b.actualAvg||0),
+      months:Array(12).fill(0).map(function(_,i){return (a&&a.months[i]||0)+(b&&b.months[i]||0);}),
+      cat:(a&&a.cat)||(b&&b.cat)||''};
+  });
+  document.getElementById('budget-합계-loading').style.display='none';
+  document.getElementById('budget-합계-wrap').style.display='block';
+  var years=merged.years;
+  var yearOpts=years.map(function(y){var yn=parseInt(y);return '<option value="'+yn+'" '+(yn===parseInt(merged.year)?'selected':'')+'>'+yn+'년</option>';}).join('');
+  var html='<div class="budget-header">'+
+    '<span class="budget-year-label">'+parseInt(merged.year)+'년 합계 가계부</span>'+
+    '<select class="year-select" onchange="changeBudgetSumYear(this.value)">'+yearOpts+'</select>'+
+    '</div>';
+  html+=buildBudgetTable('합계', merged, false);
+  html+=buildBudgetTrendChartHTML('합계');
+  document.getElementById('budget-합계-wrap').innerHTML=html;
+  buildBudgetTrendChart('합계', merged);
+}
+
+function changeBudgetSumYear(year) {
+  year = parseInt(year);
+  document.getElementById('budget-합계-loading').style.display='block';
+  biLoadYear(year, function() {
+    document.getElementById('budget-합계-loading').style.display='none';
+    var se=budgetCache['상은_'+year], ay=budgetCache['아영_'+year];
+    if (se||ay) {
+      var prev={se:budgetCache['상은_default'],ay:budgetCache['아영_default']};
+      if (se) budgetCache['상은_default']=se;
+      if (ay) budgetCache['아영_default']=ay;
+      renderBudgetSum();
+      budgetCache['상은_default']=prev.se; budgetCache['아영_default']=prev.ay;
+    }
+  });
+}
+
+// ── 가계부 테이블 빌드 (캡쳐 형식 일치)
+function buildBudgetTable(person, data, editable) {
+  if (!data||!data.items||Object.keys(data.items).length===0) {
+    return '<p style="color:var(--muted);padding:20px;text-align:center">항목 데이터를 불러오지 못했습니다.<br><small>Apps Script 에디터에서 testData()를 실행하여 시트 구조를 확인하세요.</small></p>';
+  }
+
+  // 카테고리별 그룹화
+  var catOrder=[], catGroups={};
+  for (var item in data.items) {
+    var d=data.items[item];
+    var cat=d.cat||'기타';
+    if (!catGroups[cat]){catGroups[cat]=[];catOrder.push(cat);}
+    catGroups[cat].push({item:item,d:d});
+  }
+  // 카테고리 순서 강제 정렬: 수입 → 저축성 → 순지출(기타)
+  catOrder.sort(function(a, b) {
+    var rank = function(c) {
+      if (c.includes('수입')) return 0;
+      if (c.includes('저축')) return 1;
+      return 2;
+    };
+    return rank(a) - rank(b);
+  });
+
+  var html='<div class="budget-tbl-wrap"><table class="budget-tbl">'+
+    '<thead><tr>'+
+    '<th>구분</th><th>세부항목</th>'+
+    '<th style="text-align:right">계획금액</th>'+
+    '<th style="text-align:right">실제(평균)</th>'+
+    months12.map(function(m, mi){
+      if(editable) return '<th style="cursor:pointer;color:var(--accent)" onclick="openMonthModal(\''+person+'\','+mi+')" title="'+m+' 일괄 입력">'+m+' ✏️</th>';
+      return '<th>'+m+'</th>';
+    }).join('')+
+    '<th>계</th>'+
+    '</tr></thead><tbody>';
+
+  // 카테고리별 합계 (여유자금 계산용)
+  var grandSums={};
+
+  catOrder.forEach(function(cat, ci) {
+    var group=catGroups[cat];
+    var catPlan=0, catAvg=0, catMonths=Array(12).fill(0);
+
+    group.forEach(function(entry, idx) {
+      var item=entry.item, r=entry.d;
+      catPlan+=r.plan||0; catAvg+=r.actualAvg||0;
+      r.months.forEach(function(v,i){catMonths[i]+=v;});
+      var rowTotal=r.months.reduce(function(a,b){return a+b;},0);
+
+      // 구분 열: 첫 행만 카테고리명 표시
+      var catCell=idx===0?cat:'';
+      var sepCls=idx===0&&ci>0?' class="cat-sep"':'';
+      html+='<tr'+sepCls+'>'+
+        '<td>'+catCell+'</td>'+
+        '<td>'+item+'</td>'+
+        '<td class="plan-col" style="text-align:right">'+fmtNumFull(r.plan)+'</td>'+
+        '<td class="avg-col" style="text-align:right">'+fmtNumFull(r.actualAvg)+'</td>'+
+        r.months.map(function(v){return '<td class="'+(v===0?'dash':'')+'">'+fmtNum(v)+'</td>';}).join('')+
+        '<td style="color:var(--muted)">'+fmtNumFull(rowTotal)+'</td>'+
+        '</tr>';
+    });
+
+    // 카테고리 합계 행
+    var catTotal=catMonths.reduce(function(a,b){return a+b;},0);
+    var catCls=cat.includes('수입')?'cat-total-income':cat.includes('저축')?'cat-total-save':'cat-total-exp';
+    var catLbl=cat.includes('수입')?'수입 합계':cat.includes('저축')?'저축성지출 계':'순지출 계';
+    grandSums[cat]={plan:catPlan,avg:catAvg,months:catMonths};
+    html+='<tr class="'+catCls+'">'+
+      '<td colspan="2">'+catLbl+'</td>'+
+      '<td style="text-align:right">'+fmtNumFull(catPlan)+'</td>'+
+      '<td style="text-align:right">'+fmtNumFull(catAvg)+'</td>'+
+      catMonths.map(function(v){return '<td>'+fmtNumFull(v)+'</td>';}).join('')+
+      '<td>'+fmtNumFull(catTotal)+'</td>'+'</tr>';
+  });
+
+  // 여유자금 = 수입 - 저축성 - 순지출
+  var freeMonths=Array(12).fill(0);
+  var freePlan=0, freeAvg=0;
+  catOrder.forEach(function(cat){
+    var s=grandSums[cat]||{plan:0,avg:0,months:Array(12).fill(0)};
+    var sign=cat.includes('수입')?1:-1;
+    freePlan+=sign*s.plan; freeAvg+=sign*s.avg;
+    s.months.forEach(function(v,i){freeMonths[i]+=sign*v;});
+  });
+  var freeTotal=freeMonths.reduce(function(a,b){return a+b;},0);
+  html+='<tr class="cat-total-free cat-sep">'+
+    '<td colspan="2">여유자금 계</td>'+
+    '<td style="text-align:right">'+fmtNumFull(freePlan)+'</td>'+
+    '<td style="text-align:right">'+fmtNumFull(freeAvg)+'</td>'+
+    freeMonths.map(function(v){return '<td>'+fmtNumFull(v)+'</td>';}).join('')+
+    '<td>'+fmtNumFull(freeTotal)+'</td>'+'</tr>';
+
+  html+='</tbody></table></div>';
+  return html;
+}
+
+// ── 가계부 추이 차트 HTML 자리
+function buildBudgetTrendChartHTML(person) {
+  return '<div class="budget-chart-card">'+
+    '<div class="card-title">계획 대비 실제 월별 현황 (단위: 만원)'+
+    '<div class="legend" style="font-size:14px;gap:8px">'+
+    '<span style="color:var(--green)">● 수입실적</span>'+
+    '<span style="color:rgba(16,185,129,.35)">-- 수입계획</span>'+
+    '<span style="color:var(--red)">● 지출실적</span>'+
+    '<span style="color:rgba(244,63,94,.35)">-- 지출계획</span>'+
+    '</div></div>'+
+    '<div class="card-sub">월별 수입·저축성·순지출 계획 대비 실제 금액</div>'+
+    '<div class="chart-wrap" style="height:200px"><canvas id="trend-chart-'+person+'"></canvas></div>'+
+    '</div>';
+}
+
+// ── 가계부 추이 차트 빌드
+function buildBudgetTrendChart(person, data) {
+  setTimeout(function() {
+    var cvs=document.getElementById('trend-chart-'+person);
+    if (!cvs) return;
+    if (budgetChartInstances[person]) budgetChartInstances[person].destroy();
+
+    // 카테고리별 월별 합계 집계
+    var incPlan=Array(12).fill(0), incAct=Array(12).fill(0);
+    var savPlan=Array(12).fill(0), savAct=Array(12).fill(0);
+    var expPlan=Array(12).fill(0), expAct=Array(12).fill(0);
+
+    for (var item in data.items) {
+      var d=data.items[item];
+      var cat=d.cat||'';
+      var isIncome=cat.includes('수입'), isSave=cat.includes('저축'), isExp=!isIncome&&!isSave;
+      for (var m=0;m<12;m++) {
+        var mv=d.months[m]||0, pv=d.plan||0;
+        if (isIncome){ incAct[m]+=mv; incPlan[m]+=pv/12; }
+        else if (isSave){ savAct[m]+=mv; savPlan[m]+=pv/12; }
+        else { expAct[m]+=mv; expPlan[m]+=pv/12; }
+      }
+    }
+
+    budgetChartInstances[person]=new Chart(cvs,{
+      type:'bar',
+      data:{labels:months12,datasets:[
+        {label:'수입 실적',data:incAct.map(function(v){return Math.round(v/10000);}),backgroundColor:'rgba(16,185,129,.7)',borderColor:'#10b981',borderWidth:1,borderRadius:3,order:2},
+        {label:'지출 실적',data:expAct.map(function(v){return Math.round(v/10000);}),backgroundColor:'rgba(244,63,94,.7)',borderColor:'#f43f5e',borderWidth:1,borderRadius:3,order:2},
+        {label:'수입 계획',type:'line',data:incPlan.map(function(v){return Math.round(v/10000);}),borderColor:'rgba(16,185,129,.5)',borderDash:[5,3],borderWidth:2,pointRadius:0,fill:false,order:1},
+        {label:'지출 계획',type:'line',data:expPlan.map(function(v){return Math.round(v/10000);}),borderColor:'rgba(244,63,94,.5)',borderDash:[5,3],borderWidth:2,pointRadius:0,fill:false,order:1}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+        plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:function(c){return ' '+c.dataset.label+': '+fmtAmt(c.parsed.y*10000);}}}},
+        scales:{x:{grid:{color:gc}},y:{grid:{color:gc},ticks:{callback:function(v){return v+'만';}}}}}
+    });
+  }, 80); // DOM 렌더링 후 실행
+}
+
+// ── 가계부 월별 일괄입력 모달
+var _monthModalItems = []; // [{rowIndex, item, cat, curValue}]
+
+function openMonthModal(person, monthIdx) {
+  var months12=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  var data = budgetCache[person+'_default'];
+  if (!data || !data.items) { showToast('데이터가 없습니다.',false); return; }
+
+  document.getElementById('bmm-person').value = person;
+  document.getElementById('bmm-month').value = monthIdx;
+  document.getElementById('bmm-title').textContent = person+' '+months12[monthIdx]+' 일괄 입력';
+
+  // 카테고리별 그룹핑
+  var catGroups={}, catOrder=[];
+  Object.keys(data.items).forEach(function(item){
+    var d=data.items[item];
+    var cat=d.cat||'기타';
+    if(!catGroups[cat]){catGroups[cat]=[];catOrder.push(cat);}
+    catGroups[cat].push({item:item, rowIndex:d.rowIndex, curValue:d.months[monthIdx]||0});
+  });
+  catOrder.sort(function(a,b){
+    var rank=function(c){if(c.includes('수입'))return 0;if(c.includes('저축'))return 1;return 2;};
+    return rank(a)-rank(b);
+  });
+
+  _monthModalItems = [];
+  var html = '';
+  catOrder.forEach(function(cat){
+    var catColor = cat.includes('수입')?'var(--green)':cat.includes('저축')?'var(--accent)':'var(--yellow)';
+    html += '<div style="margin-bottom:14px;">';
+    html += '<div style="font-weight:700;font-size:14px;color:'+catColor+';margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border)">'+cat+'</div>';
+    catGroups[cat].forEach(function(entry){
+      var idx = _monthModalItems.length;
+      _monthModalItems.push({rowIndex:entry.rowIndex, item:entry.item, cat:cat, origValue:entry.curValue});
+      html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">';
+      html += '<span style="flex:1;font-size:13px;color:var(--text)">'+entry.item+'</span>';
+      html += '<input type="text" id="bmm-val-'+idx+'" style="width:120px;text-align:right;padding:6px 10px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--text);font-size:13px;" value="'+(entry.curValue?Number(entry.curValue).toLocaleString():'')+'" placeholder="0" oninput="fmtInput(this);recalcMonthTotals()">';
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+
+  document.getElementById('bmm-body').innerHTML = html;
+  recalcMonthTotals();
+  document.getElementById('budget-month-modal').classList.add('open');
+}
+
+function closeMonthModal(){ document.getElementById('budget-month-modal').classList.remove('open'); }
+
+function recalcMonthTotals() {
+  var sums = {income:0, save:0, expense:0};
+  _monthModalItems.forEach(function(entry, idx){
+    var val = parseInput('bmm-val-'+idx);
+    if (entry.cat.includes('수입')) sums.income += val;
+    else if (entry.cat.includes('저축')) sums.save += val;
+    else sums.expense += val;
+  });
+  var free = sums.income - sums.save - sums.expense;
+  var freeColor = free >= 0 ? 'var(--green)' : 'var(--red)';
+  document.getElementById('bmm-summary').innerHTML =
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;font-size:13px;">'+
+    '<div>수입 합계: <b style="color:var(--green)">'+Number(sums.income).toLocaleString()+'</b></div>'+
+    '<div>저축성 합계: <b style="color:var(--accent)">'+Number(sums.save).toLocaleString()+'</b></div>'+
+    '<div>순지출 합계: <b style="color:var(--yellow)">'+Number(sums.expense).toLocaleString()+'</b></div>'+
+    '<div>여유자금 계: <b style="color:'+freeColor+'">'+Number(free).toLocaleString()+'</b></div>'+
+    '</div>';
+}
+
+function submitMonthModal() {
+  var person = document.getElementById('bmm-person').value;
+  var monthIdx = parseInt(document.getElementById('bmm-month').value);
+  if (!person) { showToast('입력 정보가 잘못되었습니다.',false); return; }
+
+  // 변경된 항목만 추출
+  var changes = [];
+  _monthModalItems.forEach(function(entry, idx){
+    var newVal = parseInput('bmm-val-'+idx);
+    if (newVal !== entry.origValue) {
+      changes.push({rowIndex:entry.rowIndex, value:newVal});
+    }
+  });
+
+  if (changes.length === 0) { closeMonthModal(); showToast('변경사항 없음'); return; }
+
+  closeMonthModal();
+  showToast('저장 중... ('+changes.length+'건)');
+
+  var done=0, fail=0;
+  changes.forEach(function(c){
+    google.script.run
+      .withSuccessHandler(function(res){
+        done++;
+        if (res && res.error) fail++;
+        if (done === changes.length) {
+          if (fail > 0) showToast('일부 저장 실패 ('+fail+'/'+changes.length+')',false);
+          else showToast(changes.length+'건 저장 완료!');
+          budgetCache={};
+          biDataCache={};
+          budgetTabInited=false;
+          initBudgetTab();
+        }
+      })
+      .withFailureHandler(function(err){
+        done++; fail++;
+        if (done === changes.length) {
+          showToast('저장 오류 ('+fail+'/'+changes.length+')',false);
+          budgetCache={};
+          biDataCache={};
+          budgetTabInited=false;
+          initBudgetTab();
+        }
+      })
+      .updateBudgetMonth(person, c.rowIndex, monthIdx, c.value);
+  });
+}
+</script>
+</div><!-- /.main-content -->
+</body>
+</html>

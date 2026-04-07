@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="ko" id="htmlRoot" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>행동경제학 프런티어 — Loewenstein · Mullainathan · Shiller · 3대 연구 전선</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:              #0e0e0e;
+      --surface-low:     #131313;
+      --surface-mid:     #1a1919;
+      --surface-high:    #201f1f;
+      --surface-highest: #262626;
+      --surface-bright:  #2c2c2c;
+      --primary:         #85adff;
+      --primary-fixed:   #6e9fff;
+      --on-primary-fixed:#000000;
+      --secondary:       #69f6b8;
+      --tertiary:        #ff6f7e;
+      --on-surface:      #ffffff;
+      --on-surface-v:    #adaaaa;
+      --outline-v:       #494847;
+      --border:          rgba(255,255,255,0.05);
+      --text:            #ffffff;
+      --text-sec:        #adaaaa;
+      --accent:          #6e9fff;
+      --card-accent:     #06b6d4;
+    }
+    html.theme-light {
+      --bg:              #FAFAFA;
+      --surface-low:     #FFFFFF;
+      --surface-mid:     #F9FAFB;
+      --surface-high:    #FFFFFF;
+      --surface-highest: #F3F4F6;
+      --surface-bright:  #FFFFFF;
+      --primary:         #2563EB;
+      --primary-fixed:   #2563EB;
+      --on-primary-fixed:#FFFFFF;
+      --secondary:       #059669;
+      --tertiary:        #E11D48;
+      --on-surface:      #111827;
+      --on-surface-v:    #4B5563;
+      --outline-v:       #E0E0E0;
+      --border:          rgba(0,0,0,0.06);
+      --text:            #111827;
+      --text-sec:        #4B5563;
+      --accent:          #2563EB;
+      --card-accent:     #0891b2;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', 'Noto Sans KR', -apple-system, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      min-height: 100vh; transition: background 0.3s, color 0.3s;
+    }
+
+    /* ── Viz Menu ── */
+    .viz-menu {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--surface-low);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; height: 52px;
+    }
+    .viz-menu-left { display: flex; align-items: center; gap: 12px; }
+    .nav-back {
+      display: flex; align-items: center; gap: 6px;
+      color: var(--text-sec); text-decoration: none; font-size: 14px;
+      padding: 6px 10px; border-radius: 8px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-back:hover { background: var(--surface-high); color: var(--text); }
+    .nav-back .material-symbols-outlined { font-size: 18px; }
+    .page-title-bar { font-size: 14px; font-weight: 600; color: var(--text-sec); }
+    .viz-menu-actions { display: flex; align-items: center; gap: 8px; }
+    .action-btn {
+      display: flex; align-items: center; gap: 5px;
+      background: var(--surface-high); border: 1px solid var(--border);
+      color: var(--text-sec); font-size: 13px; font-weight: 500;
+      padding: 6px 12px; border-radius: 8px; cursor: pointer;
+      transition: background 0.2s, color 0.2s; font-family: inherit;
+    }
+    .action-btn:hover { background: var(--surface-bright); color: var(--text); }
+    .action-btn .material-symbols-outlined { font-size: 16px; }
+    .theme-btn { padding: 6px; border-radius: 8px; }
+
+    /* ── Content ── */
+    .content-wrap { max-width: 900px; margin: 0 auto; padding: 80px 24px 80px; }
+
+    /* ── Hero ── */
+    .hero { margin-bottom: 32px; }
+    .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+    .cat-badge {
+      font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px;
+      letter-spacing: 0.05em; text-transform: uppercase;
+    }
+    .cat-행동경제학 { background: rgba(6,182,212,0.15); color: #06b6d4; }
+    .diff-badge {
+      font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px;
+    }
+    .diff-advanced { background: rgba(239,68,68,0.15); color: #ef4444; }
+    .diff-intermediate { background: rgba(245,158,11,0.15); color: #f59e0b; }
+    .diff-intro { background: rgba(34,197,94,0.15); color: #22c55e; }
+    .hero-title { font-size: clamp(24px,4vw,36px); font-weight: 800; line-height: 1.25; letter-spacing: -0.02em; margin-bottom: 12px; }
+    .hero-title span { color: var(--card-accent); }
+    .hero-sub { font-size: 15px; color: var(--text-sec); line-height: 1.7; max-width: 680px; }
+
+    /* ── Meta bar ── */
+    .meta-bar {
+      display: flex; align-items: center; flex-wrap: wrap; gap: 16px;
+      padding: 14px 18px; background: var(--surface-mid);
+      border-radius: 12px; margin-bottom: 28px;
+      border: 1px solid var(--border); font-size: 13px; color: var(--text-sec);
+    }
+    .meta-item { display: flex; align-items: center; gap: 6px; }
+    .meta-item .material-symbols-outlined { font-size: 15px; color: var(--card-accent); }
+
+    /* ── KPI Row ── */
+    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 12px; margin-bottom: 36px; }
+    .kpi-card {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px 18px;
+    }
+    .kpi-label { font-size: 11px; font-weight: 600; color: var(--text-sec); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+    .kpi-value { font-size: 22px; font-weight: 800; color: var(--card-accent); }
+    .kpi-sub { font-size: 12px; color: var(--text-sec); margin-top: 3px; }
+
+    /* ── Section ── */
+    .section { margin-bottom: 48px; }
+    .section-title {
+      font-size: 18px; font-weight: 700; margin-bottom: 18px;
+      padding-bottom: 10px; border-bottom: 2px solid var(--card-accent);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-title .num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--card-accent); color: #000;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; flex-shrink: 0;
+    }
+
+    /* ── Researcher Block ── */
+    .researcher-block {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 16px; padding: 22px 24px; margin-bottom: 20px;
+    }
+    .researcher-header {
+      display: flex; align-items: center; gap: 14px; margin-bottom: 16px;
+    }
+    .researcher-avatar {
+      width: 48px; height: 48px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; font-weight: 800; flex-shrink: 0;
+    }
+    .researcher-meta h3 { font-size: 17px; font-weight: 700; margin-bottom: 2px; }
+    .researcher-meta p { font-size: 13px; color: var(--text-sec); }
+    .researcher-tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 6px; margin-left: 8px;
+      background: rgba(6,182,212,0.15); color: var(--card-accent);
+    }
+
+    /* ── Loewenstein: Hyperbolic Discounting Diagram ── */
+    .hyp-diagram {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0;
+    }
+    .hyp-scenario {
+      background: var(--surface-high); border-radius: 12px; padding: 16px;
+      border: 1px solid var(--border);
+    }
+    .hyp-scenario h4 { font-size: 13px; font-weight: 700; margin-bottom: 10px; color: var(--text-sec); }
+    .hyp-choice { display: flex; gap: 8px; margin-bottom: 8px; }
+    .hyp-option {
+      flex: 1; padding: 10px 12px; border-radius: 8px; font-size: 13px;
+      font-weight: 600; text-align: center;
+    }
+    .hyp-reject { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; }
+    .hyp-accept { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); color: #22c55e; }
+    .hyp-note { font-size: 12px; color: var(--text-sec); margin-top: 6px; line-height: 1.5; }
+
+    /* ── Hot-Cold Gap ── */
+    .hot-cold-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; margin: 16px 0; align-items: center; }
+    .hc-state {
+      background: var(--surface-high); border-radius: 12px; padding: 14px 16px;
+      border: 1px solid var(--border);
+    }
+    .hc-state.hot { border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.05); }
+    .hc-state.cold { border-color: rgba(99,102,241,0.3); background: rgba(99,102,241,0.05); }
+    .hc-state h4 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .hc-state p { font-size: 12px; color: var(--text-sec); line-height: 1.5; }
+    .hc-arrow { font-size: 22px; text-align: center; color: var(--text-sec); padding: 0 8px; }
+
+    /* ── Scarcity Brain ── */
+    .scarcity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+    .scarcity-card {
+      background: var(--surface-high); border-radius: 12px; padding: 16px;
+      border: 1px solid var(--border);
+    }
+    .scarcity-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+    .scarcity-card p { font-size: 12px; color: var(--text-sec); line-height: 1.5; }
+    .iq-bar-wrap { margin: 10px 0; }
+    .iq-bar-label { font-size: 12px; color: var(--text-sec); margin-bottom: 4px; }
+    .iq-bar-track { height: 8px; background: var(--outline-v); border-radius: 4px; overflow: hidden; }
+    .iq-bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+    .fill-poor { background: #ef4444; }
+    .fill-rich { background: #22c55e; }
+    .iq-val { font-size: 13px; font-weight: 700; margin-top: 4px; }
+
+    /* ── Bandwidth Model ── */
+    .bw-model {
+      background: var(--surface-high); border-radius: 12px; padding: 18px;
+      border: 1px solid var(--border); margin: 14px 0;
+    }
+    .bw-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .bw-label { width: 100px; font-size: 12px; font-weight: 600; color: var(--text-sec); flex-shrink: 0; }
+    .bw-track { flex: 1; height: 18px; background: var(--outline-v); border-radius: 9px; overflow: hidden; position: relative; }
+    .bw-fill { height: 100%; border-radius: 9px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 11px; font-weight: 700; color: #000; }
+    .bw-scarcity .bw-fill { background: linear-gradient(90deg, #ef4444, #f97316); width: 55%; }
+    .bw-abundance .bw-fill { background: linear-gradient(90deg, #22c55e, #06b6d4); width: 90%; }
+    .bw-row-label { font-size: 13px; font-weight: 600; min-width: 60px; text-align: right; }
+
+    /* ── Shiller Section ── */
+    .narrative-flow {
+      display: flex; align-items: center; gap: 0; flex-wrap: wrap;
+      margin: 16px 0; background: var(--surface-high);
+      border-radius: 12px; padding: 16px; border: 1px solid var(--border);
+    }
+    .nf-node {
+      flex: 1; min-width: 120px; padding: 12px;
+      text-align: center;
+    }
+    .nf-icon { font-size: 28px; margin-bottom: 6px; }
+    .nf-label { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .nf-desc { font-size: 12px; color: var(--text-sec); }
+    .nf-arrow { font-size: 20px; color: var(--card-accent); flex-shrink: 0; }
+    .prediction-box {
+      background: rgba(6,182,212,0.08); border: 1px solid rgba(6,182,212,0.3);
+      border-radius: 12px; padding: 16px 20px; margin: 12px 0;
+    }
+    .prediction-box h4 { font-size: 13px; font-weight: 700; color: var(--card-accent); margin-bottom: 8px; }
+    .prediction-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; font-size: 13px; }
+    .prediction-item:last-child { margin-bottom: 0; }
+    .pred-check { color: #22c55e; font-weight: 700; flex-shrink: 0; }
+    .pred-x { color: #ef4444; font-weight: 700; flex-shrink: 0; }
+
+    /* ── 3 Frontiers ── */
+    .frontier-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 16px; }
+    .frontier-card {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+    }
+    .frontier-header {
+      padding: 14px 18px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .frontier-num {
+      width: 32px; height: 32px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 800; flex-shrink: 0;
+    }
+    .frontier-header h3 { font-size: 15px; font-weight: 700; }
+    .frontier-header p { font-size: 12px; color: var(--text-sec); margin-top: 2px; }
+    .frontier-body { padding: 0 18px 16px; }
+
+    /* Dark Pattern ── */
+    .dark-pattern-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
+    .dp-item {
+      background: var(--surface-high); border-radius: 10px; padding: 12px;
+      border: 1px solid var(--border); text-align: center;
+    }
+    .dp-item .icon { font-size: 22px; margin-bottom: 6px; }
+    .dp-item h4 { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+    .dp-item p { font-size: 11px; color: var(--text-sec); }
+    .dp-warn { font-size: 12px; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); border-radius: 8px; padding: 10px 14px; color: var(--text-sec); margin-top: 10px; }
+
+    /* Replication Crisis ── */
+    .rep-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+    .rep-table th {
+      text-align: left; padding: 8px 12px; font-size: 11px;
+      font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-sec); border-bottom: 1px solid var(--outline-v);
+    }
+    .rep-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+    .rep-table tr:last-child td { border-bottom: none; }
+    .status-fail { color: #ef4444; font-weight: 700; }
+    .status-partial { color: #f59e0b; font-weight: 700; }
+    .status-ok { color: #22c55e; font-weight: 700; }
+
+    /* Neuro ── */
+    .neuro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
+    .neuro-item {
+      background: var(--surface-high); border-radius: 10px; padding: 14px;
+      border: 1px solid var(--border);
+    }
+    .neuro-item h4 { font-size: 13px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+    .neuro-item p { font-size: 12px; color: var(--text-sec); line-height: 1.5; }
+
+    /* ── Policy Implication ── */
+    .policy-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 12px; margin: 16px 0; }
+    .policy-card {
+      background: var(--surface-high); border-radius: 12px; padding: 16px;
+      border-left: 3px solid var(--card-accent);
+    }
+    .policy-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: var(--card-accent); }
+    .policy-card p { font-size: 12px; color: var(--text-sec); line-height: 1.5; }
+
+    /* ── Callout ── */
+    .callout {
+      background: var(--surface-high); border-radius: 12px; padding: 16px 20px;
+      border-left: 3px solid var(--card-accent); margin: 14px 0;
+    }
+    .callout p { font-size: 13px; color: var(--text-sec); line-height: 1.7; }
+    .callout strong { color: var(--text); }
+
+    /* ── Related ── */
+    .related-section { margin-top: 48px; }
+    .related-title { font-size: 14px; font-weight: 700; color: var(--text-sec); margin-bottom: 12px; letter-spacing: 0.04em; text-transform: uppercase; }
+    .related-links { display: flex; flex-wrap: wrap; gap: 8px; }
+    .related-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--surface-high); border: 1px solid var(--border);
+      border-radius: 8px; padding: 6px 12px; font-size: 13px; font-weight: 500;
+      color: var(--text-sec); text-decoration: none; transition: all 0.2s;
+    }
+    .related-chip:hover { background: var(--surface-bright); color: var(--text); border-color: var(--card-accent); }
+    .related-chip .material-symbols-outlined { font-size: 14px; }
+
+    /* ── Footer ── */
+    .footer-note { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-sec); display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .footer-note a { color: var(--card-accent); text-decoration: none; }
+    .footer-note a:hover { text-decoration: underline; }
+
+    /* ── Utility ── */
+    .tag-inline {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 5px; margin: 2px;
+      background: var(--surface-bright); color: var(--text-sec);
+    }
+    .highlight { color: var(--card-accent); font-weight: 700; }
+    .em-box {
+      background: rgba(6,182,212,0.08); border: 1px solid rgba(6,182,212,0.2);
+      border-radius: 10px; padding: 12px 16px; margin: 10px 0;
+      font-size: 13px; color: var(--text-sec); line-height: 1.7;
+    }
+    .em-box strong { color: var(--card-accent); }
+
+    @media (max-width: 600px) {
+      .hyp-diagram, .scarcity-grid, .neuro-grid, .dark-pattern-grid { grid-template-columns: 1fr; }
+      .hot-cold-grid { grid-template-columns: 1fr; }
+      .hc-arrow { transform: rotate(90deg); text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Top Menu ── -->
+<nav class="viz-menu">
+  <div class="viz-menu-left">
+    <a href="../index.html" class="nav-back">
+      <span class="material-symbols-outlined">arrow_back</span>
+      Archive
+    </a>
+    <span class="page-title-bar">행동경제학 프런티어</span>
+  </div>
+  <div class="viz-menu-actions">
+    <button class="action-btn theme-btn" id="themeToggle" title="테마 전환">
+      <span class="material-symbols-outlined" id="themeIcon">light_mode</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── Main Content ── -->
+<main class="content-wrap">
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-eyebrow">
+      <span class="cat-badge cat-행동경제학">행동경제학</span>
+      <span class="diff-badge diff-advanced">심화</span>
+    </div>
+    <h1 class="hero-title">
+      행동경제학 프런티어<br>
+      <span>Loewenstein · Mullainathan · Shiller · 3대 연구 전선</span>
+    </h1>
+    <p class="hero-sub">
+      시간 할인의 비일관성을 밝힌 Loewenstein의 현재 편향, 결핍이 인지 대역폭 자체를 잠식한다는
+      Mullainathan &amp; Shafir의 Scarcity 이론, 내러티브가 경제를 구동한다는 Shiller의 비전,
+      그리고 알고리즘 넛지·재현성 위기·신경경제학이라는 세 가지 현재 진행형 연구 전선을 정리합니다.
+    </p>
+  </header>
+
+  <!-- Meta bar -->
+  <div class="meta-bar">
+    <span class="meta-item">
+      <span class="material-symbols-outlined">person</span>
+      Loewenstein · Mullainathan &amp; Shafir · Shiller
+    </span>
+    <span class="meta-item">
+      <span class="material-symbols-outlined">calendar_today</span>
+      1992 – 현재
+    </span>
+    <span class="meta-item">
+      <span class="material-symbols-outlined">school</span>
+      Carnegie Mellon · MIT · Harvard · Yale
+    </span>
+    <span class="meta-item">
+      <span class="material-symbols-outlined">menu_book</span>
+      Scarcity(2013) · Narrative Economics(2019)
+    </span>
+  </div>
+
+  <!-- KPI Row -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">현재 편향 할인율</div>
+      <div class="kpi-value">β &lt; 1</div>
+      <div class="kpi-sub">준-쌍곡 할인 모델 (β·δ)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">결핍의 IQ 손실</div>
+      <div class="kpi-value">−13~14p</div>
+      <div class="kpi-sub">수확 전 vs 수확 후 동일인</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">재현성 위기</div>
+      <div class="kpi-value">~60%</div>
+      <div class="kpi-sub">심리학 연구 재현 성공률(2015)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Shiller 예측 적중</div>
+      <div class="kpi-value">2회</div>
+      <div class="kpi-sub">닷컴 버블 2000 · 금융위기 2007</div>
+    </div>
+  </div>
+
+  <!-- ── Section 1: Loewenstein ── -->
+  <section class="section">
+    <h2 class="section-title">
+      <span class="num">1</span>
+      George Loewenstein — 시간과 감정의 경제학
+    </h2>
+
+    <div class="researcher-block">
+      <div class="researcher-header">
+        <div class="researcher-avatar" style="background:rgba(6,182,212,0.15);color:#06b6d4;">GL</div>
+        <div class="researcher-meta">
+          <h3>George Loewenstein <span class="researcher-tag">Carnegie Mellon</span></h3>
+          <p>행동경제학 · 의사결정심리학 · 신경경제학 공동 창시자. 시간 선호(Time Preference)와 감정이 경제 의사결정에 미치는 영향을 집중 연구</p>
+        </div>
+      </div>
+
+      <!-- Hyperbolic Discounting -->
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;">쌍곡 할인 (Hyperbolic Discounting)</h3>
+
+      <div class="callout">
+        <p>핵심 명제: 인간은 가까운 미래를 <strong>과도하게 할인</strong>하고, 먼 미래는 그냥 '나중'으로 묶는다.
+        표준 경제학의 <strong>지수 할인(Exponential Discounting)</strong>은 시점에 무관한 일관된 선호를 가정하지만,
+        실제 인간은 시점이 달라지면 선택이 역전된다 — 이를 <strong>선호 역전(Preference Reversal)</strong>이라 한다.</p>
+      </div>
+
+      <div class="hyp-diagram">
+        <div class="hyp-scenario">
+          <h4>🔴 지금 선택하면</h4>
+          <div class="hyp-choice">
+            <div class="hyp-option hyp-reject">지금 100만 원</div>
+            <div class="hyp-option hyp-accept" style="font-size:11px;">1년 후<br>110만 원 ✕ 거절</div>
+          </div>
+          <div class="hyp-note">"지금 당장"이라는 매력이 너무 커서 10% 더 받을 수 있는 선택을 포기한다.</div>
+        </div>
+        <div class="hyp-scenario">
+          <h4>🟢 미래끼리 비교하면</h4>
+          <div class="hyp-choice">
+            <div class="hyp-option hyp-reject" style="font-size:11px;">11년 후<br>100만 원 ✕</div>
+            <div class="hyp-option hyp-accept" style="font-size:11px;">12년 후<br>110만 원 ✔ 수락</div>
+          </div>
+          <div class="hyp-note">먼 미래끼리 비교하면 1년을 기다리는 것이 합리적으로 느껴져 수락한다.</div>
+        </div>
+      </div>
+
+      <div class="em-box">
+        <strong>준-쌍곡 할인 모델 (β·δ 모델)</strong>: U = u₀ + β·(δ¹u₁ + δ²u₂ + ··· + δⁿuₙ)<br>
+        β &lt; 1 = 현재 편향 계수(지금에 대한 과도한 가중). δ = 기간별 할인율.<br>
+        대부분의 사람은 β ≈ 0.6~0.9 수준으로 추정 — 지금의 1달러가 내일의 1달러보다 훨씬 무겁게 느껴진다.
+      </div>
+
+      <!-- Hot-Cold Gap -->
+      <h3 style="font-size:15px;font-weight:700;margin:20px 0 12px;">핫-콜드 공감 격차 (Hot-Cold Empathy Gap)</h3>
+      <div class="hot-cold-grid">
+        <div class="hc-state cold">
+          <h4>❄️ Cold State (배부를 때)</h4>
+          <p>슈퍼마켓에서 건강 식재료를 선택, 충동 구매 억제.<br>미래의 '배고픈 나'가 얼마나 충동적일지 <strong>과소평가</strong>.</p>
+        </div>
+        <div class="hc-arrow">⇄</div>
+        <div class="hc-state hot">
+          <h4>🔥 Hot State (배고플 때)</h4>
+          <p>정크푸드와 고열량 식품을 충동적으로 구매.<br>과거의 '배부른 나'의 합리적 계획과 단절.</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <p><strong>적용 범위</strong>: 배고픔뿐 아니라 성적 각성, 분노, 중독 충동, 통증 등 모든 신체·감정 상태에 적용.<br>
+        의사, 판사, 운동선수 — 감정이 고조된 상태에서 내린 결정이 얼마나 달라지는지 본인도 사전에 예측 못 한다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Section 2: Mullainathan & Shafir ── -->
+  <section class="section">
+    <h2 class="section-title">
+      <span class="num">2</span>
+      Mullainathan &amp; Shafir — 결핍 이론 (Scarcity)
+    </h2>
+
+    <div class="researcher-block">
+      <div class="researcher-header">
+        <div class="researcher-avatar" style="background:rgba(245,158,11,0.15);color:#f59e0b;">MS</div>
+        <div class="researcher-meta">
+          <h3>Sendhil Mullainathan &amp; Eldar Shafir <span class="researcher-tag">MIT · Princeton</span></h3>
+          <p>《Scarcity: Why Having Too Little Means So Much》(2013) 저자. 결핍이 인지 자원을 잠식해 나쁜 의사결정을 낳는다는 이론 수립</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <p>핵심 명제: 결핍(돈·시간·사회적 연결의 부족)은 단순히 불편한 환경이 아니라 <strong>인지 대역폭(Cognitive Bandwidth) 자체를 점령</strong>한다.
+        가난한 사람이 나쁜 결정을 내리는 것은 능력이 부족해서가 아니라, 결핍이 뇌의 처리 자원을 지속적으로 소모하기 때문이다.</p>
+      </div>
+
+      <!-- IQ Study -->
+      <h3 style="font-size:15px;font-weight:700;margin:16px 0 12px;">인도 사탕수수 농부 연구</h3>
+      <div class="scarcity-grid">
+        <div class="scarcity-card">
+          <h4>🌾 수확 전 (가난한 시기)</h4>
+          <div class="iq-bar-wrap">
+            <div class="iq-bar-label">IQ 수준 (상대 추정)</div>
+            <div class="iq-bar-track">
+              <div class="iq-bar-fill fill-poor" style="width:55%;"></div>
+            </div>
+            <div class="iq-val" style="color:#ef4444;">−13~14 포인트</div>
+          </div>
+          <p style="font-size:12px;color:var(--text-sec);margin-top:8px;">수확 전 자금난 → 돈 걱정이 뇌를 점령 → 추론·기억·충동 억제 능력 저하</p>
+        </div>
+        <div class="scarcity-card">
+          <h4>💰 수확 후 (풍요로운 시기)</h4>
+          <div class="iq-bar-wrap">
+            <div class="iq-bar-label">IQ 수준 (상대 추정)</div>
+            <div class="iq-bar-track">
+              <div class="iq-bar-fill fill-rich" style="width:80%;"></div>
+            </div>
+            <div class="iq-val" style="color:#22c55e;">기준점 (동일 인물)</div>
+          </div>
+          <p style="font-size:12px;color:var(--text-sec);margin-top:8px;">수확 후 경제적 여유 → 인지 자원 해방 → 동일 인물이 훨씬 높은 점수</p>
+        </div>
+      </div>
+
+      <div class="em-box">
+        <strong>핵심 통제</strong>: 같은 농부를 수확 전·후 두 번 측정. 유전·교육 수준 등 개인 고정 요소가 통제됨.
+        결핍이 IQ 수준에 미치는 영향은 <strong>하룻밤 수면 부족</strong>과 맞먹는 규모.
+      </div>
+
+      <!-- Bandwidth Model -->
+      <h3 style="font-size:15px;font-weight:700;margin:20px 0 12px;">인지 대역폭 소진 모델</h3>
+      <div class="bw-model">
+        <div class="bw-row">
+          <div class="bw-label">결핍 상태</div>
+          <div class="bw-track">
+            <div class="bw-fill bw-scarcity">55%</div>
+          </div>
+          <div class="bw-row-label" style="color:#ef4444;">과부하</div>
+        </div>
+        <p style="font-size:11px;color:var(--text-sec);margin-bottom:14px;padding-left:110px;">결핍 걱정이 상당한 대역폭 점령 → 나머지 인지 작업에 사용 가능한 자원 감소</p>
+        <div class="bw-row">
+          <div class="bw-label">풍요 상태</div>
+          <div class="bw-track">
+            <div class="bw-fill bw-abundance">90%</div>
+          </div>
+          <div class="bw-row-label" style="color:#22c55e;">여유</div>
+        </div>
+        <p style="font-size:11px;color:var(--text-sec);margin-top:4px;padding-left:110px;">결핍 걱정 없음 → 인지 자원을 현재 과제에 집중 가능</p>
+      </div>
+
+      <!-- Policy -->
+      <h3 style="font-size:15px;font-weight:700;margin:20px 0 12px;">정책 함의</h3>
+      <div class="policy-row">
+        <div class="policy-card">
+          <h4>현금 이전이 교육보다 효과적</h4>
+          <p>빈곤층에게 자기계발 교육을 강요하기 전에, 당장의 결핍 자체를 해소하면 인지 능력이 회복된다.</p>
+        </div>
+        <div class="policy-card">
+          <h4>복잡한 절차 = 폭력</h4>
+          <p>복잡한 복지 신청서, 대출 서류는 가장 인지 여유가 없는 사람들에게 가장 큰 부담이 된다. 간소화가 핵심.</p>
+        </div>
+        <div class="policy-card">
+          <h4>터널링(Tunneling) 효과</h4>
+          <p>결핍 상태의 사람은 당면 문제에 지나치게 집중(터널 시야)해 장기적 이익을 놓친다. 이는 의지력 부족이 아닌 인지 구조 문제.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Section 3: Robert Shiller ── -->
+  <section class="section">
+    <h2 class="section-title">
+      <span class="num">3</span>
+      Robert Shiller — 내러티브 경제학
+    </h2>
+
+    <div class="researcher-block">
+      <div class="researcher-header">
+        <div class="researcher-avatar" style="background:rgba(139,92,246,0.15);color:#8b5cf6;">RS</div>
+        <div class="researcher-meta">
+          <h3>Robert Shiller <span class="researcher-tag">Yale · 2013 노벨 경제학상</span></h3>
+          <p>행동 금융학. CAPE 비율(Cyclically Adjusted P/E) 개발. 《비합리적 과열》(2000), 《내러티브 경제학》(2019) 저자</p>
+        </div>
+      </div>
+
+      <div class="prediction-box">
+        <h4>🎯 두 차례 버블 예측</h4>
+        <div class="prediction-item">
+          <span class="pred-check">✓</span>
+          <div><strong>2000년 《비합리적 과열(Irrational Exuberance)》</strong> 출판 직후 닷컴 버블 붕괴. CAPE 비율이 역사적 고점 → 과열 경고.</div>
+        </div>
+        <div class="prediction-item">
+          <span class="pred-check">✓</span>
+          <div><strong>2007~2008년 금융위기</strong> 사전 경고. 주택 가격 지수(Case-Shiller Index) 분석으로 부동산 거품 진단.</div>
+        </div>
+      </div>
+
+      <!-- Narrative Flow -->
+      <h3 style="font-size:15px;font-weight:700;margin:20px 0 12px;">내러티브 경제학 — 이야기가 경제를 구동한다</h3>
+      <div class="narrative-flow">
+        <div class="nf-node">
+          <div class="nf-icon">💬</div>
+          <div class="nf-label">이야기 생성</div>
+          <div class="nf-desc">경제 현상에 대한 강렬한 내러티브 탄생</div>
+        </div>
+        <div class="nf-arrow">→</div>
+        <div class="nf-node">
+          <div class="nf-icon">🦠</div>
+          <div class="nf-label">바이러스처럼 전파</div>
+          <div class="nf-desc">SNS·미디어·인간 관계망을 통해 감염처럼 확산</div>
+        </div>
+        <div class="nf-arrow">→</div>
+        <div class="nf-node">
+          <div class="nf-icon">🧠</div>
+          <div class="nf-label">믿음 형성</div>
+          <div class="nf-desc">사람들의 기대·소비·투자 결정을 바꾼다</div>
+        </div>
+        <div class="nf-arrow">→</div>
+        <div class="nf-node">
+          <div class="nf-icon">📈</div>
+          <div class="nf-label">경제 현실 변화</div>
+          <div class="nf-desc">이야기가 실제 경제 지표를 움직인다</div>
+        </div>
+      </div>
+
+      <div class="em-box">
+        <strong>대표 사례:</strong> "집값은 절대 안 떨어진다"는 내러티브(2000년대 초) →
+        주택 수요 과열 → 모기지 확대 → 서브프라임 붕괴.<br>
+        "기술주는 미래다"(1999년) → 닷컴 밸류에이션 무한 상승 → 버블 붕괴.<br>
+        이야기의 전파 속도와 감염률(R₀)이 경제 사이클을 설명하는 핵심 변수.
+      </div>
+
+      <div class="callout">
+        <p><strong>투자 시사점</strong>: 시장을 움직이는 것은 펀더멘털만이 아니다. 현재 어떤 이야기가 퍼지고 있는지,
+        그 이야기가 얼마나 감염력이 있는지를 분석하는 것이 행동 금융학적 리스크 관리의 핵심이다.
+        CAPE 비율이 역사적 평균을 크게 벗어나면 이야기(내러티브)가 주도하는 과열 구간으로 볼 수 있다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Section 4: 3 Frontiers ── -->
+  <section class="section">
+    <h2 class="section-title">
+      <span class="num">4</span>
+      3대 현재 진행형 연구 전선
+    </h2>
+
+    <div class="frontier-grid">
+
+      <!-- Frontier 1: Algorithm Nudge & Dark Pattern -->
+      <div class="frontier-card">
+        <div class="frontier-header" style="background:rgba(239,68,68,0.06);">
+          <div class="frontier-num" style="background:rgba(239,68,68,0.15);color:#ef4444;">①</div>
+          <div>
+            <h3>알고리즘 넛지 &amp; 다크 패턴</h3>
+            <p>디지털 환경에서의 선택 설계 — 넛지의 어두운 면</p>
+          </div>
+        </div>
+        <div class="frontier-body">
+          <div class="callout">
+            <p>Thaler·Sunstein의 넛지는 <strong>인간 복지를 위한 선택 설계</strong>를 목표로 했다.
+            그러나 빅테크는 동일한 행동경제학 원리를 <strong>이윤 극대화</strong>를 위한 다크 패턴으로 활용하고 있다.</p>
+          </div>
+          <div class="dark-pattern-grid">
+            <div class="dp-item">
+              <div class="icon">📱</div>
+              <h4>무한 스크롤</h4>
+              <p>멈출 자연스러운 지점 제거 → 가용성 휴리스틱 + 현재 편향 활용</p>
+            </div>
+            <div class="dp-item">
+              <div class="icon">🍪</div>
+              <h4>쿠키 동의창</h4>
+              <p>수락을 기본값·쉽게, 거부를 복잡하게 설계 → 상태 유지 편향 이용</p>
+            </div>
+            <div class="dp-item">
+              <div class="icon">⏰</div>
+              <h4>인위적 희소성</h4>
+              <p>"마지막 3석!" — 제조된 희소성으로 손실 회피 심리 자극</p>
+            </div>
+          </div>
+          <div class="dp-warn">
+            ⚖️ <strong>규제 대응</strong>: EU GDPR(2018), DSA(2023)는 다크 패턴을 명시적으로 금지.
+            "넛지 기반 디지털 환경 설계"의 윤리적 기준 수립이 연구 핵심 과제.
+          </div>
+        </div>
+      </div>
+
+      <!-- Frontier 2: Replication Crisis -->
+      <div class="frontier-card">
+        <div class="frontier-header" style="background:rgba(245,158,11,0.06);">
+          <div class="frontier-num" style="background:rgba(245,158,11,0.15);color:#f59e0b;">②</div>
+          <div>
+            <h3>재현성 위기 (Replication Crisis)</h3>
+            <p>행동경제학 실험 결과는 얼마나 믿을 수 있는가?</p>
+          </div>
+        </div>
+        <div class="frontier-body">
+          <div class="callout">
+            <p>2015년 Open Science Collaboration이 심리학 논문 100편을 재현 시도 →
+            <strong>약 60%만 재현 성공</strong>. 행동경제학의 핵심 이론들도 재현성 논란에서 자유롭지 않다.</p>
+          </div>
+          <table class="rep-table">
+            <thead>
+              <tr>
+                <th>이론/효과</th>
+                <th>원래 주장</th>
+                <th>재현 상태</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>자아 고갈 (Ego Depletion)</strong></td>
+                <td>의지력은 한정된 자원</td>
+                <td><span class="status-fail">재현 실패</span></td>
+              </tr>
+              <tr>
+                <td><strong>프라이밍 (Priming)</strong></td>
+                <td>단어 노출이 행동 변화</td>
+                <td><span class="status-fail">대부분 실패</span></td>
+              </tr>
+              <tr>
+                <td><strong>Ariely 데이터 조작</strong></td>
+                <td>부정직성 연구</td>
+                <td><span class="status-fail">논문 철회</span></td>
+              </tr>
+              <tr>
+                <td><strong>손실 회피 (Loss Aversion)</strong></td>
+                <td>λ ≈ 2.25</td>
+                <td><span class="status-partial">부분 재현</span></td>
+              </tr>
+              <tr>
+                <td><strong>앵커링 효과</strong></td>
+                <td>첫 정보가 판단 왜곡</td>
+                <td><span class="status-ok">재현 성공</span></td>
+              </tr>
+              <tr>
+                <td><strong>디코이 효과</strong></td>
+                <td>미끼 선택지의 영향</td>
+                <td><span class="status-ok">재현 성공</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="em-box">
+            <strong>균형 잡힌 시각</strong>: 재현성 위기는 행동경제학 전체를 부정하지 않는다.
+            실험실 소규모 효과 ≠ 현실 경제 대규모 효과. 강건한 이론(프로스펙트 이론, 앵커링)은 살아남고,
+            약한 효과들이 걸러지는 <strong>자기 교정 과정</strong>으로 볼 수 있다.
+          </div>
+        </div>
+      </div>
+
+      <!-- Frontier 3: Neuroeconomics -->
+      <div class="frontier-card">
+        <div class="frontier-header" style="background:rgba(6,182,212,0.06);">
+          <div class="frontier-num" style="background:rgba(6,182,212,0.15);color:#06b6d4;">③</div>
+          <div>
+            <h3>신경경제학 (Neuroeconomics)</h3>
+            <p>뇌 속에서 경제 의사결정이 어떻게 이루어지는가</p>
+          </div>
+        </div>
+        <div class="frontier-body">
+          <div class="callout">
+            <p>행동경제학이 "무엇을 잘못 결정하는가"를 기술한다면, 신경경제학은
+            <strong>fMRI·EEG를 사용해 그 오류가 뇌의 어느 부위에서 어떻게 발생하는지</strong>를 직접 관찰한다.</p>
+          </div>
+          <div class="neuro-grid">
+            <div class="neuro-item">
+              <h4>🧠 편도체 (Amygdala)</h4>
+              <p>손실 신호를 처음 감지하는 부위. 손실이 인식될 때 이성적 판단 전에 먼저 공포 반응 생성 → 손실 회피의 신경학적 기반.</p>
+            </div>
+            <div class="neuro-item">
+              <h4>💊 복측 피개 영역 (VTA)</h4>
+              <p>도파민 보상 회로의 핵심. 기대 보상과 실제 보상의 차이(예측 오차)를 계산 → 예상과 다른 결과에 과잉 반응.</p>
+            </div>
+            <div class="neuro-item">
+              <h4>🔬 전전두피질 (PFC)</h4>
+              <p>System 2(느린 사고)의 물리적 기반. 충동 억제, 장기 계획, 프레이밍 효과에 저항하는 역할. 피로 시 기능 저하.</p>
+            </div>
+            <div class="neuro-item">
+              <h4>📡 fMRI 연구 사례</h4>
+              <p>불공정한 제안을 받을 때 전방 섬 피질(Anterior Insula) 활성화 → 경제적으로 비합리적인 "분노 거절" 행동의 뇌 기반 확인.</p>
+            </div>
+          </div>
+          <div class="em-box" style="margin-top:14px;">
+            <strong>투자와 신경경제학</strong>: 손실을 경험할 때 편도체가 활성화되면 전전두피질이 억제됨.
+            즉, 주가가 폭락하는 순간 "냉정하게 더 사야 할 타이밍"이라는 판단이 뇌 수준에서 가장 어렵다.
+            이것이 공포에서 매수하기 어려운 신경학적 이유.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Related ── -->
+  <div class="related-section">
+    <div class="related-title">연관 카드</div>
+    <div class="related-links">
+      <a href="behavioral-economics-landscape.html" class="related-chip">
+        <span class="material-symbols-outlined">account_tree</span>
+        행동경제학 연구 지형도
+      </a>
+      <a href="ariely-cialdini-influence.html" class="related-chip">
+        <span class="material-symbols-outlined">psychology</span>
+        Ariely · Cialdini 영향력
+      </a>
+      <a href="nudge-theory-thaler.html" class="related-chip">
+        <span class="material-symbols-outlined">touch_app</span>
+        Thaler 넛지 이론
+      </a>
+      <a href="prospect-theory-investment.html" class="related-chip">
+        <span class="material-symbols-outlined">trending_down</span>
+        프로스펙트 이론 × 투자
+      </a>
+      <a href="heuristics-deep-dive.html" class="related-chip">
+        <span class="material-symbols-outlined">science</span>
+        3대 휴리스틱 심화 실험
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer-note">
+    <span>📚 주요 출처: Loewenstein &amp; Prelec (1992) · Mullainathan &amp; Shafir 《Scarcity》(2013) · Shiller 《Narrative Economics》(2019)</span>
+    <span>·</span>
+    <span>Open Science Collaboration (2015) · Camerer et al. (2016) · Glimcher et al. 《Neuroeconomics》</span>
+  </div>
+
+</main>
+
+<script>
+  // Theme
+  const root = document.getElementById('htmlRoot');
+  const themeIcon = document.getElementById('themeIcon');
+  const saved = localStorage.getItem('ka-theme') || 'dark';
+  if (saved === 'light') { root.classList.replace('theme-dark','theme-light'); themeIcon.textContent='dark_mode'; }
+
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const isLight = root.classList.contains('theme-light');
+    const t = isLight ? 'dark' : 'light';
+    root.classList.replace(isLight ? 'theme-light' : 'theme-dark', isLight ? 'theme-dark' : 'theme-light');
+    themeIcon.textContent = isLight ? 'light_mode' : 'dark_mode';
+    localStorage.setItem('ka-theme', t);
+  });
+</script>
+</body>
+</html>

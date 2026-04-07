@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>한국 WGBI 편입 — 75조원 유입과 금리·외환 파급 효과</title>
+  <meta name="knowledge-id" content="korea-wgbi-inclusion">
+  <meta name="knowledge-category" content="경제·거시">
+  <meta name="knowledge-series" content="국채·채권시장 시리즈">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-08">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html.theme-dark{
+      --bg:#0A0A0A;--surface:#141414;--surface-hover:#1C1C1C;
+      --border:rgba(255,255,255,0.06);--text:#EDEDED;--text-secondary:#888;
+      --accent:#3b82f6;
+      --chip-accent:color-mix(in srgb,var(--accent),transparent 88%);
+      --chip-amber:rgba(245,158,11,0.12);
+      --menu-bg:rgba(10,10,10,0.85);--menu-border:rgba(255,255,255,0.08);
+      --menu-text:#EDEDED;--menu-item-hover:rgba(255,255,255,0.06);
+    }
+    html.theme-light{
+      --bg:#FAFAF9;--surface:#FFF;--surface-hover:#F5F5F4;
+      --border:#e5e5e5;--text:#1a1a1a;--text-secondary:#666;
+      --accent:color-mix(in srgb,#3b82f6,#000 20%);
+      --chip-accent:color-mix(in srgb,var(--accent),transparent 92%);
+      --chip-amber:rgba(217,119,6,0.08);
+      --menu-bg:rgba(255,255,255,0.92);--menu-border:rgba(0,0,0,0.08);
+      --menu-text:#1a1a1a;--menu-item-hover:rgba(0,0,0,0.04);
+    }
+    body{font-family:'Noto Sans KR','Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:-0.011em;transition:background 0.3s,color 0.3s;min-height:100vh}
+    body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 70% 50% at 50% 10%,color-mix(in srgb,var(--accent),transparent 88%),transparent)}
+    h1{font-weight:700;letter-spacing:-0.03em;line-height:1.08} h2{font-weight:600} h3{font-weight:600}
+    *:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+    .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+    /* viz-menu */
+    .viz-menu{position:fixed;top:16px;right:16px;z-index:9999}
+    .viz-menu-toggle{width:40px;height:40px;border-radius:10px;border:1px solid var(--menu-border);background:var(--menu-bg);color:var(--menu-text);cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px);transition:all 0.2s}
+    .viz-menu-toggle:hover{background:var(--menu-item-hover)}
+    .viz-menu-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:196px;background:var(--menu-bg);backdrop-filter:blur(16px);border:1px solid var(--menu-border);border-radius:12px;padding:6px;opacity:0;visibility:hidden;transform:translateY(-8px) scale(0.96);transition:all 0.2s cubic-bezier(0.4,0,0.2,1);box-shadow:0 8px 32px rgba(0,0,0,0.25)}
+    .viz-menu-dropdown.open{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+    .viz-menu-dropdown button{width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;border:none;background:transparent;color:var(--menu-text);font-size:14px;font-family:inherit;cursor:pointer;border-radius:8px;transition:background 0.15s;text-align:left}
+    .viz-menu-dropdown button:hover{background:var(--menu-item-hover)}
+    /* layout */
+    main#main .container{max-width:860px;margin:0 auto;padding:64px 24px 80px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--accent);text-decoration:none;margin-bottom:24px;padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface);transition:background 0.15s}
+    .nav-back:hover{background:var(--surface-hover)}
+    /* hero */
+    .hero{text-align:center;margin-bottom:32px}
+    .hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:500;letter-spacing:0.04em;color:var(--text-secondary);text-transform:uppercase;margin-bottom:20px}
+    .hero h1{font-size:clamp(1.8rem,4.5vw,2.8rem);margin-bottom:12px}
+    .hero-sub{font-size:15px;color:var(--text-secondary);max-width:540px;margin:0 auto;line-height:1.7}
+    /* meta-bar */
+    .meta-bar{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:36px;font-size:12px;color:var(--text-secondary)}
+    .diff-badge{padding:2px 10px;border-radius:99px;font-size:11px;font-weight:600;border:1px solid var(--border)}
+    .diff-intermediate{background:var(--chip-amber);color:#f59e0b}
+    .diff-beginner{background:rgba(16,185,129,0.12);color:#10b981;border:1px solid rgba(16,185,129,0.3)}
+    .tag-chip{padding:2px 10px;border-radius:99px;font-size:11px;font-weight:500;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary)}
+    .meta-item{display:inline-flex;align-items:center;gap:4px}
+    .category-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:600;letter-spacing:0.02em;white-space:nowrap}
+    .cat-경제거시{background:rgba(16,185,129,0.12);color:#10b981;border:1px solid rgba(16,185,129,0.3)}
+    .cat-기술산업{background:rgba(59,130,246,0.12);color:#3b82f6;border:1px solid rgba(59,130,246,0.3)}
+    .cat-시사컬처{background:rgba(244,63,94,0.12);color:#f43f5e;border:1px solid rgba(244,63,94,0.3)}
+    html.theme-light .cat-경제거시{background:rgba(16,185,129,0.08)}
+    html.theme-light .cat-기술산업{background:rgba(59,130,246,0.08)}
+    html.theme-light .cat-시사컬처{background:rgba(244,63,94,0.08)}
+    .series-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 11px;border-radius:99px;font-size:11px;font-weight:600;background:color-mix(in srgb,var(--accent),transparent 90%);color:var(--accent);border:1px solid color-mix(in srgb,var(--accent),transparent 75%)}
+    /* kpi */
+    .kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+    .kpi-item{text-align:center;padding:18px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--border)}
+    .kpi-value{font-size:1.5rem;font-weight:700;letter-spacing:-0.03em}
+    .kpi-label{font-size:11px;color:var(--text-secondary);font-weight:500;margin-top:4px;text-transform:uppercase;letter-spacing:0.04em}
+    /* cards */
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;transition:box-shadow 0.2s ease;margin-bottom:16px}
+    html.theme-dark .card{box-shadow:0 0 0 1px var(--border)}
+    html.theme-light .card{box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+    .section-title{font-size:12px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px}
+    .highlight-box{padding:14px 18px;border-radius:10px;border:1px solid var(--border);background:var(--chip-accent);font-size:13.5px;line-height:1.7;margin-bottom:16px}
+    .highlight-box strong{color:var(--accent)}
+    .quote-box{padding:16px 20px;border-radius:10px;border-left:3px solid var(--accent);background:var(--surface);font-size:13px;line-height:1.7;color:var(--text-secondary);margin-bottom:16px;font-style:italic}
+    .quote-box cite{display:block;margin-top:6px;font-style:normal;font-weight:600;font-size:12px;color:var(--accent)}
+    .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:16px}
+    .inner-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px}
+    .inner-card-icon{font-size:1.4rem;margin-bottom:8px}
+    .inner-card-title{font-size:14px;font-weight:600;margin-bottom:6px}
+    .inner-card-desc{font-size:13px;color:var(--text-secondary);line-height:1.6}
+    /* timeline */
+    .timeline{display:flex;flex-direction:column;gap:0;margin-bottom:4px}
+    .tl-item{display:flex;gap:16px}
+    .tl-left{display:flex;flex-direction:column;align-items:center;width:32px;flex-shrink:0}
+    .tl-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--bg);flex-shrink:0;margin-top:4px}
+    .tl-dot.gray{background:#64748b}
+    .tl-line{width:2px;flex:1;background:var(--border);margin:4px 0;min-height:20px}
+    .tl-item:last-child .tl-line{display:none}
+    .tl-right{padding-bottom:20px;flex:1}
+    .tl-year{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px}
+    .tl-year.gray{color:var(--text-secondary)}
+    .tl-content{font-size:13px;color:var(--text-secondary);line-height:1.6}
+    .tl-content strong{color:var(--text)}
+    /* table */
+    .tbl-wrap{overflow-x:auto;margin-bottom:16px}
+    table{min-width:480px;width:100%;border-collapse:collapse;font-size:13px}
+    th{background:var(--surface);color:var(--text-secondary);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)}
+    td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-secondary)}
+    td:first-child{color:var(--accent);font-weight:700;font-size:12px}
+    td.desc{white-space:normal;min-width:160px}
+    tr:last-child td{border-bottom:none}
+    /* badges */
+    .badge-red{display:inline-block;padding:1px 8px;border-radius:99px;font-size:11px;font-weight:600;background:rgba(244,63,94,0.15);color:#f43f5e;border:1px solid rgba(244,63,94,0.3)}
+    .badge-amber{display:inline-block;padding:1px 8px;border-radius:99px;font-size:11px;font-weight:600;background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.3)}
+    .badge-blue{display:inline-block;padding:1px 8px;border-radius:99px;font-size:11px;font-weight:600;background:rgba(59,130,246,0.15);color:#3b82f6;border:1px solid rgba(59,130,246,0.3)}
+    .badge-green{display:inline-block;padding:1px 8px;border-radius:99px;font-size:11px;font-weight:600;background:rgba(16,185,129,0.15);color:#10b981;border:1px solid rgba(16,185,129,0.3)}
+    /* related */
+    .related-section{margin-top:32px;padding-top:20px;border-top:1px solid var(--border)}
+    .related-section h3{font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.05em}
+    .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+    .related-card{display:block;text-decoration:none;padding:12px 14px;border-radius:10px;border:1px solid var(--border);background:var(--surface);transition:background 0.15s}
+    .related-card:hover{background:var(--surface-hover)}
+    .related-card .r-label{font-size:11px;color:var(--accent);font-weight:600;margin-bottom:3px}
+    .related-card .r-title{font-size:13px;font-weight:500;color:var(--text);line-height:1.4}
+    /* footer */
+    .footer-note{text-align:center;font-size:12px;color:var(--text-secondary);margin-top:20px}
+    /* animate */
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .animate{animation:fadeInUp 0.6s ease-out both}
+    .d1{animation-delay:0.06s}.d2{animation-delay:0.12s}.d3{animation-delay:0.18s}.d4{animation-delay:0.24s}.d5{animation-delay:0.30s}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+    @media(max-width:640px){.kpi-row{grid-template-columns:1fr};main#main .container{padding:48px 16px 60px}}
+    @media print{body{background:white!important}.viz-menu{display:none!important}.card{break-inside:avoid}*{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        지식 Archive
+      </a>
+      <header class="hero animate">
+        <div class="hero-badge">💹 경제·거시 · 국채시장</div>
+        <h1>한국 WGBI 편입 — 75조원 유입과 금리·외환 파급 효과</h1>
+        <p class="hero-sub">2026년 4월 시작, 11월 완전 편입 — 외국인 $560~670억 유입·국채금리 0.2~0.6%p 하락·외채 구조 개선 5가지 파급 경로 완전 정리</p>
+      </header>
+      <div class="meta-bar animate d1">
+        <span class="category-badge cat-경제거시">경제·거시</span>
+        <span class="series-badge">📚 국채·채권시장 시리즈</span>
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="meta-item">📅 2026-04-08</span>
+        <span class="meta-item">🔖 FTSE Russell · KCMI · KDI · KCIF · 한국경제</span>
+      </div>
+      <div class="kpi-row animate d2">
+        <div class="kpi-item"><div class="kpi-value" style="color:var(--accent)">$560~670억</div><div class="kpi-label">예상 외국인 자금 유입</div></div>
+<div class="kpi-item"><div class="kpi-value" style="color:#10b981">-0.2~0.6%p</div><div class="kpi-label">국채금리 하락 효과</div></div>
+<div class="kpi-item"><div class="kpi-value" style="color:#f59e0b">2026.4~11</div><div class="kpi-label">단계적 편입 기간</div></div>
+      </div>
+      
+<div class="card animate d3">
+  <div class="section-title">📅 편입 타임라인</div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-right"><div class="tl-year">2022년 9월</div><div class="tl-content"><strong>관찰대상국(Watch List) 등재</strong> — FTSE Russell, 한국을 WGBI 편입 검토 대상으로 공식 등재. 외국인 국채 투자 편의성 개선 요구.</div></div></div>
+    <div class="tl-item"><div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-right"><div class="tl-year">2024년 10월</div><div class="tl-content"><strong>편입 확정 발표</strong> — FTSE Russell 공식 발표. 한국 비중 2.05~2.22%, 26개국 중 9위.</div></div></div>
+    <div class="tl-item"><div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-right"><div class="tl-year">2025년 3월</div><div class="tl-content"><strong>편입 일정 공식 확인</strong> — FTSE Russell 채권 국가분류 리뷰에서 2026.4 시작·2026.11 완전 편입 공식화.</div></div></div>
+    <div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#10b981;box-shadow:0 0 8px #10b981"></div><div class="tl-line"></div></div><div class="tl-right"><div class="tl-year" style="color:#10b981">2026년 4월 ← 현재</div><div class="tl-content"><strong>편입 시작 (진행 중)</strong> — 분기별 단계적 편입 개시. 이란-이스라엘 전쟁 속 국내 채권·외환시장의 안정제 역할 주목.</div></div></div>
+    <div class="tl-item"><div class="tl-left"><div class="tl-dot gray"></div></div><div class="tl-right"><div class="tl-year gray">2026년 11월</div><div class="tl-content"><strong>완전 편입 완료 예정</strong> — 비중 2.05~2.22% 완전 반영. 이후 의무 매수 수요 소멸 → 자금 유입 속도 둔화 주의.</div></div></div>
+  </div>
+</div>
+
+<div class="card animate d3">
+  <div class="section-title">💰 자금 유입 규모 추정</div>
+  <div class="highlight-box">
+    WGBI 추종 자금 <strong>$2.5~3.0조</strong> × 한국 비중 <strong>2.22%</strong> = <strong style="font-size:1.1em">$560억~670억 (75조~89조원)</strong><br>
+    월평균 유입: <strong>$28~50억</strong> (12~18개월 분산 편입 가정)
+  </div>
+</div>
+
+<div class="card animate d4">
+  <div class="section-title">📊 5대 기대 효과</div>
+  <div class="card-grid">
+    <div class="inner-card">
+      <div class="inner-card-icon">💰</div>
+      <div class="inner-card-title">① 외국인 자금 유입</div>
+      <div class="inner-card-desc">$560~670억(75~89조원). 자산운용사·연기금 신규 참여. 해외 공공부문 비중 확대.</div>
+    </div>
+    <div class="inner-card">
+      <div class="inner-card-icon">📉</div>
+      <div class="inner-card-title">② 금리 하락</div>
+      <div class="inner-card-desc">국채금리 평균 0.2~0.6%p 하락 예측(금융연구원). 회사채·가계대출 금리 연동 하락.</div>
+    </div>
+    <div class="inner-card">
+      <div class="inner-card-icon">💱</div>
+      <div class="inner-card-title">③ 외환시장 안정</div>
+      <div class="inner-card-desc">환헷지 동반 특성상 직접 원화 수요보다 외화자금 수급 개선 효과. 원/달러 변동성 완화.</div>
+    </div>
+    <div class="inner-card">
+      <div class="inner-card-icon">🌍</div>
+      <div class="inner-card-title">④ 투자자 저변 확대</div>
+      <div class="inner-card-desc">국제기구·해외 공공부문의 국고채 시장 참여 증가. 시장 신뢰도·유동성 제고.</div>
+    </div>
+    <div class="inner-card">
+      <div class="inner-card-icon">🏦</div>
+      <div class="inner-card-title">⑤ 외채 구조 개선</div>
+      <div class="inner-card-desc">벤치마크 듀레이션 맞추기 위해 장기물 투자 확대. 단기외채 비중 감소 → IMF형 급격 유출 위험 완화.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card animate d4">
+  <div class="section-title">🔴 2026년 4월 현재 의미</div>
+  <div class="highlight-box" style="background:rgba(16,185,129,0.08);border-color:rgba(16,185,129,0.3)">
+    4월 1일부터 한국 국채 WGBI 편입 시작. <strong>이란-이스라엘 전쟁</strong>으로 위축된 국내 채권·외환시장에 '구원투수' 역할 주목. 시장에서는 올 <strong>2~3분기 중 20~30bp 시장 안정 효과</strong>를 기대. 다만 편입 종료 2026년 11월 이후 추가 유입 감소 리스크 존재.
+  </div>
+</div>
+
+<div class="card animate d5" style="border-color:rgba(245,158,11,0.3)">
+  <div class="section-title">⚠️ 한계 및 유의사항</div>
+  <div class="card-grid" style="grid-template-columns:1fr 1fr">
+    <div class="inner-card" style="border-color:rgba(245,158,11,0.3)">
+      <div class="inner-card-title" style="color:#f59e0b">구조적 문제 미해결</div>
+      <div class="inner-card-desc">저출생·고령화에 따른 국채 발행 증가, GDP 대비 국가채무 비율 상승은 별도 과제. WGBI가 해결해주지 않음.</div>
+    </div>
+    <div class="inner-card" style="border-color:rgba(245,158,11,0.3)">
+      <div class="inner-card-title" style="color:#f59e0b">편입 후 수요 소멸</div>
+      <div class="inner-card-desc">11월 완전 편입 이후 의무 매수 수요 소멸. 이후 자금 유입은 시장 환경·금리 경쟁력에 좌우.</div>
+    </div>
+  </div>
+</div>
+
+      <div class="related-section animate d5">
+        <h3>🔗 관련 지식 카드</h3>
+        <div class="related-grid">
+          <a href="wgbi-overview.html" class="related-card"><div class="r-label">📚 같은 시리즈</div><div class="r-title">세계 3대 채권지수 — WGBI·BBGA·GBI-EM 완전 정리</div></a>
+<a href="us-treasury-yield-curve.html" class="related-card"><div class="r-label">→ 관련 지식</div><div class="r-title">미국 국채 수익률 곡선</div></a>
+<a href="cpi-pce-inflation.html" class="related-card"><div class="r-label">→ 관련 지식</div><div class="r-title">CPI·PCE 인플레이션 지표</div></a>
+        </div>
+      </div>
+      <p class="footer-note animate d5">FTSE Russell · KCMI · KDI · KCIF · 한국경제 · 2026-04-08 기준</p>
+    </div>
+  </main>
+  <script>
+    var THEMES=['theme-dark','theme-light'];
+    var LABELS={'theme-dark':'Dark','theme-light':'Light'};
+    (function(){var s=localStorage.getItem('ka-theme')||'theme-dark';document.documentElement.className=s;var l=document.getElementById('themeLabel');if(l)l.textContent=LABELS[s];})();
+    function cycleTheme(){var c=document.documentElement.className;var n=THEMES[(THEMES.indexOf(c)+1)%THEMES.length];document.documentElement.className=n;localStorage.setItem('ka-theme',n);var l=document.getElementById('themeLabel');if(l)l.textContent=LABELS[n];closeMenu();}
+    function toggleMenu(){document.getElementById('vizMenuDropdown').classList.toggle('open');}
+    function closeMenu(){document.getElementById('vizMenuDropdown').classList.remove('open');}
+    document.addEventListener('click',function(e){if(!e.target.closest('.viz-menu'))closeMenu();});
+    function downloadImage(){closeMenu();if(typeof htmlToImage==='undefined'){alert('라이브러리 로딩 중...');return;}htmlToImage.toPng(document.getElementById('main'),{pixelRatio:2}).then(function(d){var a=document.createElement('a');a.download='korea-wgbi-inclusion.png';a.href=d;a.click();});}
+  </script>
+</body>
+</html>

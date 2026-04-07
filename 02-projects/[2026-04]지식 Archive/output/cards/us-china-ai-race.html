@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>미-중 AI 패권 경쟁 — DeepSeek 쇼크와 AI 주도권</title>
+  <meta name="knowledge-id" content="us-china-ai-race">
+  <meta name="knowledge-category" content="기술·산업">
+  <meta name="knowledge-series" content="미-중 패권 경쟁 시리즈">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-08">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html.theme-dark{
+      --bg:#0A0A0A;--surface:#141414;--surface-hover:#1C1C1C;
+      --border:rgba(255,255,255,0.06);--text:#EDEDED;--text-secondary:#888;
+      --accent:#8b5cf6;
+      --chip-accent:color-mix(in srgb,var(--accent),transparent 88%);
+      --chip-amber:rgba(245,158,11,0.12);
+      --menu-bg:rgba(10,10,10,0.85);--menu-border:rgba(255,255,255,0.08);
+      --menu-text:#EDEDED;--menu-item-hover:rgba(255,255,255,0.06);
+    }
+    html.theme-light{
+      --bg:#FAFAF9;--surface:#FFF;--surface-hover:#F5F5F4;
+      --border:#e5e5e5;--text:#1a1a1a;--text-secondary:#666;
+      --accent:color-mix(in srgb,#8b5cf6,#000 20%);
+      --chip-accent:color-mix(in srgb,var(--accent),transparent 92%);
+      --chip-amber:rgba(217,119,6,0.08);
+      --menu-bg:rgba(255,255,255,0.92);--menu-border:rgba(0,0,0,0.08);
+      --menu-text:#1a1a1a;--menu-item-hover:rgba(0,0,0,0.04);
+    }
+    body{font-family:'Noto Sans KR','Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:-0.011em;transition:background 0.3s,color 0.3s;min-height:100vh}
+    body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 70% 50% at 50% 10%,color-mix(in srgb,var(--accent),transparent 88%),transparent)}
+    h1{font-weight:700;letter-spacing:-0.03em;line-height:1.08} h2{font-weight:600} h3{font-weight:600}
+    *:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+    .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+    .viz-menu{position:fixed;top:16px;right:16px;z-index:9999}
+    .viz-menu-toggle{width:40px;height:40px;border-radius:10px;border:1px solid var(--menu-border);background:var(--menu-bg);color:var(--menu-text);cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px);transition:all 0.2s}
+    .viz-menu-toggle:hover{background:var(--menu-item-hover)}
+    .viz-menu-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:196px;background:var(--menu-bg);backdrop-filter:blur(16px);border:1px solid var(--menu-border);border-radius:12px;padding:6px;opacity:0;visibility:hidden;transform:translateY(-8px) scale(0.96);transition:all 0.2s cubic-bezier(0.4,0,0.2,1);box-shadow:0 8px 32px rgba(0,0,0,0.25)}
+    .viz-menu-dropdown.open{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+    .viz-menu-dropdown button{width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;border:none;background:transparent;color:var(--menu-text);font-size:14px;font-family:inherit;cursor:pointer;border-radius:8px;transition:background 0.15s;text-align:left}
+    .viz-menu-dropdown button:hover{background:var(--menu-item-hover)}
+    main#main .container{max-width:860px;margin:0 auto;padding:64px 24px 80px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--accent);text-decoration:none;margin-bottom:24px;padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface);transition:background 0.15s}
+    .nav-back:hover{background:var(--surface-hover)}
+    .hero{text-align:center;margin-bottom:32px}
+    .hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:500;letter-spacing:0.04em;color:var(--text-secondary);text-transform:uppercase;margin-bottom:20px}
+    .hero h1{font-size:clamp(1.8rem,4.5vw,2.8rem);margin-bottom:12px}
+    .hero-sub{font-size:15px;color:var(--text-secondary);max-width:540px;margin:0 auto;line-height:1.7}
+    .meta-bar{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:36px;font-size:12px;color:var(--text-secondary)}
+    .diff-badge{padding:2px 10px;border-radius:99px;font-size:11px;font-weight:600;border:1px solid var(--border)}
+    .diff-intermediate{background:var(--chip-amber);color:#f59e0b}
+    .diff-beginner{background:rgba(16,185,129,0.12);color:#10b981;border:1px solid rgba(16,185,129,0.3)}
+    .tag-chip{padding:2px 10px;border-radius:99px;font-size:11px;font-weight:500;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary)}
+    .meta-item{display:inline-flex;align-items:center;gap:4px}
+    .category-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:600;letter-spacing:0.02em;white-space:nowrap}
+    .cat-경제거시{background:rgba(16,185,129,0.12);color:#10b981;border:1px solid rgba(16,185,129,0.3)}
+    .cat-기술산업{background:rgba(59,130,246,0.12);color:#3b82f6;border:1px solid rgba(59,130,246,0.3)}
+    .cat-시사컬처{background:rgba(244,63,94,0.12);color:#f43f5e;border:1px solid rgba(244,63,94,0.3)}
+    html.theme-light .cat-경제거시{background:rgba(16,185,129,0.08)}
+    html.theme-light .cat-기술산업{background:rgba(59,130,246,0.08)}
+    html.theme-light .cat-시사컬처{background:rgba(244,63,94,0.08)}
+    .series-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 11px;border-radius:99px;font-size:11px;font-weight:600;background:color-mix(in srgb,var(--accent),transparent 90%);color:var(--accent);border:1px solid color-mix(in srgb,var(--accent),transparent 75%)}
+    .kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+    .kpi-item{text-align:center;padding:18px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--border)}
+    .kpi-value{font-size:1.5rem;font-weight:700;letter-spacing:-0.03em}
+    .kpi-label{font-size:11px;color:var(--text-secondary);font-weight:500;margin-top:4px;text-transform:uppercase;letter-spacing:0.04em}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;transition:box-shadow 0.2s ease;margin-bottom:16px}
+    html.theme-dark .card{box-shadow:0 0 0 1px var(--border)}
+    html.theme-light .card{box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+    .section-title{font-size:12px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px}
+    .highlight-box{padding:14px 18px;border-radius:10px;border:1px solid var(--border);background:var(--chip-accent);font-size:13.5px;line-height:1.7;margin-bottom:16px}
+    .highlight-box strong{color:var(--accent)}
+    .quote-box{padding:16px 20px;border-radius:10px;border-left:3px solid var(--accent);background:var(--surface);font-size:13px;line-height:1.7;color:var(--text-secondary);margin-bottom:16px;font-style:italic}
+    .quote-box cite{display:block;margin-top:6px;font-style:normal;font-weight:600;font-size:12px;color:var(--accent)}
+    .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:16px}
+    .inner-card{background:var(--surface-hover);border:1px solid var(--border);border-radius:10px;padding:16px}
+    .inner-card-icon{font-size:1.5rem;margin-bottom:8px}
+    .inner-card-title{font-size:13px;font-weight:700;margin-bottom:6px}
+    .inner-card-desc{font-size:12px;color:var(--text-secondary);line-height:1.6}
+    .vs-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;margin-bottom:16px}
+    .vs-side{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+    .vs-side-a{border-radius:12px 0 0 12px;border-right:none}
+    .vs-side-b{border-radius:0 12px 12px 0;border-left:none}
+    .vs-divider{display:flex;align-items:center;justify-content:center;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0 12px;font-weight:800;font-size:1rem;color:var(--accent);writing-mode:vertical-rl;text-orientation:mixed}
+    .vs-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-secondary);margin-bottom:8px}
+    .vs-name{font-size:1.1rem;font-weight:800;margin-bottom:12px}
+    .vs-item{font-size:12.5px;color:var(--text-secondary);padding:4px 0;border-bottom:1px solid var(--border);line-height:1.5}
+    .vs-item:last-child{border-bottom:none}
+    .vs-item strong{color:var(--text)}
+    table.data-table{width:100%;border-collapse:collapse;font-size:13px}
+    table.data-table th{background:var(--surface-hover);color:var(--text-secondary);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:8px 12px;border-bottom:2px solid var(--border);text-align:left}
+    table.data-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+    table.data-table tr:last-child td{border-bottom:none}
+    table.data-table .desc{color:var(--text-secondary)}
+    table.data-table tr:hover td{background:var(--surface-hover)}
+    .timeline{display:flex;flex-direction:column;gap:0}
+    .tl-item{display:flex;gap:16px;min-height:72px}
+    .tl-left{display:flex;flex-direction:column;align-items:center;width:16px;flex-shrink:0}
+    .tl-dot{width:12px;height:12px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:4px}
+    .tl-dot.gray{background:var(--text-secondary)}
+    .tl-line{width:2px;flex:1;background:var(--border);margin:4px 0}
+    .tl-right{padding-bottom:16px;flex:1}
+    .tl-year{font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.04em}
+    .tl-year.gray{color:var(--text-secondary)}
+    .tl-content{font-size:13px;color:var(--text-secondary);line-height:1.6}
+    .tl-content strong{color:var(--text)}
+    .step-flow{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+    .step-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--surface-hover);border:1px solid var(--border);border-radius:10px}
+    .step-num{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+    .step-content{flex:1}
+    .step-title{font-size:13px;font-weight:700;margin-bottom:3px}
+    .step-desc{font-size:12px;color:var(--text-secondary);line-height:1.6}
+    .related-section{margin-top:40px;padding-top:24px;border-top:1px solid var(--border)}
+    .related-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-secondary);margin-bottom:12px}
+    .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+    .related-card{display:block;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:var(--text);transition:background 0.15s,border-color 0.15s}
+    .related-card:hover{background:var(--surface-hover);border-color:var(--accent)}
+    .r-label{font-size:10px;color:var(--text-secondary);font-weight:600;letter-spacing:0.04em;margin-bottom:4px;text-transform:uppercase}
+    .r-title{font-size:12.5px;font-weight:600;line-height:1.4}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+    .animate{animation:fadeUp 0.5s ease both}
+    .d1{animation-delay:.05s}.d2{animation-delay:.1s}.d3{animation-delay:.15s}.d4{animation-delay:.2s}.d5{animation-delay:.25s}.d6{animation-delay:.3s}
+  </style>
+</head>
+<body>
+  <nav class="viz-menu" aria-label="메뉴">
+    <button class="viz-menu-toggle" id="menuToggle" aria-haspopup="true" aria-expanded="false" aria-label="메뉴 열기">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+    </button>
+    <div class="viz-menu-dropdown" id="menuDropdown" role="menu">
+      <button onclick="toggleTheme()" role="menuitem"><span>🌓</span>테마 전환</button>
+      <button onclick="downloadPng()" role="menuitem"><span>🖼</span>PNG 다운로드</button>
+      <button onclick="window.print()" role="menuitem"><span>🖨</span>인쇄</button>
+      <button onclick="window.location.href='../index.html'" role="menuitem"><span>🏠</span>아카이브 홈</button>
+    </div>
+  </nav>
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back">← 지식 아카이브</a>
+      <div class="hero animate d1">
+        <div class="hero-badge">🤖 기술·산업 · AI</div>
+        <h1>미-중 AI 패권 경쟁 — DeepSeek 쇼크와 AI 주도권</h1>
+        <p class="hero-sub">Stargate $5,000억 vs DeepSeek $560만 — 하드웨어 우위의 미국과 알고리즘 효율로 추격하는 중국의 AI 패권 경쟁 5대 전선</p>
+      </div>
+      <div class="meta-bar animate d2">
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="category-badge cat-기술산업">기술·산업</span>
+        <span class="series-badge">📚 미-중 패권 경쟁 시리즈</span>
+        <span class="meta-item">📅 2026-04-08</span>
+        <span class="meta-item">📎 OpenAI · DeepSeek · CNAS · Georgetown CSET · RAND</span>
+      </div>
+      <div class="kpi-row animate d2">
+        <div class="kpi-item"><div class="kpi-value" style="color:var(--accent)">$5,000억</div><div class="kpi-label">미국 Stargate 투자</div></div>
+<div class="kpi-item"><div class="kpi-value" style="color:#ef4444">$560만</div><div class="kpi-label">DeepSeek R1 훈련비용</div></div>
+<div class="kpi-item"><div class="kpi-value" style="color:#f59e0b">1/60</div><div class="kpi-label">GPT-4 대비 비용</div></div>
+      </div>
+      
+<div class="card animate d3">
+  <div class="section-title">⚡ DeepSeek 쇼크 — 게임 체인저</div>
+  <div class="highlight-box">
+    2025년 1월 중국 스타트업 DeepSeek이 공개한 <strong>R1 모델</strong>이 ChatGPT-4에 필적하는 성능을 보이며 AI 산업 충격. 훈련 비용 <strong>$560만</strong> — GPT-4 대비 약 1/60. "칩 규제를 우회한 효율 혁신"으로 미국 AI 우위 전제 흔들어. NVIDIA 주가 하루 -17%.
+  </div>
+</div>
+
+<div class="card animate d3">
+  <div class="section-title">🆚 미국 vs 중국 AI 전력 비교</div>
+  <div class="vs-grid">
+    <div class="vs-side vs-side-a">
+      <div class="vs-label">🇺🇸 미국</div>
+      <div class="vs-name" style="color:#8b5cf6">하드웨어·생태계 우위</div>
+      <div class="vs-item"><strong>OpenAI GPT-4/5</strong>: 범용 AI 선두</div>
+      <div class="vs-item"><strong>Google Gemini Ultra</strong>: 멀티모달 최강</div>
+      <div class="vs-item"><strong>NVIDIA GPU</strong>: AI 학습 하드웨어 독점</div>
+      <div class="vs-item"><strong>Anthropic·Meta·xAI</strong>: 오픈소스 생태계</div>
+      <div class="vs-item"><strong>투자</strong>: Stargate $5,000억 (2025 발표)</div>
+    </div>
+    <div class="vs-divider">VS</div>
+    <div class="vs-side vs-side-b">
+      <div class="vs-label">🇨🇳 중국</div>
+      <div class="vs-name" style="color:#ef4444">효율·응용·데이터 추격</div>
+      <div class="vs-item"><strong>DeepSeek R1/V3</strong>: 저비용 고성능 쇼크</div>
+      <div class="vs-item"><strong>바이두 어니봇</strong>: 중국어 최강, 검색 연동</div>
+      <div class="vs-item"><strong>화웨이 Ascend 910C</strong>: 국산 AI칩 대체</div>
+      <div class="vs-item"><strong>정부 지원</strong>: AI 특화 산업단지, 데이터 개방</div>
+      <div class="vs-item"><strong>강점</strong>: 14억 인구 데이터, 규제 유연성</div>
+    </div>
+  </div>
+</div>
+
+<div class="card animate d4">
+  <div class="section-title">🔑 5대 AI 패권 경쟁 축</div>
+  <div class="step-flow">
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">칩 확보 경쟁</div>
+        <div class="step-desc">미국의 NVIDIA H100·A100 수출 금지 → 중국, 화웨이 Ascend + 해외 우회 루트로 GPU 확보. Stargate는 $5,000억 규모 미국 AI 인프라 구축 선언.</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">알고리즘 효율화</div>
+        <div class="step-desc">DeepSeek MoE(혼합 전문가) 아키텍처 — 적은 칩으로 높은 성능. "칩 봉쇄를 알고리즘으로 돌파"라는 중국식 혁신 방향 확인.</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">데이터 & 모델 공개 전략</div>
+        <div class="step-desc">DeepSeek 오픈소스 → 글로벌 확산. Meta Llama도 오픈소스. 반면 OpenAI는 폐쇄형 유지 — 오픈vs클로즈드 전략 대립.</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">AI 규제 경쟁</div>
+        <div class="step-desc">EU AI Act 시행 vs 중국 생성형AI 규정(2023). 미국은 규제 최소화 → 혁신 속도 우선. 표준 선점이 글로벌 AI 거버넌스 주도권.</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <div class="step-title">군사 AI</div>
+        <div class="step-desc">자율무기·지휘통제·사이버전. "AI 군사화 선점 = 21세기 핵 억지력"으로 평가. 미-중 모두 군사 AI에 최우선 투자.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card animate d5">
+  <div class="section-title">🇰🇷 한국 AI 전략적 위치</div>
+  <div class="highlight-box">
+    삼성 파운드리·SK하이닉스 HBM이 <strong>미-중 AI 칩 전쟁의 핵심 부품 공급자</strong>. 미국의 대중 HBM 수출 규제 압박 vs 중국향 매출 포기 딜레마. 동시에 네이버 HyperCLOVA X·카카오 KoGPT 등 자국 LLM 개발 가속.
+  </div>
+</div>
+
+      <div class="related-section animate d6">
+        <div class="related-title">관련 지식</div>
+        <div class="related-grid">
+          <a href="us-china-semiconductor-war.html" class="related-card"><div class="r-label">📚 같은 시리즈</div><div class="r-title">미-중 반도체 전쟁 — 기술 패권의 핵심 전선</div></a>
+<a href="taiwan-strait-crisis.html" class="related-card"><div class="r-label">📚 같은 시리즈</div><div class="r-title">대만 해협 위기 — TSMC와 지정학적 뇌관</div></a>
+<a href="us-china-rivalry-infographic.html" class="related-card"><div class="r-label">🗺 시리즈 인포그래픽</div><div class="r-title">미-중 패권 경쟁 종합 세력 관계도</div></a>
+<a href="supply-chain-restructuring.html" class="related-card"><div class="r-label">📚 같은 시리즈</div><div class="r-title">공급망 재편 — 프렌드쇼어링과 China+1</div></a>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script>
+    const toggle = document.getElementById('menuToggle');
+    const dropdown = document.getElementById('menuDropdown');
+    toggle.addEventListener('click', e => {
+      e.stopPropagation();
+      const open = dropdown.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+    });
+    document.addEventListener('click', () => { dropdown.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); });
+    function toggleTheme() {
+      const html = document.documentElement;
+      html.className = html.className.includes('dark') ? 'theme-light' : 'theme-dark';
+      localStorage.setItem('ka-theme', html.className);
+      dropdown.classList.remove('open');
+    }
+    (function() {
+      const t = localStorage.getItem('ka-theme');
+      if (t) document.documentElement.className = t;
+    })();
+    function downloadPng() {
+      dropdown.classList.remove('open');
+      const el = document.getElementById('main');
+      htmlToImage.toPng(el, {quality:1, pixelRatio:2})
+        .then(url => { const a = document.createElement('a'); a.download = 'us-china-ai-race.png'; a.href = url; a.click(); })
+        .catch(err => console.error(err));
+    }
+  </script>
+</body>
+</html>

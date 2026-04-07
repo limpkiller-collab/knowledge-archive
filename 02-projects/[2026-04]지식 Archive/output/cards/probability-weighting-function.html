@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>확률 가중치 함수 — 낮은 확률 과대평가·높은 확률 과소평가</title>
+  <meta name="knowledge-id" content="probability-weighting-function">
+  <meta name="knowledge-tags" content="행동경제학,심리,투자,개념정리">
+  <meta name="knowledge-difficulty" content="심화">
+  <meta name="knowledge-date" content="2026-04-08">
+  <meta name="knowledge-source" content="Kahneman & Tversky (1979), Prospect Theory">
+  <meta name="knowledge-category" content="투자·주식">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #06b6d4; --accent2: #0891b2;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(6,182,212,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #0891b2; --accent2: #0e7490;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(8,145,178,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+    body { font-family: 'Noto Sans KR','Inter',sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; letter-spacing: -0.011em; transition: background 0.3s, color 0.3s; min-height: 100vh; }
+    body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse 70% 50% at 50% 10%, color-mix(in srgb, var(--accent), transparent 88%), transparent); }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--menu-border); background: var(--menu-bg); color: var(--menu-text); cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(12px); transition: all 0.2s; }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px; background: var(--menu-bg); backdrop-filter: blur(16px); border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px; opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96); transition: all 0.2s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: none; background: transparent; color: var(--menu-text); font-size: 14px; font-family: inherit; cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left; }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+    .nav-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent); text-decoration: none; margin-bottom: 24px; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .nav-back:hover { background: var(--surface-hover); }
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.6rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 540px; margin: 0 auto; line-height: 1.7; }
+    .meta-bar { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 36px; font-size: 12px; color: var(--text-secondary); }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-advanced { background: rgba(244,63,94,0.12); color: var(--negative); }
+    .tag-chip { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+    .category-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
+    .cat-투자주식 { background: rgba(16,185,129,0.12); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+    html.theme-light .cat-투자주식 { background: rgba(16,185,129,0.08); }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease; }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.45rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .quote-box { padding: 16px 20px; border-radius: 10px; border-left: 3px solid var(--accent); background: var(--surface); font-size: 13px; line-height: 1.7; color: var(--text-secondary); margin-bottom: 16px; font-style: italic; }
+    .quote-box cite { display: block; margin-top: 6px; font-style: normal; font-weight: 600; font-size: 12px; color: var(--accent); }
+    .highlight-box { padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border); background: var(--chip-accent); font-size: 13.5px; line-height: 1.7; margin-bottom: 16px; }
+    .highlight-box strong { color: var(--accent); }
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+    .era-card { border-radius: 12px; padding: 22px; border: 1px solid var(--border); position: relative; overflow: hidden; }
+    .era-card .top-line { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+    .era-card.old .top-line { background: #64748b; }
+    .era-card.new .top-line { background: var(--accent); }
+    .era-label { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 8px; margin-top: 4px; }
+    .era-card.old .era-label { color: #64748b; }
+    .era-card.new .era-label { color: var(--accent); }
+    .era-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
+    .era-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; margin-bottom: 7px; color: var(--text-secondary); }
+    .era-item strong { color: var(--text); font-weight: 600; }
+    .era-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+    .era-card.old .era-dot { background: #64748b; }
+    .era-card.new .era-dot { background: var(--accent); }
+
+    /* 4사분면 */
+    .quadrant-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 20px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+    .quad { padding: 20px; position: relative; }
+    .quad-label { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 6px; }
+    .quad-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+    .quad-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+    .quad-example { font-size: 11px; margin-top: 8px; padding: 6px 8px; border-radius: 6px; font-weight: 500; }
+    .quad-q1 { background: rgba(16,185,129,0.07); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .quad-q1 .quad-title { color: #10b981; }
+    .quad-q1 .quad-example { background: rgba(16,185,129,0.1); color: #10b981; }
+    .quad-q2 { background: rgba(244,63,94,0.07); border-bottom: 1px solid var(--border); }
+    .quad-q2 .quad-title { color: #f43f5e; }
+    .quad-q2 .quad-example { background: rgba(244,63,94,0.1); color: #f43f5e; }
+    .quad-q3 { background: rgba(245,158,11,0.07); border-right: 1px solid var(--border); }
+    .quad-q3 .quad-title { color: #f59e0b; }
+    .quad-q3 .quad-example { background: rgba(245,158,11,0.1); color: #f59e0b; }
+    .quad-q4 { background: rgba(6,182,212,0.07); }
+    .quad-q4 .quad-title { color: #06b6d4; }
+    .quad-q4 .quad-example { background: rgba(6,182,212,0.1); color: #06b6d4; }
+    .quad-axis { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; }
+
+    /* 관련 */
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+    .mb-20 { margin-bottom: 20px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}.d4{animation-delay:.24s}.d5{animation-delay:.30s}
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+    @media (max-width: 640px) { .compare-grid, .kpi-row, .quadrant-grid { grid-template-columns: 1fr; } .container { padding: 48px 16px 60px; } }
+    @media print { body { background: white !important; } .viz-menu { display: none !important; } .card { break-inside: avoid; } * { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/></svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">📊 전망이론 · 확률 심리학</div>
+        <h1>확률 가중치 함수</h1>
+        <p class="hero-sub">낮은 확률은 과대평가, 높은 확률은 과소평가 — 전망이론의 두 번째 축이 복권·보험·투자 행동을 어떻게 왜곡하는가</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="category-badge cat-투자주식">📈 투자·주식</span>
+        <span class="diff-badge diff-advanced">심화</span>
+        <span class="tag-chip">#행동경제학</span>
+        <span class="tag-chip">#심리</span>
+        <span class="tag-chip">#투자</span>
+        <span class="tag-chip">#개념정리</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.08
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Kahneman &amp; Tversky
+        </span>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-row animate d2">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">π(p) ≠ p</div>
+          <div class="kpi-label">확률 지각 왜곡</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--negative)">과대평가</div>
+          <div class="kpi-label">낮은 확률 (0~10%)</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--warning)">과소평가</div>
+          <div class="kpi-label">높은 확률 (90~100%)</div>
+        </div>
+      </div>
+
+      <div class="quote-box animate d2">
+        "사람들은 확률 자체가 아닌 <em>확률 가중치</em> π(p)에 근거하여 결정을 내린다. 이 함수는 낮은 확률에서는 볼록하고 높은 확률에서는 오목하며, 0과 1 근방에서 불연속적으로 변한다."
+        <cite>— Tversky, A. &amp; Kahneman, D. (1992). Advances in Prospect Theory. Journal of Risk and Uncertainty.</cite>
+      </div>
+
+      <!-- 핵심 개념 -->
+      <div class="highlight-box animate d2">
+        전망이론의 두 축: ① <strong>가치함수</strong>(손실회피 — 이득·손실의 심리적 크기 왜곡)와 ② <strong>확률 가중치 함수</strong>(π(p) — 확률의 심리적 지각 왜곡). 두 왜곡이 결합해 <strong>복권 구매, 보험 과잉, 리스크 자산 기피, 블랙스완 과잉 공포</strong> 등 비합리적 경제 행동을 설명한다.
+      </div>
+
+      <!-- 확률 가중치 함수 시각화 -->
+      <div class="card animate d3 mb-20">
+        <div class="section-title">확률 가중치 함수 π(p) — 시각화</div>
+        <div style="display:flex; justify-content:center; padding: 16px 0 8px;">
+          <svg viewBox="0 0 400 320" width="100%" style="max-width:400px; font-family: 'Inter', sans-serif;">
+            <!-- 배경 그리드 -->
+            <line x1="50" y1="270" x2="370" y2="270" stroke="var(--border)" stroke-width="1"/>
+            <line x1="50" y1="50" x2="50" y2="270" stroke="var(--border)" stroke-width="1"/>
+            <!-- 대각선 (객관적 확률 = 기준) -->
+            <line x1="50" y1="270" x2="370" y2="50" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-dasharray="5,4"/>
+            <!-- 확률 가중치 함수 곡선 (S자 변형 - 낮은 확률 위로 불룩, 높은 확률 아래로 오목) -->
+            <!-- 실제 π(p) = exp(-(-ln(p))^0.65) 형태의 역 S자 -->
+            <path d="M50,270 C70,240 85,210 105,195 S140,172 165,162 S210,152 240,148 S290,148 315,135 S345,105 370,50"
+                  stroke="var(--accent)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- 주요 포인트 표시 -->
+            <!-- 10% 실제 → ~18% 지각 -->
+            <circle cx="82" cy="220" r="4" fill="var(--negative)"/>
+            <line x1="82" y1="220" x2="82" y2="270" stroke="var(--negative)" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="50" y1="220" x2="82" y2="220" stroke="var(--negative)" stroke-width="1" stroke-dasharray="3,3"/>
+            <text x="55" y="218" font-size="9" fill="var(--negative)">π≈18%</text>
+            <text x="76" y="283" font-size="9" fill="var(--negative)">p=10%</text>
+            <!-- 교차점 ~35% -->
+            <circle cx="165" cy="162" r="4" fill="var(--text-secondary)"/>
+            <text x="168" y="158" font-size="9" fill="var(--text-secondary)">교차점</text>
+            <!-- 90% 실제 → ~75% 지각 -->
+            <circle cx="338" cy="116" r="4" fill="var(--warning)"/>
+            <line x1="338" y1="116" x2="338" y2="270" stroke="var(--warning)" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="50" y1="116" x2="338" y2="116" stroke="var(--warning)" stroke-width="1" stroke-dasharray="3,3"/>
+            <text x="55" y="114" font-size="9" fill="var(--warning)">π≈75%</text>
+            <text x="328" y="283" font-size="9" fill="var(--warning)">p=90%</text>
+            <!-- 축 레이블 -->
+            <text x="185" y="295" font-size="11" fill="var(--text-secondary)">실제 확률 p</text>
+            <text x="10" y="165" font-size="11" fill="var(--text-secondary)" transform="rotate(-90, 20, 165)">가중치 π(p)</text>
+            <!-- 레전드 -->
+            <line x1="210" y1="240" x2="235" y2="240" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-dasharray="5,4"/>
+            <text x="238" y="244" font-size="10" fill="var(--text-secondary)">객관적 확률</text>
+            <line x1="210" y1="258" x2="235" y2="258" stroke="var(--accent)" stroke-width="2.5"/>
+            <text x="238" y="262" font-size="10" fill="var(--accent)">심리적 가중치</text>
+            <!-- 과대·과소 레이블 -->
+            <text x="62" y="200" font-size="9" fill="var(--negative)" font-weight="600">↑ 과대평가</text>
+            <text x="290" y="145" font-size="9" fill="var(--warning)" font-weight="600">↓ 과소평가</text>
+          </svg>
+        </div>
+        <p style="font-size:12px; color:var(--text-secondary); text-align:center; margin-top:4px;">낮은 확률(좌측): 실제보다 높게 지각 / 높은 확률(우측): 실제보다 낮게 지각</p>
+      </div>
+
+      <!-- 기대효용 vs 전망이론 확률 처리 -->
+      <div class="compare-grid animate d3 mb-20">
+        <div class="era-card old card">
+          <div class="top-line"></div>
+          <div style="padding-top:8px">
+            <div class="era-label">기대효용이론</div>
+            <div class="era-title">객관적 확률 그대로</div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>처리 방식:</strong> p(확률) = p, 왜곡 없음</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>10% 확률 사건:</strong> 정확히 10%로 가중</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>90% 확률 사건:</strong> 정확히 90%로 가중</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>예측:</strong> 복권 구매 비합리적 — 기대값 음수</div></div>
+          </div>
+        </div>
+        <div class="era-card new card">
+          <div class="top-line"></div>
+          <div style="padding-top:8px">
+            <div class="era-label">전망이론</div>
+            <div class="era-title">확률 가중치 함수 π(p)</div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>처리 방식:</strong> π(p) ≠ p, 역 S자 왜곡</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>10% 확률 사건:</strong> ~18%로 <strong>과대평가</strong></div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>90% 확률 사건:</strong> ~75%로 <strong>과소평가</strong></div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>예측:</strong> 복권 구매·과도한 보험 합리적으로 설명</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4사분면 패턴 -->
+      <div class="mb-20 animate d4">
+        <p class="section-title" style="margin-bottom:12px">전망이론 4사분면 — 확률 × 결과 방향 조합</p>
+        <div style="margin-bottom:8px;">
+          <div class="quad-axis">
+            <span style="padding:2px 8px; background:var(--chip-accent); border-radius:4px; color:var(--accent);">이득 영역 →</span>
+            <span style="padding:2px 8px; background:rgba(244,63,94,0.1); border-radius:4px; color:var(--negative);">← 손실 영역</span>
+          </div>
+        </div>
+        <div class="quadrant-grid">
+          <!-- Q1: 높은 확률 × 이득 → 위험 회피 -->
+          <div class="quad quad-q1">
+            <div class="quad-label">높은 확률 × 이득</div>
+            <div class="quad-title">위험 회피 (Risk Aversion)</div>
+            <div class="quad-desc">거의 확실한 이득은 과소평가 → 확실한 소액 이득을 선호. 확실성 효과(Certainty Effect).</div>
+            <div class="quad-example">💡 "90% 확률로 100만원" 보다 "확실한 70만원" 선택</div>
+          </div>
+          <!-- Q2: 낮은 확률 × 이득 → 위험 추구 -->
+          <div class="quad quad-q2">
+            <div class="quad-label">낮은 확률 × 이득</div>
+            <div class="quad-title">위험 추구 (Risk Seeking)</div>
+            <div class="quad-desc">극히 낮은 이득 확률을 과대평가 → 기대값 이하인 복권도 구매. 가능성 효과(Possibility Effect).</div>
+            <div class="quad-example">🎰 "0.01% 확률로 10억원" 복권에 수천 원 지불</div>
+          </div>
+          <!-- Q3: 높은 확률 × 손실 → 위험 추구 -->
+          <div class="quad quad-q3">
+            <div class="quad-label">높은 확률 × 손실</div>
+            <div class="quad-title">위험 추구 (Risk Seeking)</div>
+            <div class="quad-desc">거의 확실한 손실을 회피하려 도박을 선택. 손실회피 + 확률 과소평가의 결합. 손절 못 하는 패턴.</div>
+            <div class="quad-example">📉 손실 중인 종목을 팔지 않고 회복 도박 지속</div>
+          </div>
+          <!-- Q4: 낮은 확률 × 손실 → 위험 회피 -->
+          <div class="quad quad-q4">
+            <div class="quad-label">낮은 확률 × 손실</div>
+            <div class="quad-title">위험 회피 (Risk Aversion)</div>
+            <div class="quad-desc">극히 낮은 손실 확률도 과대평가 → 기대값 이상의 보험료 납부. 블랙스완 과잉 공포.</div>
+            <div class="quad-example">🛡️ 0.1% 확률 재해 대비 과도한 보험료 납부</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 투자 실전 함의 -->
+      <div class="card animate d4 mb-20">
+        <div class="section-title">투자 실전 함의 — 확률 왜곡이 만드는 행동 패턴</div>
+        <div style="display:flex; flex-direction:column; gap:10px; margin-top:10px;">
+          <div style="padding:14px 16px; border-radius:10px; background:rgba(244,63,94,0.06); border:1px solid rgba(244,63,94,0.15);">
+            <div style="font-size:13px; font-weight:700; color:var(--negative); margin-bottom:5px;">① 테일리스크 과잉 공포 (블랙스완 편향)</div>
+            <div style="font-size:13px; color:var(--text-secondary); line-height:1.65;">시장 붕괴 확률(1~2%)을 실제보다 훨씬 크게 지각 → 변동성 높은 자산 기피, 현금 과잉 보유, 성장 기회 포기. <strong style="color:var(--text)">역사적 데이터로 실제 기저율 확인</strong>이 필요.</div>
+          </div>
+          <div style="padding:14px 16px; border-radius:10px; background:rgba(245,158,11,0.06); border:1px solid rgba(245,158,11,0.15);">
+            <div style="font-size:13px; font-weight:700; color:var(--warning); margin-bottom:5px;">② 확실성 효과 — 이익 너무 빨리 실현</div>
+            <div style="font-size:13px; color:var(--text-secondary); line-height:1.65;">90% 확률의 큰 이득보다 확실한 소득을 선호 → 상승 중인 종목을 너무 일찍 매도. 처분효과의 확률 측 설명. <strong style="color:var(--text)">목표가 달성 전 자동 매도 규칙 없애기</strong>.</div>
+          </div>
+          <div style="padding:14px 16px; border-radius:10px; background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.15);">
+            <div style="font-size:13px; font-weight:700; color:var(--positive); margin-bottom:5px;">③ 활용 — 낮은 확률 이득 구조 설계</div>
+            <div style="font-size:13px; color:var(--text-secondary); line-height:1.65;">마케팅·보험 설계에서 역으로 활용 가능. 소액 이득의 가능성을 강조하면 소비자 반응 극대화. 투자자로서는 이런 함정을 인식하고 <strong style="color:var(--text)">기대값(EV) 중심으로 판단</strong>하는 훈련 필요.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 관련 지식 -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="loss-aversion.html" class="related-card">
+            <div class="r-label">→ 전망이론 1축</div>
+            <div class="r-title">손실회피 경향 — 가치함수의 비대칭성</div>
+          </a>
+          <a href="cognitive-bias-6types.html" class="related-card">
+            <div class="r-label">→ 연관</div>
+            <div class="r-title">투자자의 6대 인지 편향 — 확증편향·앵커링·과신편향</div>
+          </a>
+          <a href="behavioral-economics-investing.html" class="related-card">
+            <div class="r-label">→ 연관</div>
+            <div class="r-title">행동경제학의 실전 적용 — 투자자의 뇌는 왜 실수를 반복하는가</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">출처: Kahneman, D. &amp; Tversky, A. (1979). Prospect Theory. Econometrica. | Tversky, A. &amp; Kahneman, D. (1992). Advances in Prospect Theory. Journal of Risk and Uncertainty. | Kahneman, D. (2011). Thinking, Fast and Slow.</p>
+    </div>
+  </main>
+
+  <script>
+    var THEMES=['theme-dark','theme-light'];
+    var THEME_LABELS={'theme-dark':'Dark','theme-light':'Light'};
+    (function(){var s=localStorage.getItem('ka-theme')||'theme-dark';document.documentElement.className=s;var l=document.getElementById('themeLabel');if(l)l.textContent=THEME_LABELS[s];})();
+    function cycleTheme(){var c=document.documentElement.className;var n=THEMES[(THEMES.indexOf(c)+1)%THEMES.length];document.documentElement.className=n;localStorage.setItem('ka-theme',n);var l=document.getElementById('themeLabel');if(l)l.textContent=THEME_LABELS[n];closeMenu();}
+    function toggleMenu(){document.getElementById('vizMenuDropdown').classList.toggle('open');}
+    function closeMenu(){document.getElementById('vizMenuDropdown').classList.remove('open');}
+    document.addEventListener('click',function(e){if(!e.target.closest('.viz-menu'))closeMenu();});
+    function downloadImage(){closeMenu();if(typeof htmlToImage==='undefined'){alert('라이브러리 로딩 중...');return;}htmlToImage.toPng(document.getElementById('main'),{pixelRatio:2}).then(function(d){var a=document.createElement('a');a.download='probability-weighting-function.png';a.href=d;a.click();});}
+  </script>
+</body>
+</html>

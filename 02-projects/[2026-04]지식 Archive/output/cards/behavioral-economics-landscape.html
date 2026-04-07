@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>행동경제학 연구 지형도 — 1970s → 현재</title>
+  <meta name="knowledge-id" content="behavioral-economics-landscape">
+  <meta name="knowledge-tags" content="행동경제학,심리,투자,개요">
+  <meta name="knowledge-difficulty" content="입문">
+  <meta name="knowledge-date" content="2026-04-08">
+  <meta name="knowledge-source" content="Kahneman·Thaler·Ariely·Cialdini·Loewenstein·Shiller·Mullainathan">
+  <meta name="knowledge-category" content="투자·주식">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #6366f1; --accent2: #4f46e5;
+      --positive: #10b981; --negative: #ef4444; --warning: #f59e0b;
+      --chip-accent: rgba(99,102,241,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+      /* Researcher colors */
+      --c-ka-bg:#13103a; --c-ka-border:#3730a3; --c-ka-text:#a5b4fc;
+      --c-th-bg:#0a1520; --c-th-border:#1e4d6e; --c-th-text:#38bdf8;
+      --c-ci-bg:#1a0f05; --c-ci-border:#78350f; --c-ci-text:#fb923c;
+      --c-lo-bg:#0a1e12; --c-lo-border:#166534; --c-lo-text:#4ade80;
+      --c-ar-bg:#1a0e00; --c-ar-border:#92400e; --c-ar-text:#fbbf24;
+      --c-sh-bg:#0e1a04; --c-sh-border:#365314; --c-sh-text:#a3e635;
+      --c-mu-bg:#1a0512; --c-mu-border:#831843; --c-mu-text:#f472b6;
+      --c-bi-bg:#111827; --c-bi-border:#374151; --c-bi-text:#9ca3af;
+      --c-al-bg:#13103a; --c-al-border:#3730a3; --c-al-text:#a5b4fc;
+      --c-re-bg:#0a1520; --c-re-border:#1e3a5f; --c-re-text:#60a5fa;
+      --c-ne-bg:#0a1a1a; --c-ne-border:#0f766e; --c-ne-text:#2dd4bf;
+      --tl-color: rgba(255,255,255,0.15);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #4f46e5; --accent2: #4338ca;
+      --positive: #059669; --negative: #dc2626; --warning: #d97706;
+      --chip-accent: rgba(79,70,229,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+      --c-ka-bg:#eef2ff; --c-ka-border:#c7d2fe; --c-ka-text:#4338ca;
+      --c-th-bg:#e0f2fe; --c-th-border:#bae6fd; --c-th-text:#0369a1;
+      --c-ci-bg:#fff7ed; --c-ci-border:#fed7aa; --c-ci-text:#c2410c;
+      --c-lo-bg:#f0fdf4; --c-lo-border:#bbf7d0; --c-lo-text:#166534;
+      --c-ar-bg:#fffbeb; --c-ar-border:#fde68a; --c-ar-text:#92400e;
+      --c-sh-bg:#f7fee7; --c-sh-border:#d9f99d; --c-sh-text:#365314;
+      --c-mu-bg:#fdf2f8; --c-mu-border:#fbcfe8; --c-mu-text:#831843;
+      --c-bi-bg:#f9fafb; --c-bi-border:#e5e7eb; --c-bi-text:#374151;
+      --c-al-bg:#eef2ff; --c-al-border:#c7d2fe; --c-al-text:#4338ca;
+      --c-re-bg:#eff6ff; --c-re-border:#bfdbfe; --c-re-text:#1d4ed8;
+      --c-ne-bg:#f0fdfa; --c-ne-border:#99f6e4; --c-ne-text:#0f766e;
+      --tl-color: #cbd5e1;
+    }
+    body { font-family: 'Noto Sans KR','Inter',sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; letter-spacing: -0.011em; transition: background 0.3s, color 0.3s; min-height: 100vh; }
+    body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse 70% 50% at 50% 10%, color-mix(in srgb, var(--accent), transparent 88%), transparent); }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 900px; margin: 0 auto; padding: 64px 24px 80px; }
+
+    /* Menu */
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--menu-border); background: var(--menu-bg); color: var(--menu-text); cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(12px); transition: all 0.2s; }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px; background: var(--menu-bg); backdrop-filter: blur(16px); border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px; opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96); transition: all 0.2s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: none; background: transparent; color: var(--menu-text); font-size: 14px; font-family: inherit; cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left; }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    /* Nav / Hero */
+    .nav-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent); text-decoration: none; margin-bottom: 24px; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .nav-back:hover { background: var(--surface-hover); }
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.6rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 580px; margin: 0 auto; line-height: 1.7; }
+
+    /* Meta */
+    .meta-bar { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 36px; font-size: 12px; color: var(--text-secondary); }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-intro { background: rgba(99,102,241,0.12); color: #818cf8; }
+    .tag-chip { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+    .category-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
+    .cat-투자주식 { background: rgba(16,185,129,0.12); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+
+    /* Card */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease; }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
+    .mb-20 { margin-bottom: 20px; }
+
+    /* KPI */
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+    .kpi-item { text-align: center; padding: 14px 10px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.02em; }
+    .kpi-label { font-size: 10px; color: var(--text-secondary); font-weight: 500; margin-top: 3px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    /* ====== Timeline Diagram ====== */
+    .timeline-wrap { border-radius: 14px; background: var(--surface); border: 1px solid var(--border); padding: 24px 20px 20px; margin-bottom: 20px; overflow: hidden; }
+    .tl-title { font-size: 14px; font-weight: 700; text-align: center; color: var(--text-secondary); margin-bottom: 20px; letter-spacing: 0.02em; }
+
+    /* Each timeline row: label | left-box | center(dot+line) | right-box */
+    .tl-rows { position: relative; }
+    .tl-center-line {
+      position: absolute;
+      left: 50%; top: 0; bottom: 0;
+      width: 2px;
+      background: repeating-linear-gradient(to bottom, var(--tl-color) 0, var(--tl-color) 6px, transparent 6px, transparent 12px);
+      transform: translateX(-50%);
+      z-index: 0;
+    }
+    .tl-row { display: grid; grid-template-columns: 1fr 28px 1fr; gap: 0; align-items: center; margin-bottom: 12px; position: relative; z-index: 1; }
+    .tl-row-label { display: none; } /* hidden – stamp shown on center node */
+    .tl-left { padding-right: 14px; }
+    .tl-right { padding-left: 14px; }
+    .tl-empty { /* placeholder when no box */ }
+    .tl-center { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .tl-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--tl-color); border: 2px solid var(--surface); flex-shrink: 0; }
+    .tl-stamp { font-size: 10px; color: var(--text-secondary); font-weight: 600; white-space: nowrap; letter-spacing: 0.03em; }
+
+    /* Researcher Box */
+    .r-box { border-radius: 10px; padding: 13px 14px; }
+    .r-name { font-size: 13px; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 4px; }
+    .r-desc { font-size: 11px; line-height: 1.5; }
+
+    /* Color classes */
+    .r-ka { background: var(--c-ka-bg); border: 1.5px solid var(--c-ka-border); }
+    .r-ka .r-name { color: var(--c-ka-text); }
+    .r-th { background: var(--c-th-bg); border: 1.5px solid var(--c-th-border); }
+    .r-th .r-name { color: var(--c-th-text); }
+    .r-ci { background: var(--c-ci-bg); border: 1.5px solid var(--c-ci-border); }
+    .r-ci .r-name { color: var(--c-ci-text); }
+    .r-lo { background: var(--c-lo-bg); border: 1.5px solid var(--c-lo-border); }
+    .r-lo .r-name { color: var(--c-lo-text); }
+    .r-ar { background: var(--c-ar-bg); border: 1.5px solid var(--c-ar-border); }
+    .r-ar .r-name { color: var(--c-ar-text); }
+    .r-sh { background: var(--c-sh-bg); border: 1.5px solid var(--c-sh-border); }
+    .r-sh .r-name { color: var(--c-sh-text); }
+    .r-mu { background: var(--c-mu-bg); border: 1.5px solid var(--c-mu-border); }
+    .r-mu .r-name { color: var(--c-mu-text); }
+    .r-bi { background: var(--c-bi-bg); border: 1.5px solid var(--c-bi-border); }
+    .r-bi .r-name { color: var(--c-bi-text); }
+    .r-al { background: var(--c-al-bg); border: 1.5px solid var(--c-al-border); }
+    .r-al .r-name { color: var(--c-al-text); }
+    .r-re { background: var(--c-re-bg); border: 1.5px solid var(--c-re-border); }
+    .r-re .r-name { color: var(--c-re-text); }
+    .r-ne { background: var(--c-ne-bg); border: 1.5px solid var(--c-ne-border); }
+    .r-ne .r-name { color: var(--c-ne-text); }
+
+    /* Arrow between left and right */
+    .tl-arr { display: flex; justify-content: center; align-items: center; font-size: 12px; color: var(--text-secondary); }
+
+    /* Bottom 3 boxes */
+    .tl-bottom { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 8px; padding-top: 14px; border-top: 1px dashed var(--border); position: relative; z-index: 1; }
+    .tl-bottom-label { text-align: center; font-size: 11px; color: var(--text-secondary); margin-bottom: 8px; grid-column: span 3; }
+    .tl-footer-note { text-align: center; font-size: 11px; color: var(--text-secondary); margin-top: 12px; font-style: italic; }
+
+    /* Genealogy summary */
+    .genealogy-chain { display: flex; align-items: stretch; gap: 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 0; }
+    .gc-item { flex: 1; padding: 14px 12px; text-align: center; border-right: 1px solid var(--border); }
+    .gc-item:last-child { border-right: none; }
+    .gc-arrow { display: flex; align-items: center; justify-content: center; padding: 0 4px; color: var(--text-secondary); font-size: 16px; flex-shrink: 0; }
+    .gc-name { font-size: 12px; font-weight: 800; margin-bottom: 4px; }
+    .gc-role { font-size: 11px; color: var(--text-secondary); line-height: 1.5; }
+
+    /* Quote */
+    .quote-box { padding: 16px 20px; border-radius: 10px; border-left: 3px solid var(--accent); background: var(--surface); font-size: 13px; line-height: 1.75; color: var(--text-secondary); margin-bottom: 16px; font-style: italic; }
+    .quote-box cite { display: block; margin-top: 6px; font-style: normal; font-weight: 600; font-size: 12px; color: var(--accent); }
+
+    /* Related */
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}.d4{animation-delay:.24s}.d5{animation-delay:.30s}.d6{animation-delay:.36s}
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+    @media (max-width: 640px) {
+      .kpi-row { grid-template-columns: 1fr 1fr; }
+      .tl-bottom { grid-template-columns: 1fr; }
+      .genealogy-chain { flex-direction: column; }
+      .gc-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .gc-item:last-child { border-bottom: none; }
+      .container { padding: 48px 16px 60px; }
+    }
+    @media print { body { background: white !important; } .viz-menu { display: none !important; } .card { break-inside: avoid; } * { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/></svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">🗺️ 행동경제학 · 연구 지형도</div>
+        <h1>행동경제학<br><span style="color:var(--accent)">연구 지형도</span></h1>
+        <p class="hero-sub">1970s 프로스펙트 이론부터 2020s AI·신경경제학까지 — 주요 연구자와 흐름을 한눈에</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="category-badge cat-투자주식">📈 투자·주식</span>
+        <span class="diff-badge diff-intro">입문</span>
+        <span class="tag-chip">#행동경제학</span>
+        <span class="tag-chip">#개요</span>
+        <span class="tag-chip">#계보</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.08
+        </span>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-row animate d1">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">1970s~</div>
+          <div class="kpi-label">학문 시작</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--text-secondary)">7명+</div>
+          <div class="kpi-label">주요 연구자</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--text-secondary)">3개</div>
+          <div class="kpi-label">노벨상 수상</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--text-secondary)">AI·신경</div>
+          <div class="kpi-label">현재 프런티어</div>
+        </div>
+      </div>
+
+      <!-- Timeline Diagram -->
+      <div class="timeline-wrap animate d2 mb-20">
+        <div class="tl-title">행동경제학 연구 지형도 (1970s → 현재)</div>
+
+        <div class="tl-rows">
+          <div class="tl-center-line"></div>
+
+          <!-- 1970s -->
+          <div class="tl-row">
+            <div class="tl-left">
+              <div class="r-box r-ka">
+                <div class="r-name">Kahneman &amp; Tversky</div>
+                <div class="r-desc" style="color:var(--c-ka-text);opacity:0.8">프로스펙트 이론 (1979)<br>휴리스틱·편향 체계화</div>
+              </div>
+            </div>
+            <div class="tl-center">
+              <div class="tl-dot" style="background:var(--c-ka-border)"></div>
+              <div class="tl-stamp">1970s</div>
+            </div>
+            <div class="tl-right">
+              <div class="r-box r-ar">
+                <div class="r-name">Dan Ariely</div>
+                <div class="r-desc" style="color:var(--c-ar-text);opacity:0.8">예측 가능한 비합리성 (2008)<br>비교·프레이밍 효과</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1980s -->
+          <div class="tl-row">
+            <div class="tl-left">
+              <div class="r-box r-th">
+                <div class="r-name">Richard Thaler</div>
+                <div class="r-desc" style="color:var(--c-th-text);opacity:0.8">정신 회계·소유 효과 (1980)<br>넛지 공동 저술 (2008)</div>
+              </div>
+            </div>
+            <div class="tl-center">
+              <div class="tl-dot" style="background:var(--c-th-border)"></div>
+              <div class="tl-stamp">1980s</div>
+            </div>
+            <div class="tl-right">
+              <div class="r-box r-sh">
+                <div class="r-name">Robert Shiller</div>
+                <div class="r-desc" style="color:var(--c-sh-text);opacity:0.8">비합리적 과열 (2000)<br>내러티브 경제학 (2019)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1990s -->
+          <div class="tl-row">
+            <div class="tl-left">
+              <div class="r-box r-ci">
+                <div class="r-name">Robert Cialdini</div>
+                <div class="r-desc" style="color:var(--c-ci-text);opacity:0.8">설득의 심리학 6원칙 (1984)<br>사회적 영향력 연구</div>
+              </div>
+            </div>
+            <div class="tl-center">
+              <div class="tl-dot" style="background:var(--c-ci-border)"></div>
+              <div class="tl-stamp">1990s</div>
+            </div>
+            <div class="tl-right">
+              <div class="r-box r-mu">
+                <div class="r-name">Mullainathan &amp; Shafir</div>
+                <div class="r-desc" style="color:var(--c-mu-text);opacity:0.8">결핍 이론 Scarcity (2013)<br>인지 대역폭·빈곤 연구</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2000s -->
+          <div class="tl-row">
+            <div class="tl-left">
+              <div class="r-box r-lo">
+                <div class="r-name">George Loewenstein</div>
+                <div class="r-desc" style="color:var(--c-lo-text);opacity:0.8">쌍곡 할인·충동 연구 (1992)<br>핫-콜드 공감 격차</div>
+              </div>
+            </div>
+            <div class="tl-center">
+              <div class="tl-dot" style="background:var(--c-lo-border)"></div>
+              <div class="tl-stamp">2000s</div>
+            </div>
+            <div class="tl-right">
+              <div class="r-box r-bi">
+                <div class="r-name">BIT·정책 적용</div>
+                <div class="r-desc" style="color:var(--c-bi-text);opacity:0.8">영국 넛지 유닛 (2010)<br>정부 정책 RCT 실험</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2010s+ bottom -->
+          <div class="tl-row" style="margin-bottom:0">
+            <div class="tl-left tl-empty"></div>
+            <div class="tl-center">
+              <div class="tl-dot" style="background:var(--tl-color)"></div>
+              <div class="tl-stamp">2010s~</div>
+            </div>
+            <div class="tl-right tl-empty"></div>
+          </div>
+        </div>
+
+        <!-- Bottom 3 frontier boxes -->
+        <div class="tl-bottom">
+          <div class="tl-bottom-label">현재 프런티어</div>
+          <div class="r-box r-al" style="text-align:center">
+            <div class="r-name">알고리즘 넛지</div>
+            <div class="r-desc" style="color:var(--c-al-text);opacity:0.8">AI × 행동경제학<br>개인화 설득·다크패턴</div>
+          </div>
+          <div class="r-box r-re" style="text-align:center">
+            <div class="r-name">재현성 위기</div>
+            <div class="r-desc" style="color:var(--c-re-text);opacity:0.8">Replication Crisis<br>실험 재현 실패 논란</div>
+          </div>
+          <div class="r-box r-ne" style="text-align:center">
+            <div class="r-name">신경경제학</div>
+            <div class="r-desc" style="color:var(--c-ne-text);opacity:0.8">Neuroeconomics<br>뇌과학 × 의사결정</div>
+          </div>
+        </div>
+
+        <p class="tl-footer-note">박스를 클릭하면 해당 연구자/주제의 상세 카드로 이동합니다</p>
+      </div>
+
+      <!-- Genealogy Chain -->
+      <div class="card mb-20 animate d3">
+        <p class="section-title">전체 계보 한 줄 요약</p>
+        <div class="quote-box">
+          Kahneman이 버그를 발견하고 → Thaler가 정책 도구로 만들고 → Ariely·Cialdini가 마케팅·설계에 적용하고 → Mullainathan·Shafir가 사회 구조로 확장하고 → 현재는 AI·신경과학과 융합하며 윤리 논쟁으로 진화 중이다.
+        </div>
+        <div style="overflow-x:auto">
+          <div class="genealogy-chain" style="min-width:560px">
+            <div class="gc-item" style="background:var(--c-ka-bg);border-right:1px solid var(--c-ka-border)">
+              <div class="gc-name" style="color:var(--c-ka-text)">Kahneman</div>
+              <div class="gc-role">버그 발견<br>인지 편향 체계화</div>
+            </div>
+            <div class="gc-arrow">→</div>
+            <div class="gc-item" style="background:var(--c-th-bg);border-right:1px solid var(--c-th-border)">
+              <div class="gc-name" style="color:var(--c-th-text)">Thaler</div>
+              <div class="gc-role">정책 도구화<br>넛지·선택 설계</div>
+            </div>
+            <div class="gc-arrow">→</div>
+            <div class="gc-item" style="background:var(--c-ar-bg);border-right:1px solid var(--c-ar-border)">
+              <div class="gc-name" style="color:var(--c-ar-text)">Ariely·Cialdini</div>
+              <div class="gc-role">마케팅·설계 적용<br>소비자 행동</div>
+            </div>
+            <div class="gc-arrow">→</div>
+            <div class="gc-item" style="background:var(--c-mu-bg);border-right:1px solid var(--c-mu-border)">
+              <div class="gc-name" style="color:var(--c-mu-text)">Mullainathan·Shiller</div>
+              <div class="gc-role">사회 구조 확장<br>빈곤·내러티브</div>
+            </div>
+            <div class="gc-arrow">→</div>
+            <div class="gc-item" style="background:var(--c-ne-bg)">
+              <div class="gc-name" style="color:var(--c-ne-text)">AI·신경과학</div>
+              <div class="gc-role">현재 융합<br>윤리 논쟁 진화 중</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Research summary table -->
+      <div class="card mb-20 animate d4">
+        <p class="section-title">주요 연구자 한눈에 보기</p>
+        <div style="overflow-x:auto;border-radius:10px;border:1px solid var(--border)">
+          <table style="min-width:560px;width:100%;border-collapse:collapse">
+            <thead>
+              <tr>
+                <th style="background:var(--surface);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-secondary);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)">연구자</th>
+                <th style="background:var(--surface);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-secondary);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)">핵심 기여</th>
+                <th style="background:var(--surface);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-secondary);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)">대표 저작</th>
+                <th style="background:var(--surface);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-secondary);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)">노벨상</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600;color:var(--c-ka-text)">Kahneman</td><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-secondary)">프로스펙트 이론, 휴리스틱·편향</td><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-secondary)">Thinking, Fast and Slow</td><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-secondary)">2002</td></tr>
+              <tr><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600;color:var(--c-th-text)">Thaler</td><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-secondary)">정신 회계, 소유 효과, 넛지</td><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-secondary)">Nudge (2008)</td><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-secondary)">2017</td></tr>
+              <tr><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600;color:var(--c-ar-text)">Ariely</td><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-secondary)">예측 가능한 비합리성, 미끼 효과, 무료의 심리</td><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-secondary)">Predictably Irrational (2008)</td><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-secondary)">—</td></tr>
+              <tr><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600;color:var(--c-ci-text)">Cialdini</td><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-secondary)">설득의 6+1원칙, Pre-Suasion</td><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-secondary)">Influence (1984)</td><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-secondary)">—</td></tr>
+              <tr><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600;color:var(--c-lo-text)">Loewenstein</td><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-secondary)">쌍곡 할인, 핫-콜드 공감 격차</td><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-secondary)">Hyperbolic discounting (1992)</td><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-secondary)">—</td></tr>
+              <tr><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600;color:var(--c-sh-text)">Shiller</td><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-secondary)">비합리적 과열, 내러티브 경제학</td><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-secondary)">Irrational Exuberance (2000)</td><td style="padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-secondary)">2013</td></tr>
+              <tr><td style="padding:11px 14px;font-size:13px;font-weight:600;color:var(--c-mu-text)">Mullainathan &amp; Shafir</td><td style="padding:11px 14px;font-size:13px;color:var(--text-secondary)">결핍 이론, 인지 대역폭 소진</td><td style="padding:11px 14px;font-size:13px;color:var(--text-secondary)">Scarcity (2013)</td><td style="padding:11px 14px;font-size:13px;color:var(--text-secondary)">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="related-section animate d5">
+        <h3>상세 카드</h3>
+        <div class="related-grid">
+          <a href="ariely-cialdini-influence.html" class="related-card">
+            <div class="r-label">심화 카드</div>
+            <div class="r-title">Ariely &amp; Cialdini — 비합리성과 설득 원칙</div>
+          </a>
+          <a href="behavioral-economics-frontiers.html" class="related-card">
+            <div class="r-label">심화 카드</div>
+            <div class="r-title">시간·결핍·내러티브 + 현재 프런티어</div>
+          </a>
+          <a href="heuristics-cognitive.html" class="related-card">
+            <div class="r-label">연관 개념</div>
+            <div class="r-title">휴리스틱 & System 1/2</div>
+          </a>
+          <a href="nudge-theory-thaler.html" class="related-card">
+            <div class="r-label">연관 개념</div>
+            <div class="r-title">Thaler 넛지 이론</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">
+        출처: Kahneman (2002) · Thaler (2017) · Shiller (2013) 노벨경제학상 수상 연설 및 각 저작
+      </p>
+    </div>
+  </main>
+
+  <script>
+    const themes = ['dark','light'];
+    let ti = 0;
+    const savedTheme = localStorage.getItem('ka-theme');
+    if(savedTheme){ ti = themes.indexOf(savedTheme); if(ti<0)ti=0; }
+    applyTheme(themes[ti]);
+    function applyTheme(t){
+      document.documentElement.className = 'theme-'+t;
+      const lbl = document.getElementById('themeLabel');
+      if(lbl) lbl.textContent = t==='dark'?'Dark':'Light';
+      localStorage.setItem('ka-theme',t);
+    }
+    function cycleTheme(){ ti=(ti+1)%themes.length; applyTheme(themes[ti]); }
+    function toggleMenu(){
+      const d=document.getElementById('vizMenuDropdown');
+      d.classList.toggle('open');
+    }
+    document.addEventListener('click',function(e){
+      if(!e.target.closest('.viz-menu')){
+        const d=document.getElementById('vizMenuDropdown');
+        if(d) d.classList.remove('open');
+      }
+    });
+    function downloadImage(){
+      const el=document.getElementById('main');
+      htmlToImage.toPng(el,{quality:0.95,backgroundColor:getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()})
+        .then(function(dataUrl){
+          const a=document.createElement('a');
+          a.download='behavioral-economics-landscape.png';
+          a.href=dataUrl; a.click();
+        });
+    }
+  </script>
+</body>
+</html>
