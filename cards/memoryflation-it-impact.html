@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>메모리플레이션 — AI 열풍이 만든 IT 기기 가격 인상</title>
+  <meta name="knowledge-id" content="memoryflation-it-impact">
+  <meta name="knowledge-tags" content="반도체,메모리,인플레이션,IT,AI">
+  <meta name="knowledge-difficulty" content="입문">
+  <meta name="knowledge-date" content="2026-04-08">
+  <meta name="knowledge-source" content="뉴닉(Newneek)">
+  <meta name="knowledge-category" content="경제·거시">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #f97316; --accent2: #3b82f6;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(249,115,22,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #ea580c; --accent2: #2563eb;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(234,88,12,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+    body { font-family: 'Noto Sans KR','Inter',sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; letter-spacing: -0.011em; transition: background 0.3s, color 0.3s; min-height: 100vh; }
+    body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse 70% 50% at 50% 10%, color-mix(in srgb, var(--accent), transparent 88%), transparent); }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--menu-border); background: var(--menu-bg); color: var(--menu-text); cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(12px); transition: all 0.2s; }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px; background: var(--menu-bg); backdrop-filter: blur(16px); border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px; opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96); transition: all 0.2s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: none; background: transparent; color: var(--menu-text); font-size: 14px; font-family: inherit; cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left; }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+    .nav-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent); text-decoration: none; margin-bottom: 24px; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .nav-back:hover { background: var(--surface-hover); }
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 540px; margin: 0 auto; line-height: 1.7; }
+    .meta-bar { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 36px; font-size: 12px; color: var(--text-secondary); }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-beginner { background: var(--chip-green); color: var(--positive); }
+    .tag-chip { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+    .category-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
+    .cat-경제거시 { background:rgba(59,130,246,0.12); color:#3b82f6; border:1px solid rgba(59,130,246,0.3); }
+    html.theme-light .cat-경제거시 { background:rgba(59,130,246,0.08); }    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease; margin-bottom: 20px; }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .highlight-box { padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border); background: var(--chip-accent); font-size: 13.5px; line-height: 1.7; margin-bottom: 16px; }
+    .highlight-box strong { color: var(--accent); }
+    .impact-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+    .impact-item:last-child { border-bottom: none; }
+    .impact-item .i-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+    .impact-item strong { color: var(--text); }
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; } .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+    @media (max-width: 640px) { .kpi-row { grid-template-columns: 1fr; } .container { padding: 48px 16px 60px; } }
+    @media print { body { background: white !important; } .viz-menu { display: none !important; } .card { break-inside: avoid; } * { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
+  </style>
+</head><body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/></svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        지식 Archive
+      </a>
+      <header class="hero animate">
+        <div class="hero-badge">🔥 경제 · Memoryflation</div>
+        <h1>메모리플레이션</h1>
+        <p class="hero-sub">AI 열풍에 메모리 반도체 품귀 → D램 분기당 50% 상승, 낸드 1년 만에 2배 → 스마트폰·노트북까지 줄줄이 가격 인상</p>
+      </header>
+      <div class="meta-bar animate d1">
+        <span class="category-badge cat-경제거시">🌐 경제·거시</span>
+        <span class="diff-badge diff-beginner">입문</span>
+        <span class="tag-chip">#반도체</span>
+        <span class="tag-chip">#메모리</span>
+        <span class="tag-chip">#인플레이션</span>
+        <span class="tag-chip">#IT</span>
+        <span class="tag-chip">#AI</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.08
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          뉴닉(Newneek)
+        </span>
+      </div>      <!-- KPI -->
+      <div class="kpi-row animate d2" role="region" aria-label="핵심 수치">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">~50%</div>
+          <div class="kpi-label">D램 분기별 가격 상승</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--negative)">2x</div>
+          <div class="kpi-label">낸드플래시 1년 만에 2배</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--warning)">10~20%</div>
+          <div class="kpi-label">IT 제품 원가 중 메모리 비중</div>
+        </div>
+      </div>
+
+      <!-- 원인 -->
+      <div class="highlight-box animate d2">
+        삼성전자·SK하이닉스·마이크론 등 메모리 회사들이 마진이 높은 <strong>AI용 메모리(HBM 등)</strong>에 집중하면서, 스마트폰·노트북용 일반 메모리가 뒤로 밀렸다. 마이크론은 아예 일반 메모리 사업을 접고 AI용에 전력을 다하기로 결정. <strong>'20년 만에 가장 심각한'</strong> 메모리 품귀 현상이라는 평가.
+      </div>
+
+      <!-- 영향 -->
+      <div class="card animate d3">
+        <div class="section-title">📱 IT 기기 가격 인상 현황</div>
+        <div class="impact-item">
+          <div class="i-icon">💻</div>
+          <div><strong>에이수스·레노버 노트북:</strong> 이미 가격 인상 완료</div>
+        </div>
+        <div class="impact-item">
+          <div class="i-icon">📱</div>
+          <div><strong>샤오미 스마트폰:</strong> 가격 인상 완료</div>
+        </div>
+        <div class="impact-item">
+          <div class="i-icon">🇰🇷</div>
+          <div><strong>삼성 갤럭시 S26:</strong> 가격 인상 유력 — "결국 가격을 올려야 할 것"</div>
+        </div>
+        <div class="impact-item">
+          <div class="i-icon">🍎</div>
+          <div><strong>애플 아이폰 18:</strong> 가격 인상 전망. 메모리 수급 실패 시 제품 공급 자체를 줄여야 할 수도</div>
+        </div>
+      </div>      <!-- 구조 설명 -->
+      <div class="card animate d4">
+        <div class="section-title">🔄 메모리플레이션 메커니즘</div>
+        <div class="highlight-box">
+          <strong>① AI 수요 폭발</strong> → 메모리 업체들 AI용 고마진 제품에 집중<br>
+          <strong>② 일반 메모리 공급 감소</strong> → D램 분기당 50% 상승, 낸드 2배<br>
+          <strong>③ IT 제품 원가 상승</strong> → 메모리가 제조원가의 10~20% 차지<br>
+          <strong>④ 완제품 가격 인상</strong> → 스마트폰·노트북·PC 줄줄이 인상 = <strong>메모리플레이션</strong>
+        </div>
+      </div>
+
+      <!-- 관련 지식 -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="sandisk-nand-flash-boom.html" class="related-card">
+            <div class="r-label">→ 관련</div><div class="r-title">샌디스크 2306% 폭등 — 낸드 호황</div>
+          </a>
+          <a href="ai-memory-semiconductor-supercycle.html" class="related-card">
+            <div class="r-label">→ 관련</div><div class="r-title">AI 시대 메모리 반도체 슈퍼사이클</div>
+          </a>
+          <a href="semiconductor-basics.html" class="related-card">
+            <div class="r-label">→ 관련</div><div class="r-title">반도체의 종류: 시스템 vs 메모리</div>
+          </a>
+          <a href="cpi-pce-inflation.html" class="related-card">
+            <div class="r-label">→ 관련</div><div class="r-title">CPI·PCE 인플레이션 지표</div>
+          </a>
+        </div>
+      </div>
+      <p class="footer-note animate d5">출처: <a href="https://newneek.co/@newneek/article/38050" style="color:var(--accent); text-decoration:none;">뉴닉(Newneek)</a> · 2026.04.08</p>
+    </div>
+  </main>
+  <script>
+    var THEMES = ['theme-dark', 'theme-light'];
+    var THEME_LABELS = { 'theme-dark': 'Dark', 'theme-light': 'Light' };
+    (function() { var s = localStorage.getItem('ka-theme') || 'theme-dark'; document.documentElement.className = s; var l = document.getElementById('themeLabel'); if (l) l.textContent = THEME_LABELS[s]; })();
+    function cycleTheme() { var c = document.documentElement.className; var n = THEMES[(THEMES.indexOf(c)+1)%THEMES.length]; document.documentElement.className = n; localStorage.setItem('ka-theme', n); var l = document.getElementById('themeLabel'); if (l) l.textContent = THEME_LABELS[n]; closeMenu(); }
+    function toggleMenu() { document.getElementById('vizMenuDropdown').classList.toggle('open'); }
+    function closeMenu() { document.getElementById('vizMenuDropdown').classList.remove('open'); }
+    document.addEventListener('click', function(e) { if (!e.target.closest('.viz-menu')) closeMenu(); });
+    function downloadImage() { closeMenu(); if (typeof htmlToImage === 'undefined') { alert('로딩 중...'); return; } htmlToImage.toPng(document.getElementById('main'), { pixelRatio: 2 }).then(function(d) { var a = document.createElement('a'); a.download = 'memoryflation-it-impact.png'; a.href = d; a.click(); }); }
+  </script>
+</body>
+</html>
