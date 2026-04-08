@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>재사용 로켓 5대 핵심 기술 — 마하 5로 떨어지는 빌딩을 세우는 마법</title>
+  <meta name="knowledge-id" content="reusable-rocket-tech">
+  <meta name="knowledge-tags" content="우주산업,로켓,재사용,스페이스X,투자">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-08">
+  <meta name="knowledge-source" content="우주산업 뉴스레터">
+  <meta name="knowledge-category" content="기술·산업">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #8b5cf6; --accent2: #3b82f6;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(139,92,246,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #7c3aed; --accent2: #2563eb;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(124,58,237,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s; min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%,
+        color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--menu-border); background: var(--menu-bg);
+      color: var(--menu-text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(12px); transition: all 0.2s;
+    }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px;
+      background: var(--menu-bg); backdrop-filter: blur(16px);
+      border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px;
+      opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border: none; background: transparent;
+      color: var(--menu-text); font-size: 14px; font-family: inherit;
+      cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left;
+    }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      margin-bottom: 24px; padding: 6px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface); transition: background 0.15s;
+    }
+    .nav-back:hover { background: var(--surface-hover); }    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--text-secondary);
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 540px; margin: 0 auto; line-height: 1.7; }
+    .meta-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 36px;
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-beginner { background: var(--chip-green); color: var(--positive); }
+    .diff-intermediate { background: var(--chip-amber); color: var(--warning); }
+    .diff-advanced { background: rgba(244,63,94,0.12); color: var(--negative); }
+    .tag-chip { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+    .category-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.02em; white-space: nowrap;
+    }
+    .cat-투자주식 { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.3); }
+    .cat-경제거시 { background:rgba(59,130,246,0.12); color:#3b82f6; border:1px solid rgba(59,130,246,0.3); }
+    .cat-기술산업 { background:rgba(139,92,246,0.12); color:#8b5cf6; border:1px solid rgba(139,92,246,0.3); }
+    .cat-부동산   { background:rgba(245,158,11,0.12); color:#f59e0b; border:1px solid rgba(245,158,11,0.3); }
+    .cat-시사컬처 { background:rgba(244,63,94,0.12);  color:#f43f5e; border:1px solid rgba(244,63,94,0.3); }    html.theme-light .cat-투자주식 { background:rgba(16,185,129,0.08); }
+    html.theme-light .cat-경제거시 { background:rgba(59,130,246,0.08); }
+    html.theme-light .cat-기술산업 { background:rgba(139,92,246,0.08); }
+    html.theme-light .cat-부동산   { background:rgba(245,158,11,0.08); }
+    html.theme-light .cat-시사컬처 { background:rgba(244,63,94,0.08); }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease;
+      margin-bottom: 20px;
+    }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title {
+      font-size: 12px; font-weight: 700; color: var(--text-secondary);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px;
+    }
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .highlight-box {
+      padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--chip-accent); font-size: 13.5px; line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .highlight-box strong { color: var(--accent); }    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+    .era-card { border-radius: 12px; padding: 22px; border: 1px solid var(--border); position: relative; overflow: hidden; }
+    .era-card .top-line { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+    .era-card.old .top-line { background: #64748b; }
+    .era-card.new .top-line { background: var(--accent); }
+    .era-label { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 10px; margin-top: 4px; }
+    .era-card.old .era-label { color: #64748b; }
+    .era-card.new .era-label { color: var(--accent); }
+    .era-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; }
+    .era-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; margin-bottom: 8px; color: var(--text-secondary); }
+    .era-item strong { color: var(--text); font-weight: 600; }
+    .era-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+    .era-card.old .era-dot { background: #64748b; }
+    .era-card.new .era-dot { background: var(--accent); }
+    .tech-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      padding: 22px; margin-bottom: 14px; position: relative; overflow: hidden;
+    }
+    .tech-card .tech-num {
+      position: absolute; top: 14px; right: 18px; font-size: 2.4rem; font-weight: 900;
+      color: var(--accent); opacity: 0.12; line-height: 1;
+    }
+    .tech-card h3 { font-size: 15px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .tech-card h3 .emoji { font-size: 1.2rem; }
+    .tech-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }    .bottleneck-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 0; border-bottom: 1px solid var(--border);
+      font-size: 13px; color: var(--text-secondary); line-height: 1.7;
+    }
+    .bottleneck-item:last-child { border-bottom: none; }
+    .bottleneck-item .b-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+    .bottleneck-item strong { color: var(--text); }
+    .quote-box {
+      padding: 16px 20px; border-radius: 10px; border-left: 3px solid var(--accent);
+      background: var(--surface); font-size: 13px; line-height: 1.7;
+      color: var(--text-secondary); margin-bottom: 16px; font-style: italic;
+    }
+    .quote-box cite { display: block; margin-top: 6px; font-style: normal; font-weight: 600; font-size: 12px; color: var(--accent); }
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }    @media (max-width: 640px) {
+      .compare-grid, .kpi-row { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+    }
+    @media print {
+      body { background: white !important; }
+      .viz-menu { display: none !important; }
+      .card { break-inside: avoid; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        지식 Archive
+      </a>      <header class="hero animate">
+        <div class="hero-badge">🚀 우주산업 · Reusable Launch Vehicle</div>
+        <h1>재사용 로켓 5대 핵심 기술</h1>
+        <p class="hero-sub">마하 5로 떨어지는 빌딩을 세우는 마법 — 단 분리부터 초음속 역추진까지, 재사용 발사체의 기술 장벽과 지상 인프라 병목, 투자 관점 정리</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="category-badge cat-기술산업">🔬 기술·산업</span>
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="tag-chip">#우주산업</span>
+        <span class="tag-chip">#로켓</span>
+        <span class="tag-chip">#재사용</span>
+        <span class="tag-chip">#스페이스X</span>
+        <span class="tag-chip">#투자</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.08
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          우주산업 뉴스레터
+        </span>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-row animate d2" role="region" aria-label="핵심 수치">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">40%</div>
+          <div class="kpi-label">SpaceX 발사 연평균 성장률</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--text-secondary)">~6%</div>
+          <div class="kpi-label">1회용 로켓 연평균 성장률</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--negative)">45x</div>
+          <div class="kpi-label">초음속 역추진 시 공기저항 증가</div>
+        </div>
+      </div>      <!-- 시장 비교 -->
+      <div class="highlight-box animate d2">
+        2016~2024년, 기존 1회용 로켓의 발사 횟수는 <strong>연평균 6% 남짓으로 사실상 정체</strong>. 반면 재사용 기술의 스페이스X는 <strong>연평균 40% 성장</strong>하며 전체 시장을 홀로 견인했다. 로켓랩, 렐러티비티 스페이스 등 경쟁사들도 소형 1회용 로켓을 중단하고 <strong>중대형 재사용 발사체</strong> 개발로 전환 중이다.
+      </div>
+
+      <!-- 비교 그리드: 1회용 vs 재사용 -->
+      <div class="compare-grid animate d3" role="region" aria-label="1회용 vs 재사용 로켓 비교">
+        <div class="era-card old card">
+          <div class="top-line"></div>
+          <div style="padding-top:8px">
+            <div class="era-label">기존 방식</div>
+            <div class="era-title">1회용 로켓</div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>성장률:</strong> 연평균 ~6% (정체)</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>비용:</strong> 매 발사마다 전체 비용 지출</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>한계:</strong> 비용·빈도 확장에 물리적 제한</div></div>
+          </div>
+        </div>
+        <div class="era-card new card">
+          <div class="top-line"></div>
+          <div style="padding-top:8px">
+            <div class="era-label">게임 체인저</div>
+            <div class="era-title">재사용 로켓</div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>성장률:</strong> 연평균 40% (SpaceX 기준)</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>비용:</strong> 압도적 절감 → 발사 빈도 극대화</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>트렌드:</strong> 경쟁사 모두 재사용으로 전환 중</div></div>
+          </div>
+        </div>
+      </div>      <!-- 5대 핵심 기술 -->
+      <div class="card animate d3">
+        <div class="section-title">🔧 재사용 로켓 5대 핵심 기술</div>
+
+        <div class="tech-card">
+          <div class="tech-num">01</div>
+          <h3><span class="emoji">💨</span> 단 분리 기술 — 폭탄 대신 공기로 밀어내기</h3>
+          <p>과거 1회용 로켓은 폭발 볼트로 단을 분리했지만, 재사용 로켓은 <strong style="color:var(--accent)">기계식 고리(컬릿)</strong>와 <strong style="color:var(--accent)">공압식 푸셔</strong>로 폭발성 잔해 없이 부드럽게 분리한다. 최첨단 로켓은 1단 분리 전 2단 엔진을 먼저 점화해 추진력을 유지하는 <strong style="color:var(--accent)">핫 스테이징</strong>까지 도입.</p>
+        </div>
+
+        <div class="tech-card">
+          <div class="tech-num">02</div>
+          <h3><span class="emoji">🦾</span> 착륙 하드웨어 — 초음속을 견디는 날개와 다리</h3>
+          <p>상단의 <strong style="color:var(--accent)">그리드 핀(Grid Fin)</strong>이 대기권 재진입 시 공기 흐름을 제어해 방향 조종. 하단의 <strong style="color:var(--accent)">랜딩 레그</strong>가 착륙 직전 펼쳐져 충격 흡수. 가벼우면서도 튼튼해야 하는 상반된 조건을 동시에 충족해야 한다.</p>
+        </div>
+
+        <div class="tech-card">
+          <div class="tech-num">03</div>
+          <h3><span class="emoji">🧠</span> 두뇌와 감각 — 센서 융합과 자율 제어</h3>
+          <p>관성 센서(IMU), GPS, 레이더 고도계 등 수많은 데이터를 <strong style="color:var(--accent)">칼만 필터</strong> 알고리즘으로 융합. 바람과 기압을 뚫고 목표 지점까지 로켓 스스로 유도·제어하는 자율 비행 시스템이 핵심.</p>
+        </div>        <div class="tech-card">
+          <div class="tech-num">04</div>
+          <h3><span class="emoji">🔥</span> 엔진 재점화와 미세 추력 조절 — 호버 슬램</h3>
+          <p>허공에서 엔진을 다시 켜기 위해 특수 화학물질(<strong style="color:var(--accent)">TEA-TEB</strong>)을 정밀 분사. 착륙 직전에는 출력을 <strong style="color:var(--accent)">40% 이하</strong>로 줄여 기체가 다시 위로 튀어오르지 않고 사뿐히 내려앉게 만드는 <strong style="color:var(--accent)">호버 슬램(Hover-slam)</strong> 기법 적용.</p>
+        </div>
+
+        <div class="tech-card" style="border-color: var(--accent); border-width: 2px;">
+          <div class="tech-num">05</div>
+          <h3><span class="emoji">⚡</span> 끝판왕 — 비선형 구간 제어 (초음속 역추진)</h3>
+          <p>마하 5 이상의 초음속에서 엔진 역분사 시 엔진 불꽃과 맹렬한 공기가 정면충돌하며 거대한 공기 방석 형성. 공기 저항이 <strong style="color:var(--negative)">45배</strong> 증가해 감속 효과를 유발하지만, 동시에 공기 흐름이 뒤죽박죽되어 통제 불능에 빠지기 쉽다. 이를 <strong style="color:var(--accent)">수학적으로 예측하고 실시간 제어</strong>하는 것이 재사용 기술의 최대 난제.</p>
+        </div>
+      </div>      <!-- 지상 인프라 병목 -->
+      <div class="card animate d4">
+        <div class="section-title">🏗️ 하늘길이 뚫려도 땅이 막히면 소용없다 — 지상 인프라 병목</div>
+        <div class="bottleneck-item">
+          <div class="b-icon">⛈️</div>
+          <div><strong>날씨와 규제:</strong> 발사장 18.5km 이내 번개·뇌우 발생 시 최소 30분 이상 발사 올스톱. 야외 노출 환경의 구조적 한계.</div>
+        </div>
+        <div class="bottleneck-item">
+          <div class="b-icon">🔊</div>
+          <div><strong>발사대 턴어라운드:</strong> 200dB의 소음과 화염 → 분당 수백만 갤런 물을 쏟아붓는 음향 억제 시스템 작동. 발사 후 내화 벽돌 교체, 센서 초기화 등 물리적 복구 시간 필요.</div>
+        </div>
+        <div class="bottleneck-item">
+          <div class="b-icon">🏺</div>
+          <div><strong>엔진 브레이징 공정:</strong> 극한 온도·압력을 견디는 부품은 수백 도 특수 가열로(퍼니스)에서 결합. 가마가 완전히 식을 때까지 기다려야 다음 부품 투입 가능 — 대량 생산의 최대 걸림돌.</div>
+        </div>
+        <div class="bottleneck-item">
+          <div class="b-icon">🚢</div>
+          <div><strong>해상 회수 리드타임:</strong> 바다 위 드론쉽에 착륙한 로켓을 항구로 예인 → 세척 → 재조립까지 짧게는 며칠에서 길게는 수십 일 소요.</div>
+        </div>
+      </div>      <!-- 투자자 뷰포인트 -->
+      <div class="card animate d5">
+        <div class="section-title">💡 투자자를 위한 우주 산업 뷰포인트</div>
+        <div class="quote-box">
+          단순히 "위성이나 로켓을 쏠 줄 아느냐?"가 아니라, "엔진을 대량으로 찍어낼 공급망 혁신 능력이 있는가?", "로켓을 회수하고 며칠 만에 다시 정비해서 쏠 수 있는가?"를 물어야 한다.
+          <cite>— 우주 경제 시대의 진정한 승자를 가르는 질문</cite>
+        </div>
+        <div class="highlight-box">
+          진정한 경쟁력은 화려한 비행 기술을 넘어, <strong>지루하고 복잡한 운영과 인프라의 병목을 극복</strong>할 수 있는 역량에 있다. 발사대 복구 시간을 며칠 단위로 줄이는 재활용 프로세스, 엔진 대량 생산 체계 구축 등 <strong>산업의 새로운 표준</strong>을 만드는 기업이 승자가 될 것이다.
+        </div>
+      </div>
+
+      <!-- 관련 지식 -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="reusable-rocket.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">재사용 로켓 — 우주 발사 혁명</div>
+          </a>
+          <a href="rocket-basics.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">로켓의 기초 원리</div>
+          </a>
+          <a href="space-old-vs-new.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">올드스페이스 vs 뉴스페이스</div>
+          </a>
+          <a href="leo-satellite-comms.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">저궤도 위성 통신</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">출처: 우주산업 뉴스레터 · 2026.04.08</p>    </div>
+  </main>
+
+  <script>
+    var THEMES = ['theme-dark', 'theme-light'];
+    var THEME_LABELS = { 'theme-dark': 'Dark', 'theme-light': 'Light' };
+    (function() {
+      var saved = localStorage.getItem('ka-theme') || 'theme-dark';
+      document.documentElement.className = saved;
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[saved];
+    })();
+    function cycleTheme() {
+      var cur = document.documentElement.className;
+      var next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+      document.documentElement.className = next;
+      localStorage.setItem('ka-theme', next);
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[next];
+      closeMenu();
+    }
+    function toggleMenu() { document.getElementById('vizMenuDropdown').classList.toggle('open'); }
+    function closeMenu() { document.getElementById('vizMenuDropdown').classList.remove('open'); }
+    document.addEventListener('click', function(e) { if (!e.target.closest('.viz-menu')) closeMenu(); });
+    function downloadImage() {
+      closeMenu();
+      if (typeof htmlToImage === 'undefined') { alert('라이브러리 로딩 중...'); return; }
+      htmlToImage.toPng(document.getElementById('main'), { pixelRatio: 2 })
+        .then(function(dataUrl) {
+          var a = document.createElement('a'); a.download = 'reusable-rocket-tech.png'; a.href = dataUrl; a.click();
+        });
+    }
+  </script>
+</body>
+</html>
