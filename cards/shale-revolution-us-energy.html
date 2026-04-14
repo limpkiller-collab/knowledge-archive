@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="ko" id="htmlRoot" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>셰일 혁명과 미국의 에너지 패권</title>
+  <meta name="knowledge-id" content="shale-revolution-us-energy">
+  <meta name="knowledge-series" content="원유 시장 기초">
+  <meta name="knowledge-category" content="경제·거시">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:              #0e0e0e;
+      --surface-low:     #131313;
+      --surface-mid:     #1a1919;
+      --surface-high:    #201f1f;
+      --surface-highest: #262626;
+      --surface-bright:  #2c2c2c;
+      --border:          rgba(255,255,255,0.05);
+      --text:            #ffffff;
+      --text-sec:        #adaaaa;
+      --accent:          #10b981;
+    }
+    html.theme-light {
+      --bg:              #FAFAFA;
+      --surface-low:     #FFFFFF;
+      --surface-mid:     #F9FAFB;
+      --surface-high:    #FFFFFF;
+      --surface-highest: #F3F4F6;
+      --surface-bright:  #FFFFFF;
+      --border:          rgba(0,0,0,0.06);
+      --text:            #111827;
+      --text-sec:        #4B5563;
+      --accent:          #059669;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans KR', 'Inter', -apple-system, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.7; -webkit-font-smoothing: antialiased;
+      min-height: 100vh; transition: background 0.3s, color 0.3s;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%,
+        color-mix(in srgb, #10b981 10%, transparent), transparent);
+    }
+    .page-wrap { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; padding: 24px 20px 80px; }
+
+    .view-menu { position: fixed; top: 16px; right: 16px; z-index: 100; display: flex; gap: 8px; }
+    .view-btn {
+      background: var(--surface-high); border: 1px solid var(--border);
+      color: var(--text-sec); border-radius: 8px; padding: 6px 10px;
+      font-size: 12px; cursor: pointer; font-family: inherit;
+      transition: background 0.2s, color 0.2s; display: flex; align-items: center; gap: 5px;
+    }
+    .view-btn:hover { background: var(--surface-bright); color: var(--text); }
+
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--text-sec); text-decoration: none; font-size: 13px;
+      padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--surface-high); margin-bottom: 28px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .back-btn:hover { background: var(--surface-bright); color: var(--text); }
+
+    /* SERIES NAV */
+    .series-nav {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-left: 3px solid #10b981;
+      border-radius: 10px; padding: 12px 16px; margin-bottom: 24px;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    }
+    .series-nav-label { font-size: 11px; font-weight: 700; color: #10b981; text-transform: uppercase; letter-spacing: 0.06em; flex-shrink: 0; }
+    .snav-item {
+      font-size: 12px; color: var(--text-sec); text-decoration: none;
+      padding: 3px 10px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface-highest); transition: all 0.2s; white-space: nowrap;
+    }
+    .snav-item:hover { color: var(--text); }
+    .snav-item.active { background: rgba(16,185,129,0.12); color: #10b981; border-color: rgba(16,185,129,0.4); font-weight: 600; }
+
+    /* HERO */
+    .hero { margin-bottom: 24px; }
+    .series-badge {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: #10b981; background: rgba(16,185,129,0.12);
+      border: 1px solid rgba(16,185,129,0.3);
+      padding: 3px 10px; border-radius: 99px; margin-bottom: 14px;
+    }
+    h1 { font-size: clamp(22px,4vw,32px); font-weight: 800; line-height: 1.25; letter-spacing: -0.03em; margin-bottom: 10px; }
+    .hero-sub { font-size: 15px; color: var(--text-sec); line-height: 1.6; }
+
+    /* META */
+    .meta-bar {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+      margin-bottom: 32px; padding: 12px 16px;
+      background: var(--surface-mid); border-radius: 12px; border: 1px solid var(--border);
+    }
+    .cat-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      background: rgba(59,130,246,0.12); color: #3b82f6; border: 1px solid rgba(59,130,246,0.3);
+    }
+    html.theme-light .cat-badge { background: rgba(59,130,246,0.08); }
+    .diff-badge { font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 99px; background: var(--surface-highest); color: var(--text-sec); }
+    .tag-chip { font-size: 11px; padding: 2px 8px; border-radius: 6px; background: var(--surface-highest); color: var(--text-sec); }
+    .meta-date { font-size: 11px; color: var(--text-sec); margin-left: auto; }
+
+    /* KPI */
+    .kpi-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 28px; }
+    .kpi-item { background: var(--surface-mid); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; }
+    .kpi-value { font-size: 26px; font-weight: 800; color: #10b981; line-height: 1.1; margin-bottom: 4px; }
+    .kpi-label { font-size: 11px; color: var(--text-sec); line-height: 1.4; }
+    @media (max-width: 520px) {
+      .kpi-row { grid-template-columns: 1fr 1fr; }
+      .kpi-item:last-child { grid-column: 1 / -1; }
+    }
+
+    /* SECTION */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-sec);
+      margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+    }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* TECH EXPLAINER */
+    .tech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .tech-card {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 12px; padding: 18px; position: relative; overflow: hidden;
+    }
+    .tech-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+    .tc-hfrac::before { background: linear-gradient(90deg, #3b82f6, #8b5cf6); }
+    .tc-horiz::before  { background: linear-gradient(90deg, #f59e0b, #10b981); }
+    .tech-icon { font-size: 28px; margin-bottom: 8px; display: block; }
+    .tech-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .tech-body { font-size: 13px; color: var(--text-sec); line-height: 1.6; }
+    .tech-tag {
+      display: inline-block; margin-top: 8px; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 6px; background: rgba(16,185,129,0.12); color: #10b981;
+    }
+    @media (max-width: 580px) { .tech-grid { grid-template-columns: 1fr; } }
+
+    /* PRODUCTION CHART */
+    .prod-chart { background: var(--surface-mid); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; }
+    .prod-chart-title { font-size: 12px; color: var(--text-sec); margin-bottom: 14px; font-weight: 600; }
+    .bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .bar-year { font-size: 12px; font-weight: 700; width: 44px; flex-shrink: 0; color: var(--text-sec); }
+    .bar-outer { flex: 1; background: var(--surface-highest); border-radius: 99px; height: 24px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 99px; display: flex; align-items: center; padding-left: 10px; }
+    .bar-label { font-size: 11px; font-weight: 700; color: white; }
+    .bar-val { font-size: 12px; font-weight: 700; min-width: 60px; }
+    .prod-note { font-size: 11px; color: var(--text-sec); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+
+    /* SHALE PLAYS MAP */
+    .plays-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 520px) { .plays-grid { grid-template-columns: 1fr; } }
+    .play-card {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px 16px;
+    }
+    .play-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .play-loc { font-size: 11px; color: var(--text-sec); margin-bottom: 10px; }
+    .play-kv { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 3px; }
+    .play-kv-k { color: var(--text-sec); }
+    .play-kv-v { font-weight: 600; }
+    .play-badge {
+      display: inline-block; margin-top: 8px; font-size: 11px; font-weight: 700;
+      padding: 2px 8px; border-radius: 6px;
+    }
+    .pb-top    { background: rgba(16,185,129,0.12); color: #10b981; }
+    .pb-medium { background: rgba(245,158,11,0.12); color: #f59e0b; }
+    .pb-gas    { background: rgba(59,130,246,0.12); color: #3b82f6; }
+
+    /* TIMELINE */
+    .timeline { position: relative; padding-left: 28px; }
+    .timeline::before {
+      content: ''; position: absolute; left: 7px; top: 4px; bottom: 4px;
+      width: 2px; background: linear-gradient(to bottom, rgba(16,185,129,0.6), rgba(16,185,129,0.1));
+    }
+    .tl-item { position: relative; margin-bottom: 18px; }
+    .tl-dot { position: absolute; left: -24px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: #10b981; border: 2px solid var(--bg); }
+    .tl-dot.alt { background: #3b82f6; }
+    .tl-year { font-size: 12px; font-weight: 700; color: #10b981; margin-bottom: 2px; }
+    .tl-year.alt-year { color: #3b82f6; }
+    .tl-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+    .tl-body { font-size: 13px; color: var(--text-sec); line-height: 1.5; }
+    .tl-impact { display: inline-block; margin-top: 5px; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; }
+    .imp-green { background: rgba(16,185,129,0.12); color: #10b981; }
+    .imp-blue  { background: rgba(59,130,246,0.12); color: #3b82f6; }
+    .imp-red   { background: rgba(244,63,94,0.12); color: #f43f5e; }
+
+    /* GEOPOLITICS COMPARE */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 580px) { .compare-grid { grid-template-columns: 1fr; } }
+    .compare-card {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px 18px;
+    }
+    .compare-head { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 12px; color: var(--text-sec); }
+    .compare-item { display: flex; gap: 8px; margin-bottom: 9px; font-size: 13px; line-height: 1.5; }
+    .ci-icon { flex-shrink: 0; margin-top: 1px; }
+
+    /* TABLE */
+    .table-wrap { overflow-x: auto; border-radius: 12px; }
+    table { width: 100%; min-width: 500px; border-collapse: collapse; background: var(--surface-mid); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; font-size: 13px; }
+    th { background: var(--surface-highest); color: var(--text-sec); font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 10px 14px; text-align: left; white-space: nowrap; border-bottom: 1px solid var(--border); }
+    td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--surface-highest); }
+    .td-hl { font-weight: 700; color: #10b981; }
+    @media (max-width: 640px) { th { font-size: 10px; padding: 8px 10px; } td { font-size: 12px; padding: 9px 10px; } }
+
+    /* HIGHLIGHT */
+    .hl-box {
+      background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.25);
+      border-left: 3px solid #10b981; border-radius: 10px; padding: 16px 18px; margin-bottom: 14px;
+    }
+    .hl-box .hl-title { font-size: 12px; font-weight: 700; color: #10b981; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px; }
+    .hl-box p { font-size: 14px; color: var(--text); line-height: 1.7; }
+    .hl-box.red   { background: rgba(244,63,94,0.05); border-color: rgba(244,63,94,0.25); border-left-color: #f43f5e; }
+    .hl-box.red   .hl-title { color: #f43f5e; }
+    .hl-box.amber { background: rgba(245,158,11,0.05); border-color: rgba(245,158,11,0.25); border-left-color: #f59e0b; }
+    .hl-box.amber .hl-title { color: #f59e0b; }
+    .hl-box.blue  { background: rgba(59,130,246,0.05); border-color: rgba(59,130,246,0.25); border-left-color: #3b82f6; }
+    .hl-box.blue  .hl-title { color: #3b82f6; }
+
+    /* RELATED */
+    .related-section { margin-top: 40px; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap: 10px; }
+    .related-card {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 14px; text-decoration: none; color: var(--text); transition: background 0.2s;
+    }
+    .related-card:hover { background: var(--surface-high); }
+    .related-card-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .related-card-tag { font-size: 11px; color: var(--text-sec); }
+
+    /* ANIMATE */
+    .animate { opacity: 0; transform: translateY(14px); animation: fadeUp 0.5s ease forwards; }
+    .delay-1 { animation-delay: 0.08s; }
+    .delay-2 { animation-delay: 0.16s; }
+    .delay-3 { animation-delay: 0.24s; }
+    .delay-4 { animation-delay: 0.32s; }
+    .delay-5 { animation-delay: 0.40s; }
+    .delay-6 { animation-delay: 0.48s; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    @media print { .view-menu, .back-btn, .series-nav { display: none; } body::before { display: none; } }
+  </style>
+</head>
+<body>
+
+<div class="view-menu">
+  <button class="view-btn" onclick="toggleTheme()"><span id="themeIcon">☀️</span> 테마</button>
+  <button class="view-btn" onclick="window.print()">🖨️ 인쇄</button>
+</div>
+
+<div class="page-wrap">
+  <a href="../index.html" class="back-btn animate">← 지식 Archive</a>
+
+  <!-- 시리즈 네비게이션 -->
+  <div class="series-nav animate">
+    <span class="series-nav-label">📚 원유 시장 기초 시리즈</span>
+    <a href="crude-oil-3-benchmarks.html" class="snav-item">① WTI·브렌트·두바이</a>
+    <a href="crude-to-fuel-price-mechanism.html" class="snav-item">② 원유→국내 유가</a>
+    <a href="opec-production-cuts-mechanism.html" class="snav-item">③ OPEC+ 감산 메커니즘</a>
+    <a href="shale-revolution-us-energy.html" class="snav-item active">④ 셰일 혁명·미국 패권</a>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero animate delay-1">
+    <div class="series-badge">원유 시장 기초 ④</div>
+    <h1>셰일 혁명과 미국의 에너지 패권</h1>
+    <p class="hero-sub">
+      수압파쇄법 하나가 OPEC의 가격 통제력을 흔들고, 40년 만에 미국의 원유 수출 금지를 해제시켰다.
+      에너지 패권의 재편이 지정학과 한국 에너지 수급에 미치는 영향까지 분석한다.
+    </p>
+  </div>
+
+  <!-- META -->
+  <div class="meta-bar animate delay-1">
+    <span class="cat-badge">🌐 경제·거시</span>
+    <span class="diff-badge">초급</span>
+    <span class="tag-chip">셰일</span>
+    <span class="tag-chip">에너지</span>
+    <span class="tag-chip">미국</span>
+    <span class="tag-chip">지정학</span>
+    <span class="tag-chip">패권</span>
+    <span class="meta-date">2026-04-15</span>
+  </div>
+
+  <!-- KPI ROW -->
+  <div class="kpi-row animate delay-2">
+    <div class="kpi-item">
+      <div class="kpi-value">13mb/d</div>
+      <div class="kpi-label">미국 현재 원유 생산량<br>(세계 1위, 2024 기준)</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-value">$40~50</div>
+      <div class="kpi-label">퍼미안 배이슨<br>손익분기 (배럴당)</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-value">40년</div>
+      <div class="kpi-label">미국 원유 수출 금지<br>기간 (1975~2015)</div>
+    </div>
+  </div>
+
+  <!-- 핵심 기술 2가지 -->
+  <div class="section animate delay-2">
+    <div class="section-title">셰일 혁명의 두 핵심 기술</div>
+    <div class="tech-grid">
+      <div class="tech-card tc-hfrac">
+        <span class="tech-icon">💧</span>
+        <div class="tech-title">수압파쇄법 (Hydraulic Fracturing · Fracking)</div>
+        <div class="tech-body">
+          지하 암반층(셰일층)에 고압의 물·모래·화학물질 혼합액을 주입해
+          균열을 만들고 원유·가스를 빼낸다.
+          기존 방식으로는 추출 불가능했던 비전통 자원을 경제적으로 생산하는 핵심 기술.
+          1990년대 개발, 2000년대 후반 상용화.
+        </div>
+        <div class="tech-tag">非전통 원유 생산 가능화</div>
+      </div>
+      <div class="tech-card tc-horiz">
+        <span class="tech-icon">↔️</span>
+        <div class="tech-title">수평시추 (Horizontal Drilling)</div>
+        <div class="tech-body">
+          수직으로 뚫은 뒤 셰일층을 따라 수평으로 방향을 틀어
+          수 km에 걸쳐 시추하는 기술.
+          하나의 수직 시추공에서 여러 방향으로 수평 시추가 가능해져
+          접촉 면적이 수십 배 증가 → 회수율 대폭 향상.
+        </div>
+        <div class="tech-tag">1공당 생산량 극대화</div>
+      </div>
+    </div>
+    <div style="background:var(--surface-mid); border:1px solid var(--border); border-radius:10px; padding:13px 16px; margin-top:12px; font-size:13px; color:var(--text-sec);">
+      ⚡ <strong style="color:var(--text);">두 기술의 결합이 전부였다.</strong>
+      수압파쇄(Fracking)와 수평시추(Horizontal Drilling)를 결합한 것이 셰일 혁명의 본질.
+      개별 기술은 이미 존재했지만, 2000년대 후반 조합 적용과 비용 하락이 만난 순간 혁명이 시작됐다.
+    </div>
+  </div>
+
+  <!-- 미국 생산량 변화 -->
+  <div class="section animate delay-2">
+    <div class="section-title">미국 원유 생산량 변화 (mb/d)</div>
+    <div class="prod-chart">
+      <div class="prod-chart-title">셰일 혁명 전후 생산량 추이 — 세계 1위 탈환 경로</div>
+      <div class="bar-row">
+        <div class="bar-year">1970</div>
+        <div class="bar-outer">
+          <div class="bar-fill" style="width:73%; background:linear-gradient(135deg,#adaaaa,#7c7b7b);">
+            <span class="bar-label">역대 최고 (셰일 이전)</span>
+          </div>
+        </div>
+        <div class="bar-val" style="color:var(--text-sec);">9.6mb/d</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-year">2008</div>
+        <div class="bar-outer">
+          <div class="bar-fill" style="width:37%; background:linear-gradient(135deg,#ef4444,#f87171);">
+            <span class="bar-label">셰일 혁명 직전</span>
+          </div>
+        </div>
+        <div class="bar-val" style="color:#ef4444;">4.9mb/d</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-year">2015</div>
+        <div class="bar-outer">
+          <div class="bar-fill" style="width:69%; background:linear-gradient(135deg,#f59e0b,#fbbf24);">
+            <span class="bar-label">셰일 급성장</span>
+          </div>
+        </div>
+        <div class="bar-val" style="color:#f59e0b;">9.1mb/d</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-year">2019</div>
+        <div class="bar-outer">
+          <div class="bar-fill" style="width:97%; background:linear-gradient(135deg,#10b981,#34d399);">
+            <span class="bar-label">역대 최고 갱신</span>
+          </div>
+        </div>
+        <div class="bar-val" style="color:#10b981;">12.8mb/d</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-year">2024</div>
+        <div class="bar-outer">
+          <div class="bar-fill" style="width:100%; background:linear-gradient(135deg,#3b82f6,#60a5fa);">
+            <span class="bar-label">현재 세계 1위 유지</span>
+          </div>
+        </div>
+        <div class="bar-val" style="color:#3b82f6;">13.2mb/d</div>
+      </div>
+      <div class="prod-note">
+        * mb/d = 백만 배럴/일. 2008년 대비 2024년 약 2.7배 증가. 사우디(9mb/d), 러시아(9.5mb/d)를 앞선 세계 최대 산유국.
+      </div>
+    </div>
+  </div>
+
+  <!-- 주요 셰일 플레이 -->
+  <div class="section animate delay-3">
+    <div class="section-title">미국 주요 셰일 플레이 (Shale Play)</div>
+    <div class="plays-grid">
+      <div class="play-card">
+        <div class="play-name" style="color:#10b981;">🏆 퍼미안 배이슨</div>
+        <div class="play-loc">📍 텍사스 서부·뉴멕시코</div>
+        <div class="play-kv"><span class="play-kv-k">생산량</span><span class="play-kv-v">약 6.2mb/d</span></div>
+        <div class="play-kv"><span class="play-kv-k">손익분기</span><span class="play-kv-v">$40~50/배럴</span></div>
+        <div class="play-kv"><span class="play-kv-k">특징</span><span class="play-kv-v">미국 전체의 50%+</span></div>
+        <div class="play-badge pb-top">세계 최대 셰일 플레이</div>
+      </div>
+      <div class="play-card">
+        <div class="play-name" style="color:#f59e0b;">이글 포드</div>
+        <div class="play-loc">📍 텍사스 남부</div>
+        <div class="play-kv"><span class="play-kv-k">생산량</span><span class="play-kv-v">약 1.0mb/d</span></div>
+        <div class="play-kv"><span class="play-kv-k">손익분기</span><span class="play-kv-v">$45~55/배럴</span></div>
+        <div class="play-kv"><span class="play-kv-k">특징</span><span class="play-kv-v">경질유 + NGL 혼합</span></div>
+        <div class="play-badge pb-medium">주요 경질유 생산지</div>
+      </div>
+      <div class="play-card">
+        <div class="play-name" style="color:#8b5cf6;">바켄 (Bakken)</div>
+        <div class="play-loc">📍 노스다코타·몬태나</div>
+        <div class="play-kv"><span class="play-kv-k">생산량</span><span class="play-kv-v">약 1.1mb/d</span></div>
+        <div class="play-kv"><span class="play-kv-k">손익분기</span><span class="play-kv-v">$50~60/배럴</span></div>
+        <div class="play-kv"><span class="play-kv-k">특징</span><span class="play-kv-v">2010년대 초 붐</span></div>
+        <div class="play-badge pb-medium">셰일 붐 상징</div>
+      </div>
+      <div class="play-card">
+        <div class="play-name" style="color:#3b82f6;">마르셀루스 (Marcellus)</div>
+        <div class="play-loc">📍 펜실베이니아·웨스트버지니아</div>
+        <div class="play-kv"><span class="play-kv-k">생산물</span><span class="play-kv-v">주로 천연가스</span></div>
+        <div class="play-kv"><span class="play-kv-k">생산량</span><span class="play-kv-v">약 35 Bcf/d</span></div>
+        <div class="play-kv"><span class="play-kv-k">특징</span><span class="play-kv-v">미국 최대 가스전</span></div>
+        <div class="play-badge pb-gas">LNG 수출 기반</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 지정학 변화 비교 -->
+  <div class="section animate delay-3">
+    <div class="section-title">셰일 혁명이 바꾼 지정학 구도</div>
+    <div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-head" style="color:#ef4444;">셰일 혁명 이전 (~2010)</div>
+        <div class="compare-item"><span class="ci-icon">🛢️</span><span>미국, 하루 5mb/d 생산 — 중동 원유 대량 수입 의존</span></div>
+        <div class="compare-item"><span class="ci-icon">🤝</span><span>사우디와 안보-석유 교환 딜: "안보 제공 ↔ 달러 결제 + 공급 안정"</span></div>
+        <div class="compare-item"><span class="ci-icon">⛽</span><span>원유 수출 금지 (1975년 에너지 정책 보존법)</span></div>
+        <div class="compare-item"><span class="ci-icon">🚢</span><span>호르무즈·말라카 초크포인트 차단 = 미국에도 직접 위협</span></div>
+        <div class="compare-item"><span class="ci-icon">🇷🇺</span><span>러시아의 가스 무기화에 유럽 취약 — 미국 영향력 제한적</span></div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-head" style="color:#10b981;">셰일 혁명 이후 (2015~)</div>
+        <div class="compare-item"><span class="ci-icon">🏆</span><span>미국, 세계 1위 산유국 — 중동 의존도 급감, 순수출국 전환</span></div>
+        <div class="compare-item"><span class="ci-icon">📉</span><span>사우디 대미 영향력 약화 — 미국의 중동 군사 개입 유인 감소</span></div>
+        <div class="compare-item"><span class="ci-icon">🚢</span><span>2015년 원유 수출 금지 40년 만에 해제 → 글로벌 공급자 역할</span></div>
+        <div class="compare-item"><span class="ci-icon">🌊</span><span>호르무즈·말라카 차단 → 미국 자체 피해 최소화 (내수 공급 자립)</span></div>
+        <div class="compare-item"><span class="ci-icon">🇪🇺</span><span>미국 LNG 수출 → 유럽의 러시아 가스 의존 탈피 지원 (에너지 동맹)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 타임라인 -->
+  <div class="section animate delay-4">
+    <div class="section-title">셰일 혁명 주요 역사 타임라인</div>
+    <div style="background:var(--surface-mid); border:1px solid var(--border); border-radius:12px; padding:20px 22px;">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2000년대 초</div>
+          <div class="tl-title">조지 미첼(George Mitchell)의 상용화 돌파</div>
+          <div class="tl-body">수십 년간 연구해온 수압파쇄+수평시추 기술을 텍사스 바넷 셰일에서 경제적으로 상용화 성공. 셰일 혁명의 씨앗.</div>
+          <div class="tl-impact imp-green">기술 임계점 돌파</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2008~2012</div>
+          <div class="tl-title">셰일 가스·오일 붐 시작</div>
+          <div class="tl-body">고유가($100+)와 기술 진보 맞물려 바켄·이글포드·퍼미안 붐 시작. 미국 생산량 연 10% 이상 급증. 이 시기 브렌트와 WTI 가격 역전(브렌트 > WTI) 발생.</div>
+          <div class="tl-impact imp-green">생산량 급등 시작</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2014~2016</div>
+          <div class="tl-title">사우디의 반격 — 저유가 전쟁</div>
+          <div class="tl-body">OPEC이 감산 거부, 증산으로 유가를 $100→$27로 폭락시켜 셰일 업체 퇴출 시도. 결과: 비효율 셰일 업체는 파산했지만 퍼미안 등 저비용 플레이는 살아남아 오히려 비용 구조가 강화됨.</div>
+          <div class="tl-impact imp-red">셰일 생존력 검증</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot alt"></div>
+          <div class="tl-year alt-year">2015년 12월</div>
+          <div class="tl-title">40년 원유 수출 금지 해제</div>
+          <div class="tl-body">미 의회, 1975년부터 유지된 원유 수출 금지를 해제. 이후 미국이 글로벌 원유 공급자로 부상. 유럽·아시아에 대한 에너지 영향력 확대 시작.</div>
+          <div class="tl-impact imp-blue">에너지 외교 무기화</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot alt"></div>
+          <div class="tl-year alt-year">2016년~</div>
+          <div class="tl-title">LNG 수출 개시 — 에너지 패권 완성</div>
+          <div class="tl-body">사빈패스 LNG 터미널 가동. 마르셀루스 셰일 가스가 LNG로 전환돼 유럽·아시아 수출. 2022년 우크라이나 전쟁 후 미국 LNG가 러시아 가스를 대체하는 핵심 수단이 됨.</div>
+          <div class="tl-impact imp-blue">글로벌 에너지 공급자 확정</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2019~현재</div>
+          <div class="tl-title">세계 1위 산유국 지위 공고화</div>
+          <div class="tl-body">퍼미안 배이슨 중심으로 생산 효율 극대화. 손익분기가 $40대로 하락하며 사우디·러시아 감산의 효과를 희석. 유가 $70 이상 유지 시 셰일 증산이 자동 반응하는 구조 확립.</div>
+          <div class="tl-impact imp-green">OPEC+ 견제 구조 확립</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 손익분기 vs 유가 -->
+  <div class="section animate delay-4">
+    <div class="section-title">셰일 손익분기가 만드는 유가 상한선</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>구분</th>
+            <th>배럴당 손익분기</th>
+            <th>유가 반응</th>
+            <th>의미</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>퍼미안 최우량 구역</strong></td>
+            <td class="td-hl">$35~45</td>
+            <td>$45 이상이면 증산</td>
+            <td>미국 셰일의 핵심 채산성 기준</td>
+          </tr>
+          <tr>
+            <td>퍼미안 평균</td>
+            <td>$40~50</td>
+            <td>$50 이상이면 증산</td>
+            <td>가장 경쟁력 있는 플레이</td>
+          </tr>
+          <tr>
+            <td>바켄·이글포드</td>
+            <td>$50~60</td>
+            <td>$60 이상이면 증산</td>
+            <td>중상위 플레이</td>
+          </tr>
+          <tr>
+            <td>미국 셰일 평균</td>
+            <td>$55~65</td>
+            <td>$65 이상이면 증산</td>
+            <td>전반적 수익성 기준</td>
+          </tr>
+          <tr>
+            <td><strong>OPEC+ 전략 가격대</strong></td>
+            <td>—</td>
+            <td class="td-hl">$70~80 유지 목표</td>
+            <td>셰일 증산 유발하지 않는 선에서 최대화 시도</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 핵심 인사이트 -->
+  <div class="section animate delay-5">
+    <div class="section-title">핵심 인사이트</div>
+    <div class="hl-box">
+      <div class="hl-title">🔄 셰일은 OPEC+의 보이지 않는 상한선</div>
+      <p>
+        유가가 $70을 넘으면 미국 셰일 업체들이 시추를 늘린다(리그 수 증가).
+        6~12개월 후 생산량 증가가 시장에 반영되면 유가가 다시 눌린다.
+        이 자동 조정 메커니즘 때문에 OPEC+가 아무리 감산해도
+        <strong>$80~90 이상을 장기 유지하기 어려운 구조</strong>가 됐다.
+        OPEC+의 실질적 유가 통제 범위는 $60~80으로 좁아졌다.
+      </p>
+    </div>
+    <div class="hl-box amber">
+      <div class="hl-title">⚠️ 셰일의 한계 — 환경 규제와 자본 효율성</div>
+      <p>
+        수압파쇄는 지하수 오염·지진 유발 가능성으로 환경 규제 강화 대상.
+        또한 셰일 유정은 초기 생산량이 급격히 감소(decline rate 70%/년)해
+        지속적인 신규 시추 투자가 필요하다.
+        금리 상승기에는 자금 조달 비용 증가 → 투자 위축 → 생산량 감소 패턴이 반복된다.
+      </p>
+    </div>
+    <div class="hl-box blue">
+      <div class="hl-title">🇰🇷 한국에 미치는 영향</div>
+      <p>
+        한국은 중동(두바이유) 중심 수입국이지만, 미국 원유·LNG 수입도 증가 중.
+        셰일 혁명으로 <strong>수입선 다변화</strong>가 가능해졌다.
+        또한 미국 LNG가 동북아 가격(JKM 지수) 안정에 기여하고 있어
+        겨울철 난방·발전용 LNG 도입가 안정에 간접적으로 도움을 준다.
+        지정학적으로는 미국의 중동 관여 감소 → 중동 불안정 심화 위험이라는 양날의 검이다.
+      </p>
+    </div>
+  </div>
+
+  <!-- 3줄 요약 -->
+  <div class="section animate delay-6">
+    <div class="section-title">3줄 요약</div>
+    <div style="background:var(--surface-mid); border:1px solid var(--border); border-radius:12px; padding:20px 22px;">
+      <p style="font-size:14px; margin-bottom:10px;">
+        <strong style="color:#10b981;">①</strong> 수압파쇄+수평시추의 결합이 미국을 세계 최대 산유국(13mb/d)으로 만들었다.
+      </p>
+      <p style="font-size:14px; margin-bottom:10px;">
+        <strong style="color:#10b981;">②</strong> 퍼미안 배이슨 손익분기 $40~50이 OPEC+의 보이지 않는 유가 상한선 역할을 한다.
+      </p>
+      <p style="font-size:14px;">
+        <strong style="color:#10b981;">③</strong> 원유 수출 해제(2015)·LNG 수출(2016)로 미국은 에너지 무기를 보유한 패권국이 됐고, 한국의 수입선 다변화 기회도 넓어졌다.
+      </p>
+    </div>
+  </div>
+
+  <!-- RELATED / SERIES -->
+  <div class="related-section animate delay-6">
+    <div class="section-title">원유 시장 기초 시리즈</div>
+    <div class="related-grid">
+      <a href="crude-oil-3-benchmarks.html" class="related-card">
+        <div class="related-card-title">① WTI·브렌트·두바이</div>
+        <div class="related-card-tag">3대 기준 유종 완전 비교</div>
+      </a>
+      <a href="crude-to-fuel-price-mechanism.html" class="related-card">
+        <div class="related-card-title">② 원유→국내 유가 메커니즘</div>
+        <div class="related-card-tag">원가에서 주유소까지</div>
+      </a>
+      <a href="opec-production-cuts-mechanism.html" class="related-card">
+        <div class="related-card-title">③ OPEC+ 감산 메커니즘</div>
+        <div class="related-card-tag">감산→유가 전파 5단계</div>
+      </a>
+      <a href="maritime-chokepoints-global.html" class="related-card">
+        <div class="related-card-title">세계 5대 해상 초크포인트</div>
+        <div class="related-card-tag">원유 운송 병목과 리스크</div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleTheme() {
+    var html = document.getElementById('htmlRoot');
+    var isDark = html.classList.contains('theme-dark');
+    html.classList.toggle('theme-dark', !isDark);
+    html.classList.toggle('theme-light', isDark);
+    document.getElementById('themeIcon').textContent = isDark ? '🌙' : '☀️';
+    try { localStorage.setItem('ka-theme', isDark ? 'light' : 'dark'); } catch(e){}
+  }
+  (function(){
+    try {
+      var t = localStorage.getItem('ka-theme');
+      if (t === 'light') {
+        document.getElementById('htmlRoot').classList.replace('theme-dark','theme-light');
+        document.getElementById('themeIcon').textContent = '🌙';
+      }
+    } catch(e){}
+  })();
+</script>
+</body>
+</html>
