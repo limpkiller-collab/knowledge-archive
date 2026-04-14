@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ko" id="htmlRoot" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>원유→국내 유가 메커니즘 — 국제 원가에서 주유소 가격까지</title>
+  <meta name="knowledge-id" content="crude-to-fuel-price-mechanism">
+  <meta name="knowledge-source" content="원유 시장 도메인 지식">
+  <meta name="knowledge-category" content="경제·거시">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ============================
+       DESIGN TOKENS
+       ============================ */
+    :root {
+      --bg:              #0e0e0e;
+      --surface-low:     #131313;
+      --surface-mid:     #1a1919;
+      --surface-high:    #201f1f;
+      --surface-highest: #262626;
+      --surface-bright:  #2c2c2c;
+      --on-surface:      #ffffff;
+      --on-surface-v:    #adaaaa;
+      --border:          rgba(255,255,255,0.05);
+      --text:            #ffffff;
+      --text-sec:        #adaaaa;
+      --accent:          #f97316;
+    }
+    html.theme-light {
+      --bg:              #FAFAFA;
+      --surface-low:     #FFFFFF;
+      --surface-mid:     #F9FAFB;
+      --surface-high:    #FFFFFF;
+      --surface-highest: #F3F4F6;
+      --surface-bright:  #FFFFFF;
+      --on-surface:      #111827;
+      --on-surface-v:    #4B5563;
+      --border:          rgba(0,0,0,0.06);
+      --text:            #111827;
+      --text-sec:        #4B5563;
+      --accent:          #ea6c00;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans KR', 'Inter', -apple-system, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.7; -webkit-font-smoothing: antialiased;
+      min-height: 100vh; transition: background 0.3s, color 0.3s;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%,
+        color-mix(in srgb, #f97316 12%, transparent), transparent);
+    }
+    .page-wrap { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; padding: 24px 20px 80px; }
+
+    /* ============================  VIEW MENU  ============================ */
+    .view-menu {
+      position: fixed; top: 16px; right: 16px; z-index: 100;
+      display: flex; gap: 8px;
+    }
+    .view-btn {
+      background: var(--surface-high); border: 1px solid var(--border);
+      color: var(--text-sec); border-radius: 8px; padding: 6px 10px;
+      font-size: 12px; cursor: pointer; font-family: inherit;
+      transition: background 0.2s, color 0.2s;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .view-btn:hover { background: var(--surface-bright); color: var(--text); }
+
+    /* ============================  BACK  ============================ */
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--text-sec); text-decoration: none; font-size: 13px;
+      padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--surface-high); margin-bottom: 28px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .back-btn:hover { background: var(--surface-bright); color: var(--text); }
+
+    /* ============================  HERO  ============================ */
+    .hero { margin-bottom: 24px; }
+    .series-badge {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: #f97316; background: rgba(249,115,22,0.12);
+      border: 1px solid rgba(249,115,22,0.3);
+      padding: 3px 10px; border-radius: 99px; margin-bottom: 14px;
+    }
+    h1 {
+      font-size: clamp(22px, 4vw, 32px); font-weight: 800;
+      line-height: 1.25; letter-spacing: -0.03em; margin-bottom: 10px;
+    }
+    .hero-sub { font-size: 15px; color: var(--text-sec); line-height: 1.6; }
+
+    /* ============================  META BAR  ============================ */
+    .meta-bar {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+      margin-bottom: 32px; padding: 12px 16px;
+      background: var(--surface-mid); border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .category-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.02em; white-space: nowrap;
+    }
+    .cat-경제거시 { background:rgba(59,130,246,0.12); color:#3b82f6; border:1px solid rgba(59,130,246,0.3); }
+    html.theme-light .cat-경제거시 { background:rgba(59,130,246,0.08); }
+    .difficulty-badge {
+      font-size: 11px; font-weight: 600; padding: 2px 9px;
+      border-radius: 99px; background: var(--surface-highest); color: var(--text-sec);
+    }
+    .tag-chip {
+      font-size: 11px; padding: 2px 8px; border-radius: 6px;
+      background: var(--surface-highest); color: var(--text-sec);
+    }
+    .meta-date { font-size: 11px; color: var(--text-sec); margin-left: auto; }
+
+    /* ============================  SECTION  ============================ */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--text-sec);
+      margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+    }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* ============================  KPI ROW  ============================ */
+    .kpi-row {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+      margin-bottom: 28px;
+    }
+    .kpi-item {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px; text-align: center;
+    }
+    .kpi-value { font-size: 26px; font-weight: 800; color: #f97316; line-height: 1.1; margin-bottom: 4px; }
+    .kpi-label { font-size: 11px; color: var(--text-sec); line-height: 1.4; }
+    @media (max-width: 520px) {
+      .kpi-row { grid-template-columns: 1fr 1fr; }
+      .kpi-item:last-child { grid-column: 1 / -1; }
+    }
+
+    /* ============================  FLOW DIAGRAM  ============================ */
+    .flow-wrap {
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .flow-step {
+      display: flex; align-items: stretch; position: relative;
+    }
+    .flow-line-wrap {
+      display: flex; flex-direction: column; align-items: center;
+      width: 48px; flex-shrink: 0;
+    }
+    .flow-circle {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 800; flex-shrink: 0; z-index: 1;
+      border: 2px solid;
+    }
+    .flow-connector {
+      width: 2px; flex: 1; min-height: 24px;
+      background: linear-gradient(to bottom, rgba(249,115,22,0.4), rgba(249,115,22,0.1));
+    }
+    .flow-content {
+      flex: 1; background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 12px; padding: 14px 16px; margin: 0 0 12px 0;
+    }
+    .flow-content-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .flow-content-body { font-size: 13px; color: var(--text-sec); line-height: 1.6; }
+    .flow-content-tag {
+      display: inline-block; margin-top: 6px;
+      font-size: 11px; font-weight: 600; padding: 2px 8px;
+      border-radius: 6px; background: rgba(249,115,22,0.12); color: #f97316;
+    }
+    .step1 .flow-circle { border-color: #3b82f6; color: #3b82f6; background: rgba(59,130,246,0.1); }
+    .step2 .flow-circle { border-color: #8b5cf6; color: #8b5cf6; background: rgba(139,92,246,0.1); }
+    .step3 .flow-circle { border-color: #f59e0b; color: #f59e0b; background: rgba(245,158,11,0.1); }
+    .step4 .flow-circle { border-color: #f43f5e; color: #f43f5e; background: rgba(244,63,94,0.1); }
+    .step5 .flow-circle { border-color: #f97316; color: #f97316; background: rgba(249,115,22,0.15); }
+
+    /* ============================  TABLE  ============================ */
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; }
+    table {
+      width: 100%; min-width: 560px; border-collapse: collapse;
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden; font-size: 13px;
+    }
+    th {
+      background: var(--surface-highest); color: var(--text-sec);
+      font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+      text-transform: uppercase; padding: 10px 14px; text-align: left;
+      white-space: nowrap; border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 11px 14px; border-bottom: 1px solid var(--border);
+      color: var(--text); white-space: nowrap; vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--surface-highest); }
+    .td-highlight { font-weight: 700; color: #f97316; }
+    .td-last { white-space: normal; min-width: 140px; }
+    .tax-badge {
+      display: inline-block; padding: 2px 8px; border-radius: 6px;
+      font-size: 11px; font-weight: 600;
+    }
+    .tax-high { background: rgba(244,63,94,0.12); color: #f43f5e; }
+    .tax-low  { background: rgba(59,130,246,0.12); color: #3b82f6; }
+    @media (max-width: 640px) {
+      th { font-size: 10px; padding: 8px 10px; }
+      td { font-size: 12px; padding: 9px 10px; }
+    }
+
+    /* ============================  PRICE BAR CHART  ============================ */
+    .price-chart { background: var(--surface-mid); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; }
+    .price-chart-title { font-size: 13px; font-weight: 700; color: var(--text-sec); margin-bottom: 16px; }
+    .bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .bar-name { font-size: 12px; color: var(--text-sec); width: 72px; flex-shrink: 0; }
+    .bar-outer { flex: 1; background: var(--surface-highest); border-radius: 99px; height: 22px; overflow: hidden; }
+    .bar-inner { height: 100%; border-radius: 99px; display: flex; align-items: center; padding-left: 10px; transition: width 0.8s ease; }
+    .bar-label { font-size: 11px; font-weight: 700; color: white; white-space: nowrap; }
+    .bar-val { font-size: 12px; font-weight: 700; color: var(--text); min-width: 52px; }
+    .price-total {
+      margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .price-total-label { font-size: 13px; font-weight: 700; }
+    .price-total-val { font-size: 22px; font-weight: 800; color: #f97316; }
+
+    /* ============================  TIMELINE  ============================ */
+    .timeline { position: relative; padding-left: 28px; }
+    .timeline::before {
+      content: ''; position: absolute; left: 7px; top: 4px; bottom: 4px;
+      width: 2px; background: linear-gradient(to bottom, rgba(249,115,22,0.6), rgba(249,115,22,0.1));
+    }
+    .tl-item { position: relative; margin-bottom: 16px; }
+    .tl-dot {
+      position: absolute; left: -24px; top: 4px;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: #f97316; border: 2px solid var(--bg);
+    }
+    .tl-week { font-size: 12px; font-weight: 700; color: #f97316; margin-bottom: 2px; }
+    .tl-body { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+    /* ============================  HIGHLIGHT BOX  ============================ */
+    .highlight-box {
+      background: rgba(249,115,22,0.07); border: 1px solid rgba(249,115,22,0.25);
+      border-left: 3px solid #f97316; border-radius: 10px; padding: 16px 18px;
+    }
+    .highlight-box .hl-title {
+      font-size: 12px; font-weight: 700; color: #f97316;
+      letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .highlight-box p { font-size: 14px; color: var(--text); line-height: 1.7; }
+
+    /* ============================  RELATED  ============================ */
+    .related-section { margin-top: 40px; }
+    .related-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px;
+    }
+    .related-card {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 14px; text-decoration: none;
+      color: var(--text); transition: background 0.2s;
+    }
+    .related-card:hover { background: var(--surface-high); }
+    .related-card-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .related-card-tag { font-size: 11px; color: var(--text-sec); }
+
+    /* ============================  ANIMATE  ============================ */
+    .animate { opacity: 0; transform: translateY(14px); animation: fadeUp 0.5s ease forwards; }
+    .delay-1 { animation-delay: 0.08s; }
+    .delay-2 { animation-delay: 0.16s; }
+    .delay-3 { animation-delay: 0.24s; }
+    .delay-4 { animation-delay: 0.32s; }
+    .delay-5 { animation-delay: 0.40s; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    @media print {
+      .view-menu, .back-btn { display: none; }
+      body::before { display: none; }
+      .page-wrap { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ======= VIEW MENU ======= -->
+<div class="view-menu">
+  <button class="view-btn" onclick="toggleTheme()">
+    <span id="themeIcon">☀️</span> 테마
+  </button>
+  <button class="view-btn" onclick="window.print()">🖨️ 인쇄</button>
+</div>
+
+<div class="page-wrap">
+  <!-- ======= BACK ======= -->
+  <a href="../index.html" class="back-btn animate">← 지식 Archive</a>
+
+  <!-- ======= HERO ======= -->
+  <div class="hero animate delay-1">
+    <div class="series-badge">원유 시장 기초</div>
+    <h1>원유→국내 유가 메커니즘 — 국제 원가에서 주유소 가격까지</h1>
+    <p class="hero-sub">
+      국제 유가가 오른다는 뉴스를 들어도 주유소 가격은 바로 안 오르는 이유,
+      그리고 환율·세금·유통이 더해져 최종 가격이 어떻게 결정되는지 단계별로 분해한다.
+    </p>
+  </div>
+
+  <!-- ======= META BAR ======= -->
+  <div class="meta-bar animate delay-1">
+    <span class="category-badge cat-경제거시">🌐 경제·거시</span>
+    <span class="difficulty-badge">입문</span>
+    <span class="tag-chip">원유</span>
+    <span class="tag-chip">에너지</span>
+    <span class="tag-chip">경제</span>
+    <span class="tag-chip">정책</span>
+    <span class="meta-date">2026-04-15</span>
+  </div>
+
+  <!-- ======= KPI ROW ======= -->
+  <div class="kpi-row animate delay-2">
+    <div class="kpi-item">
+      <div class="kpi-value">51%</div>
+      <div class="kpi-label">휘발유 판매가 중<br>세금 비중 (2024 기준)</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-value">529원</div>
+      <div class="kpi-label">교통에너지환경세<br>(리터당, 휘발유)</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-value">4~8주</div>
+      <div class="kpi-label">국제 유가 변동이<br>국내 가격에 반영되는 시차</div>
+    </div>
+  </div>
+
+  <!-- ======= 4단계 FLOW ======= -->
+  <div class="section animate delay-2">
+    <div class="section-title">가격 형성 4단계 흐름</div>
+    <div class="flow-wrap">
+
+      <div class="flow-step step1">
+        <div class="flow-line-wrap">
+          <div class="flow-circle">1</div>
+          <div class="flow-connector"></div>
+        </div>
+        <div class="flow-content">
+          <div class="flow-content-title">🛢️ 국제 원유가 (두바이유 기준)</div>
+          <div class="flow-content-body">
+            중동 산유국에서 생산된 두바이유(오만유) 현물 가격이 출발점.
+            OPEC+ 감산, 중동 지정학, 달러 강도에 의해 결정된다.
+            한국 정유사는 주로 이 두바이유를 수입한다.
+          </div>
+          <div class="flow-content-tag">두바이 현물가 ($/배럴)</div>
+        </div>
+      </div>
+
+      <div class="flow-step step2">
+        <div class="flow-line-wrap">
+          <div class="flow-circle">2</div>
+          <div class="flow-connector"></div>
+        </div>
+        <div class="flow-content">
+          <div class="flow-content-title">💱 환율 적용 (USD → KRW)</div>
+          <div class="flow-content-body">
+            원유는 달러로 결제되므로 원/달러 환율이 국내 도입가에 직접 반영.
+            국제 유가가 안 올라도 <strong>원화 약세(환율 상승)</strong>만으로 원유 도입 비용이 증가한다.
+          </div>
+          <div class="flow-content-tag">환율 리스크 = 독립 변수</div>
+        </div>
+      </div>
+
+      <div class="flow-step step3">
+        <div class="flow-line-wrap">
+          <div class="flow-circle">3</div>
+          <div class="flow-connector"></div>
+        </div>
+        <div class="flow-content">
+          <div class="flow-content-title">🏭 정제 과정 + 싱가포르 현물가</div>
+          <div class="flow-content-body">
+            원유를 정유하면 휘발유·경유·등유 등으로 분리된다.
+            국내 기준가는 <strong>싱가포르 석유 현물시장(MOPS)</strong> 가격으로 산정한다.
+            정제 비용, 수송비, 이윤이 더해져 "공장도가"가 형성된다.
+          </div>
+          <div class="flow-content-tag">MOPS (싱가포르 현물) 기준</div>
+        </div>
+      </div>
+
+      <div class="flow-step step4">
+        <div class="flow-line-wrap">
+          <div class="flow-circle">4</div>
+          <div class="flow-connector"></div>
+        </div>
+        <div class="flow-content">
+          <div class="flow-content-title">🏛️ 세금 부과 (고정 + 비례)</div>
+          <div class="flow-content-body">
+            공장도가에 여러 세금이 중첩 부과된다. 교통에너지환경세·주행세·교육세는
+            <strong>유가와 무관한 정액 세금</strong>이라 국제 유가가 내려도 세금은 그대로다.
+            부가세(10%)는 비례 세금이라 유가에 연동된다.
+          </div>
+          <div class="flow-content-tag">세금 비중 ≈ 51% (휘발유)</div>
+        </div>
+      </div>
+
+      <div class="flow-step step5">
+        <div class="flow-line-wrap">
+          <div class="flow-circle">⛽</div>
+        </div>
+        <div class="flow-content" style="border-color:rgba(249,115,22,0.3); background:rgba(249,115,22,0.06);">
+          <div class="flow-content-title" style="color:#f97316;">주유소 최종 판매가</div>
+          <div class="flow-content-body">
+            세금 + 정유사 마진 + 대리점 마진 + 주유소 마진이 모두 합산.
+            전국 평균 휘발유가 기준 약 <strong>1,600~1,800원/L</strong> 수준.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======= 가격 구성 바 차트 ======= -->
+  <div class="section animate delay-3">
+    <div class="section-title">가격 구성 (휘발유 ~1,700원/L 기준)</div>
+    <div class="price-chart">
+      <div class="bar-row">
+        <div class="bar-name">원유 원가</div>
+        <div class="bar-outer">
+          <div class="bar-inner" style="width:36%; background:linear-gradient(135deg,#3b82f6,#60a5fa);">
+            <span class="bar-label">원유+정제+수송</span>
+          </div>
+        </div>
+        <div class="bar-val">약 620원</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-name">세금 합계</div>
+        <div class="bar-outer">
+          <div class="bar-inner" style="width:51%; background:linear-gradient(135deg,#f43f5e,#fb7185);">
+            <span class="bar-label">교통세+주행세+교육세+부가세</span>
+          </div>
+        </div>
+        <div class="bar-val">약 870원</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-name">유통·마진</div>
+        <div class="bar-outer">
+          <div class="bar-inner" style="width:13%; background:linear-gradient(135deg,#f59e0b,#fbbf24);">
+            <span class="bar-label">유통</span>
+          </div>
+        </div>
+        <div class="bar-val">약 210원</div>
+      </div>
+      <div class="price-total">
+        <div class="price-total-label">합계 (휘발유 전국 평균)</div>
+        <div class="price-total-val">≈ 1,700원/L</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= 세금 비교 테이블 ======= -->
+  <div class="section animate delay-3">
+    <div class="section-title">유종별 세금 구조 비교</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>세금 항목</th>
+            <th>휘발유 (원/L)</th>
+            <th>경유 (원/L)</th>
+            <th>유형</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>교통에너지환경세</td>
+            <td class="td-highlight">529원</td>
+            <td>375원</td>
+            <td><span class="tax-badge tax-high">정액 (고정)</span></td>
+          </tr>
+          <tr>
+            <td>주행세 (교통세×26%)</td>
+            <td>138원</td>
+            <td>98원</td>
+            <td><span class="tax-badge tax-high">정액 (고정)</span></td>
+          </tr>
+          <tr>
+            <td>교육세 (교통세×15%)</td>
+            <td>79원</td>
+            <td>56원</td>
+            <td><span class="tax-badge tax-high">정액 (고정)</span></td>
+          </tr>
+          <tr>
+            <td>부가가치세 (10%)</td>
+            <td>약 130원</td>
+            <td>약 110원</td>
+            <td><span class="tax-badge tax-low">비례 (유가 연동)</span></td>
+          </tr>
+          <tr>
+            <td><strong>세금 합계</strong></td>
+            <td class="td-highlight"><strong>약 876원</strong></td>
+            <td><strong>약 639원</strong></td>
+            <td class="td-last">휘발유 > 경유 세금 구조 — 환경·에너지 정책 반영</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ======= 반영 시차 타임라인 ======= -->
+  <div class="section animate delay-4">
+    <div class="section-title">국제 유가 → 주유소 가격 반영 시차</div>
+    <div style="background:var(--surface-mid); border:1px solid var(--border); border-radius:12px; padding:20px 22px;">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-week">0~1주차</div>
+          <div class="tl-body">두바이유 현물 가격 변동 → 정유사 원유 도입 계약 가격에 선반영</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-week">1~3주차</div>
+          <div class="tl-body">원유 해상 수송(선박 운송 약 2~3주) → 국내 정유 공장 도착 → 정제 시작</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-week">3~5주차</div>
+          <div class="tl-body">정제 완료 → 주유소 출하 → 정유사 공시 가격 조정 시작</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--surface-highest);"></div>
+          <div class="tl-week">5~8주차</div>
+          <div class="tl-body">주유소 재고 소진 후 새 가격 반영 완료 — 전국 평균 가격에 반영</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= 핵심 인사이트 ======= -->
+  <div class="section animate delay-4">
+    <div class="section-title">핵심 인사이트</div>
+    <div class="highlight-box">
+      <div class="hl-title">⚖️ 유가 내릴 때 왜 주유소 가격은 느리게 내려갈까?</div>
+      <p>
+        정유사의 재고 평균 원가 방식으로 가격이 결정되기 때문이다. 유가가 오를 때는
+        선물 가격을 먼저 반영해 빠르게 오르지만, 내릴 때는 기존 재고 원가가
+        소진될 때까지 기다려야 한다. 이를 <strong>"로켓·깃털 효과(Rockets and Feathers)"</strong>라 한다.
+        공정거래위원회가 이 비대칭성을 수년간 감시하고 있다.
+      </p>
+    </div>
+    <div class="highlight-box" style="margin-top:14px; border-left-color:#3b82f6; background:rgba(59,130,246,0.05);">
+      <div class="hl-title" style="color:#3b82f6;">📊 유류세 탄력세율 제도</div>
+      <p>
+        정부는 법정세율 대비 ±30% 범위에서 유류세를 조정할 수 있다.
+        2022년 에너지 위기 때 한시적으로 최대 37%까지 인하를 적용했다.
+        이 제도가 없다면 국제 유가 급등 시 국내 체감 충격이 더 컸을 것이다.
+      </p>
+    </div>
+  </div>
+
+  <!-- ======= 3줄 요약 ======= -->
+  <div class="section animate delay-5">
+    <div class="section-title">3줄 요약</div>
+    <div style="background:var(--surface-mid); border:1px solid var(--border); border-radius:12px; padding:20px 22px;">
+      <p style="font-size:14px; margin-bottom:10px;">
+        <strong style="color:#f97316;">①</strong> 주유소 가격 = 원유 원가(36%) + 세금(51%) + 유통마진(13%) — 절반이 세금이다.
+      </p>
+      <p style="font-size:14px; margin-bottom:10px;">
+        <strong style="color:#f97316;">②</strong> 국제 유가 변동은 4~8주 시차를 두고 반영되며, 상승 속도 > 하락 속도 (로켓·깃털 효과).
+      </p>
+      <p style="font-size:14px;">
+        <strong style="color:#f97316;">③</strong> 환율도 독립 변수 — 국제 유가가 안 오르더라도 원화 약세만으로 국내 유가가 오를 수 있다.
+      </p>
+    </div>
+  </div>
+
+  <!-- ======= RELATED ======= -->
+  <div class="related-section animate delay-5">
+    <div class="section-title">관련 지식</div>
+    <div class="related-grid">
+      <a href="crude-oil-3-benchmarks.html" class="related-card">
+        <div class="related-card-title">세계 3대 유종 — WTI·브렌트·두바이</div>
+        <div class="related-card-tag">원유 기준가 비교 완전 정리</div>
+      </a>
+      <a href="maritime-chokepoints-global.html" class="related-card">
+        <div class="related-card-title">세계 5대 해상 초크포인트</div>
+        <div class="related-card-tag">원유 운송 병목과 유가 리스크</div>
+      </a>
+    </div>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<script>
+  function toggleTheme() {
+    var html = document.getElementById('htmlRoot');
+    var isDark = html.classList.contains('theme-dark');
+    html.classList.toggle('theme-dark', !isDark);
+    html.classList.toggle('theme-light', isDark);
+    document.getElementById('themeIcon').textContent = isDark ? '🌙' : '☀️';
+    try { localStorage.setItem('ka-theme', isDark ? 'light' : 'dark'); } catch(e){}
+  }
+  (function(){
+    try {
+      var t = localStorage.getItem('ka-theme');
+      if (t === 'light') {
+        document.getElementById('htmlRoot').classList.replace('theme-dark','theme-light');
+        document.getElementById('themeIcon').textContent = '🌙';
+      }
+    } catch(e){}
+  })();
+</script>
+</body>
+</html>

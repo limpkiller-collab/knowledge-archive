@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ko" id="htmlRoot" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>세계 3대 유종 — WTI·브렌트·두바이 완전 정리</title>
+  <meta name="knowledge-id" content="crude-oil-3-benchmarks">
+  <meta name="knowledge-source" content="원유 시장 도메인 지식">
+  <meta name="knowledge-category" content="경제·거시">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ============================
+       DESIGN TOKENS
+       ============================ */
+    :root {
+      --bg:              #0e0e0e;
+      --surface-low:     #131313;
+      --surface-mid:     #1a1919;
+      --surface-high:    #201f1f;
+      --surface-highest: #262626;
+      --surface-bright:  #2c2c2c;
+      --on-surface:      #ffffff;
+      --on-surface-v:    #adaaaa;
+      --border:          rgba(255,255,255,0.05);
+      --text:            #ffffff;
+      --text-sec:        #adaaaa;
+      --accent:          #f59e0b;
+    }
+    html.theme-light {
+      --bg:              #FAFAFA;
+      --surface-low:     #FFFFFF;
+      --surface-mid:     #F9FAFB;
+      --surface-high:    #FFFFFF;
+      --surface-highest: #F3F4F6;
+      --surface-bright:  #FFFFFF;
+      --on-surface:      #111827;
+      --on-surface-v:    #4B5563;
+      --border:          rgba(0,0,0,0.06);
+      --text:            #111827;
+      --text-sec:        #4B5563;
+      --accent:          #d97706;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans KR', 'Inter', -apple-system, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.7; -webkit-font-smoothing: antialiased;
+      min-height: 100vh; transition: background 0.3s, color 0.3s;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%,
+        color-mix(in srgb, #f59e0b 12%, transparent), transparent);
+    }
+    .page-wrap { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; padding: 24px 20px 80px; }
+
+    /* ============================  VIEW MENU  ============================ */
+    .view-menu {
+      position: fixed; top: 16px; right: 16px; z-index: 100;
+      display: flex; gap: 8px;
+    }
+    .view-btn {
+      background: var(--surface-high); border: 1px solid var(--border);
+      color: var(--text-sec); border-radius: 8px; padding: 6px 10px;
+      font-size: 12px; cursor: pointer; font-family: inherit;
+      transition: background 0.2s, color 0.2s;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .view-btn:hover { background: var(--surface-bright); color: var(--text); }
+
+    /* ============================  BACK BUTTON  ============================ */
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--text-sec); text-decoration: none; font-size: 13px;
+      padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--surface-high); margin-bottom: 28px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .back-btn:hover { background: var(--surface-bright); color: var(--text); }
+
+    /* ============================  HERO  ============================ */
+    .hero { margin-bottom: 24px; }
+    .series-badge {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: #f59e0b; background: rgba(245,158,11,0.12);
+      border: 1px solid rgba(245,158,11,0.3);
+      padding: 3px 10px; border-radius: 99px; margin-bottom: 14px;
+    }
+    h1 {
+      font-size: clamp(22px, 4vw, 32px); font-weight: 800;
+      line-height: 1.25; letter-spacing: -0.03em;
+      margin-bottom: 10px;
+    }
+    .hero-sub {
+      font-size: 15px; color: var(--text-sec); line-height: 1.6;
+    }
+
+    /* ============================  META BAR  ============================ */
+    .meta-bar {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+      margin-bottom: 32px; padding: 12px 16px;
+      background: var(--surface-mid); border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .category-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.02em; white-space: nowrap;
+    }
+    .cat-경제거시 { background:rgba(59,130,246,0.12); color:#3b82f6; border:1px solid rgba(59,130,246,0.3); }
+    html.theme-light .cat-경제거시 { background:rgba(59,130,246,0.08); }
+    .difficulty-badge {
+      font-size: 11px; font-weight: 600; padding: 2px 9px;
+      border-radius: 99px; background: var(--surface-highest); color: var(--text-sec);
+    }
+    .tag-chip {
+      font-size: 11px; padding: 2px 8px; border-radius: 6px;
+      background: var(--surface-highest); color: var(--text-sec);
+    }
+    .meta-sep { color: var(--border); }
+    .meta-date { font-size: 11px; color: var(--text-sec); margin-left: auto; }
+
+    /* ============================  SECTION  ============================ */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--text-sec);
+      margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+    }
+    .section-title::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* ============================  KPI ROW  ============================ */
+    .kpi-row {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+      margin-bottom: 28px;
+    }
+    .kpi-item {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px; text-align: center;
+    }
+    .kpi-value {
+      font-size: 26px; font-weight: 800; color: #f59e0b;
+      line-height: 1.1; margin-bottom: 4px;
+    }
+    .kpi-label { font-size: 11px; color: var(--text-sec); line-height: 1.4; }
+    @media (max-width: 520px) {
+      .kpi-row { grid-template-columns: 1fr 1fr; }
+      .kpi-item:last-child { grid-column: 1 / -1; }
+    }
+
+    /* ============================  TABLE  ============================ */
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; }
+    table {
+      width: 100%; min-width: 580px; border-collapse: collapse;
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden; font-size: 13px;
+    }
+    th {
+      background: var(--surface-highest); color: var(--text-sec);
+      font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+      text-transform: uppercase; padding: 10px 14px; text-align: left;
+      white-space: nowrap; border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 11px 14px; border-bottom: 1px solid var(--border);
+      color: var(--text); white-space: nowrap; vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--surface-highest); }
+    .td-highlight { font-weight: 700; color: #f59e0b; }
+    .td-last { white-space: normal; min-width: 140px; }
+    .grade-badge {
+      display: inline-block; padding: 2px 8px; border-radius: 6px;
+      font-size: 11px; font-weight: 600;
+    }
+    .grade-premium { background: rgba(16,185,129,0.12); color: #10b981; }
+    .grade-medium  { background: rgba(245,158,11,0.12); color: #f59e0b; }
+    .grade-heavy   { background: rgba(244,63,94,0.12);  color: #f43f5e; }
+    @media (max-width: 640px) {
+      th { font-size: 10px; padding: 8px 10px; }
+      td { font-size: 12px; padding: 9px 10px; }
+    }
+
+    /* ============================  QUALITY SPECTRUM  ============================ */
+    .spectrum-wrap {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 12px; padding: 20px;
+    }
+    .spectrum-row {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 18px;
+    }
+    .spectrum-label {
+      font-size: 12px; color: var(--text-sec); width: 56px; flex-shrink: 0; font-weight: 600;
+    }
+    .spectrum-bar-wrap { flex: 1; position: relative; }
+    .spectrum-bar {
+      height: 10px; border-radius: 99px;
+      background: linear-gradient(to right, #3b82f6, #f59e0b, #f43f5e);
+    }
+    .spec-dots { display: flex; justify-content: space-between; margin-top: 6px; }
+    .spec-dot {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+    }
+    .spec-dot-mark {
+      width: 8px; height: 8px; border-radius: 50%; border: 2px solid var(--bg);
+    }
+    .spec-dot-name { font-size: 10px; color: var(--text-sec); font-weight: 600; }
+    .spec-dot-val  { font-size: 10px; color: var(--text-sec); }
+    .spectrum-caption { font-size: 12px; color: var(--text-sec); margin-top: 8px; text-align: center; }
+
+    /* ============================  HIGHLIGHT BOX  ============================ */
+    .highlight-box {
+      background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.25);
+      border-left: 3px solid #f59e0b;
+      border-radius: 10px; padding: 16px 18px; margin-bottom: 20px;
+    }
+    .highlight-box .hl-title {
+      font-size: 12px; font-weight: 700; color: #f59e0b;
+      letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .highlight-box p { font-size: 14px; color: var(--text); line-height: 1.7; }
+
+    /* ============================  INFO GRID (3-col)  ============================ */
+    .oil-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .oil-card {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px; position: relative; overflow: hidden;
+    }
+    .oil-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+    .oil-wti::before   { background: #3b82f6; }
+    .oil-brent::before { background: #10b981; }
+    .oil-dubai::before { background: #f59e0b; }
+    .oil-name { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+    .oil-wti   .oil-name { color: #3b82f6; }
+    .oil-brent .oil-name { color: #10b981; }
+    .oil-dubai .oil-name { color: #f59e0b; }
+    .oil-sub { font-size: 11px; color: var(--text-sec); margin-bottom: 12px; }
+    .oil-kv { display: flex; justify-content: space-between; margin-bottom: 4px; }
+    .oil-kv-k { font-size: 11px; color: var(--text-sec); }
+    .oil-kv-v { font-size: 12px; font-weight: 600; }
+    .korea-tag {
+      display: inline-block; margin-top: 10px;
+      font-size: 10px; font-weight: 700; padding: 2px 7px;
+      background: rgba(245,158,11,0.15); color: #f59e0b;
+      border-radius: 6px;
+    }
+    @media (max-width: 600px) { .oil-grid { grid-template-columns: 1fr; } }
+
+    /* ============================  RELATED  ============================ */
+    .related-section { margin-top: 40px; }
+    .related-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px;
+    }
+    .related-card {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 14px; text-decoration: none;
+      color: var(--text); transition: background 0.2s;
+    }
+    .related-card:hover { background: var(--surface-high); }
+    .related-card-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .related-card-tag { font-size: 11px; color: var(--text-sec); }
+
+    /* ============================  ANIMATE  ============================ */
+    .animate { opacity: 0; transform: translateY(14px); animation: fadeUp 0.5s ease forwards; }
+    .delay-1 { animation-delay: 0.08s; }
+    .delay-2 { animation-delay: 0.16s; }
+    .delay-3 { animation-delay: 0.24s; }
+    .delay-4 { animation-delay: 0.32s; }
+    .delay-5 { animation-delay: 0.40s; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* ============================  PRINT / PNG  ============================ */
+    @media print {
+      .view-menu, .back-btn { display: none; }
+      body::before { display: none; }
+      .page-wrap { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ======= VIEW MENU ======= -->
+<div class="view-menu">
+  <button class="view-btn" onclick="toggleTheme()" title="테마 전환">
+    <span id="themeIcon">☀️</span> 테마
+  </button>
+  <button class="view-btn" onclick="window.print()" title="인쇄/PDF">
+    🖨️ 인쇄
+  </button>
+</div>
+
+<div class="page-wrap">
+  <!-- ======= BACK ======= -->
+  <a href="../index.html" class="back-btn animate">
+    ← 지식 Archive
+  </a>
+
+  <!-- ======= HERO ======= -->
+  <div class="hero animate delay-1">
+    <div class="series-badge">원유 시장 기초</div>
+    <h1>세계 3대 유종 — WTI·브렌트·두바이 완전 정리</h1>
+    <p class="hero-sub">
+      국제 유가는 단일 가격이 아니다. WTI·브렌트·두바이라는 세 개의 기준 유종이
+      지역별로 원유 시장을 지배하며, 한국 물가는 두바이유에 직접 연동된다.
+    </p>
+  </div>
+
+  <!-- ======= META BAR ======= -->
+  <div class="meta-bar animate delay-1">
+    <span class="category-badge cat-경제거시">🌐 경제·거시</span>
+    <span class="difficulty-badge">입문</span>
+    <span class="tag-chip">원유</span>
+    <span class="tag-chip">에너지</span>
+    <span class="tag-chip">경제</span>
+    <span class="tag-chip">시장분석</span>
+    <span class="meta-date">2026-04-15</span>
+  </div>
+
+  <!-- ======= KPI ROW ======= -->
+  <div class="kpi-row animate delay-2">
+    <div class="kpi-item">
+      <div class="kpi-value">60~70%</div>
+      <div class="kpi-label">브렌트유 기준<br>글로벌 거래 비중</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-value">39.6°</div>
+      <div class="kpi-label">WTI API 비중<br>(경질·저황의 기준)</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-value">31°</div>
+      <div class="kpi-label">두바이 API 비중<br>(한국 수입 기준유)</div>
+    </div>
+  </div>
+
+  <!-- ======= 3대 유종 카드 ======= -->
+  <div class="section animate delay-2">
+    <div class="section-title">3대 기준 유종 한눈에</div>
+    <div class="oil-grid">
+      <div class="oil-card oil-wti">
+        <div class="oil-name">WTI</div>
+        <div class="oil-sub">West Texas Intermediate</div>
+        <div class="oil-kv"><span class="oil-kv-k">거래소</span><span class="oil-kv-v">NYMEX (뉴욕)</span></div>
+        <div class="oil-kv"><span class="oil-kv-k">산지</span><span class="oil-kv-v">텍사스·오클라호마</span></div>
+        <div class="oil-kv"><span class="oil-kv-k">API</span><span class="oil-kv-v">39.6° (경질)</span></div>
+        <div class="oil-kv"><span class="oil-kv-k">황 함량</span><span class="oil-kv-v">0.24% (저황)</span></div>
+        <div class="oil-kv"><span class="oil-kv-k">결제통화</span><span class="oil-kv-v">USD</span></div>
+        <div class="oil-kv"><span class="oil-kv-k">영향권</span><span class="oil-kv-v">미주 기준가</span></div>
+      </div>
+      <div class="oil-card oil-brent">
+        <div class="oil-name">브렌트</div>
+        <div class="oil-sub">Brent Crude</div>
+        <div class="oil-kv"><span class="oil-kv-k">거래소</span><span class="oil-kv-v">ICE (런던)</span></div>
+        <div class="oil-kv"><span class="oil-kv-k">산지</span><span class="oil-kv-v">북해</span></div>
+        <div class="oil-kv"><span class="oil-kv-k">API</span><span class="oil-kv-v">38.3° (경질)</span></div>
+        <div class="oil-kv"><span class="oil-kv-k">황 함량</span><span class="oil-kv-v">0.37% (저황)</span></div>
+        <div class="oil-kv"><span class="oil-kv-k">결제통화</span><span class="oil-kv-v">USD</span></div>
+        <div class="oil-kv"><span class="oil-kv-k">영향권</span><span class="oil-kv-v">전 세계 60~70%</span></div>
+      </div>
+      <div class="oil-card oil-dubai">
+        <div class="oil-name">두바이</div>
+        <div class="oil-sub">Dubai Crude</div>
+        <div class="oil-kv"><span class="oil-kv-k">거래소</span><span class="oil-kv-v">DME (두바이)</span></div>
+        <div class="oil-kv"><span class="oil-kv-k">산지</span><span class="oil-kv-v">UAE·오만</span></div>
+        <div class="oil-kv"><span class="oil-kv-k">API</span><span class="oil-kv-v">31° (중질)</span></div>
+        <div class="oil-kv"><span class="oil-kv-k">황 함량</span><span class="oil-kv-v">2.0% (고황)</span></div>
+        <div class="oil-kv"><span class="oil-kv-k">결제통화</span><span class="oil-kv-v">USD</span></div>
+        <div class="oil-kv"><span class="oil-kv-k">영향권</span><span class="oil-kv-v">아시아 수출 기준</span></div>
+        <div class="korea-tag">🇰🇷 한국 직접 연동</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= 비교 테이블 ======= -->
+  <div class="section animate delay-3">
+    <div class="section-title">상세 스펙 비교</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>항목</th>
+            <th>WTI</th>
+            <th>브렌트 (Brent)</th>
+            <th>두바이 (Dubai)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>정식 명칭</td>
+            <td class="td-highlight">West Texas Intermediate</td>
+            <td>Brent Crude</td>
+            <td>Dubai/Oman Crude</td>
+          </tr>
+          <tr>
+            <td>주요 거래소</td>
+            <td>NYMEX (뉴욕상업거래소)</td>
+            <td class="td-highlight">ICE (런던)</td>
+            <td>DME (두바이상업거래소)</td>
+          </tr>
+          <tr>
+            <td>산지 위치</td>
+            <td>텍사스·오클라호마 (미국)</td>
+            <td>북해 (영국·노르웨이)</td>
+            <td>UAE·오만 (중동)</td>
+          </tr>
+          <tr>
+            <td>API 비중</td>
+            <td>39.6° <span class="grade-badge grade-premium">경질</span></td>
+            <td>38.3° <span class="grade-badge grade-premium">경질</span></td>
+            <td>31° <span class="grade-badge grade-medium">중질</span></td>
+          </tr>
+          <tr>
+            <td>황 함량 (Sulfur)</td>
+            <td><span class="grade-badge grade-premium">0.24% 저황</span></td>
+            <td><span class="grade-badge grade-premium">0.37% 저황</span></td>
+            <td><span class="grade-badge grade-heavy">2.0% 고황</span></td>
+          </tr>
+          <tr>
+            <td>가격 위상</td>
+            <td>미국 내 기준유</td>
+            <td class="td-highlight">글로벌 벤치마크 #1</td>
+            <td>아시아 벤치마크</td>
+          </tr>
+          <tr>
+            <td>글로벌 거래 비중</td>
+            <td>약 20%</td>
+            <td class="td-highlight">60~70%</td>
+            <td>약 10~15%</td>
+          </tr>
+          <tr>
+            <td>한국과의 관계</td>
+            <td>간접 참조</td>
+            <td>간접 참조</td>
+            <td class="td-highlight td-last">한국 정유사 수입 기준가 — 국내 휘발유·경유 가격 직접 연동</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ======= 품질 스펙트럼 ======= -->
+  <div class="section animate delay-3">
+    <div class="section-title">품질 스펙트럼 (API 비중 기준)</div>
+    <div class="spectrum-wrap">
+      <div style="margin-bottom: 20px;">
+        <div class="spectrum-row">
+          <div class="spectrum-label">API 비중</div>
+          <div class="spectrum-bar-wrap">
+            <div class="spectrum-bar"></div>
+            <div class="spec-dots">
+              <div class="spec-dot" style="align-items:flex-start;">
+                <div class="spec-dot-mark" style="background:#f59e0b;"></div>
+                <div class="spec-dot-name">두바이</div>
+                <div class="spec-dot-val">31°</div>
+              </div>
+              <div class="spec-dot" style="align-items:center;">
+                <div class="spec-dot-mark" style="background:#10b981;"></div>
+                <div class="spec-dot-name">브렌트</div>
+                <div class="spec-dot-val">38.3°</div>
+              </div>
+              <div class="spec-dot" style="align-items:flex-end;">
+                <div class="spec-dot-mark" style="background:#3b82f6;"></div>
+                <div class="spec-dot-name">WTI</div>
+                <div class="spec-dot-val">39.6°</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="spectrum-caption">
+          중질(Heavy) ←—————————————→ 경질(Light) &nbsp;|&nbsp; API 비중 높을수록 정제 효율 높고 프리미엄 붙음
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:4px;">
+        <div>
+          <div style="font-size:12px; font-weight:700; color:var(--text-sec); margin-bottom:6px;">경질 (Light, API &gt; 35°)</div>
+          <div style="font-size:13px; color:var(--text);">정제 효율 높음 → 휘발유·나프타 수율 증가 → 가격 프리미엄</div>
+        </div>
+        <div>
+          <div style="font-size:12px; font-weight:700; color:var(--text-sec); margin-bottom:6px;">고황 (Sour, Sulfur &gt; 0.5%)</div>
+          <div style="font-size:13px; color:var(--text);">탈황 정제 비용 추가 발생 → 가격 디스카운트 요인</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= WTI-Brent 스프레드 ======= -->
+  <div class="section animate delay-4">
+    <div class="section-title">핵심 인사이트</div>
+    <div class="highlight-box">
+      <div class="hl-title">🔍 WTI-브렌트 스프레드(가격 차이)가 중요한 이유</div>
+      <p>
+        WTI와 브렌트는 품질이 비슷하지만 가격 차이가 발생한다.
+        <strong>WTI가 브렌트보다 비싸면</strong> 미국 내 원유 공급 부족·수요 강세 신호이고,
+        <strong>브렌트가 WTI보다 비싸면</strong> 글로벌 공급 우려(중동 지정학 리스크 등)가 반영된 것이다.
+        역사적으로 셰일 혁명 이전에는 WTI가 프리미엄이었으나,
+        셰일 오일 증산 이후 2011~2016년에는 브렌트가 WTI보다 $5~$25 높았다.
+      </p>
+    </div>
+    <div class="highlight-box" style="border-left-color:#f59e0b; background:rgba(245,158,11,0.05);">
+      <div class="hl-title" style="color:#f59e0b;">🇰🇷 한국과 두바이유의 관계</div>
+      <p>
+        한국 정유사(SK이노베이션·GS칼텍스·에쓰오일·현대오일뱅크)는
+        중동산 원유(두바이유 계열)를 주로 수입한다.
+        국내 주유소 휘발유·경유 가격의 기준은 <strong>싱가포르 현물 가격</strong>인데,
+        이 싱가포르 제품가는 두바이유 원가를 기반으로 산정된다.
+        따라서 WTI나 브렌트가 오르더라도 두바이유가 상대적으로 안정되면
+        국내 유가 영향은 제한적일 수 있다.
+      </p>
+    </div>
+  </div>
+
+  <!-- ======= 3줄 요약 ======= -->
+  <div class="section animate delay-5">
+    <div class="section-title">3줄 요약</div>
+    <div style="background:var(--surface-mid); border:1px solid var(--border); border-radius:12px; padding:20px 22px;">
+      <p style="font-size:14px; color:var(--text); margin-bottom:10px;">
+        <strong style="color:#3b82f6;">① WTI</strong>는 미국 기준유, 경질·저황으로 품질 최상위이나 미주 지역 영향이 크다.
+      </p>
+      <p style="font-size:14px; color:var(--text); margin-bottom:10px;">
+        <strong style="color:#10b981;">② 브렌트</strong>는 글로벌 벤치마크로 전체 거래의 60~70%를 기준 — 국제 뉴스에서 "국제 유가"는 대부분 브렌트를 뜻한다.
+      </p>
+      <p style="font-size:14px; color:var(--text);">
+        <strong style="color:#f59e0b;">③ 두바이</strong>는 아시아 기준유로 중질·고황이어서 가격이 저렴하지만, <strong>한국 정유사 수입 기준가</strong>이므로 국내 물가와 가장 직결된다.
+      </p>
+    </div>
+  </div>
+
+  <!-- ======= RELATED ======= -->
+  <div class="related-section animate delay-5">
+    <div class="section-title">관련 지식</div>
+    <div class="related-grid">
+      <a href="crude-to-fuel-price-mechanism.html" class="related-card">
+        <div class="related-card-title">원유→국내 유가 메커니즘</div>
+        <div class="related-card-tag">국제 원가에서 주유소 가격까지</div>
+      </a>
+      <a href="maritime-chokepoints-global.html" class="related-card">
+        <div class="related-card-title">세계 5대 해상 초크포인트</div>
+        <div class="related-card-tag">원유 운송 병목과 유가 리스크</div>
+      </a>
+    </div>
+  </div>
+</div><!-- /page-wrap -->
+
+<script>
+  // ======= THEME TOGGLE =======
+  function toggleTheme() {
+    var html = document.getElementById('htmlRoot');
+    var isDark = html.classList.contains('theme-dark');
+    html.classList.toggle('theme-dark', !isDark);
+    html.classList.toggle('theme-light', isDark);
+    document.getElementById('themeIcon').textContent = isDark ? '🌙' : '☀️';
+    try { localStorage.setItem('ka-theme', isDark ? 'light' : 'dark'); } catch(e){}
+  }
+  (function(){
+    try {
+      var t = localStorage.getItem('ka-theme');
+      if (t === 'light') {
+        document.getElementById('htmlRoot').classList.replace('theme-dark','theme-light');
+        document.getElementById('themeIcon').textContent = '🌙';
+      }
+    } catch(e){}
+  })();
+</script>
+</body>
+</html>
