@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ko" id="htmlRoot" class="theme-dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>투자 구루 수익률 비교 — 11인의 성과 데이터 분석</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e0e0e; --surface-low: #131313; --surface-mid: #1a1919;
+  --surface-high: #201f1f; --surface-highest: #262626; --surface-bright: #2c2c2c;
+  --accent: #f59e0b; --accent-dim: rgba(245,158,11,0.12);
+  --on-surface: #ffffff; --text: #ffffff; --text-sec: #adaaaa;
+  --border: rgba(255,255,255,0.05); --outline: #494847;
+  --green: #34d399; --red: #f87171; --blue: #60a5fa; --purple: #a78bfa;
+}
+html.theme-light {
+  --bg: #fafafa; --surface-low: #fff; --surface-mid: #f9fafb;
+  --surface-high: #fff; --surface-highest: #f3f4f6; --surface-bright: #fff;
+  --accent: #d97706; --accent-dim: rgba(217,119,6,0.08);
+  --on-surface: #111827; --text: #111827; --text-sec: #4b5563;
+  --border: rgba(0,0,0,0.06); --outline: #e0e0e0;
+  --green: #059669; --red: #dc2626; --blue: #2563eb; --purple: #7c3aed;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter','Noto Sans KR', sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.6; -webkit-font-smoothing: antialiased;
+  min-height: 100vh; padding-bottom: 80px;
+}
+
+/* ── SERIES NAV ── */
+.series-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: color-mix(in srgb, var(--bg), transparent 15%);
+  backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
+  padding: 0 20px; overflow-x: auto;
+  scrollbar-width: none;
+}
+.series-nav::-webkit-scrollbar { display: none; }
+.series-nav-inner {
+  display: flex; align-items: center; gap: 2px;
+  min-width: max-content; height: 46px;
+}
+.snav-item {
+  padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 600;
+  color: var(--text-sec); text-decoration: none; white-space: nowrap;
+  transition: background 0.15s, color 0.15s; border: none; background: transparent;
+  cursor: pointer; font-family: inherit;
+}
+.snav-item:hover { background: var(--surface-highest); color: var(--on-surface); }
+.snav-item.active { background: var(--accent-dim); color: var(--accent); }
+.snav-sep { color: var(--outline); font-size: 11px; padding: 0 2px; }
+
+/* ── HEADER ── */
+.card-header {
+  max-width: 800px; margin: 0 auto;
+  padding: 48px 24px 32px;
+}
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--text-sec); text-decoration: none;
+  margin-bottom: 28px; padding: 6px 12px; border-radius: 8px;
+  border: 1px solid var(--outline); background: transparent;
+  cursor: pointer; font-family: inherit;
+  transition: background 0.15s, color 0.15s;
+}
+.back-btn:hover { background: var(--surface-high); color: var(--on-surface); }
+.category-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: 6px; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 16px;
+  background: var(--accent-dim); color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent), transparent 70%);
+}
+.card-title {
+  font-size: clamp(24px, 5vw, 36px); font-weight: 900;
+  letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 8px;
+}
+.card-subtitle { font-size: 16px; color: var(--text-sec); font-weight: 400; margin-bottom: 20px; }
+.header-meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.meta-chip {
+  font-size: 11px; color: var(--text-sec); padding: 3px 10px;
+  border-radius: 99px; background: var(--surface-highest);
+  border: 1px solid var(--border);
+}
+.theme-toggle {
+  margin-left: auto; padding: 6px 14px; border-radius: 8px;
+  border: 1px solid var(--outline); background: transparent;
+  color: var(--text-sec); font-size: 12px; cursor: pointer;
+  font-family: inherit; transition: background 0.15s;
+}
+.theme-toggle:hover { background: var(--surface-high); color: var(--on-surface); }
+
+/* ── MAIN ── */
+.content { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+
+/* ── KPI ROW ── */
+.kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 32px; }
+.kpi-card {
+  background: var(--surface-mid); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 18px;
+}
+.kpi-label { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-sec); margin-bottom: 6px; }
+.kpi-value { font-size: 22px; font-weight: 900; letter-spacing: -0.03em; }
+.kpi-note { font-size: 11px; color: var(--text-sec); margin-top: 3px; }
+
+/* ── SECTION ── */
+.section { margin-bottom: 36px; }
+.section-title {
+  font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--text-sec); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-title::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+/* ── BAR CHART ── */
+.chart-wrapper { background: var(--surface-mid); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+.chart-legend {
+  display: flex; align-items: center; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-sec); }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+.bar-row {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+  cursor: pointer; border-radius: 8px; padding: 6px 0;
+  transition: background 0.1s;
+}
+.bar-row:hover .bar-fill { filter: brightness(1.15); }
+.bar-row:hover .guru-name { color: var(--on-surface); }
+
+.guru-name {
+  width: 80px; font-size: 12px; font-weight: 600; color: var(--text-sec);
+  flex-shrink: 0; text-align: right; transition: color 0.15s;
+}
+.bar-track {
+  flex: 1; height: 22px; background: var(--surface-highest);
+  border-radius: 6px; overflow: hidden; position: relative;
+}
+.bar-fill {
+  height: 100%; border-radius: 6px; position: relative;
+  display: flex; align-items: center; justify-content: flex-end; padding-right: 8px;
+  transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+  min-width: 32px;
+}
+.bar-fill-value { font-size: 10px; font-weight: 700; color: #000; white-space: nowrap; }
+html.theme-light .bar-fill-value { color: #fff; }
+.bar-note { width: 110px; font-size: 10px; color: var(--text-sec); flex-shrink: 0; line-height: 1.3; }
+
+/* ── TABLE ── */
+.data-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.data-table th {
+  text-align: left; padding: 10px 12px; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-sec);
+  border-bottom: 1px solid var(--border); background: var(--surface-mid);
+}
+.data-table td {
+  padding: 11px 12px; border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--surface-mid); }
+.data-table td:first-child { font-weight: 700; }
+.cagr-cell { font-weight: 800; font-size: 14px; }
+
+/* ── SCHOOL TAGS ── */
+.school-tag {
+  display: inline-flex; align-items: center; padding: 2px 8px;
+  border-radius: 4px; font-size: 10px; font-weight: 700;
+}
+.school-value { background: rgba(52,211,153,0.15); color: #34d399; }
+.school-growth { background: rgba(96,165,250,0.15); color: #60a5fa; }
+.school-specul { background: rgba(248,113,113,0.15); color: #f87171; }
+.school-macro  { background: rgba(167,139,250,0.15); color: #a78bfa; }
+.school-passive { background: rgba(34,211,238,0.15); color: #22d3ee; }
+
+/* ── CALLOUT ── */
+.callout {
+  border-radius: 12px; padding: 16px 18px;
+  border-left: 3px solid; margin-bottom: 16px;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.callout-warn { background: rgba(248,113,113,0.08); border-color: #f87171; }
+.callout-info { background: rgba(96,165,250,0.08); border-color: #60a5fa; }
+.callout-gold { background: var(--accent-dim); border-color: var(--accent); }
+.callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.callout-text { font-size: 13px; line-height: 1.65; color: var(--text-sec); }
+.callout-text strong { color: var(--on-surface); }
+
+/* ── INSIGHT ── */
+.insight-box {
+  background: var(--accent-dim);
+  border: 1px solid color-mix(in srgb, var(--accent), transparent 65%);
+  border-radius: 14px; padding: 20px 22px;
+}
+.insight-label { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.insight-list { list-style: none; }
+.insight-list li {
+  font-size: 13.5px; line-height: 1.7; color: var(--text-sec); padding: 4px 0;
+  padding-left: 18px; position: relative;
+}
+.insight-list li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+.insight-list li strong { color: var(--on-surface); }
+
+/* ── FOOTER NAV ── */
+.footer-nav {
+  max-width: 800px; margin: 40px auto 0; padding: 24px;
+  border-top: 1px solid var(--border);
+  display: flex; gap: 12px; justify-content: space-between;
+}
+.fnav-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 16px; border-radius: 10px;
+  border: 1px solid var(--outline); background: var(--surface-mid);
+  color: var(--text-sec); font-size: 12px; font-family: inherit;
+  cursor: pointer; text-decoration: none; transition: all 0.15s;
+  max-width: 48%;
+}
+.fnav-btn:hover { background: var(--surface-highest); color: var(--on-surface); border-color: var(--accent); }
+.fnav-label { font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-sec); margin-bottom: 2px; }
+.fnav-title { font-weight: 700; font-size: 12.5px; line-height: 1.3; }
+.fnav-right { margin-left: auto; text-align: right; }
+</style>
+</head>
+<body>
+
+<!-- SERIES NAV -->
+<nav class="series-nav" aria-label="투자 구루 열전 시리즈">
+  <div class="series-nav-inner">
+    <span style="font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-sec);flex-shrink:0;padding-right:6px;">투자 구루 열전</span>
+    <span class="snav-sep">|</span>
+    <a href="guru-series-overview.html" class="snav-item">개요</a>
+    <span class="snav-sep">·</span>
+    <a href="benjamin-graham.html" class="snav-item">①그레이엄</a>
+    <span class="snav-sep">·</span>
+    <a href="philip-fisher.html" class="snav-item">②피셔</a>
+    <span class="snav-sep">·</span>
+    <a href="warren-buffett.html" class="snav-item">③버핏</a>
+    <span class="snav-sep">·</span>
+    <a href="charlie-munger.html" class="snav-item">④멍거</a>
+    <span class="snav-sep">·</span>
+    <a href="peter-lynch.html" class="snav-item">⑤린치</a>
+    <span class="snav-sep">·</span>
+    <a href="jesse-livermore.html" class="snav-item">⑥리버모어</a>
+    <span class="snav-sep">·</span>
+    <a href="george-soros.html" class="snav-item">⑦소로스</a>
+    <span class="snav-sep">·</span>
+    <a href="ray-dalio.html" class="snav-item">⑧달리오</a>
+    <span class="snav-sep">·</span>
+    <a href="michael-burry.html" class="snav-item">⑨버리</a>
+    <span class="snav-sep">·</span>
+    <a href="howard-marks.html" class="snav-item">⑩마크스</a>
+    <span class="snav-sep">·</span>
+    <a href="john-bogle.html" class="snav-item">⑪보글</a>
+    <span class="snav-sep">·</span>
+    <a href="guru-returns-comparison.html" class="snav-item active">📊수익률비교</a>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<header class="card-header">
+  <a href="../index.html" class="back-btn">← 아카이브로 돌아가기</a>
+  <div class="category-badge">📊 투자·금융</div>
+  <h1 class="card-title">투자 구루 수익률 비교</h1>
+  <p class="card-subtitle">11인의 연평균 수익률 & 운용 성과 데이터 분석</p>
+  <div class="header-meta">
+    <span class="meta-chip">투자 구루 열전 · 보너스</span>
+    <span class="meta-chip">2026-04-15</span>
+    <span class="meta-chip">⚡ 고급</span>
+    <button class="theme-toggle" onclick="toggleTheme()">🌓 테마 전환</button>
+  </div>
+</header>
+
+<!-- CONTENT -->
+<main class="content">
+
+  <!-- KPI ROW -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">최고 연평균 수익률</div>
+      <div class="kpi-value" style="color:#34d399">~30%</div>
+      <div class="kpi-note">소로스·린치·버리 (측정 기간별 상이)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">S&P500 대비 초과수익</div>
+      <div class="kpi-value" style="color:#f59e0b">+9~20%p</div>
+      <div class="kpi-note">액티브 상위 구루들의 초과수익 범위</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">현재 운용 규모 1위</div>
+      <div class="kpi-value" style="color:#60a5fa">$150B+</div>
+      <div class="kpi-note">브리지워터 레이 달리오</div>
+    </div>
+  </div>
+
+  <!-- 주의사항 callout -->
+  <div class="callout callout-info" style="margin-bottom:32px">
+    <span class="callout-icon">ℹ️</span>
+    <div class="callout-text">
+      <strong>수익률 데이터 해석 주의:</strong> 구루마다 측정 기간·전략·AUM 규모가 다릅니다. 피셔는 정확한 CAGR 미공개, 리버모어는 파산 4회로 평균 계산 불가, 보글은 시장 수익률 추종이 전략. <strong>단순 수익률 숫자 비교보다 리스크·기간·전략 맥락</strong>을 함께 봐야 합니다.
+    </div>
+  </div>
+
+  <!-- 연평균 수익률 바 차트 -->
+  <section class="section">
+    <h2 class="section-title">연평균 수익률 (CAGR) 비교</h2>
+    <div class="chart-wrapper">
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#34d399"></div>가치투자</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#60a5fa"></div>성장주</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f87171"></div>투기/매크로</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#22d3ee"></div>패시브</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#777"></div>S&P500 벤치마크</div>
+      </div>
+
+      <!-- S&P500 기준선 텍스트 -->
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;opacity:0.5">
+        <div style="width:80px;font-size:10px;font-weight:700;text-align:right;color:var(--text-sec)">S&P500</div>
+        <div style="flex:1;height:1px;background:var(--outline);position:relative">
+          <span style="position:absolute;left:calc(10% - 4px);top:-9px;font-size:9px;color:var(--text-sec)">▲ ~10%</span>
+        </div>
+      </div>
+
+      <div id="barChart"></div>
+
+      <div style="margin-top:16px;font-size:10px;color:var(--text-sec);line-height:1.7">
+        * 피셔: 정확한 CAGR 미공개 (모토롤라 40년 보유, 1000배+ 수익 추정)<br>
+        * 리버모어: 파산 4회 반복으로 단순 CAGR 계산 불가 (1929년 단기 $1억 수익)<br>
+        * 달리오: 퓨어 알파 펀드 기준 ~12%, 올웨더 전략 기준 ~7-8% (여기서는 퓨어 알파 기준)<br>
+        * S&P500 장기 평균: 약 10%/년 (1926~2025)
+      </div>
+    </div>
+  </section>
+
+  <!-- 상세 비교 테이블 -->
+  <section class="section">
+    <h2 class="section-title">구루별 성과 데이터 상세</h2>
+    <div style="overflow-x:auto;border-radius:14px;border:1px solid var(--border)">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>구루</th>
+            <th>CAGR</th>
+            <th>활동 기간</th>
+            <th>대표 전략</th>
+            <th>투자 학파</th>
+            <th>대표 성과</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 리스크 조정 수익률 관점 -->
+  <section class="section">
+    <h2 class="section-title">리스크 조정 수익률 관점</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="callout callout-gold" style="margin-bottom:0">
+        <span class="callout-icon">🏆</span>
+        <div class="callout-text">
+          <strong>리스크 대비 최우수:</strong><br>
+          <strong>보글(인덱스)</strong> — 비용 최소화로 리스크 대비 순수익 극대화. S&P500 수익률 그대로 가져가되 비용·세금 손실 최소화.
+        </div>
+      </div>
+      <div class="callout callout-gold" style="margin-bottom:0">
+        <span class="callout-icon">📈</span>
+        <div class="callout-text">
+          <strong>절대 수익 최우수:</strong><br>
+          <strong>린치·소로스</strong> — 연평균 ~29~30%. 단, 린치는 13년으로 기간 짧고, 소로스는 글로벌 매크로 리스크 높음.
+        </div>
+      </div>
+      <div class="callout callout-warn" style="margin-bottom:0">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-text">
+          <strong>고수익 = 고리스크:</strong><br>
+          <strong>리버모어</strong> — 파산 4회. 최고의 트레이더도 리스크 관리 없이는 자산 소멸. 수익률만으로 평가 불가.
+        </div>
+      </div>
+      <div class="callout callout-info" style="margin-bottom:0">
+        <span class="callout-icon">⏳</span>
+        <div class="callout-text">
+          <strong>기간 효과:</strong><br>
+          <strong>버핏·멍거</strong> — 60년+ 복리 효과. 연 19.8%가 60년 지속 → 4,400,000% 누적. 수익률보다 기간이 핵심.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 한국 투자자 시사점 -->
+  <section class="section">
+    <h2 class="section-title">한국 투자자 시사점</h2>
+    <div class="insight-box">
+      <div class="insight-label">🇰🇷 실전 적용 포인트</div>
+      <ul class="insight-list">
+        <li><strong>단기 고수익 구루 모방은 위험:</strong> 린치·소로스의 30% 수익은 특수한 시대와 개인 역량의 산물. 일반 투자자가 재현하기 어려움.</li>
+        <li><strong>버핏·보글 조합 전략:</strong> 장기적으로는 인덱스 70% + 직접 가치투자 30% 조합이 현실적인 목표. 연 10~15% 목표가 합리적.</li>
+        <li><strong>CAGR보다 최대 낙폭(MDD) 확인:</strong> 소로스 30% 수익률 이면엔 -30~40% 낙폭 구간 존재. 버틸 수 있는 전략을 선택해야 함.</li>
+        <li><strong>달리오 올웨더의 교훈:</strong> 절대 수익률(~7-8%)이 낮아 보여도 샤프지수 1.0+의 안정성. 자산배분으로 리스크 조정 수익 극대화 가능.</li>
+        <li><strong>피셔·린치의 현업 투자:</strong> 본업에서 아는 정보를 투자에 활용하는 전략은 한국 개인 투자자에게 가장 현실적인 엣지.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER NAV -->
+<nav class="footer-nav">
+  <a href="john-bogle.html" class="fnav-btn">
+    <div>
+      <div class="fnav-label">← 이전</div>
+      <div class="fnav-title">⑪ 존 보글</div>
+    </div>
+  </a>
+  <a href="guru-series-overview.html" class="fnav-btn fnav-right">
+    <div>
+      <div class="fnav-label">시리즈 개요 →</div>
+      <div class="fnav-title">투자 구루 열전 전체보기</div>
+    </div>
+  </a>
+</nav>
+
+<script>
+var GURUS = [
+  { name:'벤저민 그레이엄', cagr:17, period:'1926~1956', school:'value', badge:'school-value', label:'가치투자', color:'#94a3b8', strategy:'순자산·안전마진', highlight:'GEICO 727배 수익', file:'benjamin-graham.html' },
+  { name:'필립 피셔',       cagr:null, period:'1928~2004(75년)', school:'growth', badge:'school-growth', label:'성장주', color:'#818cf8', strategy:'15원칙 성장주', highlight:'모토롤라 1000배+ 추정', file:'philip-fisher.html' },
+  { name:'워런 버핏',       cagr:19.8, period:'1965~현재(60년+)', school:'value', badge:'school-value', label:'가치투자', color:'#e8b94f', strategy:'경제적 해자', highlight:'누적 4,400,000%', file:'warren-buffett.html' },
+  { name:'찰리 멍거',       cagr:19.8, period:'1962~1975', school:'value', badge:'school-value', label:'가치투자', color:'#a78bfa', strategy:'다학제·멘탈모델', highlight:'버크셔 60년 파트너십', file:'charlie-munger.html' },
+  { name:'피터 린치',       cagr:29.2, period:'1977~1990(13년)', school:'growth', badge:'school-growth', label:'성장주', color:'#34d399', strategy:'10배주·일상 투자', highlight:'마젤란 27.3배', file:'peter-lynch.html' },
+  { name:'제시 리버모어',   cagr:null, period:'1891~1940', school:'specul', badge:'school-specul', label:'투기', color:'#f87171', strategy:'추세추종·시장심리', highlight:'1929년 $1억 공매도', file:'jesse-livermore.html' },
+  { name:'조지 소로스',     cagr:30, period:'1973~2000(27년)', school:'macro', badge:'school-macro', label:'글로벌매크로', color:'#c084fc', strategy:'재귀성 이론', highlight:'1992년 파운드화 $1B', file:'george-soros.html' },
+  { name:'레이 달리오',     cagr:12, period:'1975~현재(50년)', school:'macro', badge:'school-macro', label:'글로벌매크로', color:'#60a5fa', strategy:'올웨더·경제기계', highlight:'$150B+ AUM', file:'ray-dalio.html' },
+  { name:'마이클 버리',     cagr:30, period:'2000~2005(6년)', school:'value', badge:'school-value', label:'딥밸류', color:'#4ade80', strategy:'딥밸류·빅쇼트', highlight:'2000-05 누적 242%', file:'michael-burry.html' },
+  { name:'하워드 마크스',   cagr:19, period:'1990~현재(35년)', school:'value', badge:'school-value', label:'가치투자', color:'#fb923c', strategy:'리스크·사이클관리', highlight:'부실채권 $180B+', file:'howard-marks.html' },
+  { name:'존 보글',         cagr:10, period:'1975~2019(44년)', school:'passive', badge:'school-passive', label:'패시브', color:'#22d3ee', strategy:'인덱스·비용최소화', highlight:'뱅가드 $7T+', file:'john-bogle.html' },
+];
+
+// 최대 CAGR (차트 스케일용)
+var MAX_CAGR = 35;
+
+// 바 차트 렌더링
+function renderChart() {
+  var html = '';
+  GURUS.forEach(function(g) {
+    if (g.cagr === null) {
+      html += '<div class="bar-row" onclick="location.href=\'' + g.file + '\'">'
+        + '<div class="guru-name">' + g.name.replace('벤저민 ','').replace('필립 ','').replace('워런 ','').replace('찰리 ','').replace('피터 ','').replace('제시 ','').replace('조지 ','').replace('레이 ','').replace('마이클 ','').replace('하워드 ','').replace('존 ','') + '</div>'
+        + '<div class="bar-track">'
+        + '<div class="bar-fill" style="width:0%;background:' + g.color + ';min-width:0;opacity:0.4">'
+        + '</div>'
+        + '<div style="position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:10px;font-weight:600;color:var(--text-sec);">데이터 미공개</div>'
+        + '</div>'
+        + '<div class="bar-note">' + g.period + '</div>'
+        + '</div>';
+    } else {
+      var pct = (g.cagr / MAX_CAGR * 100).toFixed(1);
+      html += '<div class="bar-row" onclick="location.href=\'' + g.file + '\'">'
+        + '<div class="guru-name">' + g.name.replace('벤저민 ','').replace('필립 ','').replace('워런 ','').replace('찰리 ','').replace('피터 ','').replace('제시 ','').replace('조지 ','').replace('레이 ','').replace('마이클 ','').replace('하워드 ','').replace('존 ','') + '</div>'
+        + '<div class="bar-track">'
+        + '<div class="bar-fill" style="width:' + pct + '%;background:' + g.color + '">'
+        + '<span class="bar-fill-value">' + g.cagr + '%</span>'
+        + '</div>'
+        + '</div>'
+        + '<div class="bar-note">' + g.period + '</div>'
+        + '</div>';
+    }
+  });
+  // S&P500 기준선 (overlay 표시)
+  document.getElementById('barChart').innerHTML = html;
+
+  // 애니메이션 (width 0 → 실제값)
+  requestAnimationFrame(function() {
+    document.querySelectorAll('.bar-fill').forEach(function(el) {
+      el.style.transition = 'width 0.8s cubic-bezier(0.4,0,0.2,1)';
+    });
+  });
+}
+
+// 테이블 렌더링
+function renderTable() {
+  var html = '';
+  GURUS.forEach(function(g) {
+    var cagrCell = g.cagr ? '<span class="cagr-cell" style="color:' + g.color + '">' + g.cagr + '%/yr</span>' : '<span style="color:var(--text-sec);font-size:11px">미공개</span>';
+    html += '<tr onclick="location.href=\'' + g.file + '\'" style="cursor:pointer">'
+      + '<td>' + g.name + '</td>'
+      + '<td>' + cagrCell + '</td>'
+      + '<td style="font-size:11px;color:var(--text-sec)">' + g.period + '</td>'
+      + '<td style="font-size:11.5px">' + g.strategy + '</td>'
+      + '<td><span class="school-tag ' + g.badge + '">' + g.label + '</span></td>'
+      + '<td style="font-size:11px;color:var(--text-sec)">' + g.highlight + '</td>'
+      + '</tr>';
+  });
+  document.getElementById('tableBody').innerHTML = html;
+}
+
+// 테마 토글
+function toggleTheme() {
+  var html = document.getElementById('htmlRoot');
+  html.classList.toggle('theme-dark');
+  html.classList.toggle('theme-light');
+}
+
+renderChart();
+renderTable();
+</script>
+</body>
+</html>
