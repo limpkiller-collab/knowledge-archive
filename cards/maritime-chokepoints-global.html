@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>세계 5대 해상 초크 포인트 — 길목이 막히면 물가가 오른다</title>
+  <meta name="knowledge-id" content="maritime-chokepoints-global">
+  <meta name="knowledge-tags" content="경제,지정학,에너지,공급망,인플레이션">
+  <meta name="knowledge-difficulty" content="입문">
+  <meta name="knowledge-date" content="2026-04-15">
+  <meta name="knowledge-source" content="Uppity 경제 브리핑">
+  <meta name="knowledge-category" content="경제·거시">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #06b6d4; --accent2: #3b82f6;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(6,182,212,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #0891b2; --accent2: #2563eb;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(8,145,178,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%,
+        color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2, h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 900px; margin: 0 auto; padding: 64px 24px 80px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* 뷰 메뉴 */
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--menu-border); background: var(--menu-bg);
+      color: var(--menu-text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(12px); transition: all 0.2s;
+    }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px;
+      background: var(--menu-bg); backdrop-filter: blur(16px);
+      border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px;
+      opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border: none; background: transparent;
+      color: var(--menu-text); font-size: 14px; font-family: inherit;
+      cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left;
+    }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    /* 뒤로가기 */
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      margin-bottom: 24px; padding: 6px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface); transition: background 0.15s;
+    }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    /* 히어로 */
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--text-secondary);
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(1.7rem, 4vw, 2.6rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 560px; margin: 0 auto; line-height: 1.7; }
+
+    /* 메타 바 */
+    .meta-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 36px;
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .diff-badge {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      border: 1px solid var(--border);
+    }
+    .diff-beginner { background: var(--chip-green); color: var(--positive); }
+    .tag-chip {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500;
+      background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary);
+    }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+
+    /* 카테고리 배지 */
+    .category-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.02em; white-space: nowrap;
+    }
+    .cat-경제거시 { background: rgba(59,130,246,0.12); color: #3b82f6; border: 1px solid rgba(59,130,246,0.3); }
+    html.theme-light .cat-경제거시 { background: rgba(59,130,246,0.08); }
+
+    /* 카드 */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease;
+      margin-bottom: 16px;
+    }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title {
+      font-size: 12px; font-weight: 700; color: var(--text-secondary);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px;
+    }
+
+    /* KPI 행 */
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    /* 하이라이트 박스 */
+    .highlight-box {
+      padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--chip-accent); font-size: 13.5px; line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .highlight-box strong { color: var(--accent); }
+
+    /* 세계지도 SVG 영역 */
+    .map-container {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 20px; margin-bottom: 16px;
+      overflow: hidden;
+    }
+    .map-container svg { width: 100%; height: auto; display: block; }
+
+    /* 테이블 */
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 0; }
+    table { width: 100%; min-width: 600px; border-collapse: collapse; font-size: 13px; }
+    thead th {
+      background: var(--surface-hover, rgba(255,255,255,0.04));
+      padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700;
+      color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em;
+      white-space: nowrap; border-bottom: 1px solid var(--border);
+    }
+    tbody td {
+      padding: 12px 14px; border-bottom: 1px solid var(--border);
+      vertical-align: top; white-space: nowrap;
+    }
+    tbody td.wrap { white-space: normal; min-width: 160px; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: var(--surface-hover, rgba(255,255,255,0.02)); }
+    .dot {
+      display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+      margin-right: 6px; flex-shrink: 0; vertical-align: middle;
+    }
+    .barrel-badge {
+      display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px;
+      border-radius: 6px; background: var(--chip-amber); color: var(--warning); white-space: nowrap;
+    }
+
+    /* 연쇄 효과 플로우 */
+    .flow-chain {
+      display: flex; align-items: center; flex-wrap: wrap; gap: 0;
+      padding: 20px 0 4px; justify-content: center;
+    }
+    .flow-item {
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; min-width: 90px;
+    }
+    .flow-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; margin-bottom: 6px; border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .flow-label { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+    .flow-sub { font-size: 10px; color: var(--text-secondary); }
+    .flow-arrow {
+      font-size: 18px; color: var(--accent); margin: 0 4px; padding-bottom: 24px;
+      flex-shrink: 0;
+    }
+    .flow-item.highlight .flow-icon { background: var(--chip-accent); border-color: var(--accent); }
+    .flow-item.highlight .flow-label { color: var(--accent); }
+
+    /* 체선료 박스 */
+    .cost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .cost-item {
+      padding: 16px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .cost-item-label { font-size: 11px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+    .cost-item-value { font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+    .cost-item-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+    /* 관련 지식 */
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    /* 푸터 */
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    /* 애니메이션 */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+    /* 반응형 */
+    @media (max-width: 640px) {
+      .kpi-row { grid-template-columns: 1fr; }
+      .cost-grid { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+      .flow-chain { gap: 4px; }
+      .flow-item { min-width: 70px; }
+      .flow-icon { width: 40px; height: 40px; font-size: 1.1rem; }
+      thead th { font-size: 10px !important; padding: 8px !important; }
+      tbody td { font-size: 12px !important; padding: 8px !important; }
+    }
+    @media print {
+      body { background: white !important; }
+      .viz-menu { display: none !important; }
+      .card { break-inside: avoid; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 뷰 메뉴 -->
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        지식 Archive
+      </a>
+
+      <!-- 히어로 -->
+      <header class="hero animate">
+        <div class="hero-badge">🌐 경제·거시 · 글로벌 물류</div>
+        <h1>세계 5대 해상 초크 포인트</h1>
+        <p class="hero-sub">길목이 막히면 체선료→보험료→운임→물가로 이어지는 연쇄 충격 — 전 세계 해상 무역이 의존하는 5곳의 좁은 바닷길</p>
+      </header>
+
+      <!-- 메타 바 -->
+      <div class="meta-bar animate d1">
+        <span class="category-badge cat-경제거시">🌐 경제·거시</span>
+        <span class="diff-badge diff-beginner">입문</span>
+        <span class="tag-chip">#경제</span>
+        <span class="tag-chip">#지정학</span>
+        <span class="tag-chip">#에너지</span>
+        <span class="tag-chip">#공급망</span>
+        <span class="tag-chip">#인플레이션</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.15
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Uppity 경제 브리핑
+        </span>
+      </div>
+
+      <!-- KPI 행 -->
+      <div class="kpi-row animate d2">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">~20%</div>
+          <div class="kpi-label">호르무즈 원유 통과 비중</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--negative)">+10~14일</div>
+          <div class="kpi-label">수에즈 우회 시 추가 일수</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--warning)">$3~10만</div>
+          <div class="kpi-label">대형 유조선 일일 체선료</div>
+        </div>
+      </div>
+
+      <!-- 세계지도 -->
+      <div class="map-container animate d2">
+        <div class="section-title">5대 초크 포인트 위치</div>
+        <!-- 간략화된 세계지도 SVG -->
+        <svg viewBox="0 0 900 440" xmlns="http://www.w3.org/2000/svg" style="background:transparent;">
+          <defs>
+            <style>
+              .land { fill: rgba(255,255,255,0.06); stroke: rgba(255,255,255,0.12); stroke-width: 0.8; }
+              html.theme-light .land { fill: rgba(0,0,0,0.06); stroke: rgba(0,0,0,0.12); }
+              .sea-route { stroke: #06b6d4; stroke-width: 1.5; fill: none; stroke-dasharray: 6 3; opacity: 0.5; }
+              .choke-ring { fill: none; stroke-width: 1.5; animation: pulse 2s ease-in-out infinite; }
+              @keyframes pulse { 0%,100%{opacity:0.4;r:10} 50%{opacity:0.9;r:13} }
+            </style>
+          </defs>
+
+          <!-- 대륙 간략화 -->
+          <!-- 북미 -->
+          <path class="land" d="M60,60 L180,55 L220,80 L240,130 L200,200 L160,230 L120,240 L80,210 L55,160 L60,60Z"/>
+          <!-- 중앙아메리카/파나마 -->
+          <path class="land" d="M160,230 L200,230 L195,260 L165,255 L160,230Z"/>
+          <!-- 남미 -->
+          <path class="land" d="M165,255 L230,260 L250,310 L240,380 L200,410 L170,390 L150,340 L155,290 L165,255Z"/>
+          <!-- 유럽 -->
+          <path class="land" d="M380,55 L450,50 L470,80 L460,110 L420,120 L390,100 L375,75 L380,55Z"/>
+          <!-- 아프리카 -->
+          <path class="land" d="M390,130 L450,125 L490,150 L510,200 L520,280 L490,360 L450,390 L410,370 L380,310 L370,230 L380,160 L390,130Z"/>
+          <!-- 중동 -->
+          <path class="land" d="M490,120 L560,115 L580,145 L560,175 L520,185 L495,165 L490,120Z"/>
+          <!-- 유럽-중동 연결(수에즈 포함) -->
+          <path class="land" d="M460,110 L490,120 L495,140 L470,140 L460,110Z"/>
+          <!-- 아시아(중앙~서부) -->
+          <path class="land" d="M560,65 L680,60 L700,90 L690,130 L650,150 L590,145 L560,115 L555,80 L560,65Z"/>
+          <!-- 인도 -->
+          <path class="land" d="M590,145 L650,150 L660,200 L620,240 L580,220 L575,175 L590,145Z"/>
+          <!-- 동남아시아 -->
+          <path class="land" d="M680,140 L740,130 L760,165 L730,185 L700,175 L680,140Z"/>
+          <!-- 말레이반도/싱가포르 -->
+          <path class="land" d="M720,185 L740,195 L730,220 L710,210 L720,185Z"/>
+          <!-- 수마트라 (인도네시아) -->
+          <path class="land" d="M700,215 L760,200 L780,225 L750,245 L700,235 L700,215Z"/>
+          <!-- 동아시아(중국,한국,일본) -->
+          <path class="land" d="M730,70 L820,65 L840,100 L820,140 L780,145 L750,130 L740,95 L730,70Z"/>
+          <!-- 일본 -->
+          <path class="land" d="M830,80 L860,75 L865,105 L845,115 L830,100 L830,80Z"/>
+          <!-- 한반도 -->
+          <path class="land" d="M800,105 L820,100 L825,125 L800,130 L795,115 L800,105Z"/>
+          <!-- 러시아/북유럽 -->
+          <path class="land" d="M430,30 L650,20 L720,50 L710,70 L550,60 L450,50 L430,30Z"/>
+          <!-- 호주 -->
+          <path class="land" d="M760,290 L850,280 L870,330 L840,370 L790,370 L760,330 L760,290Z"/>
+
+          <!-- 항로 -->
+          <!-- 중동→말라카→동아시아 -->
+          <path class="sea-route" d="M540,160 Q620,200 720,210 Q760,215 810,120"/>
+          <!-- 수에즈→지중해→유럽 -->
+          <path class="sea-route" d="M468,135 Q460,115 430,95 Q410,80 380,70"/>
+          <!-- 수에즈→홍해→인도양 -->
+          <path class="sea-route" d="M468,135 Q480,165 510,200"/>
+          <!-- 파나마 →대서양 -->
+          <path class="sea-route" d="M183,248 Q240,240 320,220 Q370,210 400,160"/>
+          <!-- 파나마→태평양 -->
+          <path class="sea-route" d="M183,248 Q200,270 220,300"/>
+          <!-- 바브엘만데브 연결 -->
+          <path class="sea-route" d="M490,190 Q490,175 492,165"/>
+
+          <!-- ① 호르무즈 해협 (페르시아만 입구) -->
+          <circle cx="555" cy="168" r="9" fill="#f43f5e" opacity="0.9"/>
+          <circle class="choke-ring" cx="555" cy="168" r="10" stroke="#f43f5e"/>
+          <circle class="choke-ring" cx="555" cy="168" r="16" stroke="#f43f5e" style="animation-delay:0.5s"/>
+          <text x="565" y="158" fill="#f43f5e" font-size="11" font-weight="600" font-family="Noto Sans KR,Inter,sans-serif">호르무즈 해협</text>
+
+          <!-- ② 말라카 해협 -->
+          <circle cx="723" cy="208" r="9" fill="#f59e0b" opacity="0.9"/>
+          <circle class="choke-ring" cx="723" cy="208" r="10" stroke="#f59e0b" style="animation-delay:0.3s"/>
+          <circle class="choke-ring" cx="723" cy="208" r="16" stroke="#f59e0b" style="animation-delay:0.8s"/>
+          <text x="733" y="198" fill="#f59e0b" font-size="11" font-weight="600" font-family="Noto Sans KR,Inter,sans-serif">말라카 해협</text>
+
+          <!-- ③ 수에즈 운하 -->
+          <circle cx="468" cy="135" r="9" fill="#10b981" opacity="0.9"/>
+          <circle class="choke-ring" cx="468" cy="135" r="10" stroke="#10b981" style="animation-delay:0.1s"/>
+          <circle class="choke-ring" cx="468" cy="135" r="16" stroke="#10b981" style="animation-delay:0.6s"/>
+          <text x="436" y="125" fill="#10b981" font-size="11" font-weight="600" font-family="Noto Sans KR,Inter,sans-serif">수에즈 운하</text>
+
+          <!-- ④ 파나마 운하 -->
+          <circle cx="183" cy="248" r="9" fill="#06b6d4" opacity="0.9"/>
+          <circle class="choke-ring" cx="183" cy="248" r="10" stroke="#06b6d4" style="animation-delay:0.2s"/>
+          <circle class="choke-ring" cx="183" cy="248" r="16" stroke="#06b6d4" style="animation-delay:0.7s"/>
+          <text x="140" y="240" fill="#06b6d4" font-size="11" font-weight="600" font-family="Noto Sans KR,Inter,sans-serif">파나마 운하</text>
+
+          <!-- ⑤ 바브엘만데브 -->
+          <circle cx="494" cy="192" r="9" fill="#a855f7" opacity="0.9"/>
+          <circle class="choke-ring" cx="494" cy="192" r="10" stroke="#a855f7" style="animation-delay:0.4s"/>
+          <circle class="choke-ring" cx="494" cy="192" r="16" stroke="#a855f7" style="animation-delay:0.9s"/>
+          <text x="430" y="205" fill="#a855f7" font-size="11" font-weight="600" font-family="Noto Sans KR,Inter,sans-serif">바브엘만데브</text>
+
+          <!-- 범례 -->
+          <rect x="10" y="395" width="260" height="36" rx="8" fill="rgba(0,0,0,0.3)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <circle cx="26" cy="413" r="5" fill="#f43f5e"/>
+          <text x="34" y="416" fill="rgba(255,255,255,0.6)" font-size="10" font-family="Inter,sans-serif">호르무즈</text>
+          <circle cx="86" cy="413" r="5" fill="#f59e0b"/>
+          <text x="94" y="416" fill="rgba(255,255,255,0.6)" font-size="10" font-family="Inter,sans-serif">말라카</text>
+          <circle cx="135" cy="413" r="5" fill="#10b981"/>
+          <text x="143" y="416" fill="rgba(255,255,255,0.6)" font-size="10" font-family="Inter,sans-serif">수에즈</text>
+          <circle cx="183" cy="413" r="5" fill="#06b6d4"/>
+          <text x="191" y="416" fill="rgba(255,255,255,0.6)" font-size="10" font-family="Inter,sans-serif">파나마</text>
+          <circle cx="234" cy="413" r="5" fill="#a855f7"/>
+          <text x="242" y="416" fill="rgba(255,255,255,0.6)" font-size="10" font-family="Inter,sans-serif">바브엘만데브</text>
+        </svg>
+      </div>
+
+      <!-- 5대 초크 포인트 비교표 -->
+      <div class="card animate d3">
+        <div class="section-title">5대 초크 포인트 비교</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>해협·운하</th>
+                <th>위치</th>
+                <th>연결</th>
+                <th>일일 원유 통과량</th>
+                <th>최근 이슈</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="dot" style="background:#f43f5e"></span><strong>호르무즈 해협</strong></td>
+                <td>페르시아만 입구</td>
+                <td>페르시아만 ↔ 아라비아해</td>
+                <td><span class="barrel-badge">~2,000만 bbl/일</span></td>
+                <td class="wrap">이란-이라크 전쟁 '탱커 전쟁', 2026년 이란 전쟁 후 통행 제한</td>
+              </tr>
+              <tr>
+                <td><span class="dot" style="background:#f59e0b"></span><strong>말라카 해협</strong></td>
+                <td>말레이반도-수마트라섬</td>
+                <td>인도양 ↔ 태평양</td>
+                <td><span class="barrel-badge">~2,000만 bbl/일</span></td>
+                <td class="wrap">한·중·일 원유 수입 핵심 경로, 15세기 무역 중심지</td>
+              </tr>
+              <tr>
+                <td><span class="dot" style="background:#10b981"></span><strong>수에즈 운하</strong></td>
+                <td>이집트</td>
+                <td>지중해 ↔ 홍해</td>
+                <td style="white-space:normal">전체 해상 물동량<br><span class="barrel-badge">10~12%</span></td>
+                <td class="wrap">1956년 수에즈 위기, 2021년 에버기번 좌초 → 물류 마비</td>
+              </tr>
+              <tr>
+                <td><span class="dot" style="background:#06b6d4"></span><strong>파나마 운하</strong></td>
+                <td>파나마</td>
+                <td>대서양 ↔ 태평양</td>
+                <td style="white-space:normal">전체 해상 물동량<br><span class="barrel-badge">~5%</span></td>
+                <td class="wrap">2023~24년 가뭄으로 수위 저하 → 통과 선박 수 제한</td>
+              </tr>
+              <tr>
+                <td><span class="dot" style="background:#a855f7"></span><strong>바브엘만데브</strong></td>
+                <td>예멘-지부티</td>
+                <td>홍해 ↔ 아덴만(수에즈 입구)</td>
+                <td><span class="barrel-badge">~400만 bbl/일</span></td>
+                <td class="wrap">후티 공격으로 선박 우회 급증 → 운임 상승</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 연쇄 충격 메커니즘 -->
+      <div class="card animate d3">
+        <div class="section-title">길목 차단 → 물가 상승 연쇄 메커니즘</div>
+        <div class="flow-chain">
+          <div class="flow-item highlight">
+            <div class="flow-icon">🚧</div>
+            <div class="flow-label">길목 차단</div>
+            <div class="flow-sub">초크 포인트<br>봉쇄·혼잡</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-item">
+            <div class="flow-icon">⏱️</div>
+            <div class="flow-label">시간 증가</div>
+            <div class="flow-sub">우회 항로<br>+10~14일</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-item">
+            <div class="flow-icon">⚓</div>
+            <div class="flow-label">체선료↑</div>
+            <div class="flow-sub">Demurrage<br>하루 수만$</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-item">
+            <div class="flow-icon">🛡️</div>
+            <div class="flow-label">보험료↑</div>
+            <div class="flow-sub">전쟁위험<br>보험 급등</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-item">
+            <div class="flow-icon">🚢</div>
+            <div class="flow-label">운임↑</div>
+            <div class="flow-sub">화주→<br>소비자 전가</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-item highlight">
+            <div class="flow-icon">📈</div>
+            <div class="flow-label">물가↑</div>
+            <div class="flow-sub">에너지→<br>식품·공산품</div>
+          </div>
+        </div>
+        <div class="highlight-box" style="margin-top:16px; margin-bottom:0;">
+          해상 운송은 몇 개의 좁은 해협·운하에 의존하는 구조이므로, <strong>한 구간의 차질이 곧바로 '시간 지연'으로 이어지고</strong>, 이는 체선료·보험료·운임 상승을 통해 결국 <strong>전반적인 물가 인플레이션</strong>으로 확산된다.
+        </div>
+      </div>
+
+      <!-- 비용 상세 -->
+      <div class="card animate d4">
+        <div class="section-title">주요 비용 항목 상세</div>
+        <div class="cost-grid">
+          <div class="cost-item">
+            <div class="cost-item-label">⚓ 체선료 (Demurrage)</div>
+            <div class="cost-item-value">$3만~10만/일</div>
+            <div class="cost-item-desc">대형 유조선 기준 하루 약 3만~10만달러(약 4,000만~1.5억원). 대기 시간에 비례해 누적. 혼잡이 겹치면 급증.</div>
+          </div>
+          <div class="cost-item">
+            <div class="cost-item-label">🛡️ 전쟁 위험 보험 (War Risk Premium)</div>
+            <div class="cost-item-value">단기 수배 급등</div>
+            <div class="cost-item-desc">평시엔 미미하나 호르무즈·홍해 등 분쟁 해역에서는 단기간에 수배로 급등. 선사가 감당 불가 시 항로 우회 또는 운항 중단.</div>
+          </div>
+          <div class="cost-item">
+            <div class="cost-item-label">🚢 해상 운임</div>
+            <div class="cost-item-value">비용 전가</div>
+            <div class="cost-item-desc">체선료+보험료 부담을 선사가 화주에게 전가 → 운임 상승. 공급 축소 시 남은 항로로 선박 집중, 혼잡 악화 악순환.</div>
+          </div>
+          <div class="cost-item">
+            <div class="cost-item-label">📊 경제 파급</div>
+            <div class="cost-item-value">인플레이션</div>
+            <div class="cost-item-desc">에너지(원유·가스) 가격 먼저 반응 → 식료품·공산품 순차 반영 → 전반적 인플레이션 압력. 전쟁 장기화 시 파급 확대.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3줄 요약 -->
+      <div class="card animate d4" style="border-color: rgba(6,182,212,0.3); background: rgba(6,182,212,0.05);">
+        <div class="section-title" style="color: var(--accent);">📌 3줄 요약</div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; gap:10px; font-size:13.5px; line-height:1.6;">
+            <span style="color:var(--accent); font-weight:700; flex-shrink:0;">①</span>
+            <span>해상 운송은 몇 개의 좁은 해협·운하, 즉 <strong>'초크 포인트(Chokepoint)'</strong>에 크게 의존하는 구조다.</span>
+          </div>
+          <div style="display:flex; gap:10px; font-size:13.5px; line-height:1.6;">
+            <span style="color:var(--accent); font-weight:700; flex-shrink:0;">②</span>
+            <span>길목이 막히면 운송 시간이 늘어나고, <strong>체선료·보험료가 오르면서 운임 상승</strong>으로 이어진다.</span>
+          </div>
+          <div style="display:flex; gap:10px; font-size:13.5px; line-height:1.6;">
+            <span style="color:var(--accent); font-weight:700; flex-shrink:0;">③</span>
+            <span>운임 상승은 <strong>에너지 가격과 물가 전반으로 확산</strong>되며, 전쟁이 길어질수록 세계 경제에 부담이 된다.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 관련 지식 -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="supply-chain-restructuring.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">공급망 재편 — 프렌드쇼어링과 China+1 전략</div>
+          </a>
+          <a href="iran-israel-war-2026.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">미국·이스라엘 vs 이란 — 2026년 중동 전쟁 완전 정리</div>
+          </a>
+          <a href="houthi-ansar-allah.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">후티(안사르 알라) — 예멘 실질 통치 세력의 실체</div>
+          </a>
+          <a href="cpi-pce-inflation.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">CPI vs PCE — 미국 인플레이션 지표 핵심 비교</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">출처: Uppity 경제 브리핑 · 로이터·AFP·Getty Images 사진 자료 종합</p>
+
+    </div>
+  </main>
+
+  <script>
+    var THEMES = ['theme-dark', 'theme-light'];
+    var THEME_LABELS = { 'theme-dark': 'Dark', 'theme-light': 'Light' };
+
+    (function() {
+      var saved = localStorage.getItem('ka-theme') || 'theme-dark';
+      document.documentElement.className = saved;
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[saved];
+    })();
+
+    function cycleTheme() {
+      var cur = document.documentElement.className;
+      var next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+      document.documentElement.className = next;
+      localStorage.setItem('ka-theme', next);
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[next];
+      closeMenu();
+    }
+
+    function toggleMenu() {
+      document.getElementById('vizMenuDropdown').classList.toggle('open');
+    }
+    function closeMenu() {
+      document.getElementById('vizMenuDropdown').classList.remove('open');
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.viz-menu')) closeMenu();
+    });
+
+    function downloadImage() {
+      closeMenu();
+      if (typeof htmlToImage === 'undefined') { alert('라이브러리 로딩 중...'); return; }
+      htmlToImage.toPng(document.getElementById('main'), { pixelRatio: 2 })
+        .then(function(dataUrl) {
+          var a = document.createElement('a');
+          a.download = 'maritime-chokepoints-global.png';
+          a.href = dataUrl;
+          a.click();
+        });
+    }
+  </script>
+</body>
+</html>
