@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>재생에너지가 인류를 구원할 수 있을까 — 기후 이탈과 에너지 전환의 딜레마</title>
+  <meta name="knowledge-id" content="renewable-energy-salvation">
+  <meta name="knowledge-tags" content="에너지,기후변화,재생에너지,환경,트렌드">
+  <meta name="knowledge-difficulty" content="입문">
+  <meta name="knowledge-date" content="2026-04-15">
+  <meta name="knowledge-source" content="Uppity (서영민 KBS 기자)">
+  <meta name="knowledge-category" content="기술·산업">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #f97316; --accent2: #3b82f6;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(249,115,22,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #ea6d10; --accent2: #2563eb;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(234,109,16,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%,
+        color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* 뷰 메뉴 */
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle {
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid var(--menu-border); background: var(--menu-bg);
+      color: var(--menu-text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(12px); transition: all 0.2s;
+    }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown {
+      position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px;
+      background: var(--menu-bg); backdrop-filter: blur(16px);
+      border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px;
+      opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border: none; background: transparent;
+      color: var(--menu-text); font-size: 14px; font-family: inherit;
+      cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left;
+    }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    /* 뒤로가기 */
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      margin-bottom: 24px; padding: 6px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface); transition: background 0.15s;
+    }
+    .nav-back:hover { background: var(--surface-hover); }
+
+    /* 히어로 */
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--text-secondary);
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 560px; margin: 0 auto; line-height: 1.7; }
+
+    /* 메타 바 */
+    .meta-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 36px;
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .diff-badge {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      border: 1px solid var(--border);
+    }
+    .diff-beginner { background: var(--chip-green); color: var(--positive); }
+    .tag-chip {
+      padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500;
+      background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary);
+    }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+
+    /* 카테고리 배지 */
+    .category-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.02em; white-space: nowrap;
+    }
+    .cat-기술산업 { background: rgba(139,92,246,0.12); color: #8b5cf6; border: 1px solid rgba(139,92,246,0.3); }
+    html.theme-light .cat-기술산업 { background: rgba(139,92,246,0.08); }
+
+    /* 카드 */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease;
+      margin-bottom: 16px;
+    }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title {
+      font-size: 12px; font-weight: 700; color: var(--text-secondary);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px;
+    }
+
+    /* KPI 행 */
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    /* 비교 그리드 */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+    .era-card { border-radius: 12px; padding: 22px; border: 1px solid var(--border); position: relative; overflow: hidden; background: var(--surface); }
+    .era-card .top-line { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+    .era-card.old .top-line { background: #64748b; }
+    .era-card.new .top-line { background: var(--accent); }
+    .era-label { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 10px; margin-top: 4px; }
+    .era-card.old .era-label { color: #64748b; }
+    .era-card.new .era-label { color: var(--accent); }
+    .era-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; }
+    .era-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; margin-bottom: 8px; color: var(--text-secondary); }
+    .era-item strong { color: var(--text); font-weight: 600; }
+    .era-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+    .era-card.old .era-dot { background: #64748b; }
+    .era-card.new .era-dot { background: var(--accent); }
+
+    /* 하이라이트 박스 */
+    .highlight-box {
+      padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--chip-accent); font-size: 13.5px; line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .highlight-box strong { color: var(--accent); }
+
+    /* 인용 박스 */
+    .quote-box {
+      padding: 16px 20px; border-radius: 10px; border-left: 3px solid var(--accent);
+      background: var(--surface); font-size: 13px; line-height: 1.7;
+      color: var(--text-secondary); margin-bottom: 16px; font-style: italic;
+    }
+    .quote-box cite { display: block; margin-top: 6px; font-style: normal; font-weight: 600; font-size: 12px; color: var(--accent); }
+
+    /* 내부 카드 그리드 */
+    .card-grid-inner { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 12px; margin-bottom: 16px; }
+    .inner-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+    .inner-card-icon { font-size: 1.4rem; margin-bottom: 8px; }
+    .inner-card-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    .inner-card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+    /* 타임라인 */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .timeline-item { display: flex; gap: 16px; }
+    .timeline-left { display: flex; flex-direction: column; align-items: center; width: 32px; flex-shrink: 0; }
+    .timeline-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); flex-shrink: 0; margin-top: 4px; }
+    .timeline-line { width: 2px; flex: 1; background: var(--border); margin: 4px 0; min-height: 20px; }
+    .timeline-item:last-child .timeline-line { display: none; }
+    .timeline-right { padding-bottom: 20px; flex: 1; }
+    .timeline-year { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .timeline-content { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+    .timeline-content strong { color: var(--text); }
+
+    /* 관련 지식 */
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    /* 푸터 */
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    /* 애니메이션 */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+    /* 테이블 */
+    th { white-space: nowrap; }
+    td { white-space: nowrap; }
+    table { min-width: 560px; }
+
+    /* 반응형 */
+    @media (max-width: 640px) {
+      .compare-grid, .kpi-row { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+      th { font-size: 10px !important; padding-left: 8px !important; padding-right: 8px !important; }
+      td { font-size: 12px !important; padding-left: 8px !important; padding-right: 8px !important; }
+    }
+    @media print {
+      body { background: white !important; }
+      .viz-menu { display: none !important; }
+      .card { break-inside: avoid; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 뷰 메뉴 -->
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+
+      <!-- 뒤로가기 -->
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        지식 Archive
+      </a>
+
+      <!-- 히어로 -->
+      <header class="hero animate">
+        <div class="hero-badge">🔬 기술·산업 · 재생에너지 보고서</div>
+        <h1>재생에너지가 인류를 구원할 수 있을까</h1>
+        <p class="hero-sub">2047년 기후 이탈 시점과 화석연료 59% 의존도의 모순 — 탄소 감축과 성장을 동시에 달성할 수 있는가</p>
+      </header>
+
+      <!-- 메타 바 -->
+      <div class="meta-bar animate d1">
+        <span class="category-badge cat-기술산업">🔬 기술·산업</span>
+        <span class="diff-badge diff-beginner">입문</span>
+        <span class="tag-chip">#에너지</span>
+        <span class="tag-chip">#기후변화</span>
+        <span class="tag-chip">#재생에너지</span>
+        <span class="tag-chip">#환경</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.04.15
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Uppity (서영민 KBS 기자)
+        </span>
+      </div>
+
+      <!-- KPI 행 -->
+      <div class="kpi-row animate d2" role="region" aria-label="핵심 수치">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--accent)">2047</div>
+          <div class="kpi-label">기후 이탈 시점(년)</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--negative)">59%</div>
+          <div class="kpi-label">화석연료 에너지 의존도</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--positive)">3大</div>
+          <div class="kpi-label">재생에너지 전환 핵심 축</div>
+        </div>
+      </div>
+
+      <!-- 핵심 개념 설명 -->
+      <div class="highlight-box animate d2">
+        <strong>기후 이탈 시점(Climate Departure)</strong>이란 특정 지역의 평균 기후가 과거 관측 기록을 지속적으로 초과해, 과거 데이터가 더 이상 기준점이 될 수 없는 지점을 말한다. 2047년부터 인류는 완전히 새로운 기후 체제에 진입한다.
+      </div>
+
+      <!-- 탄소의 양면성 비교 -->
+      <div class="card animate d3">
+        <div class="section-title">탄소 에너지의 양면성 — 성장의 원천이자 생존의 위협</div>
+        <div class="compare-grid">
+          <div class="era-card old">
+            <div class="top-line"></div>
+            <div style="padding-top:8px">
+              <div class="era-label">☠️ 위협</div>
+              <div class="era-title">기후 위기의 본질</div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>기후 이탈:</strong> 2047년 전례 없는 기후 체제 진입</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>경제 딜레마:</strong> 화석연료 중단 시 에너지 공급 59% 소실</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>성장 역설:</strong> 탈탄소와 경제성장은 근본적으로 상충</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>정치적 한계:</strong> 정치인은 미미한 인플레이션에도 교체되는 현실</div></div>
+            </div>
+          </div>
+          <div class="era-card new">
+            <div class="top-line"></div>
+            <div style="padding-top:8px">
+              <div class="era-label">🌱 희망</div>
+              <div class="era-title">재생에너지 전환 가능성</div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>태양광·풍력:</strong> 급격한 가격 하락으로 화석연료 경쟁력 확보</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>에너지저장:</strong> 배터리 기술 발전으로 간헐성 문제 해소</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>전기차 전환:</strong> 수송 부문 탄소 제로화 가속</div></div>
+              <div class="era-item"><div class="era-dot"></div><div><strong>물리적 가능성:</strong> 일론 머스크 "공상 아닌 실제 물리학적 계산"</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 비관론 vs 낙관론 -->
+      <div class="card animate d3">
+        <div class="section-title">학계·전문가 전망 — 비관론과 낙관론의 충돌</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <div>
+            <div style="font-size:12px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.07em; margin-bottom:10px;">😰 비관론 근거</div>
+            <div class="quote-box" style="margin-bottom:10px; border-left-color:#64748b;">
+              "우리가 아는 문명은 끝났다"
+              <cite>— 로이 스크랜턴, 《인류세에서 죽음을 배우다》</cite>
+            </div>
+            <div style="font-size:13px; color:var(--text-secondary); line-height:1.7; padding:12px; background:rgba(100,116,139,0.08); border-radius:8px; border:1px solid var(--border);">
+              <strong style="color:var(--text);">포츠담 기후영향연구소</strong>:<br>
+              이산화탄소 450~500ppm 안정화를 위해서는 <em>"세계 경제의 무기한 감속 또는 마이너스 성장"</em>이 필요하다고 경고
+            </div>
+          </div>
+          <div>
+            <div style="font-size:12px; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:0.07em; margin-bottom:10px;">🌟 낙관론 근거</div>
+            <div class="quote-box" style="margin-bottom:10px;">
+              "지구는 지속 가능한 에너지 경제로 전환될 것입니다"
+              <cite>— 일론 머스크, 테슬라 투자자의 날 (2023)</cite>
+            </div>
+            <div style="font-size:13px; color:var(--text-secondary); line-height:1.7; padding:12px; background:var(--chip-accent); border-radius:8px; border:1px solid var(--border);">
+              <strong style="color:var(--text);">다니엘 서스킨드</strong> (영국 학자):<br>
+              기술 발전으로 <em>"기후에 적은 영향을 미치면서도 성장 가능"</em>한 미래를 낙관적으로 전망
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 재생에너지 전환 3대 축 -->
+      <div class="card animate d4">
+        <div class="section-title">일론 머스크가 제시한 재생에너지 전환 3대 핵심</div>
+        <div class="card-grid-inner">
+          <div class="inner-card">
+            <div class="inner-card-icon">☀️</div>
+            <div class="inner-card-title">태양광 & 풍력 발전</div>
+            <div class="inner-card-desc">신재생 발전 단가는 꾸준히 하락, 화석연료 대비 경쟁력 확보. 대규모 그리드 구축으로 에너지 자급 가능성 증대</div>
+          </div>
+          <div class="inner-card">
+            <div class="inner-card-icon">🔋</div>
+            <div class="inner-card-title">에너지저장장치 (고정형 배터리)</div>
+            <div class="inner-card-desc">태양광·풍력의 간헐성 문제를 해소하는 핵심. 기가와트시급 대형 ESS가 안정적 전력 공급의 열쇠</div>
+          </div>
+          <div class="inner-card">
+            <div class="inner-card-icon">⚡</div>
+            <div class="inner-card-title">전기차 (EV)</div>
+            <div class="inner-card-desc">수송 부문 탄소 제로화의 핵심 수단. V2G(차량-그리드) 기술로 배터리가 분산형 저장장치로 기능 가능</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 핵심 타임라인 -->
+      <div class="card animate d4">
+        <div class="section-title">기후·에너지 전환 핵심 타임라인</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">약 200년 전</div>
+              <div class="timeline-content"><strong>산업혁명 시작</strong> — 탄소 에너지가 인류 성장의 원천으로 자리잡음. GDP·임금·기대수명(20→80세) 급증의 동력</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">2023</div>
+              <div class="timeline-content"><strong>테슬라 투자자의 날</strong> — 일론 머스크, 완전 지속 가능한 에너지 경제 가능성을 "물리학적 계산에 근거"해 공식 선언</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">2026.01.07</div>
+              <div class="timeline-content"><strong>재생에너지 보고서 연재 개시</strong> — KBS 기자 서영민, Uppity에서 매주 수요일 재생에너지 보고서 연재 시작</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">2047 (예측)</div>
+              <div class="timeline-content"><strong>기후 이탈 시점(Climate Departure)</strong> — 지역 평균 기후가 과거 관측 기록을 지속적으로 초과하기 시작하는 분기점. 과거 기후 데이터는 더 이상 유효하지 않음</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">약 50억 년 후</div>
+              <div class="timeline-content"><strong>태양 수명 종료</strong> — 우주적 타임라인에서 인류의 진짜 한계. 그 전에 탄소 문명을 극복하는 것이 인류의 과제</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 핵심 논점 정리 -->
+      <div class="highlight-box animate d5">
+        이 글의 핵심 질문: <strong>"기술의 발전은 스스로 만든 비극으로부터 인류를 구출할 수 있을까?"</strong><br>
+        <span style="font-size:13px; color:var(--text-secondary); display:block; margin-top:6px;">서영민 기자는 재생에너지 연재를 통해 이 가능성을 탐구한다. 비관론(포츠담 연구소, 로이 스크랜턴)과 낙관론(머스크, 서스킨드) 사이의 긴장이 핵심 축.</span>
+      </div>
+
+      <!-- 관련 지식 -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="smr-small-modular-reactor.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">SMR (소형모듈원자로) — AI 시대 차세대 무탄소 전력</div>
+          </a>
+          <a href="ev-battery-structure.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">전기차 배터리 구조 — 셀·모듈·팩과 3대 화학 조성</div>
+          </a>
+          <a href="solid-state-battery-roadmap.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">차세대 배터리 로드맵 — 전고체 배터리 게임 체인저</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">
+        출처: 서영민(KBS 기자) — <a href="https://uppity.co.kr/%ec%9e%ac%ec%83%9d%ec%97%90%eb%84%88%ec%a7%80%ea%b0%80-%ec%9d%b8%eb%a5%98%eb%a5%bc-%ea%b5%ac%ec%9b%90%ed%95%a0-%ec%88%98-%ec%9e%88%ec%9d%84%ea%b9%8c/" style="color:var(--accent);" target="_blank">Uppity · 재생에너지 보고서 1화 (2026.01.07)</a>
+      </p>
+
+    </div>
+  </main>
+
+  <script>
+    var THEMES = ['theme-dark', 'theme-light'];
+    var THEME_LABELS = { 'theme-dark': 'Dark', 'theme-light': 'Light' };
+
+    (function() {
+      var saved = localStorage.getItem('ka-theme') || 'theme-dark';
+      document.documentElement.className = saved;
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[saved];
+    })();
+
+    function cycleTheme() {
+      var cur = document.documentElement.className;
+      var next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+      document.documentElement.className = next;
+      localStorage.setItem('ka-theme', next);
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[next];
+      closeMenu();
+    }
+
+    function toggleMenu() {
+      document.getElementById('vizMenuDropdown').classList.toggle('open');
+    }
+    function closeMenu() {
+      document.getElementById('vizMenuDropdown').classList.remove('open');
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.viz-menu')) closeMenu();
+    });
+
+    function downloadImage() {
+      closeMenu();
+      if (typeof htmlToImage === 'undefined') { alert('라이브러리 로딩 중...'); return; }
+      htmlToImage.toPng(document.getElementById('main'), { pixelRatio: 2 })
+        .then(function(dataUrl) {
+          var a = document.createElement('a');
+          a.download = 'renewable-energy-salvation.png';
+          a.href = dataUrl;
+          a.click();
+        });
+    }
+  </script>
+</body>
+</html>
