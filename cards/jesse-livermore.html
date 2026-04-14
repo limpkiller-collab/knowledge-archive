@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko" id="htmlRoot" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>제시 리버모어 — 월가의 곰, 전설적 투기꾼</title>
+  <meta name="knowledge-id" content="jesse-livermore">
+  <meta name="knowledge-series" content="투자 구루 열전">
+  <meta name="knowledge-category" content="투자·금융">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0e0e0e;--surface-mid:#1a1919;--surface-high:#201f1f;--surface-highest:#262626;--surface-bright:#2c2c2c;--border:rgba(255,255,255,0.05);--text:#ffffff;--text-sec:#adaaaa;--accent:#f87171;}
+    html.theme-light{--bg:#FAFAFA;--surface-mid:#F9FAFB;--surface-high:#FFFFFF;--surface-highest:#F3F4F6;--surface-bright:#FFFFFF;--border:rgba(0,0,0,0.06);--text:#111827;--text-sec:#4B5563;--accent:#dc2626;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Noto Sans KR','Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background .3s,color .3s;}
+    body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,color-mix(in srgb,#dc2626 8%,transparent),transparent);}
+    .page-wrap{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:24px 20px 80px;}
+    .view-menu{position:fixed;top:16px;right:16px;z-index:100;display:flex;gap:8px;}
+    .view-btn{background:var(--surface-high);border:1px solid var(--border);color:var(--text-sec);border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;font-family:inherit;}
+    .view-btn:hover{background:var(--surface-bright);color:var(--text);}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--text-sec);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface-high);margin-bottom:28px;}
+    .back-btn:hover{background:var(--surface-bright);color:var(--text);}
+    .series-nav{background:var(--surface-mid);border:1px solid var(--border);border-left:3px solid #dc2626;border-radius:10px;padding:12px 16px;margin-bottom:24px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+    .series-nav-label{font-size:11px;font-weight:700;color:#f87171;text-transform:uppercase;letter-spacing:0.06em;flex-shrink:0;}
+    .snav-item{font-size:12px;color:var(--text-sec);text-decoration:none;padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface-highest);transition:all .2s;white-space:nowrap;}
+    .snav-item:hover{color:var(--text);}
+    .snav-item.active{background:rgba(220,38,38,0.15);color:#f87171;border-color:rgba(220,38,38,0.4);font-weight:600;}
+    .series-badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#f87171;background:rgba(220,38,38,0.12);border:1px solid rgba(220,38,38,0.3);padding:3px 10px;border-radius:99px;margin-bottom:14px;}
+    h1{font-size:clamp(22px,4vw,34px);font-weight:900;line-height:1.2;letter-spacing:-0.03em;margin-bottom:8px;}
+    .hero-sub{font-size:15px;color:var(--text-sec);line-height:1.65;}
+    .meta-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:20px 0 28px;padding:12px 16px;background:var(--surface-mid);border-radius:12px;border:1px solid var(--border);}
+    .meta-chip{font-size:12px;color:var(--text-sec);padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface-highest);}
+    .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
+    @media(max-width:500px){.kpi-row{grid-template-columns:1fr 1fr;}}
+    .kpi-card{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
+    .kpi-label{font-size:11px;color:var(--text-sec);font-weight:500;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:6px;}
+    .kpi-value{font-size:26px;font-weight:800;color:#f87171;letter-spacing:-0.03em;line-height:1;}
+    .kpi-unit{font-size:11px;color:var(--text-sec);margin-top:4px;}
+    .section{margin-bottom:28px;}
+    .section-title{font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-sec);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+    .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+    .quote-block{background:var(--surface-mid);border:1px solid var(--border);border-left:3px solid #f87171;border-radius:10px;padding:16px 20px;margin-bottom:12px;}
+    .quote-text{font-size:15px;font-weight:600;line-height:1.6;color:var(--text);font-style:italic;}
+    .quote-context{font-size:12px;color:var(--text-sec);margin-top:8px;}
+    .principle-list{display:flex;flex-direction:column;gap:12px;}
+    .principle-card{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:18px 20px;display:flex;gap:16px;}
+    .principle-num{font-size:24px;font-weight:900;color:#f87171;opacity:0.5;flex-shrink:0;line-height:1;}
+    .principle-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+    .principle-desc{font-size:13px;color:var(--text-sec);line-height:1.6;}
+    .warning-box{background:rgba(220,38,38,0.08);border:1px solid rgba(220,38,38,0.3);border-radius:12px;padding:18px 20px;}
+    .warning-title{font-size:13px;font-weight:700;color:#f87171;margin-bottom:10px;}
+    .insight-box{background:rgba(220,38,38,0.06);border:1px solid rgba(220,38,38,0.2);border-radius:12px;padding:18px 20px;}
+    .insight-title{font-size:13px;font-weight:700;color:#f87171;margin-bottom:10px;}
+    .insight-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+    .insight-list li{font-size:13px;color:var(--text-sec);padding-left:16px;position:relative;line-height:1.6;}
+    .insight-list li::before{content:'→';position:absolute;left:0;color:#f87171;font-weight:700;}
+    .timeline-simple{display:flex;flex-direction:column;gap:10px;}
+    .tl-item{display:flex;gap:14px;align-items:flex-start;}
+    .tl-year{font-size:12px;font-weight:700;color:#f87171;width:40px;flex-shrink:0;padding-top:2px;}
+    .tl-text{font-size:13px;color:var(--text-sec);line-height:1.5;}
+    .footer-nav{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;}
+    .fnav-btn{display:flex;align-items:center;gap:8px;background:var(--surface-mid);border:1px solid var(--border);border-radius:10px;padding:10px 16px;text-decoration:none;color:var(--text);font-size:13px;font-weight:500;transition:background .2s;}
+    .fnav-btn:hover{background:var(--surface-bright);}
+  </style>
+</head>
+<body>
+  <div class="view-menu">
+    <button class="view-btn" onclick="toggleTheme()">🌓 테마</button>
+    <button class="view-btn" onclick="window.print()">🖨 인쇄</button>
+  </div>
+  <div class="page-wrap">
+    <a href="../index.html" class="back-btn">← 아카이브로</a>
+    <div class="series-nav">
+      <span class="series-nav-label">📚 투자 구루 열전</span>
+      <a href="guru-series-overview.html" class="snav-item">개요</a>
+      <a href="benjamin-graham.html" class="snav-item">①그레이엄</a>
+      <a href="philip-fisher.html" class="snav-item">②피셔</a>
+      <a href="warren-buffett.html" class="snav-item">③버핏</a>
+      <a href="charlie-munger.html" class="snav-item">④멍거</a>
+      <a href="peter-lynch.html" class="snav-item">⑤린치</a>
+      <a href="jesse-livermore.html" class="snav-item active">⑥리버모어</a>
+      <a href="george-soros.html" class="snav-item">⑦소로스</a>
+      <a href="ray-dalio.html" class="snav-item">⑧달리오</a>
+      <a href="michael-burry.html" class="snav-item">⑨버리</a>
+      <a href="howard-marks.html" class="snav-item">⑩막스</a>
+      <a href="john-bogle.html" class="snav-item">⑪보글</a>
+    </div>
+
+    <div class="series-badge">⑥ 기술적 투기 · 테이프 리딩</div>
+    <h1>제시 리버모어<br><span style="font-size:0.6em;font-weight:600;color:var(--text-sec);">Jesse Livermore, 1877–1940</span></h1>
+    <p class="hero-sub">월가 역사상 가장 전설적인 투기꾼. 1929년 대공황을 예측해 공매도로 1억 달러(현재 가치 약 17조 원)를 벌었다. 그러나 4번의 파산을 반복하고 1940년 스스로 생을 마감했다. 천재적 투기 기술과 리스크 관리 실패의 극단적 교훈을 동시에 남긴 인물.</p>
+
+    <div class="meta-bar">
+      <span class="meta-chip">📍 뉴욕 월가</span>
+      <span class="meta-chip">📅 1877–1940</span>
+      <span class="meta-chip">🏦 독립 투기꾼 (소속 없음)</span>
+      <span class="meta-chip">📚 어느 주식투자자의 회상(1923) · 주식 투기술</span>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">1929년 공매도 수익</div>
+        <div class="kpi-value">$100M</div>
+        <div class="kpi-unit">대공황 숏 포지션 (현재 ~$17T)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">파산 횟수</div>
+        <div class="kpi-value">4<span style="font-size:16px">회</span></div>
+        <div class="kpi-unit">최고점과 파산을 반복</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">투기 시작 나이</div>
+        <div class="kpi-value">14<span style="font-size:16px">세</span></div>
+        <div class="kpi-unit">버킷샵에서 첫 거래</div>
+      </div>
+    </div>
+
+    <!-- 생애 연대기 -->
+    <div class="section">
+      <div class="section-title">빛과 어둠 — 리버모어 생애 연대기</div>
+      <div style="background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:20px;">
+        <div class="timeline-simple">
+          <div class="tl-item"><div class="tl-year">1891</div><div class="tl-text">버킷샵(비공식 도박 거래소)에서 첫 거래. 1,000달러 수익으로 '소년 플런저'로 불림.</div></div>
+          <div class="tl-item"><div class="tl-year">1906</div><div class="tl-text">샌프란시스코 지진 직전 공매도로 25만 달러 수익. 재난 예측 투기의 원형.</div></div>
+          <div class="tl-item"><div class="tl-year">1907</div><div class="tl-text">공황 예측 공매도로 약 300만 달러 수익. JP 모건이 직접 만나 "공매도를 그만해 달라"고 요청.</div></div>
+          <div class="tl-item"><div class="tl-year">1929</div><div class="tl-text">대공황 직전 전 재산을 공매도에 투입. 시장 붕괴로 약 1억 달러 수익 — 역사상 가장 큰 단일 투기 수익.</div></div>
+          <div class="tl-item"><div class="tl-year">1934</div><div class="tl-text">과도한 레버리지와 개인 문제로 또다시 파산 신청.</div></div>
+          <div class="tl-item"><div class="tl-year">1940</div><div class="tl-text">뉴욕 호텔에서 스스로 생을 마감. 남긴 메모: "나의 인생은 실패다."</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 핵심 원칙 -->
+    <div class="section">
+      <div class="section-title">핵심 원칙 3가지</div>
+      <div class="principle-list">
+        <div class="principle-card">
+          <div class="principle-num">01</div>
+          <div>
+            <div class="principle-title">추세를 따르라 — 테이프 리딩</div>
+            <div class="principle-desc">시장은 내재가치보다 모멘텀으로 움직인다. 가격 흐름(테이프)을 읽어 추세가 형성되면 그 방향으로 포지션을 잡아라. 추세에 역행하는 것은 열차 앞에 서는 것과 같다. "시장은 틀리지 않는다. 견해만 틀릴 뿐이다."</div>
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">02</div>
+          <div>
+            <div class="principle-title">피라미딩(Pyramiding) — 이기는 포지션에 추가하라</div>
+            <div class="principle-desc">포지션이 수익을 내기 시작하면 추가 매수로 규모를 키워라(피라미딩). 반대로, 손실이 나는 포지션에 추가 매수(물타기)는 절대 금지. 이기는 쪽에 베팅을 키우는 것이 수학적으로 우월하다.</div>
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">03</div>
+          <div>
+            <div class="principle-title">기다림 — "앉아있는 것이 돈을 번다"</div>
+            <div class="principle-desc">수익을 내는 것이 아니라 포지션을 유지하는 것이 어렵다. 리버모어는 최대의 수익은 큰 추세 전체를 타는 것에서 나온다고 했다. 성급한 익절은 최대 이익의 대부분을 갉아먹는다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 경고 박스 -->
+    <div class="section">
+      <div class="section-title">⚠️ 리버모어에게 배우지 말아야 할 것</div>
+      <div class="warning-box">
+        <div class="warning-title">📌 리스크 관리 없는 천재성의 말로</div>
+        <div style="font-size:13px;color:var(--text-sec);line-height:1.75;">
+          리버모어는 4번의 파산을 반복했다. 천재적 시장 감각에도 불구하고 ①과도한 레버리지, ②자신의 규칙 위반(물타기), ③개인 생활의 혼란(이혼·마약)이 반복적으로 그를 무너뜨렸다. 그의 가장 큰 교훈은 역설적으로 '아무리 뛰어나도 리스크 관리 없이는 지속 불가능하다'는 사실이다. 버핏·멍거·그레이엄은 이 교훈의 반면교사로 리버모어를 인용한다.
+        </div>
+      </div>
+    </div>
+
+    <!-- 대표 명언 -->
+    <div class="section">
+      <div class="section-title">대표 명언</div>
+      <div class="quote-block">
+        <div class="quote-text">"월가에는 새로운 것이 없다. 인간의 본성은 변하지 않기 때문에 투기는 앞으로도 영원히 계속될 것이다."</div>
+        <div class="quote-context">— 《어느 주식투자자의 회상》</div>
+      </div>
+      <div class="quote-block">
+        <div class="quote-text">"돈은 앉아있는 것으로 번다. 트레이딩으로 버는 것이 아니다."</div>
+        <div class="quote-context">— 추세 유지의 중요성</div>
+      </div>
+    </div>
+
+    <!-- 한국 투자자 시사점 -->
+    <div class="section">
+      <div class="section-title">한국 투자자 시사점</div>
+      <div class="insight-box">
+        <div class="insight-title">📌 리버모어에서 배울 것과 버릴 것</div>
+        <ul class="insight-list">
+          <li><strong style="color:var(--text);">배울 것:</strong> 손절의 규율. 리버모어는 손실 포지션을 끊는 것이 생존의 핵심이라 했다. 한국 개인 투자자의 가장 큰 실수는 손실 포지션에 물타기하는 것이다.</li>
+          <li><strong style="color:var(--text);">버릴 것:</strong> 레버리지 과용. 리버모어의 파산은 항상 과도한 레버리지에서 비롯됐다. 국내 주식·코인 시장에서 레버리지 ETF나 신용 매수는 리버모어의 전철을 밟는 지름길이다.</li>
+          <li>리버모어의 생애는 "시스템 없이 천재성만으로 시장을 이기는 것은 불가능하다"는 것을 증명한다. 원칙을 어기는 순간, 수익이 아무리 많아도 한 번에 무너진다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-nav">
+      <a href="peter-lynch.html" class="fnav-btn">← ⑤ 피터 린치</a>
+      <a href="george-soros.html" class="fnav-btn">⑦ 조지 소로스 →</a>
+    </div>
+  </div>
+  <script>
+    function toggleTheme(){const h=document.getElementById('htmlRoot');h.classList.toggle('theme-dark');h.classList.toggle('theme-light');}
+  </script>
+</body>
+</html>

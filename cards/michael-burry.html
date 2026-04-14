@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko" id="htmlRoot" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마이클 버리 — 빅쇼트의 역발상 투자자</title>
+  <meta name="knowledge-id" content="michael-burry">
+  <meta name="knowledge-series" content="투자 구루 열전">
+  <meta name="knowledge-category" content="투자·금융">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0e0e0e;--surface-mid:#1a1919;--surface-high:#201f1f;--surface-highest:#262626;--surface-bright:#2c2c2c;--border:rgba(255,255,255,0.05);--text:#ffffff;--text-sec:#adaaaa;--accent:#4ade80;}
+    html.theme-light{--bg:#FAFAFA;--surface-mid:#F9FAFB;--surface-high:#FFFFFF;--surface-highest:#F3F4F6;--surface-bright:#FFFFFF;--border:rgba(0,0,0,0.06);--text:#111827;--text-sec:#4B5563;--accent:#16a34a;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Noto Sans KR','Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background .3s,color .3s;}
+    body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,color-mix(in srgb,#16a34a 8%,transparent),transparent);}
+    .page-wrap{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:24px 20px 80px;}
+    .view-menu{position:fixed;top:16px;right:16px;z-index:100;display:flex;gap:8px;}
+    .view-btn{background:var(--surface-high);border:1px solid var(--border);color:var(--text-sec);border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;font-family:inherit;}
+    .view-btn:hover{background:var(--surface-bright);color:var(--text);}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--text-sec);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface-high);margin-bottom:28px;}
+    .back-btn:hover{background:var(--surface-bright);color:var(--text);}
+    .series-nav{background:var(--surface-mid);border:1px solid var(--border);border-left:3px solid #16a34a;border-radius:10px;padding:12px 16px;margin-bottom:24px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+    .series-nav-label{font-size:11px;font-weight:700;color:#4ade80;text-transform:uppercase;letter-spacing:0.06em;flex-shrink:0;}
+    .snav-item{font-size:12px;color:var(--text-sec);text-decoration:none;padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface-highest);transition:all .2s;white-space:nowrap;}
+    .snav-item:hover{color:var(--text);}
+    .snav-item.active{background:rgba(22,163,74,0.15);color:#4ade80;border-color:rgba(22,163,74,0.4);font-weight:600;}
+    .series-badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#4ade80;background:rgba(22,163,74,0.12);border:1px solid rgba(22,163,74,0.3);padding:3px 10px;border-radius:99px;margin-bottom:14px;}
+    h1{font-size:clamp(22px,4vw,34px);font-weight:900;line-height:1.2;letter-spacing:-0.03em;margin-bottom:8px;}
+    .hero-sub{font-size:15px;color:var(--text-sec);line-height:1.65;}
+    .meta-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:20px 0 28px;padding:12px 16px;background:var(--surface-mid);border-radius:12px;border:1px solid var(--border);}
+    .meta-chip{font-size:12px;color:var(--text-sec);padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface-highest);}
+    .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
+    @media(max-width:500px){.kpi-row{grid-template-columns:1fr 1fr;}}
+    .kpi-card{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
+    .kpi-label{font-size:11px;color:var(--text-sec);font-weight:500;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:6px;}
+    .kpi-value{font-size:26px;font-weight:800;color:#4ade80;letter-spacing:-0.03em;line-height:1;}
+    .kpi-unit{font-size:11px;color:var(--text-sec);margin-top:4px;}
+    .section{margin-bottom:28px;}
+    .section-title{font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-sec);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+    .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+    .quote-block{background:var(--surface-mid);border:1px solid var(--border);border-left:3px solid #4ade80;border-radius:10px;padding:16px 20px;margin-bottom:12px;}
+    .quote-text{font-size:15px;font-weight:600;line-height:1.6;color:var(--text);font-style:italic;}
+    .quote-context{font-size:12px;color:var(--text-sec);margin-top:8px;}
+    .principle-list{display:flex;flex-direction:column;gap:12px;}
+    .principle-card{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:18px 20px;display:flex;gap:16px;}
+    .principle-num{font-size:24px;font-weight:900;color:#4ade80;opacity:0.5;flex-shrink:0;line-height:1;}
+    .principle-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+    .principle-desc{font-size:13px;color:var(--text-sec);line-height:1.6;}
+    .insight-box{background:rgba(22,163,74,0.06);border:1px solid rgba(22,163,74,0.2);border-radius:12px;padding:18px 20px;}
+    .insight-title{font-size:13px;font-weight:700;color:#4ade80;margin-bottom:10px;}
+    .insight-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+    .insight-list li{font-size:13px;color:var(--text-sec);padding-left:16px;position:relative;line-height:1.6;}
+    .insight-list li::before{content:'→';position:absolute;left:0;color:#4ade80;font-weight:700;}
+    .footer-nav{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;}
+    .fnav-btn{display:flex;align-items:center;gap:8px;background:var(--surface-mid);border:1px solid var(--border);border-radius:10px;padding:10px 16px;text-decoration:none;color:var(--text);font-size:13px;font-weight:500;transition:background .2s;}
+    .fnav-btn:hover{background:var(--surface-bright);}
+    table{width:100%;border-collapse:collapse;font-size:13px;}
+    th{font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--text-sec);padding:10px 12px;border-bottom:1px solid var(--border);text-align:left;}
+    td{padding:11px 12px;border-bottom:1px solid var(--border);color:var(--text-sec);}
+    td:first-child{color:var(--text);font-weight:600;}
+    tr:last-child td{border-bottom:none;}
+  </style>
+</head>
+<body>
+  <div class="view-menu">
+    <button class="view-btn" onclick="toggleTheme()">🌓 테마</button>
+    <button class="view-btn" onclick="window.print()">🖨 인쇄</button>
+  </div>
+  <div class="page-wrap">
+    <a href="../index.html" class="back-btn">← 아카이브로</a>
+    <div class="series-nav">
+      <span class="series-nav-label">📚 투자 구루 열전</span>
+      <a href="guru-series-overview.html" class="snav-item">개요</a>
+      <a href="benjamin-graham.html" class="snav-item">①그레이엄</a>
+      <a href="philip-fisher.html" class="snav-item">②피셔</a>
+      <a href="warren-buffett.html" class="snav-item">③버핏</a>
+      <a href="charlie-munger.html" class="snav-item">④멍거</a>
+      <a href="peter-lynch.html" class="snav-item">⑤린치</a>
+      <a href="jesse-livermore.html" class="snav-item">⑥리버모어</a>
+      <a href="george-soros.html" class="snav-item">⑦소로스</a>
+      <a href="ray-dalio.html" class="snav-item">⑧달리오</a>
+      <a href="michael-burry.html" class="snav-item active">⑨버리</a>
+      <a href="howard-marks.html" class="snav-item">⑩막스</a>
+      <a href="john-bogle.html" class="snav-item">⑪보글</a>
+    </div>
+
+    <div class="series-badge">⑨ 딥밸류 · 빅쇼트 · 역발상</div>
+    <h1>마이클 버리<br><span style="font-size:0.6em;font-weight:600;color:var(--text-sec);">Michael Burry, 1971– (현역)</span></h1>
+    <p class="hero-sub">사이온 자산운용 창업자. 2008년 금융위기를 수년 전부터 예측해 서브프라임 모기지 파생상품(CDS)을 공매도해 약 7억 달러 수익을 올렸다. 영화 <빅쇼트>의 실제 주인공. 그레이엄 전통의 극단적 딥밸류 투자자이자 군중에게 역행하는 역발상 사고의 상징.</p>
+
+    <div class="meta-bar">
+      <span class="meta-chip">📍 캘리포니아, 미국</span>
+      <span class="meta-chip">📅 1971– (현역)</span>
+      <span class="meta-chip">🏦 사이온 자산운용</span>
+      <span class="meta-chip">🎬 영화 빅쇼트(2015) 실제 주인공</span>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">빅쇼트 수익</div>
+        <div class="kpi-value">~$700M</div>
+        <div class="kpi-unit">2008년 서브프라임 공매도</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">사이온 초기 5년 수익</div>
+        <div class="kpi-value">242<span style="font-size:16px">%</span></div>
+        <div class="kpi-unit">2000–05 (S&P500 -6.84%)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">철학 원류</div>
+        <div class="kpi-value" style="font-size:18px;">그레이엄<br>딥밸류</div>
+        <div class="kpi-unit">Net-Net · 재무제표 분석</div>
+      </div>
+    </div>
+
+    <!-- 핵심 원칙 -->
+    <div class="section">
+      <div class="section-title">핵심 원칙 3가지</div>
+      <div class="principle-list">
+        <div class="principle-card">
+          <div class="principle-num">01</div>
+          <div>
+            <div class="principle-title">딥밸류 — 아무도 안 보는 숨겨진 저평가</div>
+            <div class="principle-desc">버리는 그레이엄의 네트-넷 방법론을 현대화해 아무도 관심을 두지 않는 극도로 저평가된 기업을 찾는다. 유동자산 대비 시가총액이 극단적으로 낮고, 경영진이 자사주를 사들이는 기업. 시장이 완전히 무시할 때가 최고의 매수 시점이다.</div>
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">02</div>
+          <div>
+            <div class="principle-title">독자적 리서치 — 군중을 믿지 마라</div>
+            <div class="principle-desc">버리는 개인 블로그(sionandfund.blogspot.com)에서 수년 전부터 서브프라임 버블을 경고했다. 그의 리서치는 모기지 대출 원본 서류를 직접 읽는 데서 시작됐다 — 월가 대부분이 요약본만 읽을 때. 1차 자료를 직접 파고드는 것이 기관 투자자에 맞설 수 있는 개인의 유일한 무기.</div>
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">03</div>
+          <div>
+            <div class="principle-title">의외성과 인내 — 맞아도 빨리 수익이 나지 않는다</div>
+            <div class="principle-desc">버리가 CDS를 매입한 후 수익이 나기까지 2년 이상 보험료를 지불하며 손실을 봤다. 투자자들이 환매를 요구했다. 그는 환매를 막으면서도 포지션을 유지했다. 역발상 투자의 핵심 교훈: 시장이 당신을 인정하기까지 오랜 시간이 걸린다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 빅쇼트 분석 과정 -->
+    <div class="section">
+      <div class="section-title">빅쇼트 — 버리의 분석 과정</div>
+      <div style="background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:4px 0;overflow:hidden;">
+        <table>
+          <thead><tr><th>단계</th><th>발견 사항</th><th>결론</th></tr></thead>
+          <tbody>
+            <tr><td>원본 모기지 서류 열람</td><td>대출 조건이 터무니없이 느슨, 소득 검증 없는 대출 만연</td><td>부도율이 급등할 것</td></tr>
+            <tr><td>CDO 구조 분석</td><td>BBB 등급 대출을 AAA 등급으로 포장, 리스크 숨겨짐</td><td>신용평가사가 틀렸다</td></tr>
+            <tr><td>주택 가격 통계 검토</td><td>2004년부터 주택가격 상승률 둔화, 재설정 금리 시한폭탄</td><td>2007년 대규모 디폴트 예상</td></tr>
+            <tr><td>CDS 매입 (2005년)</td><td>Goldman Sachs 등 대형 IB에서 보험 매입</td><td>2007~08년 수익 실현</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 대표 명언 -->
+    <div class="section">
+      <div class="section-title">대표 명언</div>
+      <div class="quote-block">
+        <div class="quote-text">"모든 버블은 끝이 있다. 다만 그것이 언제인지만 다를 뿐이다. 그 시점을 아무도 정확히 알 수 없다 — 나도 마찬가지다."</div>
+        <div class="quote-context">— 역발상 투자의 한계에 대한 솔직한 인정</div>
+      </div>
+      <div class="quote-block">
+        <div class="quote-text">"나의 투자 스타일은 그레이엄과 도드의 가치투자다. 다만 나는 촉매(catalyst)를 필요로 한다."</div>
+        <div class="quote-context">— 딥밸류 투자에서 '가치 함정' 회피 방법</div>
+      </div>
+    </div>
+
+    <!-- 한국 투자자 시사점 -->
+    <div class="section">
+      <div class="section-title">한국 투자자 시사점</div>
+      <div class="insight-box">
+        <div class="insight-title">📌 버리 철학의 한국 시장 적용</div>
+        <ul class="insight-list">
+          <li>버리는 현재(2024~25년) 미국 소비 버블, AI 밸류에이션, 일본 엔화 위기에 대해 경고 신호를 보내고 있다. 그의 포트폴리오 변화를 추적하는 것(13F 공시)이 실전 학습이 된다.</li>
+          <li>한국 코스닥 소형주 중 PBR 0.3배 이하 + 경영진 자사주 매입 + 부채비율 낮은 기업은 버리식 딥밸류 탐색 기준에 부합한다.</li>
+          <li>버리의 최대 교훈: 맞아도 타이밍이 문제다. 한국 부동산 버블을 분석해 공매도 포지션을 잡더라도, 버블이 생각보다 훨씬 오래 지속된다는 것을 기억하라.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-nav">
+      <a href="ray-dalio.html" class="fnav-btn">← ⑧ 레이 달리오</a>
+      <a href="howard-marks.html" class="fnav-btn">⑩ 하워드 막스 →</a>
+    </div>
+  </div>
+  <script>
+    function toggleTheme(){const h=document.getElementById('htmlRoot');h.classList.toggle('theme-dark');h.classList.toggle('theme-light');}
+  </script>
+</body>
+</html>

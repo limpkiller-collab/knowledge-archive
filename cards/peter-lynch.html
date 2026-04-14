@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko" id="htmlRoot" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>피터 린치 — 텐배거의 발굴자</title>
+  <meta name="knowledge-id" content="peter-lynch">
+  <meta name="knowledge-series" content="투자 구루 열전">
+  <meta name="knowledge-category" content="투자·금융">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0e0e0e;--surface-mid:#1a1919;--surface-high:#201f1f;--surface-highest:#262626;--surface-bright:#2c2c2c;--border:rgba(255,255,255,0.05);--text:#ffffff;--text-sec:#adaaaa;--accent:#34d399;}
+    html.theme-light{--bg:#FAFAFA;--surface-mid:#F9FAFB;--surface-high:#FFFFFF;--surface-highest:#F3F4F6;--surface-bright:#FFFFFF;--border:rgba(0,0,0,0.06);--text:#111827;--text-sec:#4B5563;--accent:#059669;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Noto Sans KR','Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background .3s,color .3s;}
+    body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,color-mix(in srgb,#10b981 8%,transparent),transparent);}
+    .page-wrap{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:24px 20px 80px;}
+    .view-menu{position:fixed;top:16px;right:16px;z-index:100;display:flex;gap:8px;}
+    .view-btn{background:var(--surface-high);border:1px solid var(--border);color:var(--text-sec);border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;font-family:inherit;transition:background .2s,color .2s;}
+    .view-btn:hover{background:var(--surface-bright);color:var(--text);}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--text-sec);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface-high);margin-bottom:28px;transition:background .2s,color .2s;}
+    .back-btn:hover{background:var(--surface-bright);color:var(--text);}
+    .series-nav{background:var(--surface-mid);border:1px solid var(--border);border-left:3px solid #10b981;border-radius:10px;padding:12px 16px;margin-bottom:24px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+    .series-nav-label{font-size:11px;font-weight:700;color:#34d399;text-transform:uppercase;letter-spacing:0.06em;flex-shrink:0;}
+    .snav-item{font-size:12px;color:var(--text-sec);text-decoration:none;padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface-highest);transition:all .2s;white-space:nowrap;}
+    .snav-item:hover{color:var(--text);}
+    .snav-item.active{background:rgba(16,185,129,0.15);color:#34d399;border-color:rgba(16,185,129,0.4);font-weight:600;}
+    .series-badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#34d399;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);padding:3px 10px;border-radius:99px;margin-bottom:14px;}
+    h1{font-size:clamp(22px,4vw,34px);font-weight:900;line-height:1.2;letter-spacing:-0.03em;margin-bottom:8px;}
+    .hero-sub{font-size:15px;color:var(--text-sec);line-height:1.65;}
+    .meta-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:20px 0 28px;padding:12px 16px;background:var(--surface-mid);border-radius:12px;border:1px solid var(--border);}
+    .meta-chip{font-size:12px;color:var(--text-sec);padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface-highest);}
+    .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
+    @media(max-width:500px){.kpi-row{grid-template-columns:1fr 1fr;}}
+    .kpi-card{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
+    .kpi-label{font-size:11px;color:var(--text-sec);font-weight:500;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:6px;}
+    .kpi-value{font-size:26px;font-weight:800;color:#34d399;letter-spacing:-0.03em;line-height:1;}
+    .kpi-unit{font-size:11px;color:var(--text-sec);margin-top:4px;}
+    .section{margin-bottom:28px;}
+    .section-title{font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-sec);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+    .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+    .quote-block{background:var(--surface-mid);border:1px solid var(--border);border-left:3px solid #34d399;border-radius:10px;padding:16px 20px;margin-bottom:12px;}
+    .quote-text{font-size:15px;font-weight:600;line-height:1.6;color:var(--text);font-style:italic;}
+    .quote-context{font-size:12px;color:var(--text-sec);margin-top:8px;}
+    .principle-list{display:flex;flex-direction:column;gap:12px;}
+    .principle-card{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:18px 20px;display:flex;gap:16px;}
+    .principle-num{font-size:24px;font-weight:900;color:#34d399;opacity:0.5;flex-shrink:0;line-height:1;}
+    .principle-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+    .principle-desc{font-size:13px;color:var(--text-sec);line-height:1.6;}
+    .cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+    @media(max-width:500px){.cat-grid{grid-template-columns:1fr 1fr;}}
+    .cat-item{background:var(--surface-mid);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
+    .cat-name{font-size:12px;font-weight:700;color:#34d399;margin-bottom:4px;}
+    .cat-desc{font-size:11px;color:var(--text-sec);line-height:1.45;}
+    .insight-box{background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:12px;padding:18px 20px;}
+    .insight-title{font-size:13px;font-weight:700;color:#34d399;margin-bottom:10px;}
+    .insight-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+    .insight-list li{font-size:13px;color:var(--text-sec);padding-left:16px;position:relative;line-height:1.6;}
+    .insight-list li::before{content:'→';position:absolute;left:0;color:#34d399;font-weight:700;}
+    .footer-nav{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;}
+    .fnav-btn{display:flex;align-items:center;gap:8px;background:var(--surface-mid);border:1px solid var(--border);border-radius:10px;padding:10px 16px;text-decoration:none;color:var(--text);font-size:13px;font-weight:500;transition:background .2s;}
+    .fnav-btn:hover{background:var(--surface-bright);}
+  </style>
+</head>
+<body>
+  <div class="view-menu">
+    <button class="view-btn" onclick="toggleTheme()">🌓 테마</button>
+    <button class="view-btn" onclick="window.print()">🖨 인쇄</button>
+  </div>
+  <div class="page-wrap">
+    <a href="../index.html" class="back-btn">← 아카이브로</a>
+    <div class="series-nav">
+      <span class="series-nav-label">📚 투자 구루 열전</span>
+      <a href="guru-series-overview.html" class="snav-item">개요</a>
+      <a href="benjamin-graham.html" class="snav-item">①그레이엄</a>
+      <a href="philip-fisher.html" class="snav-item">②피셔</a>
+      <a href="warren-buffett.html" class="snav-item">③버핏</a>
+      <a href="charlie-munger.html" class="snav-item">④멍거</a>
+      <a href="peter-lynch.html" class="snav-item active">⑤린치</a>
+      <a href="jesse-livermore.html" class="snav-item">⑥리버모어</a>
+      <a href="george-soros.html" class="snav-item">⑦소로스</a>
+      <a href="ray-dalio.html" class="snav-item">⑧달리오</a>
+      <a href="michael-burry.html" class="snav-item">⑨버리</a>
+      <a href="howard-marks.html" class="snav-item">⑩막스</a>
+      <a href="john-bogle.html" class="snav-item">⑪보글</a>
+    </div>
+
+    <div class="series-badge">⑤ 텐배거 · 아는 것에 투자</div>
+    <h1>피터 린치<br><span style="font-size:0.6em;font-weight:600;color:var(--text-sec);">Peter Lynch, 1944– (은퇴)</span></h1>
+    <p class="hero-sub">피델리티 마젤란 펀드를 13년간 운용해 29% 연평균 수익률을 기록, 전설이 된 펀드매니저. '10루타(Ten-Bagger)'와 '아는 것에 투자하라'를 대중화했다. 일상에서 발견한 투자 아이디어가 전문가의 복잡한 분석을 이긴다는 것을 증명했다.</p>
+
+    <div class="meta-bar">
+      <span class="meta-chip">📍 보스턴, 매사추세츠</span>
+      <span class="meta-chip">📅 1944– (은퇴)</span>
+      <span class="meta-chip">🏦 피델리티 마젤란 펀드</span>
+      <span class="meta-chip">📚 월가의 영웅(1989) · 전설로 떠나는 월가의 영웅</span>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">마젤란 연평균 수익률</div>
+        <div class="kpi-value">29.2<span style="font-size:16px">%</span></div>
+        <div class="kpi-unit">1977–1990 (S&P500 대비 2배)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">운용 기간 누적 수익</div>
+        <div class="kpi-value">27.3<span style="font-size:16px">배</span></div>
+        <div class="kpi-unit">1977년 $1 → 1990년 $27.3</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">운용 종목 수</div>
+        <div class="kpi-value">~1400<span style="font-size:14px">개</span></div>
+        <div class="kpi-unit">전성기 마젤란 편입 종목</div>
+      </div>
+    </div>
+
+    <!-- 핵심 원칙 -->
+    <div class="section">
+      <div class="section-title">핵심 원칙 3가지</div>
+      <div class="principle-list">
+        <div class="principle-card">
+          <div class="principle-num">01</div>
+          <div>
+            <div class="principle-title">아는 것에 투자하라 — 개인 투자자의 우위</div>
+            <div class="principle-desc">전문가보다 일반 투자자가 유리한 영역이 있다. 당신이 자주 가는 음식점, 쓰는 제품, 일하는 업종에서 월가 애널리스트보다 먼저 성장 기업을 발견할 수 있다. 던킨도넛, 타코벨을 발견한 것도 이런 일상적 관찰에서 시작됐다.</div>
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">02</div>
+          <div>
+            <div class="principle-title">PEG 비율 — 성장을 고려한 가치 측정</div>
+            <div class="principle-desc">PEG(Price/Earnings to Growth) = PER ÷ 이익 성장률. PEG 1 이하면 성장 대비 저평가. 단순 PER은 성장성을 반영하지 못하므로, 성장주 분석에서는 PEG가 더 유용한 지표다. 린치가 대중화한 개념.</div>
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">03</div>
+          <div>
+            <div class="principle-title">기업을 6가지 카테고리로 분류하라</div>
+            <div class="principle-desc">완만한 성장주, 강력한 성장주, 경기민감주, 부실탈출주, 자산주, 텐배거. 각 유형마다 적합한 투자 전략과 탈출 조건이 다르다. 카테고리를 먼저 정의해야 올바른 기대치를 설정할 수 있다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6가지 주식 카테고리 -->
+    <div class="section">
+      <div class="section-title">린치의 6가지 주식 카테고리</div>
+      <div class="cat-grid">
+        <div class="cat-item"><div class="cat-name">📊 완만한 성장주</div><div class="cat-desc">연 8~10% 성장. 배당 목적. 유틸리티, 대형 소비재.</div></div>
+        <div class="cat-item"><div class="cat-name">🚀 강력한 성장주</div><div class="cat-desc">연 20~25% 성장. 텐배거 후보. 소형·중형 고성장.</div></div>
+        <div class="cat-item"><div class="cat-name">📈 경기민감주</div><div class="cat-desc">경기 사이클에 연동. 철강·항공·자동차. 타이밍 중요.</div></div>
+        <div class="cat-item"><div class="cat-name">🔄 부실탈출주</div><div class="cat-desc">적자·위기 기업이 정상화. 회생 성공 시 수배 수익.</div></div>
+        <div class="cat-item"><div class="cat-name">🏦 자산주</div><div class="cat-desc">장부가 대비 저평가 자산 보유. 부동산·천연자원 등.</div></div>
+        <div class="cat-item"><div class="cat-name">⭐ 다각화 성장주</div><div class="cat-desc">사업 다각화로 안정적 성장. 복합기업 구조.</div></div>
+      </div>
+    </div>
+
+    <!-- 대표 명언 -->
+    <div class="section">
+      <div class="section-title">대표 명언</div>
+      <div class="quote-block">
+        <div class="quote-text">"주식시장에서 손실을 보는 가장 확실한 방법은 손실이 두려워 투자하지 않는 것이다."</div>
+        <div class="quote-context">— 시장 참여의 중요성</div>
+      </div>
+      <div class="quote-block">
+        <div class="quote-text">"당신이 주식에 대해 이야기할 때 이해하는 사람이 없다면, 그 주식은 아직 월가가 모르는 것이다."</div>
+        <div class="quote-context">— 월가 발굴 이전 단계의 투자 기회</div>
+      </div>
+      <div class="quote-block">
+        <div class="quote-text">"10루타(10-bagger)를 한 종목 찾으면, 9번의 실수를 커버하고도 남는다."</div>
+        <div class="quote-context">— 집중 성장주 투자의 비대칭적 수익 논리</div>
+      </div>
+    </div>
+
+    <!-- 한국 투자자 시사점 -->
+    <div class="section">
+      <div class="section-title">한국 투자자 시사점</div>
+      <div class="insight-box">
+        <div class="insight-title">📌 린치 철학의 한국 시장 적용</div>
+        <ul class="insight-list">
+          <li>"아는 것에 투자하라"를 한국에서 실천하면: 국내 소비 트렌드(쿠팡, 배달의민족, 무신사 등) 성장 초기를 일반 투자자가 먼저 체감할 수 있다.</li>
+          <li>코스닥 소형 성장주 중 린치식 텐배거 후보가 많다. PEG 비율이 1 이하이면서 성장스토리가 명확한 기업을 찾아보라.</li>
+          <li>단, 린치는 1990년 마젤란 수익률 정점에서 스스로 은퇴했다. '충분할 때 멈추는 것'도 투자 철학이다. 한국의 과도한 단타 매매 문화와는 반대다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-nav">
+      <a href="charlie-munger.html" class="fnav-btn">← ④ 찰리 멍거</a>
+      <a href="jesse-livermore.html" class="fnav-btn">⑥ 제시 리버모어 →</a>
+    </div>
+  </div>
+  <script>
+    function toggleTheme(){const h=document.getElementById('htmlRoot');h.classList.toggle('theme-dark');h.classList.toggle('theme-light');}
+  </script>
+</body>
+</html>

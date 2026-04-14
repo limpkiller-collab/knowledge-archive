@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko" id="htmlRoot" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>조지 소로스 — 재귀성 이론과 글로벌 매크로</title>
+  <meta name="knowledge-id" content="george-soros">
+  <meta name="knowledge-series" content="투자 구루 열전">
+  <meta name="knowledge-category" content="투자·금융">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0e0e0e;--surface-mid:#1a1919;--surface-high:#201f1f;--surface-highest:#262626;--surface-bright:#2c2c2c;--border:rgba(255,255,255,0.05);--text:#ffffff;--text-sec:#adaaaa;--accent:#c084fc;}
+    html.theme-light{--bg:#FAFAFA;--surface-mid:#F9FAFB;--surface-high:#FFFFFF;--surface-highest:#F3F4F6;--surface-bright:#FFFFFF;--border:rgba(0,0,0,0.06);--text:#111827;--text-sec:#4B5563;--accent:#7c3aed;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Noto Sans KR','Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background .3s,color .3s;}
+    body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,color-mix(in srgb,#9333ea 8%,transparent),transparent);}
+    .page-wrap{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:24px 20px 80px;}
+    .view-menu{position:fixed;top:16px;right:16px;z-index:100;display:flex;gap:8px;}
+    .view-btn{background:var(--surface-high);border:1px solid var(--border);color:var(--text-sec);border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;font-family:inherit;}
+    .view-btn:hover{background:var(--surface-bright);color:var(--text);}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--text-sec);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface-high);margin-bottom:28px;}
+    .back-btn:hover{background:var(--surface-bright);color:var(--text);}
+    .series-nav{background:var(--surface-mid);border:1px solid var(--border);border-left:3px solid #9333ea;border-radius:10px;padding:12px 16px;margin-bottom:24px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+    .series-nav-label{font-size:11px;font-weight:700;color:#c084fc;text-transform:uppercase;letter-spacing:0.06em;flex-shrink:0;}
+    .snav-item{font-size:12px;color:var(--text-sec);text-decoration:none;padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface-highest);transition:all .2s;white-space:nowrap;}
+    .snav-item:hover{color:var(--text);}
+    .snav-item.active{background:rgba(147,51,234,0.15);color:#c084fc;border-color:rgba(147,51,234,0.4);font-weight:600;}
+    .series-badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#c084fc;background:rgba(147,51,234,0.12);border:1px solid rgba(147,51,234,0.3);padding:3px 10px;border-radius:99px;margin-bottom:14px;}
+    h1{font-size:clamp(22px,4vw,34px);font-weight:900;line-height:1.2;letter-spacing:-0.03em;margin-bottom:8px;}
+    .hero-sub{font-size:15px;color:var(--text-sec);line-height:1.65;}
+    .meta-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:20px 0 28px;padding:12px 16px;background:var(--surface-mid);border-radius:12px;border:1px solid var(--border);}
+    .meta-chip{font-size:12px;color:var(--text-sec);padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface-highest);}
+    .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
+    @media(max-width:500px){.kpi-row{grid-template-columns:1fr 1fr;}}
+    .kpi-card{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
+    .kpi-label{font-size:11px;color:var(--text-sec);font-weight:500;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:6px;}
+    .kpi-value{font-size:26px;font-weight:800;color:#c084fc;letter-spacing:-0.03em;line-height:1;}
+    .kpi-unit{font-size:11px;color:var(--text-sec);margin-top:4px;}
+    .section{margin-bottom:28px;}
+    .section-title{font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-sec);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+    .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+    .quote-block{background:var(--surface-mid);border:1px solid var(--border);border-left:3px solid #c084fc;border-radius:10px;padding:16px 20px;margin-bottom:12px;}
+    .quote-text{font-size:15px;font-weight:600;line-height:1.6;color:var(--text);font-style:italic;}
+    .quote-context{font-size:12px;color:var(--text-sec);margin-top:8px;}
+    .principle-list{display:flex;flex-direction:column;gap:12px;}
+    .principle-card{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:18px 20px;display:flex;gap:16px;}
+    .principle-num{font-size:24px;font-weight:900;color:#c084fc;opacity:0.5;flex-shrink:0;line-height:1;}
+    .principle-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+    .principle-desc{font-size:13px;color:var(--text-sec);line-height:1.6;}
+    .insight-box{background:rgba(147,51,234,0.06);border:1px solid rgba(147,51,234,0.2);border-radius:12px;padding:18px 20px;}
+    .insight-title{font-size:13px;font-weight:700;color:#c084fc;margin-bottom:10px;}
+    .insight-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+    .insight-list li{font-size:13px;color:var(--text-sec);padding-left:16px;position:relative;line-height:1.6;}
+    .insight-list li::before{content:'→';position:absolute;left:0;color:#c084fc;font-weight:700;}
+    .footer-nav{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;}
+    .fnav-btn{display:flex;align-items:center;gap:8px;background:var(--surface-mid);border:1px solid var(--border);border-radius:10px;padding:10px 16px;text-decoration:none;color:var(--text);font-size:13px;font-weight:500;transition:background .2s;}
+    .fnav-btn:hover{background:var(--surface-bright);}
+    /* reflexivity flow */
+    .reflexivity-box{background:var(--surface-mid);border:1px solid var(--border);border-radius:14px;padding:24px;text-align:center;}
+    .ref-cycle{display:flex;flex-direction:column;align-items:center;gap:0;}
+    .ref-step{background:rgba(147,51,234,0.1);border:1px solid rgba(147,51,234,0.3);border-radius:10px;padding:10px 18px;font-size:13px;font-weight:600;color:var(--text);width:100%;max-width:380px;}
+    .ref-arrow{font-size:20px;color:#c084fc;padding:4px 0;line-height:1;}
+    .ref-note{font-size:12px;color:var(--text-sec);margin-top:14px;line-height:1.6;}
+  </style>
+</head>
+<body>
+  <div class="view-menu">
+    <button class="view-btn" onclick="toggleTheme()">🌓 테마</button>
+    <button class="view-btn" onclick="window.print()">🖨 인쇄</button>
+  </div>
+  <div class="page-wrap">
+    <a href="../index.html" class="back-btn">← 아카이브로</a>
+    <div class="series-nav">
+      <span class="series-nav-label">📚 투자 구루 열전</span>
+      <a href="guru-series-overview.html" class="snav-item">개요</a>
+      <a href="benjamin-graham.html" class="snav-item">①그레이엄</a>
+      <a href="philip-fisher.html" class="snav-item">②피셔</a>
+      <a href="warren-buffett.html" class="snav-item">③버핏</a>
+      <a href="charlie-munger.html" class="snav-item">④멍거</a>
+      <a href="peter-lynch.html" class="snav-item">⑤린치</a>
+      <a href="jesse-livermore.html" class="snav-item">⑥리버모어</a>
+      <a href="george-soros.html" class="snav-item active">⑦소로스</a>
+      <a href="ray-dalio.html" class="snav-item">⑧달리오</a>
+      <a href="michael-burry.html" class="snav-item">⑨버리</a>
+      <a href="howard-marks.html" class="snav-item">⑩막스</a>
+      <a href="john-bogle.html" class="snav-item">⑪보글</a>
+    </div>
+
+    <div class="series-badge">⑦ 재귀성 이론 · 글로벌 매크로</div>
+    <h1>조지 소로스<br><span style="font-size:0.6em;font-weight:600;color:var(--text-sec);">George Soros, 1930– (현역)</span></h1>
+    <p class="hero-sub">글로벌 매크로 투자의 전설. 1992년 영란은행을 무릎 꿇리고 10억 달러를 하루 만에 번 '파운드화 공격'으로 유명하다. 시장 참여자들의 편향된 인식이 가격을 움직이고, 그 가격이 다시 인식을 바꾸는 '재귀성(Reflexivity)' 이론으로 시장을 분석한다.</p>
+
+    <div class="meta-bar">
+      <span class="meta-chip">📍 뉴욕 · 헝가리 부다페스트 출신</span>
+      <span class="meta-chip">📅 1930– (현역)</span>
+      <span class="meta-chip">🏦 퀀텀 펀드 (1969~)</span>
+      <span class="meta-chip">📚 금융의 연금술(1987) · 세계자본주의의 위기</span>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">퀀텀 펀드 평균 수익률</div>
+        <div class="kpi-value">~30<span style="font-size:16px">%</span></div>
+        <div class="kpi-unit">1969–2000 연평균</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">1992 파운드 공격 수익</div>
+        <div class="kpi-value">$1B</div>
+        <div class="kpi-unit">단 하루 만에 (Black Wednesday)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">순자산</div>
+        <div class="kpi-value">~$7B</div>
+        <div class="kpi-unit">대부분 자선재단에 기부</div>
+      </div>
+    </div>
+
+    <!-- 재귀성 이론 -->
+    <div class="section">
+      <div class="section-title">재귀성(Reflexivity) 이론 — 시장의 자기실현 루프</div>
+      <div class="reflexivity-box">
+        <div class="ref-cycle">
+          <div class="ref-step">① 시장 참여자들이 현실을 불완전하게 인식한다</div>
+          <div class="ref-arrow">↓</div>
+          <div class="ref-step">② 왜곡된 인식이 행동(매수·매도)을 만들어낸다</div>
+          <div class="ref-arrow">↓</div>
+          <div class="ref-step">③ 집단 행동이 가격을 움직여 현실 자체를 바꾼다</div>
+          <div class="ref-arrow">↓</div>
+          <div class="ref-step">④ 바뀐 현실이 다시 인식에 영향을 미쳐 새로운 왜곡을 만든다</div>
+          <div class="ref-arrow">↺ 순환</div>
+        </div>
+        <div class="ref-note">효율적 시장가설과 정반대 — 시장은 균형으로 수렴하지 않고, 버블과 붕괴를 반복하는 자기강화 루프를 형성한다는 것이 소로스의 핵심 주장.</div>
+      </div>
+    </div>
+
+    <!-- 핵심 원칙 -->
+    <div class="section">
+      <div class="section-title">핵심 원칙 3가지</div>
+      <div class="principle-list">
+        <div class="principle-card">
+          <div class="principle-num">01</div>
+          <div>
+            <div class="principle-title">재귀성 — 인식이 현실을 만든다</div>
+            <div class="principle-desc">시장의 왜곡(버블, 과매도)을 찾아 그 왜곡이 정점에 달했을 때 반대 방향의 베팅을 가져가라. 파운드화 공격은 영국 정부가 과대평가된 파운드를 유지할 수 없다는 재귀성 루프를 정확히 분석한 결과였다.</div>
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">02</div>
+          <div>
+            <div class="principle-title">가설 검증 — 투자는 틀린 가설을 제거하는 과정</div>
+            <div class="principle-desc">소로스는 투자 아이디어를 '가설'로 취급한다. 시장의 움직임이 가설을 지지하면 포지션을 키우고, 반박하면 즉시 청산한다. "내가 맞는지 틀린지 중요한 것이 아니다. 맞을 때 얼마나 크게 이기고, 틀릴 때 얼마나 빨리 인정하는지가 중요하다."</div>
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">03</div>
+          <div>
+            <div class="principle-title">이해 가능한 세계 위기에 집중 베팅</div>
+            <div class="principle-desc">소로스는 복잡한 종목 분석보다 거시경제 불균형(과평가된 통화, 무너질 수밖에 없는 경제 구조)에서 큰 그림의 기회를 찾는다. 포지션 확신이 생기면 자산의 상당 비율을 단일 베팅에 집중시킨다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 대표 명언 -->
+    <div class="section">
+      <div class="section-title">대표 명언</div>
+      <div class="quote-block">
+        <div class="quote-text">"나는 내가 틀릴 수 있다는 것을 인정함으로써 부자가 됐다."</div>
+        <div class="quote-context">— 오류 인정과 빠른 포지션 청산의 중요성</div>
+      </div>
+      <div class="quote-block">
+        <div class="quote-text">"시장은 항상 틀리다. 하지만 내가 맞다고 해서 곧 시장이 나에게 동의한다는 의미는 아니다."</div>
+        <div class="quote-context">— 재귀성 이론과 타이밍의 중요성</div>
+      </div>
+    </div>
+
+    <!-- 한국 투자자 시사점 -->
+    <div class="section">
+      <div class="section-title">한국 투자자 시사점</div>
+      <div class="insight-box">
+        <div class="insight-title">📌 소로스 철학의 한국 시장 적용</div>
+        <ul class="insight-list">
+          <li>원화 환율, 한국 부동산 사이클, 대외 부채 구조는 재귀성 이론으로 분석할 수 있는 거시 변수다. 과거 1997년 외환위기, 2008년 금융위기 때 재귀적 버블 붕괴 패턴이 반복됐다.</li>
+          <li>소로스의 "틀릴 때 빨리 인정하라"는 원칙은 한국 개인투자자에게 가장 필요한 교훈이다. 손실이 나는 포지션을 '언젠가 오를 것'이라는 믿음으로 유지하는 것은 재귀성의 반대편에 서는 것이다.</li>
+          <li>개인 투자자가 글로벌 매크로 전략을 직접 구사하는 것은 현실적으로 어렵다. 대신 소로스의 '거시 환경 파악' 습관을 ETF 포트폴리오 배분에 응용할 수 있다 (달러강세 시 채권·달러ETF 비중 확대 등).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-nav">
+      <a href="jesse-livermore.html" class="fnav-btn">← ⑥ 제시 리버모어</a>
+      <a href="ray-dalio.html" class="fnav-btn">⑧ 레이 달리오 →</a>
+    </div>
+  </div>
+  <script>
+    function toggleTheme(){const h=document.getElementById('htmlRoot');h.classList.toggle('theme-dark');h.classList.toggle('theme-light');}
+  </script>
+</body>
+</html>

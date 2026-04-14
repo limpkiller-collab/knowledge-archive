@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko" id="htmlRoot" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>레이 달리오 — 경제 기계와 올웨더 포트폴리오</title>
+  <meta name="knowledge-id" content="ray-dalio">
+  <meta name="knowledge-series" content="투자 구루 열전">
+  <meta name="knowledge-category" content="투자·금융">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0e0e0e;--surface-mid:#1a1919;--surface-high:#201f1f;--surface-highest:#262626;--surface-bright:#2c2c2c;--border:rgba(255,255,255,0.05);--text:#ffffff;--text-sec:#adaaaa;--accent:#60a5fa;}
+    html.theme-light{--bg:#FAFAFA;--surface-mid:#F9FAFB;--surface-high:#FFFFFF;--surface-highest:#F3F4F6;--surface-bright:#FFFFFF;--border:rgba(0,0,0,0.06);--text:#111827;--text-sec:#4B5563;--accent:#2563eb;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Noto Sans KR','Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background .3s,color .3s;}
+    body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,color-mix(in srgb,#3b82f6 8%,transparent),transparent);}
+    .page-wrap{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:24px 20px 80px;}
+    .view-menu{position:fixed;top:16px;right:16px;z-index:100;display:flex;gap:8px;}
+    .view-btn{background:var(--surface-high);border:1px solid var(--border);color:var(--text-sec);border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;font-family:inherit;}
+    .view-btn:hover{background:var(--surface-bright);color:var(--text);}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--text-sec);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface-high);margin-bottom:28px;}
+    .back-btn:hover{background:var(--surface-bright);color:var(--text);}
+    .series-nav{background:var(--surface-mid);border:1px solid var(--border);border-left:3px solid #3b82f6;border-radius:10px;padding:12px 16px;margin-bottom:24px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+    .series-nav-label{font-size:11px;font-weight:700;color:#60a5fa;text-transform:uppercase;letter-spacing:0.06em;flex-shrink:0;}
+    .snav-item{font-size:12px;color:var(--text-sec);text-decoration:none;padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface-highest);transition:all .2s;white-space:nowrap;}
+    .snav-item:hover{color:var(--text);}
+    .snav-item.active{background:rgba(59,130,246,0.15);color:#60a5fa;border-color:rgba(59,130,246,0.4);font-weight:600;}
+    .series-badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#60a5fa;background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);padding:3px 10px;border-radius:99px;margin-bottom:14px;}
+    h1{font-size:clamp(22px,4vw,34px);font-weight:900;line-height:1.2;letter-spacing:-0.03em;margin-bottom:8px;}
+    .hero-sub{font-size:15px;color:var(--text-sec);line-height:1.65;}
+    .meta-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:20px 0 28px;padding:12px 16px;background:var(--surface-mid);border-radius:12px;border:1px solid var(--border);}
+    .meta-chip{font-size:12px;color:var(--text-sec);padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface-highest);}
+    .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
+    @media(max-width:500px){.kpi-row{grid-template-columns:1fr 1fr;}}
+    .kpi-card{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
+    .kpi-label{font-size:11px;color:var(--text-sec);font-weight:500;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:6px;}
+    .kpi-value{font-size:26px;font-weight:800;color:#60a5fa;letter-spacing:-0.03em;line-height:1;}
+    .kpi-unit{font-size:11px;color:var(--text-sec);margin-top:4px;}
+    .section{margin-bottom:28px;}
+    .section-title{font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-sec);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+    .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+    .quote-block{background:var(--surface-mid);border:1px solid var(--border);border-left:3px solid #60a5fa;border-radius:10px;padding:16px 20px;margin-bottom:12px;}
+    .quote-text{font-size:15px;font-weight:600;line-height:1.6;color:var(--text);font-style:italic;}
+    .quote-context{font-size:12px;color:var(--text-sec);margin-top:8px;}
+    .principle-list{display:flex;flex-direction:column;gap:12px;}
+    .principle-card{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:18px 20px;display:flex;gap:16px;}
+    .principle-num{font-size:24px;font-weight:900;color:#60a5fa;opacity:0.5;flex-shrink:0;line-height:1;}
+    .principle-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+    .principle-desc{font-size:13px;color:var(--text-sec);line-height:1.6;}
+    /* all weather */
+    .aw-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+    .aw-item{background:var(--surface-mid);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;}
+    .aw-pct{font-size:22px;font-weight:900;color:#60a5fa;line-height:1;flex-shrink:0;}
+    .aw-label{font-size:13px;font-weight:700;margin-bottom:3px;}
+    .aw-desc{font-size:11px;color:var(--text-sec);}
+    /* 4 seasons */
+    .season-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .season-item{background:var(--surface-mid);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
+    .season-condition{font-size:11px;font-weight:700;color:#60a5fa;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.04em;}
+    .season-assets{font-size:12px;color:var(--text-sec);line-height:1.5;}
+    .insight-box{background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.2);border-radius:12px;padding:18px 20px;}
+    .insight-title{font-size:13px;font-weight:700;color:#60a5fa;margin-bottom:10px;}
+    .insight-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+    .insight-list li{font-size:13px;color:var(--text-sec);padding-left:16px;position:relative;line-height:1.6;}
+    .insight-list li::before{content:'→';position:absolute;left:0;color:#60a5fa;font-weight:700;}
+    .footer-nav{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;}
+    .fnav-btn{display:flex;align-items:center;gap:8px;background:var(--surface-mid);border:1px solid var(--border);border-radius:10px;padding:10px 16px;text-decoration:none;color:var(--text);font-size:13px;font-weight:500;transition:background .2s;}
+    .fnav-btn:hover{background:var(--surface-bright);}
+  </style>
+</head>
+<body>
+  <div class="view-menu">
+    <button class="view-btn" onclick="toggleTheme()">🌓 테마</button>
+    <button class="view-btn" onclick="window.print()">🖨 인쇄</button>
+  </div>
+  <div class="page-wrap">
+    <a href="../index.html" class="back-btn">← 아카이브로</a>
+    <div class="series-nav">
+      <span class="series-nav-label">📚 투자 구루 열전</span>
+      <a href="guru-series-overview.html" class="snav-item">개요</a>
+      <a href="benjamin-graham.html" class="snav-item">①그레이엄</a>
+      <a href="philip-fisher.html" class="snav-item">②피셔</a>
+      <a href="warren-buffett.html" class="snav-item">③버핏</a>
+      <a href="charlie-munger.html" class="snav-item">④멍거</a>
+      <a href="peter-lynch.html" class="snav-item">⑤린치</a>
+      <a href="jesse-livermore.html" class="snav-item">⑥리버모어</a>
+      <a href="george-soros.html" class="snav-item">⑦소로스</a>
+      <a href="ray-dalio.html" class="snav-item active">⑧달리오</a>
+      <a href="michael-burry.html" class="snav-item">⑨버리</a>
+      <a href="howard-marks.html" class="snav-item">⑩막스</a>
+      <a href="john-bogle.html" class="snav-item">⑪보글</a>
+    </div>
+
+    <div class="series-badge">⑧ 경제 기계 · 올웨더 · 원칙</div>
+    <h1>레이 달리오<br><span style="font-size:0.6em;font-weight:600;color:var(--text-sec);">Ray Dalio, 1949– (현역)</span></h1>
+    <p class="hero-sub">세계 최대 헤지펀드 브리지워터 어소시에이츠 창업자. "경제는 기계처럼 작동한다"는 신념으로 부채 사이클 모델을 개발했다. 어떤 경제 환경에서도 수익을 낼 수 있도록 설계된 '올웨더(All Weather)' 포트폴리오로 자산관리의 패러다임을 바꿨다.</p>
+
+    <div class="meta-bar">
+      <span class="meta-chip">📍 코네티컷, 미국</span>
+      <span class="meta-chip">📅 1949– (현역)</span>
+      <span class="meta-chip">🏦 브리지워터 어소시에이츠 ($150B+)</span>
+      <span class="meta-chip">📚 원칙(Principles, 2017) · 경제 기계</span>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">브리지워터 운용 규모</div>
+        <div class="kpi-value">$150B<span style="font-size:14px">+</span></div>
+        <div class="kpi-unit">세계 최대 헤지펀드</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Pure Alpha 누적 수익</div>
+        <div class="kpi-value">$50B+</div>
+        <div class="kpi-unit">역사상 가장 많은 수익 낸 펀드</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">올웨더 연평균</div>
+        <div class="kpi-value">~9.7<span style="font-size:16px">%</span></div>
+        <div class="kpi-unit">변동성은 S&P500의 절반</div>
+      </div>
+    </div>
+
+    <!-- 핵심 원칙 -->
+    <div class="section">
+      <div class="section-title">핵심 원칙 3가지</div>
+      <div class="principle-list">
+        <div class="principle-card">
+          <div class="principle-num">01</div>
+          <div>
+            <div class="principle-title">경제 기계(Economic Machine) — 부채 사이클</div>
+            <div class="principle-desc">경제는 생산성 추세, 단기 부채 사이클(5~8년), 장기 부채 사이클(75~100년)의 세 가지 힘이 겹쳐 움직인다. 2008년 글로벌 금융위기는 장기 부채 사이클의 정점에서 일어난 부채 디레버리징이었다. 현재 어느 사이클 단계인지 파악하면 자산 배분의 방향이 잡힌다.</div>
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">02</div>
+          <div>
+            <div class="principle-title">올웨더 포트폴리오 — 리스크 균형</div>
+            <div class="principle-desc">어떤 경제 환경(성장↑↓, 인플레이션↑↓)에서도 포트폴리오의 일부는 수익을 낸다. 핵심은 자산 금액이 아닌 리스크(변동성)를 균등 배분하는 것이다. 4가지 경제 계절에 각각 유리한 자산을 배분하면 어떤 폭풍도 견딜 수 있다.</div>
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">03</div>
+          <div>
+            <div class="principle-title">원칙(Principles) — 체계가 인간의 판단을 대체한다</div>
+            <div class="principle-desc">감정과 편향은 모든 의사결정을 오염시킨다. 모든 상황에 대한 원칙을 미리 수립하고, 그 원칙이 알고리즘처럼 작동하게 만들어라. 브리지워터는 이 철학을 바탕으로 "완전한 아이디어 성과주의" 문화를 만들었다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 올웨더 포트폴리오 구성 -->
+    <div class="section">
+      <div class="section-title">올웨더 포트폴리오 구성</div>
+      <div class="aw-grid">
+        <div class="aw-item">
+          <div class="aw-pct">40<span style="font-size:14px">%</span></div>
+          <div><div class="aw-label">장기 미국 국채</div><div class="aw-desc">경기 침체·디플레이션 헤지. 주식과 역상관.</div></div>
+        </div>
+        <div class="aw-item">
+          <div class="aw-pct">30<span style="font-size:14px">%</span></div>
+          <div><div class="aw-label">미국 주식 (S&P500)</div><div class="aw-desc">경기 성장·기업 이익 확대 국면의 핵심 수익원.</div></div>
+        </div>
+        <div class="aw-item">
+          <div class="aw-pct">15<span style="font-size:14px">%</span></div>
+          <div><div class="aw-label">중기 미국 국채</div><div class="aw-desc">포트폴리오 안정성 보완. 단기 변동성 완충.</div></div>
+        </div>
+        <div class="aw-item">
+          <div class="aw-pct">7.5<span style="font-size:14px">%</span></div>
+          <div><div class="aw-label">원자재</div><div class="aw-desc">인플레이션 헤지. 달러 약세 국면에서 유리.</div></div>
+        </div>
+      </div>
+      <div style="background:var(--surface-mid);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:10px;font-size:12px;color:var(--text-sec);">나머지 7.5%는 금. 합산 변동성이 S&P500의 절반 수준. 2008년 금융위기 당시 S&P500 -37% vs 올웨더 -3.9%.</div>
+    </div>
+
+    <!-- 4가지 경제 계절 -->
+    <div class="section">
+      <div class="section-title">4가지 경제 계절과 유리한 자산</div>
+      <div class="season-grid">
+        <div class="season-item"><div class="season-condition">📈 성장↑ 인플레↑</div><div class="season-assets">원자재, 주식, 물가연동채(TIPS), 이머징 주식</div></div>
+        <div class="season-item"><div class="season-condition">📉 성장↓ 인플레↑ (스태그)</div><div class="season-assets">원자재, 금, 물가연동채 — 주식·채권 모두 불리</div></div>
+        <div class="season-item"><div class="season-condition">🌱 성장↑ 인플레↓</div><div class="season-assets">주식, 회사채, 이머징 국채 — 가장 좋은 계절</div></div>
+        <div class="season-item"><div class="season-condition">❄️ 성장↓ 인플레↓</div><div class="season-assets">장기 국채, 금, 현금 — 디플레 헤지 자산</div></div>
+      </div>
+    </div>
+
+    <!-- 대표 명언 -->
+    <div class="section">
+      <div class="section-title">대표 명언</div>
+      <div class="quote-block">
+        <div class="quote-text">"나는 고통+반성=성장이라는 공식을 믿는다. 고통이 있어야만 진짜 배움이 생긴다."</div>
+        <div class="quote-context">— 《원칙》의 핵심 철학</div>
+      </div>
+      <div class="quote-block">
+        <div class="quote-text">"현금은 쓰레기다. 어떤 자산이든 현금보다 낫다."</div>
+        <div class="quote-context">— 2020년 세계경제포럼(다보스). 제로금리 시대의 투자 원칙 표현.</div>
+      </div>
+    </div>
+
+    <!-- 한국 투자자 시사점 -->
+    <div class="section">
+      <div class="section-title">한국 투자자 시사점</div>
+      <div class="insight-box">
+        <div class="insight-title">📌 달리오 철학의 한국 시장 적용</div>
+        <ul class="insight-list">
+          <li>올웨더 철학을 ETF로 간단히 구현할 수 있다: 국내 주식(코스피ETF) + 미국 국채(TLT, IEF) + 금(GLD) + 원자재(DJP) 조합으로 한국판 올웨더를 만들 수 있다.</li>
+          <li>한국은 현재(2026년) 글로벌 장기 부채 사이클의 어느 단계에 있는가? 달리오의 프레임을 이용해 경제 지표(GDP 성장률, 금리, 인플레이션)를 4계절에 대입해 포트폴리오 비중을 조정하라.</li>
+          <li>달리오의 "원칙" 접근법: 투자 원칙을 문서화하고, 감정이 흔들릴 때 그 원칙대로만 행동하라. 이것이 개인 투자자가 전문 기관을 이길 수 있는 유일한 방법이다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-nav">
+      <a href="george-soros.html" class="fnav-btn">← ⑦ 조지 소로스</a>
+      <a href="michael-burry.html" class="fnav-btn">⑨ 마이클 버리 →</a>
+    </div>
+  </div>
+  <script>
+    function toggleTheme(){const h=document.getElementById('htmlRoot');h.classList.toggle('theme-dark');h.classList.toggle('theme-light');}
+  </script>
+</body>
+</html>

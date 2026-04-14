@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ko" id="htmlRoot" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>투자 구루 열전 — 시리즈 개요</title>
+  <meta name="knowledge-id" content="guru-series-overview">
+  <meta name="knowledge-series" content="투자 구루 열전">
+  <meta name="knowledge-category" content="투자·금융">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:              #0e0e0e;
+      --surface-low:     #131313;
+      --surface-mid:     #1a1919;
+      --surface-high:    #201f1f;
+      --surface-highest: #262626;
+      --surface-bright:  #2c2c2c;
+      --border:          rgba(255,255,255,0.05);
+      --text:            #ffffff;
+      --text-sec:        #adaaaa;
+      --accent:          #e8b94f;
+    }
+    html.theme-light {
+      --bg:              #FAFAFA;
+      --surface-low:     #FFFFFF;
+      --surface-mid:     #F9FAFB;
+      --surface-high:    #FFFFFF;
+      --surface-highest: #F3F4F6;
+      --surface-bright:  #FFFFFF;
+      --border:          rgba(0,0,0,0.06);
+      --text:            #111827;
+      --text-sec:        #4B5563;
+      --accent:          #d97706;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans KR', 'Inter', -apple-system, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.7; -webkit-font-smoothing: antialiased;
+      min-height: 100vh; transition: background 0.3s, color 0.3s;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background: radial-gradient(ellipse 80% 50% at 50% -10%,
+        color-mix(in srgb, #e8b94f 8%, transparent), transparent);
+    }
+    .page-wrap { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 24px 20px 80px; }
+
+    .view-menu { position: fixed; top: 16px; right: 16px; z-index: 100; display: flex; gap: 8px; }
+    .view-btn {
+      background: var(--surface-high); border: 1px solid var(--border);
+      color: var(--text-sec); border-radius: 8px; padding: 6px 10px;
+      font-size: 12px; cursor: pointer; font-family: inherit;
+      transition: background 0.2s, color 0.2s; display: flex; align-items: center; gap: 5px;
+    }
+    .view-btn:hover { background: var(--surface-bright); color: var(--text); }
+
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--text-sec); text-decoration: none; font-size: 13px;
+      padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--surface-high); margin-bottom: 28px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .back-btn:hover { background: var(--surface-bright); color: var(--text); }
+
+    /* HERO */
+    .hero { margin-bottom: 32px; }
+    .series-badge {
+      display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      color: #e8b94f; background: rgba(232,185,79,0.12); border: 1px solid rgba(232,185,79,0.3);
+      padding: 3px 10px; border-radius: 99px; margin-bottom: 14px;
+    }
+    h1 { font-size: clamp(24px,5vw,40px); font-weight: 900; line-height: 1.2; letter-spacing: -0.03em; margin-bottom: 10px; }
+    .hero-sub { font-size: 15px; color: var(--text-sec); line-height: 1.65; max-width: 640px; }
+
+    /* KPI */
+    .kpi-row {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+      margin-bottom: 32px;
+    }
+    @media(max-width:600px) { .kpi-row { grid-template-columns: repeat(2,1fr); } }
+    .kpi-card {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px 18px;
+    }
+    .kpi-label { font-size: 11px; color: var(--text-sec); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 6px; }
+    .kpi-value { font-size: 26px; font-weight: 800; color: #e8b94f; letter-spacing: -0.03em; line-height: 1; }
+    .kpi-unit { font-size: 12px; color: var(--text-sec); margin-top: 4px; }
+
+    /* SECTION */
+    .section { margin-bottom: 32px; }
+    .section-title {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-sec); margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* PHILOSOPHY TREE */
+    .tree-wrap {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 16px; padding: 28px 24px; overflow-x: auto;
+    }
+    .tree-svg-container { min-width: 680px; }
+    svg { width: 100%; height: auto; display: block; }
+
+    /* SCHOOL CARDS */
+    .school-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
+    }
+    @media(max-width:500px) { .school-grid { grid-template-columns: 1fr; } }
+    .school-card {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 12px; padding: 18px 20px;
+      border-left: 3px solid transparent;
+    }
+    .school-name { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .school-desc { font-size: 12px; color: var(--text-sec); line-height: 1.6; }
+    .school-members { font-size: 11px; font-weight: 600; margin-top: 8px; opacity: 0.75; }
+
+    /* GURU GRID */
+    .guru-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    @media(max-width:600px) { .guru-grid { grid-template-columns: repeat(2,1fr); } }
+    .guru-card {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px 14px;
+      text-decoration: none; color: var(--text);
+      display: flex; flex-direction: column; gap: 8px;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      cursor: pointer;
+    }
+    .guru-card:hover { background: var(--surface-highest); transform: translateY(-2px); }
+    .guru-order { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.55; }
+    .guru-name { font-size: 14px; font-weight: 700; line-height: 1.3; }
+    .guru-name-en { font-size: 11px; color: var(--text-sec); }
+    .guru-tag { font-size: 11px; padding: 2px 8px; border-radius: 99px; border: 1px solid; display: inline-block; margin-top: 2px; font-weight: 600; }
+    .guru-era { font-size: 11px; color: var(--text-sec); margin-top: auto; }
+
+    /* TIMELINE */
+    .timeline-wrap {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px; overflow-x: auto;
+    }
+    .timeline-inner { min-width: 600px; }
+    .tl-axis {
+      display: flex; align-items: center;
+      border-top: 2px solid var(--border);
+      padding-top: 8px; margin-top: 12px;
+      position: relative;
+    }
+    .tl-year {
+      font-size: 10px; color: var(--text-sec); text-align: center;
+      flex: 1; padding-top: 4px;
+    }
+    .tl-rows { display: flex; flex-direction: column; gap: 8px; }
+    .tl-row { display: flex; align-items: center; gap: 12px; }
+    .tl-label { font-size: 11px; font-weight: 600; width: 110px; flex-shrink: 0; text-align: right; }
+    .tl-bar-wrap { flex: 1; position: relative; height: 22px; }
+    .tl-bar {
+      position: absolute; height: 18px; border-radius: 4px; top: 2px;
+      display: flex; align-items: center; padding: 0 8px;
+      font-size: 10px; font-weight: 600; color: #000; white-space: nowrap;
+    }
+
+    /* INSIGHT */
+    .insight-box {
+      background: rgba(232,185,79,0.07); border: 1px solid rgba(232,185,79,0.25);
+      border-radius: 12px; padding: 20px 22px;
+    }
+    .insight-title { font-size: 13px; font-weight: 700; color: #e8b94f; margin-bottom: 10px; }
+    .insight-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .insight-list li { font-size: 13px; color: var(--text-sec); padding-left: 16px; position: relative; line-height: 1.6; }
+    .insight-list li::before { content: '→'; position: absolute; left: 0; color: #e8b94f; font-weight: 700; }
+
+    /* FOOTER NAV */
+    .footer-nav {
+      margin-top: 40px; padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex; gap: 12px; flex-wrap: wrap;
+    }
+    .fnav-btn {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 10px; padding: 10px 16px;
+      text-decoration: none; color: var(--text); font-size: 13px; font-weight: 500;
+      transition: background 0.2s;
+    }
+    .fnav-btn:hover { background: var(--surface-bright); }
+    .fnav-btn .arrow { color: var(--text-sec); font-size: 16px; }
+  </style>
+</head>
+<body>
+  <div class="view-menu">
+    <button class="view-btn" onclick="toggleTheme()">🌓 테마</button>
+    <button class="view-btn" onclick="window.print()">🖨 인쇄</button>
+  </div>
+
+  <div class="page-wrap">
+    <a href="../index.html" class="back-btn">← 아카이브로</a>
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="series-badge">📚 투자 구루 열전 · 시리즈 개요</div>
+      <h1>월가를 바꾼 11인의<br>투자 철학</h1>
+      <p class="hero-sub">
+        20세기 초 월가의 투기꾼부터 21세기 헤지펀드 매니저까지 — 역사상 가장 위대한 투자자 11인의 사상을 추적합니다.
+        각 구루의 철학은 어떻게 태동했고, 서로 어떤 영향을 주고받았으며, 오늘의 시장에 어떤 의미를 갖는지 살펴봅니다.
+      </p>
+    </div>
+
+    <!-- KPI -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">시리즈 구루</div>
+        <div class="kpi-value">11</div>
+        <div class="kpi-unit">명의 전설적 투자자</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">시대 범위</div>
+        <div class="kpi-value">120<span style="font-size:16px">+</span></div>
+        <div class="kpi-unit">년 (1900년대 ~ 현재)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">투자 유파</div>
+        <div class="kpi-value">5</div>
+        <div class="kpi-unit">개 핵심 철학 계열</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">총 운용 실적</div>
+        <div class="kpi-value">$1T<span style="font-size:16px">+</span></div>
+        <div class="kpi-unit">전 생애 통산 운용자산</div>
+      </div>
+    </div>
+
+    <!-- PHILOSOPHY LINEAGE SVG -->
+    <div class="section">
+      <div class="section-title">철학 계보도</div>
+      <div class="tree-wrap">
+        <div class="tree-svg-container">
+          <svg viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg" style="font-family:'Noto Sans KR','Inter',sans-serif;">
+            <defs>
+              <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                <polygon points="0 0, 8 3, 0 6" fill="rgba(255,255,255,0.25)"/>
+              </marker>
+              <marker id="arr-strong" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                <polygon points="0 0, 8 3, 0 6" fill="#e8b94f"/>
+              </marker>
+            </defs>
+
+            <!-- Influence lines (background) -->
+            <!-- Graham → Buffett (strong) -->
+            <line x1="140" y1="90" x2="265" y2="180" stroke="#e8b94f" stroke-width="2" stroke-dasharray="none" marker-end="url(#arr-strong)" opacity="0.8"/>
+            <!-- Fisher → Buffett (strong) -->
+            <line x1="140" y1="190" x2="265" y2="200" stroke="#e8b94f" stroke-width="2" marker-end="url(#arr-strong)" opacity="0.6"/>
+            <!-- Graham → Marks -->
+            <line x1="160" y1="100" x2="555" y2="250" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr)" opacity="0.5"/>
+            <!-- Graham → Burry -->
+            <line x1="155" y1="98" x2="555" y2="310" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr)" opacity="0.5"/>
+            <!-- Buffett ↔ Munger -->
+            <line x1="340" y1="195" x2="400" y2="195" stroke="#e8b94f" stroke-width="2.5" opacity="0.9"/>
+            <!-- Buffett → Lynch -->
+            <line x1="328" y1="215" x2="555" y2="185" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr)" opacity="0.4"/>
+
+            <!-- NODES -->
+            <!-- Graham -->
+            <rect x="30" y="58" width="120" height="52" rx="10" fill="#1e1a2e" stroke="#6b7280" stroke-width="1.5"/>
+            <text x="90" y="80" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="700" letter-spacing="0.04em">① 가치투자 원류</text>
+            <text x="90" y="98" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="800">벤저민 그레이엄</text>
+
+            <!-- Fisher -->
+            <rect x="30" y="160" width="120" height="52" rx="10" fill="#1a1e2e" stroke="#6b7280" stroke-width="1.5"/>
+            <text x="90" y="182" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="700" letter-spacing="0.04em">② 성장주 원형</text>
+            <text x="90" y="200" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="800">필립 피셔</text>
+
+            <!-- Livermore -->
+            <rect x="30" y="270" width="120" height="52" rx="10" fill="#2e1a1a" stroke="#6b7280" stroke-width="1.5"/>
+            <text x="90" y="292" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="700" letter-spacing="0.04em">⑥ 기술적 투기</text>
+            <text x="90" y="310" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="800">제시 리버모어</text>
+
+            <!-- Buffett+Munger combined -->
+            <rect x="250" y="158" width="200" height="64" rx="12" fill="#231e10" stroke="#e8b94f" stroke-width="2"/>
+            <text x="350" y="178" text-anchor="middle" fill="#e8b94f" font-size="10" font-weight="700" letter-spacing="0.04em">③④ 집중투자·다학제</text>
+            <text x="305" y="200" text-anchor="middle" fill="#fef3c7" font-size="13" font-weight="800">버핏</text>
+            <text x="340" y="200" text-anchor="middle" fill="#e8b94f" font-size="11">✕</text>
+            <text x="375" y="200" text-anchor="middle" fill="#fef3c7" font-size="13" font-weight="800">멍거</text>
+            <text x="350" y="214" text-anchor="middle" fill="#92400e" font-size="10">버크셔 해서웨이 파트너십</text>
+
+            <!-- Lynch -->
+            <rect x="530" y="158" width="120" height="52" rx="10" fill="#1a2e1a" stroke="#6b7280" stroke-width="1.5"/>
+            <text x="590" y="178" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="700" letter-spacing="0.04em">⑤ 성장·GARP</text>
+            <text x="590" y="198" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="800">피터 린치</text>
+
+            <!-- Marks -->
+            <rect x="530" y="228" width="120" height="52" rx="10" fill="#2e1e10" stroke="#6b7280" stroke-width="1.5"/>
+            <text x="590" y="248" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="700" letter-spacing="0.04em">⑩ 리스크·사이클</text>
+            <text x="590" y="268" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="800">하워드 막스</text>
+
+            <!-- Burry -->
+            <rect x="530" y="298" width="120" height="52" rx="10" fill="#102e15" stroke="#6b7280" stroke-width="1.5"/>
+            <text x="590" y="318" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="700" letter-spacing="0.04em">⑨ 딥밸류·역발상</text>
+            <text x="590" y="338" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="800">마이클 버리</text>
+
+            <!-- Soros -->
+            <rect x="250" y="288" width="120" height="52" rx="10" fill="#2e1a2e" stroke="#6b7280" stroke-width="1.5"/>
+            <text x="310" y="308" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="700" letter-spacing="0.04em">⑦ 재귀성·매크로</text>
+            <text x="310" y="328" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="800">조지 소로스</text>
+
+            <!-- Dalio -->
+            <rect x="390" y="288" width="120" height="52" rx="10" fill="#0e1a2e" stroke="#6b7280" stroke-width="1.5"/>
+            <text x="450" y="308" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="700" letter-spacing="0.04em">⑧ 거시·올웨더</text>
+            <text x="450" y="328" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="800">레이 달리오</text>
+
+            <!-- Bogle -->
+            <rect x="250" y="368" width="120" height="44" rx="10" fill="#0e2e2e" stroke="#6b7280" stroke-width="1.5"/>
+            <text x="310" y="388" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="700" letter-spacing="0.04em">⑪ 패시브 혁명</text>
+            <text x="310" y="404" text-anchor="middle" fill="#e2e8f0" font-size="13" font-weight="800">존 보글</text>
+
+            <!-- Legend -->
+            <line x1="30" y1="395" x2="58" y2="395" stroke="#e8b94f" stroke-width="2"/>
+            <text x="64" y="399" fill="#94a3b8" font-size="10">직접 사사 / 강한 영향</text>
+            <line x1="160" y1="395" x2="188" y2="395" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <text x="194" y="399" fill="#94a3b8" font-size="10">간접 영향</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- INVESTMENT SCHOOLS -->
+    <div class="section">
+      <div class="section-title">5대 투자 유파</div>
+      <div class="school-grid">
+        <div class="school-card" style="border-left-color:#6b7280;">
+          <div class="school-name" style="color:#94a3b8;">📐 안전마진 가치투자</div>
+          <div class="school-desc">내재가치보다 싸게 사고 미스터 마켓의 비이성을 이용하는 것이 핵심. Graham이 학문적 체계를 세우고 Buffett/Munger가 진화시켰다.</div>
+          <div class="school-members" style="color:#94a3b8;">Graham · Buffett · Munger · Marks · Burry</div>
+        </div>
+        <div class="school-card" style="border-left-color:#6366f1;">
+          <div class="school-name" style="color:#818cf8;">🌱 성장주 투자</div>
+          <div class="school-desc">뛰어난 경영진과 경쟁우위를 가진 기업에 장기 투자. Fisher의 스커틀버트 기법이 기원. Buffett이 두 철학을 통합했다.</div>
+          <div class="school-members" style="color:#818cf8;">Fisher · Lynch</div>
+        </div>
+        <div class="school-card" style="border-left-color:#dc2626;">
+          <div class="school-name" style="color:#f87171;">📈 기술적 투기</div>
+          <div class="school-desc">가격 흐름과 시장 심리를 읽는 테이프 리딩. 추세를 따르며 피라미딩하고 엄격한 손절로 생존. Livermore가 개척자.</div>
+          <div class="school-members" style="color:#f87171;">Livermore</div>
+        </div>
+        <div class="school-card" style="border-left-color:#7c3aed;">
+          <div class="school-name" style="color:#a78bfa;">🌐 글로벌 매크로</div>
+          <div class="school-desc">국가·통화·금리·자원의 순환을 이용하는 탑다운 투자. Soros의 재귀성 이론과 Dalio의 경제 기계 모델이 대표적.</div>
+          <div class="school-members" style="color:#a78bfa;">Soros · Dalio</div>
+        </div>
+        <div class="school-card" style="border-left-color:#0891b2;">
+          <div class="school-name" style="color:#22d3ee;">🔄 패시브·인덱스</div>
+          <div class="school-desc">시장 평균을 이기려 하지 않고, 비용을 최소화해 시장 수익을 그대로 가져간다. Bogle이 뱅가드를 통해 혁명을 일으켰다.</div>
+          <div class="school-members" style="color:#22d3ee;">Bogle</div>
+        </div>
+        <div class="school-card" style="border-left-color:#e8b94f; background:rgba(232,185,79,0.04);">
+          <div class="school-name" style="color:#e8b94f;">✨ 공통 원칙</div>
+          <div class="school-desc">유파를 초월해 모든 구루가 강조하는 것 — 자신만의 원칙 고수, 군중 심리 역행, 리스크 관리, 장기 복리 시각.</div>
+          <div class="school-members" style="color:#e8b94f;">11인 공통</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIVITY TIMELINE -->
+    <div class="section">
+      <div class="section-title">활동 연대기</div>
+      <div class="timeline-wrap">
+        <div class="timeline-inner">
+          <!-- Year axis -->
+          <div style="display:flex; padding-left:116px; margin-bottom:4px;">
+            <div style="flex:1;font-size:10px;color:var(--text-sec);text-align:left;">1900</div>
+            <div style="flex:1;font-size:10px;color:var(--text-sec);text-align:center;">1940</div>
+            <div style="flex:1;font-size:10px;color:var(--text-sec);text-align:center;">1960</div>
+            <div style="flex:1;font-size:10px;color:var(--text-sec);text-align:center;">1980</div>
+            <div style="flex:1;font-size:10px;color:var(--text-sec);text-align:center;">2000</div>
+            <div style="flex:1;font-size:10px;color:var(--text-sec);text-align:right;">2025</div>
+          </div>
+          <div style="position:relative; padding-left:116px; border-left:1px solid var(--border);">
+            <!-- Reference lines -->
+            <div style="position:absolute;left:116px;right:0;top:0;bottom:0;pointer-events:none;">
+              <div style="position:absolute;left:32%;top:0;bottom:0;width:1px;background:var(--border);opacity:0.5;"></div>
+              <div style="position:absolute;left:49%;top:0;bottom:0;width:1px;background:var(--border);opacity:0.5;"></div>
+              <div style="position:absolute;left:66%;top:0;bottom:0;width:1px;background:var(--border);opacity:0.5;"></div>
+              <div style="position:absolute;left:82%;top:0;bottom:0;width:1px;background:var(--border);opacity:0.5;"></div>
+            </div>
+
+            <!-- Bars: left% = (startYear-1900)/(2025-1900)*100, width% = (endYear-startYear)/(125)*100 -->
+            <!-- Livermore 1900-1940 -->
+            <div style="position:relative;height:26px;margin:4px 0;">
+              <div style="position:absolute;left:-116px;top:4px;width:112px;text-align:right;font-size:11px;font-weight:600;color:#f87171;white-space:nowrap;">제시 리버모어</div>
+              <div style="position:absolute;left:0%;width:32%;height:18px;top:4px;background:#dc2626;border-radius:4px;display:flex;align-items:center;padding:0 8px;">
+                <span style="font-size:10px;color:#fff;font-weight:600;">1900–1940</span>
+              </div>
+            </div>
+            <!-- Graham 1910-1976 -->
+            <div style="position:relative;height:26px;margin:4px 0;">
+              <div style="position:absolute;left:-116px;top:4px;width:112px;text-align:right;font-size:11px;font-weight:600;color:#94a3b8;">벤저민 그레이엄</div>
+              <div style="position:absolute;left:8%;width:53%;height:18px;top:4px;background:#4b5563;border-radius:4px;display:flex;align-items:center;padding:0 8px;">
+                <span style="font-size:10px;color:#fff;font-weight:600;">1910–1976</span>
+              </div>
+            </div>
+            <!-- Fisher 1928-2004 -->
+            <div style="position:relative;height:26px;margin:4px 0;">
+              <div style="position:absolute;left:-116px;top:4px;width:112px;text-align:right;font-size:11px;font-weight:600;color:#818cf8;">필립 피셔</div>
+              <div style="position:absolute;left:22.4%;width:60.8%;height:18px;top:4px;background:#4338ca;border-radius:4px;display:flex;align-items:center;padding:0 8px;">
+                <span style="font-size:10px;color:#fff;font-weight:600;">1928–2004</span>
+              </div>
+            </div>
+            <!-- Buffett 1956-present -->
+            <div style="position:relative;height:26px;margin:4px 0;">
+              <div style="position:absolute;left:-116px;top:4px;width:112px;text-align:right;font-size:11px;font-weight:600;color:#e8b94f;">워런 버핏</div>
+              <div style="position:absolute;left:44.8%;width:55.2%;height:18px;top:4px;background:#92400e;border-radius:4px;display:flex;align-items:center;padding:0 8px;">
+                <span style="font-size:10px;color:#fef3c7;font-weight:600;">1956–현재</span>
+              </div>
+            </div>
+            <!-- Munger 1965-2023 -->
+            <div style="position:relative;height:26px;margin:4px 0;">
+              <div style="position:absolute;left:-116px;top:4px;width:112px;text-align:right;font-size:11px;font-weight:600;color:#a78bfa;">찰리 멍거</div>
+              <div style="position:absolute;left:52%;width:46.4%;height:18px;top:4px;background:#6d28d9;border-radius:4px;display:flex;align-items:center;padding:0 8px;">
+                <span style="font-size:10px;color:#fff;font-weight:600;">1965–2023</span>
+              </div>
+            </div>
+            <!-- Lynch 1969-1990 -->
+            <div style="position:relative;height:26px;margin:4px 0;">
+              <div style="position:absolute;left:-116px;top:4px;width:112px;text-align:right;font-size:11px;font-weight:600;color:#34d399;">피터 린치</div>
+              <div style="position:absolute;left:55.2%;width:16.8%;height:18px;top:4px;background:#065f46;border-radius:4px;display:flex;align-items:center;padding:0 8px;">
+                <span style="font-size:10px;color:#fff;font-weight:600;">1969–1990</span>
+              </div>
+            </div>
+            <!-- Soros 1969-present -->
+            <div style="position:relative;height:26px;margin:4px 0;">
+              <div style="position:absolute;left:-116px;top:4px;width:112px;text-align:right;font-size:11px;font-weight:600;color:#c084fc;">조지 소로스</div>
+              <div style="position:absolute;left:55.2%;width:44.8%;height:18px;top:4px;background:#6b21a8;border-radius:4px;display:flex;align-items:center;padding:0 8px;">
+                <span style="font-size:10px;color:#fff;font-weight:600;">1969–현재</span>
+              </div>
+            </div>
+            <!-- Dalio 1975-present -->
+            <div style="position:relative;height:26px;margin:4px 0;">
+              <div style="position:absolute;left:-116px;top:4px;width:112px;text-align:right;font-size:11px;font-weight:600;color:#60a5fa;">레이 달리오</div>
+              <div style="position:absolute;left:60%;width:40%;height:18px;top:4px;background:#1e3a8a;border-radius:4px;display:flex;align-items:center;padding:0 8px;">
+                <span style="font-size:10px;color:#fff;font-weight:600;">1975–현재</span>
+              </div>
+            </div>
+            <!-- Bogle 1974-2019 -->
+            <div style="position:relative;height:26px;margin:4px 0;">
+              <div style="position:absolute;left:-116px;top:4px;width:112px;text-align:right;font-size:11px;font-weight:600;color:#2dd4bf;">존 보글</div>
+              <div style="position:absolute;left:59.2%;width:36%;height:18px;top:4px;background:#0f766e;border-radius:4px;display:flex;align-items:center;padding:0 8px;">
+                <span style="font-size:10px;color:#fff;font-weight:600;">1974–2019</span>
+              </div>
+            </div>
+            <!-- Marks 1985-present -->
+            <div style="position:relative;height:26px;margin:4px 0;">
+              <div style="position:absolute;left:-116px;top:4px;width:112px;text-align:right;font-size:11px;font-weight:600;color:#fb923c;">하워드 막스</div>
+              <div style="position:absolute;left:68%;width:32%;height:18px;top:4px;background:#9a3412;border-radius:4px;display:flex;align-items:center;padding:0 8px;">
+                <span style="font-size:10px;color:#fff;font-weight:600;">1985–현재</span>
+              </div>
+            </div>
+            <!-- Burry 2000-present -->
+            <div style="position:relative;height:26px;margin:4px 0;">
+              <div style="position:absolute;left:-116px;top:4px;width:112px;text-align:right;font-size:11px;font-weight:600;color:#4ade80;">마이클 버리</div>
+              <div style="position:absolute;left:80%;width:20%;height:18px;top:4px;background:#14532d;border-radius:4px;display:flex;align-items:center;padding:0 8px;">
+                <span style="font-size:10px;color:#fff;font-weight:600;">2000–현재</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GURU GRID (all 11) -->
+    <div class="section">
+      <div class="section-title">시리즈 카드 목록</div>
+      <div class="guru-grid">
+        <a href="benjamin-graham.html" class="guru-card" style="border-left:3px solid #6b7280;">
+          <div class="guru-order">① 가치투자 원류</div>
+          <div>
+            <div class="guru-name">벤저민 그레이엄</div>
+            <div class="guru-name-en">Benjamin Graham</div>
+          </div>
+          <div class="guru-tag" style="color:#94a3b8;border-color:#6b728040;background:rgba(107,114,128,0.1);">안전마진·가치투자</div>
+          <div class="guru-era">1894–1976</div>
+        </a>
+        <a href="philip-fisher.html" class="guru-card" style="border-left:3px solid #6366f1;">
+          <div class="guru-order">② 성장주 원형</div>
+          <div>
+            <div class="guru-name">필립 피셔</div>
+            <div class="guru-name-en">Philip Fisher</div>
+          </div>
+          <div class="guru-tag" style="color:#818cf8;border-color:#6366f140;background:rgba(99,102,241,0.1);">성장주·스커틀버트</div>
+          <div class="guru-era">1907–2004</div>
+        </a>
+        <a href="warren-buffett.html" class="guru-card" style="border-left:3px solid #e8b94f;">
+          <div class="guru-order">③ 집중투자·해자</div>
+          <div>
+            <div class="guru-name">워런 버핏</div>
+            <div class="guru-name-en">Warren Buffett</div>
+          </div>
+          <div class="guru-tag" style="color:#e8b94f;border-color:#e8b94f40;background:rgba(232,185,79,0.1);">경제적 해자·장기보유</div>
+          <div class="guru-era">1930– (현역)</div>
+        </a>
+        <a href="charlie-munger.html" class="guru-card" style="border-left:3px solid #8b5cf6;">
+          <div class="guru-order">④ 다학제 사고</div>
+          <div>
+            <div class="guru-name">찰리 멍거</div>
+            <div class="guru-name-en">Charlie Munger</div>
+          </div>
+          <div class="guru-tag" style="color:#a78bfa;border-color:#8b5cf640;background:rgba(139,92,246,0.1);">멘탈모델·역발상</div>
+          <div class="guru-era">1924–2023</div>
+        </a>
+        <a href="peter-lynch.html" class="guru-card" style="border-left:3px solid #10b981;">
+          <div class="guru-order">⑤ 아는 것에 투자</div>
+          <div>
+            <div class="guru-name">피터 린치</div>
+            <div class="guru-name-en">Peter Lynch</div>
+          </div>
+          <div class="guru-tag" style="color:#34d399;border-color:#10b98140;background:rgba(16,185,129,0.1);">텐배거·GARP</div>
+          <div class="guru-era">1944– (은퇴)</div>
+        </a>
+        <a href="jesse-livermore.html" class="guru-card" style="border-left:3px solid #dc2626;">
+          <div class="guru-order">⑥ 기술적 투기</div>
+          <div>
+            <div class="guru-name">제시 리버모어</div>
+            <div class="guru-name-en">Jesse Livermore</div>
+          </div>
+          <div class="guru-tag" style="color:#f87171;border-color:#dc262640;background:rgba(220,38,38,0.1);">테이프 리딩·피라미딩</div>
+          <div class="guru-era">1877–1940</div>
+        </a>
+        <a href="george-soros.html" class="guru-card" style="border-left:3px solid #9333ea;">
+          <div class="guru-order">⑦ 재귀성 이론</div>
+          <div>
+            <div class="guru-name">조지 소로스</div>
+            <div class="guru-name-en">George Soros</div>
+          </div>
+          <div class="guru-tag" style="color:#c084fc;border-color:#9333ea40;background:rgba(147,51,234,0.1);">재귀성·글로벌 매크로</div>
+          <div class="guru-era">1930– (현역)</div>
+        </a>
+        <a href="ray-dalio.html" class="guru-card" style="border-left:3px solid #3b82f6;">
+          <div class="guru-order">⑧ 경제 기계</div>
+          <div>
+            <div class="guru-name">레이 달리오</div>
+            <div class="guru-name-en">Ray Dalio</div>
+          </div>
+          <div class="guru-tag" style="color:#60a5fa;border-color:#3b82f640;background:rgba(59,130,246,0.1);">올웨더·부채 사이클</div>
+          <div class="guru-era">1949– (현역)</div>
+        </a>
+        <a href="michael-burry.html" class="guru-card" style="border-left:3px solid #16a34a;">
+          <div class="guru-order">⑨ 딥밸류·역발상</div>
+          <div>
+            <div class="guru-name">마이클 버리</div>
+            <div class="guru-name-en">Michael Burry</div>
+          </div>
+          <div class="guru-tag" style="color:#4ade80;border-color:#16a34a40;background:rgba(22,163,74,0.1);">딥밸류·빅쇼트</div>
+          <div class="guru-era">1971– (현역)</div>
+        </a>
+        <a href="howard-marks.html" class="guru-card" style="border-left:3px solid #ea580c;">
+          <div class="guru-order">⑩ 리스크의 철학자</div>
+          <div>
+            <div class="guru-name">하워드 막스</div>
+            <div class="guru-name-en">Howard Marks</div>
+          </div>
+          <div class="guru-tag" style="color:#fb923c;border-color:#ea580c40;background:rgba(234,88,12,0.1);">리스크·2차적 사고</div>
+          <div class="guru-era">1946– (현역)</div>
+        </a>
+        <a href="john-bogle.html" class="guru-card" style="border-left:3px solid #0891b2;">
+          <div class="guru-order">⑪ 패시브 혁명</div>
+          <div>
+            <div class="guru-name">존 보글</div>
+            <div class="guru-name-en">John Bogle</div>
+          </div>
+          <div class="guru-tag" style="color:#22d3ee;border-color:#0891b240;background:rgba(8,145,178,0.1);">인덱스·저비용</div>
+          <div class="guru-era">1929–2019</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- KEY INSIGHT -->
+    <div class="section">
+      <div class="section-title">한국 투자자를 위한 시사점</div>
+      <div class="insight-box">
+        <div class="insight-title">📌 이 시리즈를 읽는 방법</div>
+        <ul class="insight-list">
+          <li>처음 투자를 시작한다면 <strong>그레이엄→버핏→멍거</strong> 순서로 가치투자 원형부터 체화하라.</li>
+          <li>코스피·코스닥 소형주에 관심 있다면 <strong>피셔·린치</strong>의 기업 조사법이 실전에 바로 통한다.</li>
+          <li>국채·환율·상품 시장을 보고 싶다면 <strong>소로스·달리오</strong>의 매크로 관점을 참조하라.</li>
+          <li>과거 급락장 대응법은 <strong>막스</strong>의 시장 사이클론과 <strong>버리</strong>의 역발상에서 배울 수 있다.</li>
+          <li>ETF·연금 운용이 목적이라면 <strong>보글</strong>의 비용 최소화 원칙이 가장 직접적인 답이다.</li>
+          <li><strong>리버모어</strong>는 화려한 수익과 파산을 반복한 역사를 통해 리스크 관리 없는 투기의 말로를 보여준다.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- end page-wrap -->
+
+  <script>
+    function toggleTheme() {
+      const h = document.getElementById('htmlRoot');
+      h.classList.toggle('theme-dark');
+      h.classList.toggle('theme-light');
+    }
+  </script>
+</body>
+</html>

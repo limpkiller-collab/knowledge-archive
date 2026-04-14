@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ko" id="htmlRoot" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>워런 버핏 — 오마하의 현인</title>
+  <meta name="knowledge-id" content="warren-buffett">
+  <meta name="knowledge-series" content="투자 구루 열전">
+  <meta name="knowledge-category" content="투자·금융">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0e0e0e;--surface-low:#131313;--surface-mid:#1a1919;--surface-high:#201f1f;--surface-highest:#262626;--surface-bright:#2c2c2c;--border:rgba(255,255,255,0.05);--text:#ffffff;--text-sec:#adaaaa;--accent:#e8b94f;}
+    html.theme-light{--bg:#FAFAFA;--surface-low:#FFFFFF;--surface-mid:#F9FAFB;--surface-high:#FFFFFF;--surface-highest:#F3F4F6;--surface-bright:#FFFFFF;--border:rgba(0,0,0,0.06);--text:#111827;--text-sec:#4B5563;--accent:#d97706;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Noto Sans KR','Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background .3s,color .3s;}
+    body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,color-mix(in srgb,#e8b94f 8%,transparent),transparent);}
+    .page-wrap{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:24px 20px 80px;}
+    .view-menu{position:fixed;top:16px;right:16px;z-index:100;display:flex;gap:8px;}
+    .view-btn{background:var(--surface-high);border:1px solid var(--border);color:var(--text-sec);border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;font-family:inherit;transition:background .2s,color .2s;}
+    .view-btn:hover{background:var(--surface-bright);color:var(--text);}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--text-sec);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface-high);margin-bottom:28px;transition:background .2s,color .2s;}
+    .back-btn:hover{background:var(--surface-bright);color:var(--text);}
+    .series-nav{background:var(--surface-mid);border:1px solid var(--border);border-left:3px solid #e8b94f;border-radius:10px;padding:12px 16px;margin-bottom:24px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+    .series-nav-label{font-size:11px;font-weight:700;color:#e8b94f;text-transform:uppercase;letter-spacing:0.06em;flex-shrink:0;}
+    .snav-item{font-size:12px;color:var(--text-sec);text-decoration:none;padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface-highest);transition:all .2s;white-space:nowrap;}
+    .snav-item:hover{color:var(--text);}
+    .snav-item.active{background:rgba(232,185,79,0.15);color:#e8b94f;border-color:rgba(232,185,79,0.4);font-weight:600;}
+    .series-badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#e8b94f;background:rgba(232,185,79,0.12);border:1px solid rgba(232,185,79,0.3);padding:3px 10px;border-radius:99px;margin-bottom:14px;}
+    h1{font-size:clamp(22px,4vw,34px);font-weight:900;line-height:1.2;letter-spacing:-0.03em;margin-bottom:8px;}
+    .hero-sub{font-size:15px;color:var(--text-sec);line-height:1.65;}
+    .meta-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:20px 0 28px;padding:12px 16px;background:var(--surface-mid);border-radius:12px;border:1px solid var(--border);}
+    .meta-chip{font-size:12px;color:var(--text-sec);padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface-highest);}
+    .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
+    @media(max-width:500px){.kpi-row{grid-template-columns:1fr 1fr;}}
+    .kpi-card{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
+    .kpi-label{font-size:11px;color:var(--text-sec);font-weight:500;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:6px;}
+    .kpi-value{font-size:26px;font-weight:800;color:#e8b94f;letter-spacing:-0.03em;line-height:1;}
+    .kpi-unit{font-size:11px;color:var(--text-sec);margin-top:4px;}
+    .section{margin-bottom:28px;}
+    .section-title{font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-sec);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+    .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+    .quote-block{background:var(--surface-mid);border:1px solid var(--border);border-left:3px solid #e8b94f;border-radius:10px;padding:16px 20px;margin-bottom:12px;}
+    .quote-text{font-size:15px;font-weight:600;line-height:1.6;color:var(--text);font-style:italic;}
+    .quote-context{font-size:12px;color:var(--text-sec);margin-top:8px;}
+    .principle-list{display:flex;flex-direction:column;gap:12px;}
+    .principle-card{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:18px 20px;display:flex;gap:16px;}
+    .principle-num{font-size:24px;font-weight:900;color:#e8b94f;opacity:0.5;flex-shrink:0;line-height:1;}
+    .principle-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+    .principle-desc{font-size:13px;color:var(--text-sec);line-height:1.6;}
+    .case-box{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:20px;}
+    .case-title{font-size:13px;font-weight:700;color:#e8b94f;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.05em;}
+    .case-body{font-size:13px;color:var(--text-sec);line-height:1.7;}
+    .case-result{display:inline-block;margin-top:10px;background:rgba(232,185,79,0.12);border:1px solid rgba(232,185,79,0.3);color:#e8b94f;font-size:12px;font-weight:600;padding:4px 12px;border-radius:99px;}
+    .insight-box{background:rgba(232,185,79,0.06);border:1px solid rgba(232,185,79,0.2);border-radius:12px;padding:18px 20px;}
+    .insight-title{font-size:13px;font-weight:700;color:#e8b94f;margin-bottom:10px;}
+    .insight-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+    .insight-list li{font-size:13px;color:var(--text-sec);padding-left:16px;position:relative;line-height:1.6;}
+    .insight-list li::before{content:'→';position:absolute;left:0;color:#e8b94f;font-weight:700;}
+    .footer-nav{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;}
+    .fnav-btn{display:flex;align-items:center;gap:8px;background:var(--surface-mid);border:1px solid var(--border);border-radius:10px;padding:10px 16px;text-decoration:none;color:var(--text);font-size:13px;font-weight:500;transition:background .2s;}
+    .fnav-btn:hover{background:var(--surface-bright);}
+    /* circle evolution */
+    .evolution-row{display:flex;flex-wrap:wrap;align-items:center;gap:0;}
+    .evo-step{background:var(--surface-mid);border:1px solid var(--border);border-radius:10px;padding:12px 14px;flex:1;min-width:110px;text-align:center;}
+    .evo-era{font-size:10px;color:#e8b94f;font-weight:700;text-transform:uppercase;margin-bottom:4px;letter-spacing:0.04em;}
+    .evo-text{font-size:12px;color:var(--text-sec);line-height:1.4;}
+    .evo-arrow{font-size:18px;color:var(--text-sec);padding:0 6px;flex-shrink:0;}
+    /* moat table */
+    table{width:100%;border-collapse:collapse;font-size:13px;}
+    th{font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--text-sec);padding:10px 12px;border-bottom:1px solid var(--border);text-align:left;}
+    td{padding:11px 12px;border-bottom:1px solid var(--border);color:var(--text-sec);}
+    td:first-child{color:var(--text);font-weight:600;}
+    tr:last-child td{border-bottom:none;}
+  </style>
+</head>
+<body>
+  <div class="view-menu">
+    <button class="view-btn" onclick="toggleTheme()">🌓 테마</button>
+    <button class="view-btn" onclick="window.print()">🖨 인쇄</button>
+  </div>
+  <div class="page-wrap">
+    <a href="../index.html" class="back-btn">← 아카이브로</a>
+    <div class="series-nav">
+      <span class="series-nav-label">📚 투자 구루 열전</span>
+      <a href="guru-series-overview.html" class="snav-item">개요</a>
+      <a href="benjamin-graham.html" class="snav-item">①그레이엄</a>
+      <a href="philip-fisher.html" class="snav-item">②피셔</a>
+      <a href="warren-buffett.html" class="snav-item active">③버핏</a>
+      <a href="charlie-munger.html" class="snav-item">④멍거</a>
+      <a href="peter-lynch.html" class="snav-item">⑤린치</a>
+      <a href="jesse-livermore.html" class="snav-item">⑥리버모어</a>
+      <a href="george-soros.html" class="snav-item">⑦소로스</a>
+      <a href="ray-dalio.html" class="snav-item">⑧달리오</a>
+      <a href="michael-burry.html" class="snav-item">⑨버리</a>
+      <a href="howard-marks.html" class="snav-item">⑩막스</a>
+      <a href="john-bogle.html" class="snav-item">⑪보글</a>
+    </div>
+
+    <div class="series-badge">③ 집중투자 · 경제적 해자</div>
+    <h1>워런 버핏<br><span style="font-size:0.6em;font-weight:600;color:var(--text-sec);">Warren Buffett, 1930– (현역)</span></h1>
+    <p class="hero-sub">역사상 가장 성공한 투자자. 그레이엄의 안전마진과 피셔의 성장주 철학을 통합해 독자적인 체계를 구축했다. "합리적 가격의 훌륭한 기업"을 찾아 평생 보유하는 방식으로 버크셔 해서웨이를 세계 최대 투자 지주사로 키웠다.</p>
+
+    <div class="meta-bar">
+      <span class="meta-chip">📍 오마하, 네브래스카</span>
+      <span class="meta-chip">📅 1930– (현역)</span>
+      <span class="meta-chip">🏦 버크셔 해서웨이</span>
+      <span class="meta-chip">📚 주주서한 (1965~매년) · 스노볼(전기)</span>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">버크셔 연평균 수익률</div>
+        <div class="kpi-value">19.8<span style="font-size:16px">%</span></div>
+        <div class="kpi-unit">1965–2023 (S&P500: 10.2%)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">누적 총 수익률</div>
+        <div class="kpi-value">4.4M<span style="font-size:16px">%</span></div>
+        <div class="kpi-unit">1965–2023 (S&P500: 31,223%)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">버크셔 시가총액</div>
+        <div class="kpi-value">~$1T</div>
+        <div class="kpi-unit">세계 10위권 기업가치</div>
+      </div>
+    </div>
+
+    <!-- 철학 진화 -->
+    <div class="section">
+      <div class="section-title">투자 철학의 진화</div>
+      <div class="evolution-row">
+        <div class="evo-step">
+          <div class="evo-era">1950s</div>
+          <div class="evo-text">그레이엄 직속 제자 · 순자산가치 이하 종목 집중 발굴 (시가버틴 스타일)</div>
+        </div>
+        <div class="evo-arrow">→</div>
+        <div class="evo-step">
+          <div class="evo-era">1960s~70s</div>
+          <div class="evo-text">피셔 영향 + 멍거 파트너십 → 기업의 질적 가치 중시로 전환</div>
+        </div>
+        <div class="evo-arrow">→</div>
+        <div class="evo-step">
+          <div class="evo-era">1980s~</div>
+          <div class="evo-text">경제적 해자 · 소비자 프랜차이즈 개념 정립 · 코카콜라 등 대형 우량주 집중</div>
+        </div>
+        <div class="evo-arrow">→</div>
+        <div class="evo-step">
+          <div class="evo-era">2010s~</div>
+          <div class="evo-text">애플 등 기술주 인식 전환 · 자사주 매입 적극 활용</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 핵심 원칙 -->
+    <div class="section">
+      <div class="section-title">핵심 원칙 3가지</div>
+      <div class="principle-list">
+        <div class="principle-card">
+          <div class="principle-num">01</div>
+          <div>
+            <div class="principle-title">경제적 해자(Economic Moat) — 지속 가능한 경쟁우위</div>
+            <div class="principle-desc">위대한 기업은 경쟁자가 쉽게 침범할 수 없는 '해자(垓字, moat)'를 가지고 있다. 해자의 종류: ①브랜드 파워, ②네트워크 효과, ③전환 비용, ④비용 우위, ⑤효율적 규모. 해자의 너비와 깊이가 기업 장기 가치의 핵심 결정 요인이다.</div>
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">02</div>
+          <div>
+            <div class="principle-title">"멋진 가격의 평범한 기업"보다 "합리적 가격의 훌륭한 기업"</div>
+            <div class="principle-desc">초기 그레이엄식 싸구려 기업 투자에서 멍거의 영향으로 전환. 비싸 보여도 훌륭한 기업은 시간이 지날수록 내재가치가 높아지기 때문에, 장기 보유 시 복리 효과가 압도적으로 유리하다.</div>
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">03</div>
+          <div>
+            <div class="principle-title">능력 범위(Circle of Competence) — 아는 것만 투자하라</div>
+            <div class="principle-desc">자신이 완전히 이해하지 못하는 기업에는 투자하지 않는다. 능력 범위를 벗어난 영역에서는 아무리 매력적인 기회라도 거부한다. 1999~2000년 닷컴 버블 당시 IT 주식 투자를 거부한 것이 대표적 사례.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 경제적 해자 유형 -->
+    <div class="section">
+      <div class="section-title">경제적 해자 유형과 버핏 포트폴리오 예시</div>
+      <div style="background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:4px 0;overflow:hidden;">
+        <table>
+          <thead><tr><th>해자 유형</th><th>특징</th><th>버핏 투자 사례</th></tr></thead>
+          <tbody>
+            <tr><td>브랜드 파워</td><td>소비자 마음속 독점적 지위</td><td>코카콜라, 애플, 시즈캔디</td></tr>
+            <tr><td>네트워크 효과</td><td>사용자 많을수록 가치 상승</td><td>아메리칸 익스프레스</td></tr>
+            <tr><td>전환 비용</td><td>경쟁사로 바꾸면 손실·불편</td><td>무디스, 웰스파고</td></tr>
+            <tr><td>비용 우위</td><td>구조적으로 낮은 원가</td><td>GEICO, 유니온 퍼시픽</td></tr>
+            <tr><td>효율적 규모</td><td>소수 플레이어만 수익 가능</td><td>BNSF 철도</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 대표 명언 -->
+    <div class="section">
+      <div class="section-title">대표 명언</div>
+      <div class="quote-block">
+        <div class="quote-text">"남들이 탐욕스러울 때 두려워하고, 남들이 두려워할 때 탐욕스러워라."</div>
+        <div class="quote-context">— 역발상 투자의 핵심 원칙. 2008~2009년 금융위기 당시 실천</div>
+      </div>
+      <div class="quote-block">
+        <div class="quote-text">"주식시장은 인내심 없는 사람의 돈을 인내심 있는 사람에게 이전하는 도구다."</div>
+        <div class="quote-context">— 장기 투자의 중요성</div>
+      </div>
+      <div class="quote-block">
+        <div class="quote-text">"10년 동안 보유할 마음이 없다면 10분도 보유하지 마라."</div>
+        <div class="quote-context">— 버크셔 해서웨이 연례 주주서한</div>
+      </div>
+    </div>
+
+    <!-- 실전 투자 사례 -->
+    <div class="section">
+      <div class="section-title">실전 투자 사례 — 코카콜라 (1988)</div>
+      <div class="case-box">
+        <div class="case-title">🏆 코카콜라 — 해자 투자의 교과서</div>
+        <div class="case-body">
+          버핏은 1987년 블랙 먼데이 이후 폭락한 코카콜라 주식을 1988~89년에 걸쳐 약 10억 달러를 투자했다. 당시 PER이 15배 수준으로 '비싸다'는 의견이 많았지만, 버핏의 판단은 달랐다. 코카콜라의 브랜드, 전 세계 유통망, 소비자들의 습관적 구매는 어떤 경쟁자도 수십 년 안에 따라올 수 없는 해자였다. 이후 2023년까지 코카콜라로부터 받은 배당금만 원금을 훨씬 초과했고, 주가 상승 수익까지 합하면 수십 배의 투자 성과를 기록했다.
+        </div>
+        <span class="case-result">✓ 1988년 투자 이후 배당금만으로 원금 회수 완료 · 주가는 약 25배 상승</span>
+      </div>
+    </div>
+
+    <!-- 한국 투자자 시사점 -->
+    <div class="section">
+      <div class="section-title">한국 투자자 시사점</div>
+      <div class="insight-box">
+        <div class="insight-title">📌 버핏 철학의 한국 시장 적용</div>
+        <ul class="insight-list">
+          <li>한국 시장에서 버핏식 해자를 가진 기업을 찾는다면: 삼성전자(브랜드·기술), 카카오(네트워크 효과), 현대차(브랜드·규모), LG생활건강(소비재 브랜드) 등이 후보다.</li>
+          <li>버핏은 자신이 이해할 수 없는 첨단기술 기업에 오랫동안 투자하지 않았다. 지금 자신이 사업 구조를 설명할 수 없는 기업에는 투자하지 말라는 메시지다.</li>
+          <li>매년 버크셔 해서웨이 주주서한은 무료로 공개된다. 이것은 역사상 가장 훌륭한 투자 교과서 중 하나이며 모든 투자자가 읽어야 할 필독서다.</li>
+          <li>버핏이 94세인 2024년에도 현역임을 기억하라. 복리의 힘은 극도로 긴 시간이 필요하다. 20·30대에 시작하는 장기 투자는 그 자체가 엄청난 자산이다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-nav">
+      <a href="philip-fisher.html" class="fnav-btn">← ② 필립 피셔</a>
+      <a href="charlie-munger.html" class="fnav-btn">④ 찰리 멍거 →</a>
+    </div>
+  </div>
+  <script>
+    function toggleTheme(){const h=document.getElementById('htmlRoot');h.classList.toggle('theme-dark');h.classList.toggle('theme-light');}
+  </script>
+</body>
+</html>

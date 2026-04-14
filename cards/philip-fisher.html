@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ko" id="htmlRoot" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>필립 피셔 — 성장주 투자의 원형</title>
+  <meta name="knowledge-id" content="philip-fisher">
+  <meta name="knowledge-series" content="투자 구루 열전">
+  <meta name="knowledge-category" content="투자·금융">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0e0e0e;--surface-low:#131313;--surface-mid:#1a1919;--surface-high:#201f1f;--surface-highest:#262626;--surface-bright:#2c2c2c;--border:rgba(255,255,255,0.05);--text:#ffffff;--text-sec:#adaaaa;--accent:#818cf8;}
+    html.theme-light{--bg:#FAFAFA;--surface-low:#FFFFFF;--surface-mid:#F9FAFB;--surface-high:#FFFFFF;--surface-highest:#F3F4F6;--surface-bright:#FFFFFF;--border:rgba(0,0,0,0.06);--text:#111827;--text-sec:#4B5563;--accent:#4f46e5;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Noto Sans KR','Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background .3s,color .3s;}
+    body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,color-mix(in srgb,#6366f1 8%,transparent),transparent);}
+    .page-wrap{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:24px 20px 80px;}
+    .view-menu{position:fixed;top:16px;right:16px;z-index:100;display:flex;gap:8px;}
+    .view-btn{background:var(--surface-high);border:1px solid var(--border);color:var(--text-sec);border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;font-family:inherit;transition:background .2s,color .2s;}
+    .view-btn:hover{background:var(--surface-bright);color:var(--text);}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--text-sec);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface-high);margin-bottom:28px;transition:background .2s,color .2s;}
+    .back-btn:hover{background:var(--surface-bright);color:var(--text);}
+    .series-nav{background:var(--surface-mid);border:1px solid var(--border);border-left:3px solid #6366f1;border-radius:10px;padding:12px 16px;margin-bottom:24px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+    .series-nav-label{font-size:11px;font-weight:700;color:#818cf8;text-transform:uppercase;letter-spacing:0.06em;flex-shrink:0;}
+    .snav-item{font-size:12px;color:var(--text-sec);text-decoration:none;padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface-highest);transition:all .2s;white-space:nowrap;}
+    .snav-item:hover{color:var(--text);}
+    .snav-item.active{background:rgba(99,102,241,0.15);color:#818cf8;border-color:rgba(99,102,241,0.4);font-weight:600;}
+    .series-badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#818cf8;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.3);padding:3px 10px;border-radius:99px;margin-bottom:14px;}
+    h1{font-size:clamp(22px,4vw,34px);font-weight:900;line-height:1.2;letter-spacing:-0.03em;margin-bottom:8px;}
+    .hero-sub{font-size:15px;color:var(--text-sec);line-height:1.65;}
+    .meta-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:20px 0 28px;padding:12px 16px;background:var(--surface-mid);border-radius:12px;border:1px solid var(--border);}
+    .meta-chip{font-size:12px;color:var(--text-sec);padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface-highest);}
+    .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
+    @media(max-width:500px){.kpi-row{grid-template-columns:1fr 1fr;}}
+    .kpi-card{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
+    .kpi-label{font-size:11px;color:var(--text-sec);font-weight:500;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:6px;}
+    .kpi-value{font-size:26px;font-weight:800;color:#818cf8;letter-spacing:-0.03em;line-height:1;}
+    .kpi-unit{font-size:11px;color:var(--text-sec);margin-top:4px;}
+    .section{margin-bottom:28px;}
+    .section-title{font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-sec);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+    .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+    .quote-block{background:var(--surface-mid);border:1px solid var(--border);border-left:3px solid #818cf8;border-radius:10px;padding:16px 20px;margin-bottom:12px;}
+    .quote-text{font-size:15px;font-weight:600;line-height:1.6;color:var(--text);font-style:italic;}
+    .quote-context{font-size:12px;color:var(--text-sec);margin-top:8px;}
+    .principle-list{display:flex;flex-direction:column;gap:12px;}
+    .principle-card{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:18px 20px;display:flex;gap:16px;}
+    .principle-num{font-size:24px;font-weight:900;color:#818cf8;opacity:0.5;flex-shrink:0;line-height:1;}
+    .principle-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+    .principle-desc{font-size:13px;color:var(--text-sec);line-height:1.6;}
+    .case-box{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:20px;}
+    .case-title{font-size:13px;font-weight:700;color:#818cf8;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.05em;}
+    .case-body{font-size:13px;color:var(--text-sec);line-height:1.7;}
+    .case-result{display:inline-block;margin-top:10px;background:rgba(129,140,248,0.12);border:1px solid rgba(129,140,248,0.3);color:#818cf8;font-size:12px;font-weight:600;padding:4px 12px;border-radius:99px;}
+    .insight-box{background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.2);border-radius:12px;padding:18px 20px;}
+    .insight-title{font-size:13px;font-weight:700;color:#818cf8;margin-bottom:10px;}
+    .insight-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+    .insight-list li{font-size:13px;color:var(--text-sec);padding-left:16px;position:relative;line-height:1.6;}
+    .insight-list li::before{content:'→';position:absolute;left:0;color:#818cf8;font-weight:700;}
+    .footer-nav{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;}
+    .fnav-btn{display:flex;align-items:center;gap:8px;background:var(--surface-mid);border:1px solid var(--border);border-radius:10px;padding:10px 16px;text-decoration:none;color:var(--text);font-size:13px;font-weight:500;transition:background .2s;}
+    .fnav-btn:hover{background:var(--surface-bright);}
+    /* 15 questions grid */
+    .q-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+    @media(max-width:550px){.q-grid{grid-template-columns:1fr 1fr;}}
+    .q-item{background:var(--surface-mid);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
+    .q-num{font-size:10px;font-weight:700;color:#818cf8;margin-bottom:4px;letter-spacing:0.04em;}
+    .q-text{font-size:12px;color:var(--text-sec);line-height:1.5;}
+  </style>
+</head>
+<body>
+  <div class="view-menu">
+    <button class="view-btn" onclick="toggleTheme()">🌓 테마</button>
+    <button class="view-btn" onclick="window.print()">🖨 인쇄</button>
+  </div>
+  <div class="page-wrap">
+    <a href="../index.html" class="back-btn">← 아카이브로</a>
+    <div class="series-nav">
+      <span class="series-nav-label">📚 투자 구루 열전</span>
+      <a href="guru-series-overview.html" class="snav-item">개요</a>
+      <a href="benjamin-graham.html" class="snav-item">①그레이엄</a>
+      <a href="philip-fisher.html" class="snav-item active">②피셔</a>
+      <a href="warren-buffett.html" class="snav-item">③버핏</a>
+      <a href="charlie-munger.html" class="snav-item">④멍거</a>
+      <a href="peter-lynch.html" class="snav-item">⑤린치</a>
+      <a href="jesse-livermore.html" class="snav-item">⑥리버모어</a>
+      <a href="george-soros.html" class="snav-item">⑦소로스</a>
+      <a href="ray-dalio.html" class="snav-item">⑧달리오</a>
+      <a href="michael-burry.html" class="snav-item">⑨버리</a>
+      <a href="howard-marks.html" class="snav-item">⑩막스</a>
+      <a href="john-bogle.html" class="snav-item">⑪보글</a>
+    </div>
+
+    <div class="series-badge">② 성장주 원형</div>
+    <h1>필립 피셔<br><span style="font-size:0.6em;font-weight:600;color:var(--text-sec);">Philip Fisher, 1907–2004</span></h1>
+    <p class="hero-sub">성장주 투자의 원조. 재무제표 분석보다 기업의 질적 특성 — 경영진의 역량, 연구개발 투자, 시장 지배력 — 을 중시했다. "위대한 기업을 합리적 가격에 사서 영원히 보유하라"는 철학은 워런 버핏에게 직접 흡수되었다.</p>
+
+    <div class="meta-bar">
+      <span class="meta-chip">📍 스탠퍼드 경영대학원</span>
+      <span class="meta-chip">📅 1907–2004</span>
+      <span class="meta-chip">🏦 피셔 앤 컴퍼니</span>
+      <span class="meta-chip">📚 위대한 기업에 투자하라(1958)</span>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">대표 투자 기간</div>
+        <div class="kpi-value">~75<span style="font-size:16px">년</span></div>
+        <div class="kpi-unit">1931–2004 현역</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">모토롤라 보유</div>
+        <div class="kpi-value">40<span style="font-size:16px">년</span></div>
+        <div class="kpi-unit">1955년 매수, 사망 때까지</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">핵심 기법</div>
+        <div class="kpi-value" style="font-size:18px;">스커틀<br>버트</div>
+        <div class="kpi-unit">Scuttlebutt Method</div>
+      </div>
+    </div>
+
+    <!-- 철학 탄생 배경 -->
+    <div class="section">
+      <div class="section-title">철학 탄생 배경</div>
+      <div style="background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:20px;font-size:13px;color:var(--text-sec);line-height:1.75;">
+        피셔는 1928년 스탠퍼드 경영대학원을 중퇴하고 은행 리서치 애널리스트로 시작했다. 그는 수많은 재무제표를 분석하면서 "숫자는 과거를 말하지만, 위대한 기업의 본질은 숫자 뒤에 있다"는 것을 깨달았다. 그가 주목한 것은 <strong style="color:var(--text);">경영진의 의도, 연구개발 투자, 영업 조직의 효율성, 고객 관계</strong> — 재무제표에 나타나지 않는 것들이었다. 1958년 출간한 《위대한 기업에 투자하라(Common Stocks and Uncommon Profits)》는 버핏이 "내 생애 두 번째로 중요한 투자 책"이라고 말한 작품이다. 그레이엄이 '얼마나 싼가'를 물었다면, 피셔는 '얼마나 위대한가'를 물었다.
+      </div>
+    </div>
+
+    <!-- 핵심 원칙 -->
+    <div class="section">
+      <div class="section-title">핵심 원칙 3가지</div>
+      <div class="principle-list">
+        <div class="principle-card">
+          <div class="principle-num">01</div>
+          <div>
+            <div class="principle-title">스커틀버트(Scuttlebutt) — 발품 리서치</div>
+            <div class="principle-desc">투자 전에 해당 기업의 고객, 공급업체, 전현직 임직원, 경쟁사 관계자들을 직접 만나 이야기하라. '스커틀버트'는 선원들이 물통 주변에서 정보를 교환하던 관행에서 유래. 숫자로는 알 수 없는 기업의 실체를 현장에서 검증하는 방법론이다.</div>
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">02</div>
+          <div>
+            <div class="principle-title">경영진의 역량과 정직성이 제1원칙</div>
+            <div class="principle-desc">재무 수치보다 "이 경영진은 주주를 진정으로 생각하는가?"가 더 중요하다. 훌륭한 제품이 있어도 경영진이 형편없으면 장기적으로 실패한다. 피셔는 경영진 인터뷰를 가장 중요한 리서치 수단으로 삼았다.</div>
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">03</div>
+          <div>
+            <div class="principle-title">매도는 거의 하지 마라 — "판매 시점이 없다"</div>
+            <div class="principle-desc">좋은 기업을 올바른 이유로 샀다면, 세금·거래비용을 감안하면 매도하는 것이 오히려 손해다. 다만 매도 정당화 조건 3가지 — ①기업 기초체력 악화, ②더 좋은 대안 발견, ③처음 판단 자체가 틀렸을 때 — 는 예외다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 피셔의 15가지 질문 -->
+    <div class="section">
+      <div class="section-title">피셔의 15가지 투자 체크리스트</div>
+      <div class="q-grid">
+        <div class="q-item"><div class="q-num">Q 01</div><div class="q-text">시장이 성장할 수 있는 제품/서비스인가?</div></div>
+        <div class="q-item"><div class="q-num">Q 02</div><div class="q-text">현재 제품 시장이 포화되면 새 성장원을 개발할 의지가 있는가?</div></div>
+        <div class="q-item"><div class="q-num">Q 03</div><div class="q-text">R&D 지출 대비 효율은 어느 수준인가?</div></div>
+        <div class="q-item"><div class="q-num">Q 04</div><div class="q-text">영업 조직의 수준은?</div></div>
+        <div class="q-item"><div class="q-num">Q 05</div><div class="q-text">이익률은 충분한가?</div></div>
+        <div class="q-item"><div class="q-num">Q 06</div><div class="q-text">이익률 개선을 위한 노력을 하고 있는가?</div></div>
+        <div class="q-item"><div class="q-num">Q 07</div><div class="q-text">노사 관계는 우수한가?</div></div>
+        <div class="q-item"><div class="q-num">Q 08</div><div class="q-text">경영진 간의 관계는 좋은가?</div></div>
+        <div class="q-item"><div class="q-num">Q 09</div><div class="q-text">경영 깊이(depth of management)가 있는가?</div></div>
+        <div class="q-item"><div class="q-num">Q 10</div><div class="q-text">원가·회계 분석 능력이 있는가?</div></div>
+        <div class="q-item"><div class="q-num">Q 11</div><div class="q-text">경쟁 분야에서 탁월한 측면이 있는가?</div></div>
+        <div class="q-item"><div class="q-num">Q 12</div><div class="q-text">장기 이익 전망이 있는가?</div></div>
+        <div class="q-item"><div class="q-num">Q 13</div><div class="q-text">희석 없이 성장 자금을 조달할 수 있는가?</div></div>
+        <div class="q-item"><div class="q-num">Q 14</div><div class="q-text">경영진은 좋을 때만 솔직한가, 나쁠 때도 솔직한가?</div></div>
+        <div class="q-item"><div class="q-num">Q 15</div><div class="q-text">의심 여지 없이 최고 수준의 경영진인가?</div></div>
+      </div>
+    </div>
+
+    <!-- 대표 명언 -->
+    <div class="section">
+      <div class="section-title">대표 명언</div>
+      <div class="quote-block">
+        <div class="quote-text">"주식시장은 참을성 없는 사람의 돈을 인내심 있는 사람에게 이전시키는 장치다."</div>
+        <div class="quote-context">— 장기 보유 철학의 요약</div>
+      </div>
+      <div class="quote-block">
+        <div class="quote-text">"광범위한 분산투자는 무지에 대한 헤지다. 자신이 무엇을 하는지 아는 사람에게는 거의 의미가 없다."</div>
+        <div class="quote-context">— 집중투자 옹호 / 버핏이 이를 자신의 철학으로 발전시킴</div>
+      </div>
+      <div class="quote-block">
+        <div class="quote-text">"올바른 주식은 사람이 죽을 때까지 팔 필요가 없다."</div>
+        <div class="quote-context">— 장기 보유 극단적 표현. 실제로 모토롤라를 약 40년 보유</div>
+      </div>
+    </div>
+
+    <!-- 실전 투자 사례 -->
+    <div class="section">
+      <div class="section-title">실전 투자 사례</div>
+      <div class="case-box">
+        <div class="case-title">🏆 모토롤라 (1955 ~ 사망까지)</div>
+        <div class="case-body">
+          피셔는 1955년 모토롤라 주식을 매입하고 2004년 96세로 사망할 때까지 단 한 주도 팔지 않았다. 약 40년 보유 기간 동안 모토롤라는 주가가 수십 배 상승했다. 피셔가 당시 투자를 결정한 이유는 재무제표가 아니라 스커틀버트 리서치를 통해 파악한 경영진의 우수성과 반도체 분야의 성장 가능성이었다. 이 투자는 피셔의 철학 — 위대한 기업을 찾아 끝없이 보유하라 — 의 살아있는 증거가 되었다.
+        </div>
+        <span class="case-result">✓ 결과: 약 40년 보유 · 수십 배 수익 · 매도 없이 사망까지</span>
+      </div>
+    </div>
+
+    <!-- 한국 투자자 시사점 -->
+    <div class="section">
+      <div class="section-title">한국 투자자 시사점</div>
+      <div class="insight-box">
+        <div class="insight-title">📌 피셔 철학의 한국 시장 적용</div>
+        <ul class="insight-list">
+          <li>삼성전자·SK하이닉스·NAVER 같은 장기 성장주에 피셔의 15가지 체크리스트를 적용해 볼 수 있다. 특히 R&D 지출 효율성 분석이 유효하다.</li>
+          <li>스커틀버트를 한국식으로 적용하면: 해당 기업 제품/서비스의 실사용자 리뷰, 직원 후기 플랫폼(블라인드), 공급업체 관계자 인터뷰가 대안이 된다.</li>
+          <li>한국 기업의 경영진 리스크(오너 리스크, 지배구조 문제)는 피셔의 '경영진 정직성 체크'에서 각별히 중요하다. 이것이 한국 우량 기업이 저평가받는 핵심 원인 중 하나다.</li>
+          <li>너무 자주 종목을 교체하는 한국 개인투자자 문화는 피셔 철학과 정면으로 배치된다. 세금과 거래비용을 계산에 넣으면 잦은 교체가 수익률을 갉아먹는다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-nav">
+      <a href="benjamin-graham.html" class="fnav-btn">← ① 벤저민 그레이엄</a>
+      <a href="warren-buffett.html" class="fnav-btn">③ 워런 버핏 →</a>
+    </div>
+  </div>
+  <script>
+    function toggleTheme(){const h=document.getElementById('htmlRoot');h.classList.toggle('theme-dark');h.classList.toggle('theme-light');}
+  </script>
+</body>
+</html>

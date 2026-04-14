@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko" id="htmlRoot" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>존 보글 — 패시브 혁명의 아버지</title>
+  <meta name="knowledge-id" content="john-bogle">
+  <meta name="knowledge-series" content="투자 구루 열전">
+  <meta name="knowledge-category" content="투자·금융">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0e0e0e;--surface-mid:#1a1919;--surface-high:#201f1f;--surface-highest:#262626;--surface-bright:#2c2c2c;--border:rgba(255,255,255,0.05);--text:#ffffff;--text-sec:#adaaaa;--accent:#22d3ee;}
+    html.theme-light{--bg:#FAFAFA;--surface-mid:#F9FAFB;--surface-high:#FFFFFF;--surface-highest:#F3F4F6;--surface-bright:#FFFFFF;--border:rgba(0,0,0,0.06);--text:#111827;--text-sec:#4B5563;--accent:#0891b2;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Noto Sans KR','Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background .3s,color .3s;}
+    body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,color-mix(in srgb,#0891b2 8%,transparent),transparent);}
+    .page-wrap{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:24px 20px 80px;}
+    .view-menu{position:fixed;top:16px;right:16px;z-index:100;display:flex;gap:8px;}
+    .view-btn{background:var(--surface-high);border:1px solid var(--border);color:var(--text-sec);border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;font-family:inherit;}
+    .view-btn:hover{background:var(--surface-bright);color:var(--text);}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--text-sec);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface-high);margin-bottom:28px;}
+    .back-btn:hover{background:var(--surface-bright);color:var(--text);}
+    .series-nav{background:var(--surface-mid);border:1px solid var(--border);border-left:3px solid #0891b2;border-radius:10px;padding:12px 16px;margin-bottom:24px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+    .series-nav-label{font-size:11px;font-weight:700;color:#22d3ee;text-transform:uppercase;letter-spacing:0.06em;flex-shrink:0;}
+    .snav-item{font-size:12px;color:var(--text-sec);text-decoration:none;padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface-highest);transition:all .2s;white-space:nowrap;}
+    .snav-item:hover{color:var(--text);}
+    .snav-item.active{background:rgba(8,145,178,0.15);color:#22d3ee;border-color:rgba(8,145,178,0.4);font-weight:600;}
+    .series-badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#22d3ee;background:rgba(8,145,178,0.12);border:1px solid rgba(8,145,178,0.3);padding:3px 10px;border-radius:99px;margin-bottom:14px;}
+    h1{font-size:clamp(22px,4vw,34px);font-weight:900;line-height:1.2;letter-spacing:-0.03em;margin-bottom:8px;}
+    .hero-sub{font-size:15px;color:var(--text-sec);line-height:1.65;}
+    .meta-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:20px 0 28px;padding:12px 16px;background:var(--surface-mid);border-radius:12px;border:1px solid var(--border);}
+    .meta-chip{font-size:12px;color:var(--text-sec);padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface-highest);}
+    .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
+    @media(max-width:500px){.kpi-row{grid-template-columns:1fr 1fr;}}
+    .kpi-card{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
+    .kpi-label{font-size:11px;color:var(--text-sec);font-weight:500;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:6px;}
+    .kpi-value{font-size:26px;font-weight:800;color:#22d3ee;letter-spacing:-0.03em;line-height:1;}
+    .kpi-unit{font-size:11px;color:var(--text-sec);margin-top:4px;}
+    .section{margin-bottom:28px;}
+    .section-title{font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-sec);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+    .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+    .quote-block{background:var(--surface-mid);border:1px solid var(--border);border-left:3px solid #22d3ee;border-radius:10px;padding:16px 20px;margin-bottom:12px;}
+    .quote-text{font-size:15px;font-weight:600;line-height:1.6;color:var(--text);font-style:italic;}
+    .quote-context{font-size:12px;color:var(--text-sec);margin-top:8px;}
+    .principle-list{display:flex;flex-direction:column;gap:12px;}
+    .principle-card{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:18px 20px;display:flex;gap:16px;}
+    .principle-num{font-size:24px;font-weight:900;color:#22d3ee;opacity:0.5;flex-shrink:0;line-height:1;}
+    .principle-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+    .principle-desc{font-size:13px;color:var(--text-sec);line-height:1.6;}
+    /* cost impact */
+    .cost-box{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:20px;}
+    .cost-row{display:flex;gap:12px;margin-bottom:10px;}
+    .cost-col{flex:1;text-align:center;}
+    .cost-label{font-size:11px;color:var(--text-sec);margin-bottom:6px;font-weight:600;}
+    .cost-value{font-size:28px;font-weight:900;line-height:1;margin-bottom:4px;}
+    .cost-sub{font-size:11px;color:var(--text-sec);}
+    .insight-box{background:rgba(8,145,178,0.06);border:1px solid rgba(8,145,178,0.2);border-radius:12px;padding:18px 20px;}
+    .insight-title{font-size:13px;font-weight:700;color:#22d3ee;margin-bottom:10px;}
+    .insight-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+    .insight-list li{font-size:13px;color:var(--text-sec);padding-left:16px;position:relative;line-height:1.6;}
+    .insight-list li::before{content:'→';position:absolute;left:0;color:#22d3ee;font-weight:700;}
+    .footer-nav{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;}
+    .fnav-btn{display:flex;align-items:center;gap:8px;background:var(--surface-mid);border:1px solid var(--border);border-radius:10px;padding:10px 16px;text-decoration:none;color:var(--text);font-size:13px;font-weight:500;transition:background .2s;}
+    .fnav-btn:hover{background:var(--surface-bright);}
+    table{width:100%;border-collapse:collapse;font-size:13px;}
+    th{font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--text-sec);padding:10px 12px;border-bottom:1px solid var(--border);text-align:left;}
+    td{padding:11px 12px;border-bottom:1px solid var(--border);color:var(--text-sec);}
+    td:first-child{color:var(--text);font-weight:600;}
+    tr:last-child td{border-bottom:none;}
+  </style>
+</head>
+<body>
+  <div class="view-menu">
+    <button class="view-btn" onclick="toggleTheme()">🌓 테마</button>
+    <button class="view-btn" onclick="window.print()">🖨 인쇄</button>
+  </div>
+  <div class="page-wrap">
+    <a href="../index.html" class="back-btn">← 아카이브로</a>
+    <div class="series-nav">
+      <span class="series-nav-label">📚 투자 구루 열전</span>
+      <a href="guru-series-overview.html" class="snav-item">개요</a>
+      <a href="benjamin-graham.html" class="snav-item">①그레이엄</a>
+      <a href="philip-fisher.html" class="snav-item">②피셔</a>
+      <a href="warren-buffett.html" class="snav-item">③버핏</a>
+      <a href="charlie-munger.html" class="snav-item">④멍거</a>
+      <a href="peter-lynch.html" class="snav-item">⑤린치</a>
+      <a href="jesse-livermore.html" class="snav-item">⑥리버모어</a>
+      <a href="george-soros.html" class="snav-item">⑦소로스</a>
+      <a href="ray-dalio.html" class="snav-item">⑧달리오</a>
+      <a href="michael-burry.html" class="snav-item">⑨버리</a>
+      <a href="howard-marks.html" class="snav-item">⑩막스</a>
+      <a href="john-bogle.html" class="snav-item active">⑪보글</a>
+    </div>
+
+    <div class="series-badge">⑪ 패시브 혁명 · 저비용 인덱스</div>
+    <h1>존 보글<br><span style="font-size:0.6em;font-weight:600;color:var(--text-sec);">John Bogle, 1929–2019</span></h1>
+    <p class="hero-sub">뱅가드 그룹 창업자. 1976년 세계 최초의 소매 인덱스 펀드를 출시해 투자 세계에 혁명을 일으켰다. "시장을 이기려 하지 마라. 시장 수익을 전부 가져가라"는 철학으로 수천만 명의 일반 투자자에게 부를 돌려줬다. 버핏은 그를 "미국 투자자들에게 가장 많은 기여를 한 인물"이라고 평가했다.</p>
+
+    <div class="meta-bar">
+      <span class="meta-chip">📍 펜실베이니아, 미국</span>
+      <span class="meta-chip">📅 1929–2019</span>
+      <span class="meta-chip">🏦 뱅가드 그룹 ($7T+ AUM)</span>
+      <span class="meta-chip">📚 인덱스 투자의 교훈(2007) · 주식 투자의 상식</span>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">뱅가드 운용 규모</div>
+        <div class="kpi-value">$7T<span style="font-size:14px">+</span></div>
+        <div class="kpi-unit">세계 2위 자산운용사</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">최초 인덱스 펀드</div>
+        <div class="kpi-value">1976<span style="font-size:14px">년</span></div>
+        <div class="kpi-unit">뱅가드 500 인덱스 펀드</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">뱅가드 보수율</div>
+        <div class="kpi-value">0.03<span style="font-size:16px">%</span></div>
+        <div class="kpi-unit">S&P500 ETF (VOO) 기준</div>
+      </div>
+    </div>
+
+    <!-- 핵심 원칙 -->
+    <div class="section">
+      <div class="section-title">핵심 원칙 3가지</div>
+      <div class="principle-list">
+        <div class="principle-card">
+          <div class="principle-num">01</div>
+          <div>
+            <div class="principle-title">비용이 전부다 — 비용의 법칙(Cost Matters Hypothesis)</div>
+            <div class="principle-desc">시장 총 수익에서 모든 투자자의 비용(수수료·세금·거래비용)을 빼면 투자자 총 순익이 나온다. 따라서 비용을 최소화하는 것이 수익 극대화의 가장 확실한 방법이다. 연 1% 차이가 30년 후에는 복리로 엄청난 차이를 만든다.</div>
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">02</div>
+          <div>
+            <div class="principle-title">인덱스 펀드 — 시장을 이기려 하지 마라</div>
+            <div class="principle-desc">장기적으로 액티브 펀드의 약 80~90%는 인덱스를 이기지 못한다. 그 이유는 단순하다 — 비용 때문이다. 마켓을 이기는 것이 가능하더라도, 그 알파를 비용이 모두 먹어버린다. 따라서 시장 평균을 그대로 가져가는 것이 대다수 투자자에게 최선이다.</div>
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">03</div>
+          <div>
+            <div class="principle-title">단순함과 규율 — 사서 기다려라</div>
+            <div class="principle-desc">광범위한 분산 인덱스 펀드를 매달 자동 투자하고, 절대 팔지 마라. 복잡한 전략, 시장 타이밍, 스타 매니저를 추종하는 것은 모두 비용을 늘리고 수익을 줄인다. 가장 지루한 전략이 장기적으로 가장 우월하다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 비용의 복리 충격 -->
+    <div class="section">
+      <div class="section-title">비용이 복리에 미치는 충격 (30년 시뮬레이션)</div>
+      <div class="cost-box">
+        <div style="font-size:13px;color:var(--text-sec);margin-bottom:16px;">1억 원 투자, 연 수익률 7%, 30년 후 결과</div>
+        <div class="cost-row">
+          <div class="cost-col">
+            <div class="cost-label">인덱스 ETF (보수 0.03%)</div>
+            <div class="cost-value" style="color:#22d3ee;">7.59억</div>
+            <div class="cost-sub">순비용 연 30만원</div>
+          </div>
+          <div class="cost-col">
+            <div class="cost-label">액티브 펀드 (보수 1.5%)</div>
+            <div class="cost-value" style="color:#fb923c;">4.98억</div>
+            <div class="cost-sub">순비용 연 450만원 (비교 시)</div>
+          </div>
+          <div class="cost-col">
+            <div class="cost-label">차이</div>
+            <div class="cost-value" style="color:#f87171;">2.61억</div>
+            <div class="cost-sub">비용 차이로 잃은 부</div>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--text-sec);margin-top:6px;padding-top:12px;border-top:1px solid var(--border);">단순 수수료 1.47%p 차이가 30년 후 원금의 2.6배에 달하는 차이를 만든다.</div>
+      </div>
+    </div>
+
+    <!-- 대표 명언 -->
+    <div class="section">
+      <div class="section-title">대표 명언</div>
+      <div class="quote-block">
+        <div class="quote-text">"투자에서 당신이 얻는 것은 시장의 수익 전부다 — 당신이 지불하는 비용만 빼고."</div>
+        <div class="quote-context">— 비용 최소화 철학의 핵심 명제</div>
+      </div>
+      <div class="quote-block">
+        <div class="quote-text">"주식을 사지 말고, 시장 전체를 사라. 그리고 평생 기다려라."</div>
+        <div class="quote-context">— 인덱스 투자의 본질</div>
+      </div>
+      <div class="quote-block">
+        <div class="quote-text">"시장을 이기려는 욕구를 포기하는 것이 가장 현명한 투자 결정이다."</div>
+        <div class="quote-context">— 《인덱스 투자의 교훈》</div>
+      </div>
+    </div>
+
+    <!-- 인덱스 vs 액티브 비교 -->
+    <div class="section">
+      <div class="section-title">인덱스 vs 액티브 펀드 비교</div>
+      <div style="background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:4px 0;overflow:hidden;">
+        <table>
+          <thead><tr><th>항목</th><th>인덱스 펀드(ETF)</th><th>액티브 펀드</th></tr></thead>
+          <tbody>
+            <tr><td>운용 보수</td><td style="color:#22d3ee;">0.03~0.1%</td><td style="color:#fb923c;">0.5~2.0%</td></tr>
+            <tr><td>장기 시장 대비 수익</td><td style="color:#22d3ee;">시장 수익 100% 추종</td><td style="color:#fb923c;">10~20%만 장기 아웃퍼폼</td></tr>
+            <tr><td>분산 효과</td><td style="color:#22d3ee;">시장 전체 자동 분산</td><td style="color:#fb923c;">펀드매니저 판단에 의존</td></tr>
+            <tr><td>세금 효율</td><td style="color:#22d3ee;">낮은 회전율 → 과세 최소화</td><td style="color:#fb923c;">잦은 매매 → 세금 비용 증가</td></tr>
+            <tr><td>예측 가능성</td><td style="color:#22d3ee;">시장 수익 = 예측 가능</td><td style="color:#fb923c;">매니저 실력에 의존</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 한국 투자자 시사점 -->
+    <div class="section">
+      <div class="section-title">한국 투자자 시사점</div>
+      <div class="insight-box">
+        <div class="insight-title">📌 보글 철학의 한국 시장 적용</div>
+        <ul class="insight-list">
+          <li>국내 ETF 시장에서 보글 철학 구현: KODEX 200 (코스피 인덱스, 보수 0.05%), TIGER 미국S&P500 (보수 0.07%)를 매달 자동 투자하는 것이 가장 보글스러운 전략이다.</li>
+          <li>개인 연금(IRP, 연금저축)에서 액티브 펀드 대신 인덱스 ETF로 전환하라. 연금 계좌는 세금 이연 효과까지 더해져 비용 절약의 복리 효과가 극대화된다.</li>
+          <li>보글의 가장 중요한 교훈은 시리즈 전체를 통틀어 가장 '단순하고 실천 가능한' 전략이다. 투자 지식이 없는 가족에게 처음 투자를 가르친다면 보글의 철학에서 시작하라.</li>
+          <li>단, 한국 시장은 코스피 인덱스의 장기 성과가 미국 S&P500보다 저조하다. 보글식 인덱스 투자를 한다면 글로벌(미국 중심) 인덱스 ETF가 더 합리적일 수 있다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-nav">
+      <a href="howard-marks.html" class="fnav-btn">← ⑩ 하워드 막스</a>
+      <a href="guru-series-overview.html" class="fnav-btn">시리즈 개요로 →</a>
+    </div>
+  </div>
+  <script>
+    function toggleTheme(){const h=document.getElementById('htmlRoot');h.classList.toggle('theme-dark');h.classList.toggle('theme-light');}
+  </script>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ko" id="htmlRoot" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>벤저민 그레이엄 — 가치투자의 아버지</title>
+  <meta name="knowledge-id" content="benjamin-graham">
+  <meta name="knowledge-series" content="투자 구루 열전">
+  <meta name="knowledge-category" content="투자·금융">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#0e0e0e; --surface-low:#131313; --surface-mid:#1a1919;
+      --surface-high:#201f1f; --surface-highest:#262626; --surface-bright:#2c2c2c;
+      --border:rgba(255,255,255,0.05); --text:#ffffff; --text-sec:#adaaaa; --accent:#94a3b8;
+    }
+    html.theme-light {
+      --bg:#FAFAFA; --surface-low:#FFFFFF; --surface-mid:#F9FAFB;
+      --surface-high:#FFFFFF; --surface-highest:#F3F4F6; --surface-bright:#FFFFFF;
+      --border:rgba(0,0,0,0.06); --text:#111827; --text-sec:#4B5563; --accent:#475569;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Noto Sans KR','Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background .3s,color .3s;}
+    body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,color-mix(in srgb,#6b7280 8%,transparent),transparent);}
+    .page-wrap{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:24px 20px 80px;}
+    .view-menu{position:fixed;top:16px;right:16px;z-index:100;display:flex;gap:8px;}
+    .view-btn{background:var(--surface-high);border:1px solid var(--border);color:var(--text-sec);border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;font-family:inherit;transition:background .2s,color .2s;display:flex;align-items:center;gap:5px;}
+    .view-btn:hover{background:var(--surface-bright);color:var(--text);}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--text-sec);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface-high);margin-bottom:28px;transition:background .2s,color .2s;}
+    .back-btn:hover{background:var(--surface-bright);color:var(--text);}
+
+    /* SERIES NAV */
+    .series-nav{background:var(--surface-mid);border:1px solid var(--border);border-left:3px solid #6b7280;border-radius:10px;padding:12px 16px;margin-bottom:24px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+    .series-nav-label{font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;flex-shrink:0;}
+    .snav-item{font-size:12px;color:var(--text-sec);text-decoration:none;padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface-highest);transition:all .2s;white-space:nowrap;}
+    .snav-item:hover{color:var(--text);}
+    .snav-item.active{background:rgba(107,114,128,0.15);color:#94a3b8;border-color:rgba(107,114,128,0.4);font-weight:600;}
+
+    /* HERO */
+    .series-badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#94a3b8;background:rgba(107,114,128,0.12);border:1px solid rgba(107,114,128,0.3);padding:3px 10px;border-radius:99px;margin-bottom:14px;}
+    h1{font-size:clamp(22px,4vw,34px);font-weight:900;line-height:1.2;letter-spacing:-0.03em;margin-bottom:8px;}
+    .hero-sub{font-size:15px;color:var(--text-sec);line-height:1.65;}
+
+    /* META */
+    .meta-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:20px 0 28px;padding:12px 16px;background:var(--surface-mid);border-radius:12px;border:1px solid var(--border);}
+    .meta-chip{font-size:12px;color:var(--text-sec);padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface-highest);}
+
+    /* KPI */
+    .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
+    @media(max-width:500px){.kpi-row{grid-template-columns:1fr 1fr;}}
+    .kpi-card{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
+    .kpi-label{font-size:11px;color:var(--text-sec);font-weight:500;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:6px;}
+    .kpi-value{font-size:26px;font-weight:800;color:#94a3b8;letter-spacing:-0.03em;line-height:1;}
+    .kpi-unit{font-size:11px;color:var(--text-sec);margin-top:4px;}
+
+    /* SECTION */
+    .section{margin-bottom:28px;}
+    .section-title{font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-sec);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+    .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+
+    /* QUOTE */
+    .quote-block{background:var(--surface-mid);border:1px solid var(--border);border-left:3px solid #94a3b8;border-radius:10px;padding:16px 20px;margin-bottom:12px;}
+    .quote-text{font-size:15px;font-weight:600;line-height:1.6;color:var(--text);font-style:italic;}
+    .quote-context{font-size:12px;color:var(--text-sec);margin-top:8px;}
+
+    /* PRINCIPLES */
+    .principle-list{display:flex;flex-direction:column;gap:12px;}
+    .principle-card{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:18px 20px;display:flex;gap:16px;}
+    .principle-num{font-size:24px;font-weight:900;color:#94a3b8;opacity:0.5;flex-shrink:0;line-height:1;}
+    .principle-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+    .principle-desc{font-size:13px;color:var(--text-sec);line-height:1.6;}
+
+    /* CASE */
+    .case-box{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:20px;}
+    .case-title{font-size:13px;font-weight:700;color:#94a3b8;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.05em;}
+    .case-body{font-size:13px;color:var(--text-sec);line-height:1.7;}
+    .case-result{display:inline-block;margin-top:10px;background:rgba(148,163,184,0.12);border:1px solid rgba(148,163,184,0.3);color:#94a3b8;font-size:12px;font-weight:600;padding:4px 12px;border-radius:99px;}
+
+    /* FLOW */
+    .flow-row{display:flex;align-items:center;flex-wrap:wrap;gap:0;}
+    .flow-step{background:var(--surface-mid);border:1px solid var(--border);border-radius:10px;padding:12px 14px;flex:1;min-width:100px;}
+    .flow-step-label{font-size:10px;color:var(--text-sec);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:4px;}
+    .flow-step-val{font-size:13px;font-weight:600;color:var(--text);}
+    .flow-arrow{font-size:18px;color:var(--text-sec);padding:0 6px;flex-shrink:0;}
+
+    /* INSIGHT */
+    .insight-box{background:rgba(148,163,184,0.06);border:1px solid rgba(148,163,184,0.2);border-radius:12px;padding:18px 20px;}
+    .insight-title{font-size:13px;font-weight:700;color:#94a3b8;margin-bottom:10px;}
+    .insight-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+    .insight-list li{font-size:13px;color:var(--text-sec);padding-left:16px;position:relative;line-height:1.6;}
+    .insight-list li::before{content:'→';position:absolute;left:0;color:#94a3b8;font-weight:700;}
+
+    /* COMPARE TABLE */
+    table{width:100%;border-collapse:collapse;font-size:13px;}
+    th{font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--text-sec);padding:10px 12px;border-bottom:1px solid var(--border);text-align:left;}
+    td{padding:11px 12px;border-bottom:1px solid var(--border);color:var(--text-sec);}
+    td:first-child{color:var(--text);font-weight:600;}
+    tr:last-child td{border-bottom:none;}
+
+    /* FOOTER */
+    .footer-nav{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;}
+    .fnav-btn{display:flex;align-items:center;gap:8px;background:var(--surface-mid);border:1px solid var(--border);border-radius:10px;padding:10px 16px;text-decoration:none;color:var(--text);font-size:13px;font-weight:500;transition:background .2s;}
+    .fnav-btn:hover{background:var(--surface-bright);}
+  </style>
+</head>
+<body>
+  <div class="view-menu">
+    <button class="view-btn" onclick="toggleTheme()">🌓 테마</button>
+    <button class="view-btn" onclick="window.print()">🖨 인쇄</button>
+  </div>
+  <div class="page-wrap">
+    <a href="../index.html" class="back-btn">← 아카이브로</a>
+
+    <!-- SERIES NAV -->
+    <div class="series-nav">
+      <span class="series-nav-label">📚 투자 구루 열전</span>
+      <a href="guru-series-overview.html" class="snav-item">개요</a>
+      <a href="benjamin-graham.html" class="snav-item active">①그레이엄</a>
+      <a href="philip-fisher.html" class="snav-item">②피셔</a>
+      <a href="warren-buffett.html" class="snav-item">③버핏</a>
+      <a href="charlie-munger.html" class="snav-item">④멍거</a>
+      <a href="peter-lynch.html" class="snav-item">⑤린치</a>
+      <a href="jesse-livermore.html" class="snav-item">⑥리버모어</a>
+      <a href="george-soros.html" class="snav-item">⑦소로스</a>
+      <a href="ray-dalio.html" class="snav-item">⑧달리오</a>
+      <a href="michael-burry.html" class="snav-item">⑨버리</a>
+      <a href="howard-marks.html" class="snav-item">⑩막스</a>
+      <a href="john-bogle.html" class="snav-item">⑪보글</a>
+    </div>
+
+    <!-- HERO -->
+    <div class="series-badge">① 가치투자 원류</div>
+    <h1>벤저민 그레이엄<br><span style="font-size:0.6em;font-weight:600;color:var(--text-sec);">Benjamin Graham, 1894–1976</span></h1>
+    <p class="hero-sub">가치투자의 창시자. 주식을 도박이 아닌 기업의 소유권으로 정의하고, 내재가치와 시장가격의 괴리를 체계적으로 이용하는 투자 과학을 세웠다. 워런 버핏이 "내 인생에서 가장 중요한 스승"이라고 부른 인물.</p>
+
+    <div class="meta-bar">
+      <span class="meta-chip">📍 미국 컬럼비아 비즈니스 스쿨</span>
+      <span class="meta-chip">📅 1894–1976</span>
+      <span class="meta-chip">🏦 그레이엄-뉴먼 펀드</span>
+      <span class="meta-chip">📚 증권분석(1934) · 현명한 투자자(1949)</span>
+    </div>
+
+    <!-- KPI -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">운용 수익률</div>
+        <div class="kpi-value">~17%</div>
+        <div class="kpi-unit">연평균 (1936–1956)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">운용 기간</div>
+        <div class="kpi-value">20<span style="font-size:16px">년</span></div>
+        <div class="kpi-unit">그레이엄-뉴먼 펀드</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">핵심 개념</div>
+        <div class="kpi-value" style="font-size:18px;">안전<br>마진</div>
+        <div class="kpi-unit">Margin of Safety</div>
+      </div>
+    </div>
+
+    <!-- 철학 탄생 배경 -->
+    <div class="section">
+      <div class="section-title">철학 탄생 배경</div>
+      <div class="flow-row">
+        <div class="flow-step">
+          <div class="flow-step-label">1929년 대공황</div>
+          <div class="flow-step-val">주식시장 -89% 폭락. 그레이엄도 막대한 손실 경험</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-label">핵심 질문</div>
+          <div class="flow-step-val">"투기와 투자를 어떻게 구분할 수 있는가?"</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-label">1934년 결론</div>
+          <div class="flow-step-val">재무제표 분석으로 내재가치를 계산하면 투자는 과학이 된다</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-label">이론화</div>
+          <div class="flow-step-val">미스터 마켓·안전마진·내재가치 3대 개념 체계 완성</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 핵심 원칙 -->
+    <div class="section">
+      <div class="section-title">핵심 원칙 3가지</div>
+      <div class="principle-list">
+        <div class="principle-card">
+          <div class="principle-num">01</div>
+          <div>
+            <div class="principle-title">내재가치(Intrinsic Value)와 안전마진</div>
+            <div class="principle-desc">기업의 진정한 가치는 재무제표에서 계산할 수 있다. 내재가치보다 <strong>충분히 낮은 가격(안전마진)</strong>에 사야만 진정한 투자다. 그레이엄은 안전마진을 최소 33%에서 50% 수준으로 요구했다. 이 여유분이 분석 오류와 예상 못한 악재를 흡수한다.</div>
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">02</div>
+          <div>
+            <div class="principle-title">미스터 마켓(Mr. Market) — 시장은 하인이지 주인이 아니다</div>
+            <div class="principle-desc">시장은 매일 당신에게 주식을 사거나 팔 가격을 제안하는 정서 불안정한 파트너(미스터 마켓)와 같다. 그는 때로 지나치게 낙관적이고, 때로 공황에 빠진다. 당신은 그를 따를 필요가 없다 — 그가 우울할 때 사고, 흥분할 때 팔면 된다.</div>
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">03</div>
+          <div>
+            <div class="principle-title">방어적 투자자 vs 공격적 투자자</div>
+            <div class="principle-desc">모든 투자자가 매일 시장을 분석할 시간과 능력을 갖고 있지 않다. <strong>방어적 투자자</strong>는 우량 주식과 채권에 50:50으로 분산 투자하면 충분하다. <strong>공격적 투자자</strong>만이 저평가 종목을 찾는 심층 분석에 시간을 써야 한다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 대표 명언 -->
+    <div class="section">
+      <div class="section-title">대표 명언</div>
+      <div class="quote-block">
+        <div class="quote-text">"투자는 철저한 분석을 통해 원금의 안전과 적절한 수익을 보장하는 행위다. 이 요건을 충족하지 못하는 것은 투기다."</div>
+        <div class="quote-context">— 《증권분석》(1934) 투자의 정의</div>
+      </div>
+      <div class="quote-block">
+        <div class="quote-text">"시장은 단기적으로는 투표 기계지만, 장기적으로는 체중계다."</div>
+        <div class="quote-context">— 시장 가격과 내재가치의 관계 / 워런 버핏이 자주 인용</div>
+      </div>
+      <div class="quote-block">
+        <div class="quote-text">"안전마진의 비결은 단순하다: 싸게 사라. 이 원칙은 뻔해 보이지만 월가에서 가장 적게 실천되는 지혜다."</div>
+        <div class="quote-context">— 《현명한 투자자》 20장 (1949)</div>
+      </div>
+    </div>
+
+    <!-- 실전 투자 사례 -->
+    <div class="section">
+      <div class="section-title">실전 투자 사례</div>
+      <div class="case-box">
+        <div class="case-title">🏆 GEICO 투자 (1948)</div>
+        <div class="case-body">
+          그레이엄은 1948년 정부직원 보험회사(GEICO)에 펀드 자산의 약 25%를 집중 투자했다. 이는 그 자신이 주장한 분산투자 원칙을 깨는 것이었지만, GEICO의 비용 구조와 성장 가능성이 워낙 명확했기 때문이다. 그레이엄-뉴먼 펀드는 712,500달러에 GEICO 주식을 매입했고, 이후 이 투자는 수백 배의 수익을 냈다. 아이러니하게도 그레이엄의 가장 큰 성공은 그의 엄격한 분산투자 규칙을 어긴 데서 나왔다 — 이는 후에 버핏이 집중투자를 정당화하는 근거가 된다.
+        </div>
+        <span class="case-result">✓ 결과: GEICO는 후일 버크셔 해서웨이가 전액 인수 · 버핏에게도 직접 이어진 인연</span>
+      </div>
+    </div>
+
+    <!-- 투자 방법론 요약 -->
+    <div class="section">
+      <div class="section-title">네트-넷(Net-Net) 투자법</div>
+      <div style="background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:20px;">
+        <div style="font-size:13px;color:var(--text-sec);margin-bottom:14px;">그레이엄이 개발한 가장 보수적인 저평가 판별법. 주가가 순운전자본(유동자산 - 전체부채)보다 낮은 기업을 찾는다.</div>
+        <table>
+          <thead><tr><th>항목</th><th>계산</th><th>의미</th></tr></thead>
+          <tbody>
+            <tr><td>유동자산</td><td>현금 + 매출채권 + 재고</td><td>당장 현금화 가능한 자산</td></tr>
+            <tr><td>(-) 전체부채</td><td>유동부채 + 장기부채</td><td>모든 의무 부채 차감</td></tr>
+            <tr><td>= NCAV</td><td>순유동자산가치</td><td>청산가치의 보수적 추정</td></tr>
+            <tr><td>매수 조건</td><td>시가총액 ≤ NCAV × 0.67</td><td>청산가치 대비 33% 할인 이상</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 계보 포지션 -->
+    <div class="section">
+      <div class="section-title">철학 계보 포지션</div>
+      <div style="background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:20px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;">
+        <div style="text-align:center;">
+          <div style="font-size:24px;margin-bottom:4px;">👴</div>
+          <div style="font-size:13px;font-weight:700;color:#94a3b8;">그레이엄</div>
+          <div style="font-size:11px;color:var(--text-sec);">원류</div>
+        </div>
+        <div style="font-size:20px;color:var(--text-sec);">→</div>
+        <div style="text-align:center;">
+          <div style="font-size:24px;margin-bottom:4px;">📈</div>
+          <div style="font-size:13px;font-weight:700;color:#e8b94f;">버핏·멍거</div>
+          <div style="font-size:11px;color:var(--text-sec);">직접 제자 · 진화</div>
+        </div>
+        <div style="font-size:20px;color:var(--text-sec);">→</div>
+        <div style="text-align:center;">
+          <div style="font-size:24px;margin-bottom:4px;">🛡</div>
+          <div style="font-size:13px;font-weight:700;color:#fb923c;">하워드 막스</div>
+          <div style="font-size:11px;color:var(--text-sec);">리스크·사이클</div>
+        </div>
+        <div style="font-size:20px;color:var(--text-sec);">→</div>
+        <div style="text-align:center;">
+          <div style="font-size:24px;margin-bottom:4px;">🔍</div>
+          <div style="font-size:13px;font-weight:700;color:#4ade80;">마이클 버리</div>
+          <div style="font-size:11px;color:var(--text-sec);">딥밸류·역발상</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 한국 투자자 시사점 -->
+    <div class="section">
+      <div class="section-title">한국 투자자 시사점</div>
+      <div class="insight-box">
+        <div class="insight-title">📌 그레이엄 철학의 한국 시장 적용</div>
+        <ul class="insight-list">
+          <li>코스피·코스닥에는 PBR 0.5배 이하의 네트-넷 기업이 여전히 많다. 구조적으로 그레이엄의 방법론이 적용 가능한 시장이다.</li>
+          <li>단, 한국 기업의 낮은 주주환원 문화 때문에 저평가가 영원히 해소되지 않는 '가치 함정(Value Trap)'에 빠질 위험이 있다. 촉매(Catalyst)를 함께 확인해야 한다.</li>
+          <li>개인 투자자라면 그레이엄의 방어적 투자자 전략 — 코스피 인덱스 ETF 60% + 국채 40% — 이 더 현실적인 출발점이다.</li>
+          <li>분기 실적 발표 때마다 미스터 마켓이 과잉 반응하는 패턴을 역이용하라. 단기 주가 변동에 일희일비하지 않는 것이 그레이엄이 가르치는 첫 번째 교훈이다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FOOTER NAV -->
+    <div class="footer-nav">
+      <a href="guru-series-overview.html" class="fnav-btn">← 시리즈 개요</a>
+      <a href="philip-fisher.html" class="fnav-btn">② 필립 피셔 →</a>
+    </div>
+  </div>
+
+  <script>
+    function toggleTheme(){
+      const h=document.getElementById('htmlRoot');
+      h.classList.toggle('theme-dark');
+      h.classList.toggle('theme-light');
+    }
+  </script>
+</body>
+</html>

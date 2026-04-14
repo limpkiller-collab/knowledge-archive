@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko" id="htmlRoot" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>찰리 멍거 — 다학제 사고의 대가</title>
+  <meta name="knowledge-id" content="charlie-munger">
+  <meta name="knowledge-series" content="투자 구루 열전">
+  <meta name="knowledge-category" content="투자·금융">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0e0e0e;--surface-low:#131313;--surface-mid:#1a1919;--surface-high:#201f1f;--surface-highest:#262626;--surface-bright:#2c2c2c;--border:rgba(255,255,255,0.05);--text:#ffffff;--text-sec:#adaaaa;--accent:#a78bfa;}
+    html.theme-light{--bg:#FAFAFA;--surface-low:#FFFFFF;--surface-mid:#F9FAFB;--surface-high:#FFFFFF;--surface-highest:#F3F4F6;--surface-bright:#FFFFFF;--border:rgba(0,0,0,0.06);--text:#111827;--text-sec:#4B5563;--accent:#7c3aed;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Noto Sans KR','Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background .3s,color .3s;}
+    body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,color-mix(in srgb,#8b5cf6 8%,transparent),transparent);}
+    .page-wrap{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:24px 20px 80px;}
+    .view-menu{position:fixed;top:16px;right:16px;z-index:100;display:flex;gap:8px;}
+    .view-btn{background:var(--surface-high);border:1px solid var(--border);color:var(--text-sec);border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;font-family:inherit;transition:background .2s,color .2s;}
+    .view-btn:hover{background:var(--surface-bright);color:var(--text);}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--text-sec);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface-high);margin-bottom:28px;transition:background .2s,color .2s;}
+    .back-btn:hover{background:var(--surface-bright);color:var(--text);}
+    .series-nav{background:var(--surface-mid);border:1px solid var(--border);border-left:3px solid #8b5cf6;border-radius:10px;padding:12px 16px;margin-bottom:24px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+    .series-nav-label{font-size:11px;font-weight:700;color:#a78bfa;text-transform:uppercase;letter-spacing:0.06em;flex-shrink:0;}
+    .snav-item{font-size:12px;color:var(--text-sec);text-decoration:none;padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface-highest);transition:all .2s;white-space:nowrap;}
+    .snav-item:hover{color:var(--text);}
+    .snav-item.active{background:rgba(139,92,246,0.15);color:#a78bfa;border-color:rgba(139,92,246,0.4);font-weight:600;}
+    .series-badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#a78bfa;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.3);padding:3px 10px;border-radius:99px;margin-bottom:14px;}
+    h1{font-size:clamp(22px,4vw,34px);font-weight:900;line-height:1.2;letter-spacing:-0.03em;margin-bottom:8px;}
+    .hero-sub{font-size:15px;color:var(--text-sec);line-height:1.65;}
+    .meta-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:20px 0 28px;padding:12px 16px;background:var(--surface-mid);border-radius:12px;border:1px solid var(--border);}
+    .meta-chip{font-size:12px;color:var(--text-sec);padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface-highest);}
+    .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
+    @media(max-width:500px){.kpi-row{grid-template-columns:1fr 1fr;}}
+    .kpi-card{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
+    .kpi-label{font-size:11px;color:var(--text-sec);font-weight:500;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:6px;}
+    .kpi-value{font-size:26px;font-weight:800;color:#a78bfa;letter-spacing:-0.03em;line-height:1;}
+    .kpi-unit{font-size:11px;color:var(--text-sec);margin-top:4px;}
+    .section{margin-bottom:28px;}
+    .section-title{font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-sec);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+    .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+    .quote-block{background:var(--surface-mid);border:1px solid var(--border);border-left:3px solid #a78bfa;border-radius:10px;padding:16px 20px;margin-bottom:12px;}
+    .quote-text{font-size:15px;font-weight:600;line-height:1.6;color:var(--text);font-style:italic;}
+    .quote-context{font-size:12px;color:var(--text-sec);margin-top:8px;}
+    .principle-list{display:flex;flex-direction:column;gap:12px;}
+    .principle-card{background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:18px 20px;display:flex;gap:16px;}
+    .principle-num{font-size:24px;font-weight:900;color:#a78bfa;opacity:0.5;flex-shrink:0;line-height:1;}
+    .principle-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+    .principle-desc{font-size:13px;color:var(--text-sec);line-height:1.6;}
+    .model-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+    @media(max-width:500px){.model-grid{grid-template-columns:1fr 1fr;}}
+    .model-item{background:var(--surface-mid);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
+    .model-field{font-size:10px;font-weight:700;color:#a78bfa;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.04em;}
+    .model-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px;}
+    .model-desc{font-size:11px;color:var(--text-sec);line-height:1.4;}
+    .insight-box{background:rgba(139,92,246,0.06);border:1px solid rgba(139,92,246,0.2);border-radius:12px;padding:18px 20px;}
+    .insight-title{font-size:13px;font-weight:700;color:#a78bfa;margin-bottom:10px;}
+    .insight-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+    .insight-list li{font-size:13px;color:var(--text-sec);padding-left:16px;position:relative;line-height:1.6;}
+    .insight-list li::before{content:'→';position:absolute;left:0;color:#a78bfa;font-weight:700;}
+    .footer-nav{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;}
+    .fnav-btn{display:flex;align-items:center;gap:8px;background:var(--surface-mid);border:1px solid var(--border);border-radius:10px;padding:10px 16px;text-decoration:none;color:var(--text);font-size:13px;font-weight:500;transition:background .2s;}
+    .fnav-btn:hover{background:var(--surface-bright);}
+  </style>
+</head>
+<body>
+  <div class="view-menu">
+    <button class="view-btn" onclick="toggleTheme()">🌓 테마</button>
+    <button class="view-btn" onclick="window.print()">🖨 인쇄</button>
+  </div>
+  <div class="page-wrap">
+    <a href="../index.html" class="back-btn">← 아카이브로</a>
+    <div class="series-nav">
+      <span class="series-nav-label">📚 투자 구루 열전</span>
+      <a href="guru-series-overview.html" class="snav-item">개요</a>
+      <a href="benjamin-graham.html" class="snav-item">①그레이엄</a>
+      <a href="philip-fisher.html" class="snav-item">②피셔</a>
+      <a href="warren-buffett.html" class="snav-item">③버핏</a>
+      <a href="charlie-munger.html" class="snav-item active">④멍거</a>
+      <a href="peter-lynch.html" class="snav-item">⑤린치</a>
+      <a href="jesse-livermore.html" class="snav-item">⑥리버모어</a>
+      <a href="george-soros.html" class="snav-item">⑦소로스</a>
+      <a href="ray-dalio.html" class="snav-item">⑧달리오</a>
+      <a href="michael-burry.html" class="snav-item">⑨버리</a>
+      <a href="howard-marks.html" class="snav-item">⑩막스</a>
+      <a href="john-bogle.html" class="snav-item">⑪보글</a>
+    </div>
+
+    <div class="series-badge">④ 다학제 사고 · 멘탈모델</div>
+    <h1>찰리 멍거<br><span style="font-size:0.6em;font-weight:600;color:var(--text-sec);">Charlie Munger, 1924–2023</span></h1>
+    <p class="hero-sub">버핏의 파트너이자 버크셔 해서웨이의 부회장. "주식을 사지 말고 사업을 사라"는 관점을 버핏에게 심어준 인물. 투자를 넘어 심리학, 물리학, 생물학, 경제학을 아우르는 다학제적 사고(다중 멘탈모델)로 철학적 투자자의 전형을 보여줬다.</p>
+
+    <div class="meta-bar">
+      <span class="meta-chip">📍 오마하 · 로스앤젤레스</span>
+      <span class="meta-chip">📅 1924–2023</span>
+      <span class="meta-chip">🏦 버크셔 해서웨이 부회장</span>
+      <span class="meta-chip">📚 가난한 찰리의 연감 · Damn Right!</span>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">멍거 초기 파트너십</div>
+        <div class="kpi-value">19.8<span style="font-size:16px">%</span></div>
+        <div class="kpi-unit">연평균 수익 (1962–75)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">버크셔 파트너십</div>
+        <div class="kpi-value">58<span style="font-size:16px">년</span></div>
+        <div class="kpi-unit">버핏과의 협력 기간</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">멘탈모델</div>
+        <div class="kpi-value">100<span style="font-size:16px">+</span></div>
+        <div class="kpi-unit">다양한 학문의 핵심 개념</div>
+      </div>
+    </div>
+
+    <!-- 핵심 원칙 -->
+    <div class="section">
+      <div class="section-title">핵심 원칙 3가지</div>
+      <div class="principle-list">
+        <div class="principle-card">
+          <div class="principle-num">01</div>
+          <div>
+            <div class="principle-title">다중 멘탈모델 — 격자 구조의 사고</div>
+            <div class="principle-desc">어떤 하나의 학문 모델만으로 세상을 보면 왜곡이 생긴다. 멍거는 100개 이상의 핵심 개념(복리의 마법, 역선택, 인지 편향, 임계 질량, 경쟁적 파괴 등)을 '격자 구조'로 엮어 현실을 더 정확히 이해한다. 투자자가 아니라 종합적 사상가가 되는 것이 목표.</div>
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">02</div>
+          <div>
+            <div class="principle-title">역발상(Inversion) — 실패부터 생각하라</div>
+            <div class="principle-desc">"어떻게 성공하는가?"보다 "어떻게 하면 반드시 실패하는가?"를 먼저 생각하라. 실패 조건을 제거하면 성공이 따라온다. 투자에서는 "이 투자가 왜 잘못될 수 있는가?"를 체계적으로 분석한다.</div>
+          </div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">03</div>
+          <div>
+            <div class="principle-title">심리적 편향 극복 — 내 자신의 적</div>
+            <div class="principle-desc">멍거는 25가지 인간의 심리적 오판 패턴을 정리했다. 확증 편향, 손실 회피, 군중 심리, 닻 효과 등이 투자자를 망친다. 체계적으로 자신의 편향을 인식하고 이를 역이용하는 것이 최고의 투자 기술이다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 멍거의 핵심 멘탈모델 -->
+    <div class="section">
+      <div class="section-title">투자에 유용한 멍거의 핵심 멘탈모델</div>
+      <div class="model-grid">
+        <div class="model-item"><div class="model-field">물리학</div><div class="model-name">임계 질량</div><div class="model-desc">특정 규모를 넘으면 폭발적 성장. 네트워크 효과와 연결.</div></div>
+        <div class="model-item"><div class="model-field">경제학</div><div class="model-name">기회비용</div><div class="model-desc">모든 결정에는 포기한 차선이 있다. 진정한 비용은 기회비용.</div></div>
+        <div class="model-item"><div class="model-field">수학</div><div class="model-name">복리</div><div class="model-desc">세상에서 가장 강력한 힘. 시간과 수익률의 곱.</div></div>
+        <div class="model-item"><div class="model-field">심리학</div><div class="model-name">사회적 증거</div><div class="model-desc">남들이 하면 옳다고 느끼는 심리. 버블의 핵심 엔진.</div></div>
+        <div class="model-item"><div class="model-field">생물학</div><div class="model-name">역선택</div><div class="model-desc">정보 비대칭으로 나쁜 선택지가 시장에 넘쳐나는 현상.</div></div>
+        <div class="model-item"><div class="model-item-field">경쟁론</div><div class="model-name">경쟁적 파괴</div><div class="model-desc">기술 변화로 기존 비즈니스 모델이 통째로 사라지는 위험.</div></div>
+      </div>
+    </div>
+
+    <!-- 대표 명언 -->
+    <div class="section">
+      <div class="section-title">대표 명언</div>
+      <div class="quote-block">
+        <div class="quote-text">"모든 나는 아는 것이 없다는 것만 알고 있다 — 아이디어를 역전시켜라. 항상 역전시켜라."</div>
+        <div class="quote-context">— 역발상(Inversion) 원칙의 핵심</div>
+      </div>
+      <div class="quote-block">
+        <div class="quote-text">"내가 어디서 죽을지 알고 싶다. 그러면 거기 가지 않을 테니까."</div>
+        <div class="quote-context">— 역발상 사고의 유명한 비유적 표현</div>
+      </div>
+      <div class="quote-block">
+        <div class="quote-text">"훌륭한 사업을 공정한 가격에 사는 것이 공정한 사업을 훌륭한 가격에 사는 것보다 훨씬 낫다."</div>
+        <div class="quote-context">— 버핏의 투자 철학 전환에 직접 영향을 준 말</div>
+      </div>
+    </div>
+
+    <!-- 실전 사례 -->
+    <div class="section">
+      <div class="section-title">실전 투자 사례 — See's Candies (1972)</div>
+      <div style="background:var(--surface-mid);border:1px solid var(--border);border-radius:12px;padding:20px;">
+        <div style="font-size:13px;color:var(--text-sec);line-height:1.75;">
+          멍거는 1972년 시즈캔디 인수를 강력히 주장했다. 당시 버핏은 2,500만 달러의 가격을 비싸다고 생각했지만, 멍거는 시즈캔디의 브랜드 파워와 가격 결정력(Pricing Power)이 재무제표에 나타나는 것보다 훨씬 가치 있다고 설득했다. 버핏은 훗날 "찰리가 없었다면 버크셔 해서웨이의 가치는 절반밖에 안 됐을 것"이라고 했다. 시즈캔디는 2011년까지 버크셔에 약 18억 달러의 이익을 안겨줬다 — 원금의 72배.
+        </div>
+        <div style="display:inline-block;margin-top:10px;background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.3);color:#a78bfa;font-size:12px;font-weight:600;padding:4px 12px;border-radius:99px;">✓ 2,500만 달러 → 18억 달러 이익 (72배) · 버핏 철학 전환의 촉매</div>
+      </div>
+    </div>
+
+    <!-- 한국 투자자 시사점 -->
+    <div class="section">
+      <div class="section-title">한국 투자자 시사점</div>
+      <div class="insight-box">
+        <div class="insight-title">📌 멍거 철학의 한국 시장 적용</div>
+        <ul class="insight-list">
+          <li>멍거의 역발상을 한국 시장에 적용하면: "이 종목이 왜 주가가 낮은가?"를 먼저 분석하고, 그 이유가 구조적 문제인지 일시적 오해인지 판단하라.</li>
+          <li>한국 투자자들이 가장 자주 범하는 확증 편향 — 이미 보유한 주식에 대해서는 나쁜 뉴스를 무시하는 경향. 멍거는 "당신이 반박하고 싶은 정보가 가장 중요한 정보"라고 했다.</li>
+          <li>멍거의 독서 습관: 그는 매일 5~6시간 독서했다. 투자는 특정 공식보다 지식의 축적으로 실력이 쌓인다. 경제학, 심리학, 역사를 두루 공부하라.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-nav">
+      <a href="warren-buffett.html" class="fnav-btn">← ③ 워런 버핏</a>
+      <a href="peter-lynch.html" class="fnav-btn">⑤ 피터 린치 →</a>
+    </div>
+  </div>
+  <script>
+    function toggleTheme(){const h=document.getElementById('htmlRoot');h.classList.toggle('theme-dark');h.classList.toggle('theme-light');}
+  </script>
+</body>
+</html>
