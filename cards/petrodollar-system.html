@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ko" id="htmlRoot" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>달러와 원유의 관계 — 페트로달러 체제</title>
+  <meta name="knowledge-id" content="petrodollar-system">
+  <meta name="knowledge-series" content="원유 시장 기초">
+  <meta name="knowledge-category" content="경제·거시">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:              #0e0e0e;
+      --surface-low:     #131313;
+      --surface-mid:     #1a1919;
+      --surface-high:    #201f1f;
+      --surface-highest: #262626;
+      --surface-bright:  #2c2c2c;
+      --border:          rgba(255,255,255,0.05);
+      --text:            #ffffff;
+      --text-sec:        #adaaaa;
+      --accent:          #8b5cf6;
+    }
+    html.theme-light {
+      --bg:              #FAFAFA;
+      --surface-low:     #FFFFFF;
+      --surface-mid:     #F9FAFB;
+      --surface-high:    #FFFFFF;
+      --surface-highest: #F3F4F6;
+      --surface-bright:  #FFFFFF;
+      --border:          rgba(0,0,0,0.06);
+      --text:            #111827;
+      --text-sec:        #4B5563;
+      --accent:          #7c3aed;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans KR', 'Inter', -apple-system, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.7; -webkit-font-smoothing: antialiased;
+      min-height: 100vh; transition: background 0.3s, color 0.3s;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%,
+        color-mix(in srgb, #8b5cf6 10%, transparent), transparent);
+    }
+    .page-wrap { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; padding: 24px 20px 80px; }
+
+    .view-menu { position: fixed; top: 16px; right: 16px; z-index: 100; display: flex; gap: 8px; }
+    .view-btn {
+      background: var(--surface-high); border: 1px solid var(--border);
+      color: var(--text-sec); border-radius: 8px; padding: 6px 10px;
+      font-size: 12px; cursor: pointer; font-family: inherit;
+      transition: background 0.2s, color 0.2s; display: flex; align-items: center; gap: 5px;
+    }
+    .view-btn:hover { background: var(--surface-bright); color: var(--text); }
+
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--text-sec); text-decoration: none; font-size: 13px;
+      padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--surface-high); margin-bottom: 28px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .back-btn:hover { background: var(--surface-bright); color: var(--text); }
+
+    /* SERIES NAV */
+    .series-nav {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-left: 3px solid #8b5cf6;
+      border-radius: 10px; padding: 12px 16px; margin-bottom: 24px;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    }
+    .series-nav-label { font-size: 11px; font-weight: 700; color: #8b5cf6; text-transform: uppercase; letter-spacing: 0.06em; flex-shrink: 0; }
+    .snav-item {
+      font-size: 12px; color: var(--text-sec); text-decoration: none;
+      padding: 3px 10px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface-highest); transition: all 0.2s; white-space: nowrap;
+    }
+    .snav-item:hover { color: var(--text); }
+    .snav-item.active { background: rgba(139,92,246,0.12); color: #8b5cf6; border-color: rgba(139,92,246,0.4); font-weight: 600; }
+
+    /* HERO */
+    .hero { margin-bottom: 24px; }
+    .series-badge {
+      display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      color: #8b5cf6; background: rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.3);
+      padding: 3px 10px; border-radius: 99px; margin-bottom: 14px;
+    }
+    h1 { font-size: clamp(22px,4vw,32px); font-weight: 800; line-height: 1.25; letter-spacing: -0.03em; margin-bottom: 10px; }
+    .hero-sub { font-size: 15px; color: var(--text-sec); line-height: 1.6; }
+
+    /* META */
+    .meta-bar {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+      margin-bottom: 32px; padding: 12px 16px;
+      background: var(--surface-mid); border-radius: 12px; border: 1px solid var(--border);
+    }
+    .cat-badge {
+      display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px;
+      border-radius: 99px; font-size: 11px; font-weight: 600;
+      background: rgba(59,130,246,0.12); color: #3b82f6; border: 1px solid rgba(59,130,246,0.3);
+    }
+    html.theme-light .cat-badge { background: rgba(59,130,246,0.08); }
+    .diff-badge { font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 99px; background: var(--surface-highest); color: var(--text-sec); }
+    .tag-chip { font-size: 11px; padding: 2px 8px; border-radius: 6px; background: var(--surface-highest); color: var(--text-sec); }
+    .meta-date { font-size: 11px; color: var(--text-sec); margin-left: auto; }
+
+    /* KPI */
+    .kpi-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 28px; }
+    .kpi-item { background: var(--surface-mid); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; }
+    .kpi-value { font-size: 26px; font-weight: 800; color: #8b5cf6; line-height: 1.1; margin-bottom: 4px; }
+    .kpi-label { font-size: 11px; color: var(--text-sec); line-height: 1.4; }
+    @media (max-width: 520px) {
+      .kpi-row { grid-template-columns: 1fr 1fr; }
+      .kpi-item:last-child { grid-column: 1 / -1; }
+    }
+
+    /* SECTION */
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-sec);
+      margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+    }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* HISTORY TIMELINE (2-col) */
+    .hist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 580px) { .hist-grid { grid-template-columns: 1fr; } }
+    .hist-card {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px; position: relative; overflow: hidden;
+    }
+    .hist-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+    .hc-pre::before  { background: #adaaaa; }
+    .hc-shock::before { background: #ef4444; }
+    .hc-petro::before { background: #8b5cf6; }
+    .hc-now::before  { background: #f59e0b; }
+    .hist-year { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+    .hc-pre   .hist-year { color: #adaaaa; }
+    .hc-shock .hist-year { color: #ef4444; }
+    .hc-petro .hist-year { color: #8b5cf6; }
+    .hc-now   .hist-year { color: #f59e0b; }
+    .hist-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .hist-body { font-size: 12px; color: var(--text-sec); line-height: 1.6; }
+    .hist-tag {
+      display: inline-block; margin-top: 8px; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 6px; background: rgba(139,92,246,0.12); color: #8b5cf6;
+    }
+
+    /* CYCLE DIAGRAM */
+    .cycle-wrap {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px; position: relative;
+    }
+    .cycle-title { font-size: 12px; color: var(--text-sec); font-weight: 600; text-align: center; margin-bottom: 20px; }
+    .cycle-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 0;
+      position: relative;
+    }
+    .cycle-node {
+      background: var(--surface-highest); border: 1px solid rgba(139,92,246,0.3);
+      border-radius: 10px; padding: 12px 10px; text-align: center;
+      position: relative; z-index: 1;
+    }
+    .cycle-node-icon { font-size: 22px; margin-bottom: 6px; }
+    .cycle-node-title { font-size: 12px; font-weight: 700; color: #8b5cf6; margin-bottom: 4px; }
+    .cycle-node-body { font-size: 11px; color: var(--text-sec); line-height: 1.5; }
+    .cycle-arrow {
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: rgba(139,92,246,0.5); padding: 0 4px;
+    }
+    .cycle-bottom-row { display: flex; justify-content: center; margin-top: 12px; gap: 12px; }
+    .cycle-bottom-node {
+      flex: 1; max-width: 220px; background: var(--surface-highest);
+      border: 1px solid rgba(139,92,246,0.3); border-radius: 10px;
+      padding: 12px 10px; text-align: center;
+    }
+    .cycle-connector-down {
+      display: flex; justify-content: center; margin: 4px 0;
+      font-size: 16px; color: rgba(139,92,246,0.5);
+    }
+
+    /* CORRELATION CHART */
+    .corr-wrap {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 12px; padding: 20px 22px;
+    }
+    .corr-title { font-size: 12px; color: var(--text-sec); font-weight: 600; margin-bottom: 16px; }
+    .corr-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .corr-label { font-size: 12px; width: 80px; flex-shrink: 0; font-weight: 600; }
+    .corr-bar-wrap { flex: 1; position: relative; height: 28px; background: var(--surface-highest); border-radius: 8px; overflow: hidden; }
+    .corr-bar {
+      position: absolute; top: 0; height: 100%; border-radius: 8px;
+      display: flex; align-items: center; padding: 0 10px; transition: width 1s ease;
+    }
+    .corr-bar-label { font-size: 11px; font-weight: 700; color: white; white-space: nowrap; }
+    .corr-val { font-size: 13px; font-weight: 800; min-width: 48px; text-align: right; }
+    .corr-note { font-size: 11px; color: var(--text-sec); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+
+    /* PETRODOLLAR FLOW */
+    .flow-wrap { display: flex; flex-direction: column; }
+    .flow-step { display: flex; align-items: stretch; }
+    .flow-line-wrap { display: flex; flex-direction: column; align-items: center; width: 48px; flex-shrink: 0; }
+    .flow-circle {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; flex-shrink: 0; z-index: 1; border: 2px solid;
+    }
+    .flow-connector { width: 2px; flex: 1; min-height: 16px; background: linear-gradient(to bottom, rgba(139,92,246,0.4), rgba(139,92,246,0.1)); }
+    .flow-content {
+      flex: 1; background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 12px; padding: 13px 16px; margin: 0 0 10px 0;
+    }
+    .flow-content-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+    .flow-content-body { font-size: 13px; color: var(--text-sec); line-height: 1.6; }
+    .fc-tag {
+      display: inline-block; margin-top: 6px; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 6px; background: rgba(139,92,246,0.12); color: #8b5cf6;
+    }
+    .s1 .flow-circle { border-color:#f59e0b; color:#f59e0b; background:rgba(245,158,11,0.1); }
+    .s2 .flow-circle { border-color:#10b981; color:#10b981; background:rgba(16,185,129,0.1); }
+    .s3 .flow-circle { border-color:#3b82f6; color:#3b82f6; background:rgba(59,130,246,0.1); }
+    .s4 .flow-circle { border-color:#8b5cf6; color:#8b5cf6; background:rgba(139,92,246,0.12); }
+    .s5 .flow-circle { border-color:#ef4444; color:#ef4444; background:rgba(239,68,68,0.1); }
+
+    /* TABLE */
+    .table-wrap { overflow-x: auto; border-radius: 12px; }
+    table { width: 100%; min-width: 500px; border-collapse: collapse; background: var(--surface-mid); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; font-size: 13px; }
+    th { background: var(--surface-highest); color: var(--text-sec); font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 10px 14px; text-align: left; white-space: nowrap; border-bottom: 1px solid var(--border); }
+    td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--surface-highest); }
+    .td-hl { font-weight: 700; color: #8b5cf6; }
+    .td-last { white-space: normal; min-width: 140px; }
+    .risk-badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+    .r-high   { background: rgba(244,63,94,0.12); color: #f43f5e; }
+    .r-mid    { background: rgba(245,158,11,0.12); color: #f59e0b; }
+    .r-low    { background: rgba(16,185,129,0.12); color: #10b981; }
+    @media (max-width: 640px) { th { font-size: 10px; padding: 8px 10px; } td { font-size: 12px; padding: 9px 10px; } }
+
+    /* HIGHLIGHT */
+    .hl-box {
+      background: rgba(139,92,246,0.07); border: 1px solid rgba(139,92,246,0.25);
+      border-left: 3px solid #8b5cf6; border-radius: 10px; padding: 16px 18px; margin-bottom: 14px;
+    }
+    .hl-box .hl-title { font-size: 12px; font-weight: 700; color: #8b5cf6; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px; }
+    .hl-box p { font-size: 14px; color: var(--text); line-height: 1.7; }
+    .hl-box.amber { background: rgba(245,158,11,0.05); border-color: rgba(245,158,11,0.25); border-left-color: #f59e0b; }
+    .hl-box.amber .hl-title { color: #f59e0b; }
+    .hl-box.red   { background: rgba(244,63,94,0.05); border-color: rgba(244,63,94,0.25); border-left-color: #f43f5e; }
+    .hl-box.red   .hl-title { color: #f43f5e; }
+    .hl-box.blue  { background: rgba(59,130,246,0.05); border-color: rgba(59,130,246,0.25); border-left-color: #3b82f6; }
+    .hl-box.blue  .hl-title { color: #3b82f6; }
+
+    /* RELATED */
+    .related-section { margin-top: 40px; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(170px,1fr)); gap: 10px; }
+    .related-card {
+      background: var(--surface-mid); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 14px; text-decoration: none; color: var(--text); transition: background 0.2s;
+    }
+    .related-card:hover { background: var(--surface-high); }
+    .related-card-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .related-card-tag { font-size: 11px; color: var(--text-sec); }
+
+    /* ANIMATE */
+    .animate { opacity: 0; transform: translateY(14px); animation: fadeUp 0.5s ease forwards; }
+    .delay-1 { animation-delay: 0.08s; }
+    .delay-2 { animation-delay: 0.16s; }
+    .delay-3 { animation-delay: 0.24s; }
+    .delay-4 { animation-delay: 0.32s; }
+    .delay-5 { animation-delay: 0.40s; }
+    .delay-6 { animation-delay: 0.48s; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    @media print { .view-menu, .back-btn, .series-nav { display: none; } body::before { display: none; } }
+  </style>
+</head>
+<body>
+
+<div class="view-menu">
+  <button class="view-btn" onclick="toggleTheme()"><span id="themeIcon">☀️</span> 테마</button>
+  <button class="view-btn" onclick="window.print()">🖨️ 인쇄</button>
+</div>
+
+<div class="page-wrap">
+  <a href="../index.html" class="back-btn animate">← 지식 Archive</a>
+
+  <!-- 시리즈 네비게이션 -->
+  <div class="series-nav animate">
+    <span class="series-nav-label">📚 원유 시장 기초 시리즈</span>
+    <a href="crude-oil-3-benchmarks.html" class="snav-item">① WTI·브렌트·두바이</a>
+    <a href="crude-to-fuel-price-mechanism.html" class="snav-item">② 원유→국내 유가</a>
+    <a href="opec-production-cuts-mechanism.html" class="snav-item">③ OPEC+ 감산</a>
+    <a href="shale-revolution-us-energy.html" class="snav-item">④ 셰일 혁명·미국 패권</a>
+    <a href="petrodollar-system.html" class="snav-item active">⑤ 페트로달러 체제</a>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero animate delay-1">
+    <div class="series-badge">원유 시장 기초 ⑤</div>
+    <h1>달러와 원유의 관계 — 페트로달러 체제</h1>
+    <p class="hero-sub">
+      원유는 왜 달러로만 거래될까? 1974년 미-사우디 비밀 협정이 만들어낸 페트로달러 체제가
+      달러 패권을 지탱하는 구조와, 지금 그 체제가 흔들리고 있는 이유를 분석한다.
+    </p>
+  </div>
+
+  <!-- META -->
+  <div class="meta-bar animate delay-1">
+    <span class="cat-badge">🌐 경제·거시</span>
+    <span class="diff-badge">초급</span>
+    <span class="tag-chip">달러</span>
+    <span class="tag-chip">기축통화</span>
+    <span class="tag-chip">원유</span>
+    <span class="tag-chip">지정학</span>
+    <span class="tag-chip">탈달러화</span>
+    <span class="meta-date">2026-04-15</span>
+  </div>
+
+  <!-- KPI ROW -->
+  <div class="kpi-row animate delay-2">
+    <div class="kpi-item">
+      <div class="kpi-value">~80%</div>
+      <div class="kpi-label">글로벌 원유 거래 중<br>달러 결제 비중 (추정)</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-value">1974</div>
+      <div class="kpi-label">미-사우디 페트로달러<br>협정 체결 연도</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-value">-0.8</div>
+      <div class="kpi-label">DXY·WTI 상관계수<br>(역상관, 장기 추정)</div>
+    </div>
+  </div>
+
+  <!-- 역사 배경 -->
+  <div class="section animate delay-2">
+    <div class="section-title">페트로달러 탄생 배경 — 4단계 역사</div>
+    <div class="hist-grid">
+      <div class="hist-card hc-pre">
+        <div class="hist-year">1944</div>
+        <div class="hist-title">브레튼우즈 체제 — 달러-금 연동</div>
+        <div class="hist-body">
+          2차 대전 이후 미국 주도로 달러를 기축통화로 채택. 각국 통화는 달러에 고정, 달러는 금($35/온스)에 연동. 미국의 경제 패권 기반.
+        </div>
+        <div class="hist-tag">금태환 보장</div>
+      </div>
+      <div class="hist-card hc-shock">
+        <div class="hist-year">1971</div>
+        <div class="hist-title">닉슨 쇼크 — 금태환 정지</div>
+        <div class="hist-body">
+          베트남 전쟁 비용으로 달러 남발 → 금 보유량 부족 → 닉슨 대통령이 달러-금 연동 일방적 파기. 브레튼우즈 붕괴. 달러 패권 위기.
+        </div>
+        <div class="hist-tag" style="background:rgba(239,68,68,0.12); color:#ef4444;">기축통화 위기</div>
+      </div>
+      <div class="hist-card hc-petro">
+        <div class="hist-year">1974</div>
+        <div class="hist-title">미-사우디 페트로달러 협정</div>
+        <div class="hist-body">
+          헨리 키신저 중재로 미국-사우디 비밀 협정 체결.
+          <strong>사우디: 원유를 달러로만 판매 + 오일달러로 미국 국채 매입.</strong>
+          미국: 사우디 왕가 안보 보장 + 군사 지원.
+        </div>
+        <div class="hist-tag">페트로달러 체제 시작</div>
+      </div>
+      <div class="hist-card hc-now">
+        <div class="hist-year">2022~</div>
+        <div class="hist-title">탈달러화 움직임 가속</div>
+        <div class="hist-body">
+          러시아 제재 후 SWIFT 배제 충격 → 중국·러시아·사우디 위안화 결제 논의. 브릭스 통화 구상, 상하이 원유 선물(위안화 결제) 확대. 체제 균열 신호.
+        </div>
+        <div class="hist-tag" style="background:rgba(245,158,11,0.12); color:#f59e0b;">체제 균열 시작</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 페트로달러 순환 구조 -->
+  <div class="section animate delay-3">
+    <div class="section-title">페트로달러 순환 메커니즘 — 달러 패권 유지 구조</div>
+    <div class="flow-wrap">
+      <div class="flow-step s1">
+        <div class="flow-line-wrap">
+          <div class="flow-circle">1</div>
+          <div class="flow-connector"></div>
+        </div>
+        <div class="flow-content">
+          <div class="flow-content-title">🛢️ 산유국 — 원유를 달러로만 판매</div>
+          <div class="flow-content-body">
+            OPEC 회원국들이 원유를 미 달러로만 결제 수취. 이는 협약이 아닌 관행으로 굳어졌으나,
+            사우디 협정이 사실상 규범화. 다른 산유국들도 달러 결제를 따를 수밖에 없는 구조.
+          </div>
+          <div class="fc-tag">오일달러(Petrodollar) 축적</div>
+        </div>
+      </div>
+      <div class="flow-step s2">
+        <div class="flow-line-wrap">
+          <div class="flow-circle">2</div>
+          <div class="flow-connector"></div>
+        </div>
+        <div class="flow-content">
+          <div class="flow-content-title">🏦 오일달러 재순환 — 미국 국채 매입</div>
+          <div class="flow-content-body">
+            산유국들이 번 달러를 그대로 보유할 수 없어 → 가장 안전한 자산인 <strong>미국 국채(Treasury)</strong>에 투자.
+            사우디·UAE·쿠웨이트 등의 국부펀드가 미국 금융시장의 핵심 투자자로 기능.
+          </div>
+          <div class="fc-tag">미국 국채 수요 창출</div>
+        </div>
+      </div>
+      <div class="flow-step s3">
+        <div class="flow-line-wrap">
+          <div class="flow-circle">3</div>
+          <div class="flow-connector"></div>
+        </div>
+        <div class="flow-content">
+          <div class="flow-content-title">🌍 수입국 — 원유 수입 위해 달러 필수 보유</div>
+          <div class="flow-content-body">
+            한국·일본·유럽 등 원유 수입국은 원유 대금 지급을 위해 달러를 항상 보유해야 함.
+            이것이 전 세계적인 달러 수요를 만드는 핵심 메커니즘.
+            원유 수요가 존재하는 한 달러 수요도 자동으로 존재.
+          </div>
+          <div class="fc-tag">글로벌 달러 수요 보장</div>
+        </div>
+      </div>
+      <div class="flow-step s4">
+        <div class="flow-line-wrap">
+          <div class="flow-circle">4</div>
+          <div class="flow-connector"></div>
+        </div>
+        <div class="flow-content">
+          <div class="flow-content-title">💵 미국 — 기축통화 특권 향유</div>
+          <div class="flow-content-body">
+            달러 수요 보장 → 미국은 낮은 금리로 국채 발행 가능(금리 프리미엄 부재) →
+            저비용 자금 조달로 재정 적자 지속 가능 → <strong>"과도한 특권(Exorbitant Privilege)"</strong>.
+            프랑스 드골 대통령이 이 불공정한 특권을 비판한 말이 현재도 쓰임.
+          </div>
+          <div class="fc-tag">기축통화 순환 완성</div>
+        </div>
+      </div>
+      <div class="flow-step s5">
+        <div class="flow-line-wrap">
+          <div class="flow-circle">↺</div>
+        </div>
+        <div class="flow-content" style="border-color:rgba(139,92,246,0.3); background:rgba(139,92,246,0.06);">
+          <div class="flow-content-title" style="color:#8b5cf6;">미국 경제력 → 안보 제공 → 산유국 보호 → ① 반복</div>
+          <div class="flow-content-body">
+            미국의 군사력(중동 함대·항공모함)이 산유국 안보를 보장하고, 산유국은 달러 결제를 유지하는
+            자기강화 순환(self-reinforcing loop). 이 루프가 50년간 달러 패권을 지탱해왔다.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 달러-유가 역상관 -->
+  <div class="section animate delay-3">
+    <div class="section-title">달러 강약과 유가의 역상관 관계</div>
+    <div class="corr-wrap">
+      <div class="corr-title">달러인덱스(DXY) 변동이 원유 가격에 미치는 영향 — 장기 역상관 구조</div>
+      <div class="corr-row">
+        <div class="corr-label" style="color:#ef4444;">달러 강세</div>
+        <div class="corr-bar-wrap">
+          <div class="corr-bar" style="left:50%; width:45%; background:linear-gradient(135deg,#ef4444,#f87171);">
+            <span class="corr-bar-label">DXY ↑ → 원유(달러 기준) 하락 압력</span>
+          </div>
+          <div style="position:absolute; left:50%; top:0; bottom:0; width:2px; background:rgba(255,255,255,0.1);"></div>
+        </div>
+        <div class="corr-val" style="color:#ef4444;">유가 ↓</div>
+      </div>
+      <div class="corr-row">
+        <div class="corr-label" style="color:#10b981;">달러 약세</div>
+        <div class="corr-bar-wrap">
+          <div class="corr-bar" style="left:5%; width:45%; background:linear-gradient(135deg,#10b981,#34d399);">
+            <span class="corr-bar-label">DXY ↓ → 원유(달러 기준) 상승 압력</span>
+          </div>
+          <div style="position:absolute; left:50%; top:0; bottom:0; width:2px; background:rgba(255,255,255,0.1);"></div>
+        </div>
+        <div class="corr-val" style="color:#10b981;">유가 ↑</div>
+      </div>
+      <div class="corr-note">
+        📌 왜 역상관인가? 달러가 강세면 같은 달러로 더 많은 원유를 살 수 있어 달러 표시 가격이 내리고,
+        산유국 입장에서는 자국 화폐 가치 하락 시 달러 가격을 올려 보상한다.
+        단, 이 관계는 완전하지 않으며 공급·수요·지정학 변수가 교란 요인으로 작용한다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 탈달러화 위협 -->
+  <div class="section animate delay-4">
+    <div class="section-title">탈달러화 (De-dollarization) 현황과 위협</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>위협 요인</th>
+            <th>주요 국가</th>
+            <th>현황</th>
+            <th>달러 패권 위협도</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>페트로위안 (위안화 원유 결제)</strong></td>
+            <td>중국 · 사우디 · 러시아</td>
+            <td class="td-last">상하이 원유 선물(INE) 위안화 결제. 2024년 사우디 수출 일부 위안화 결제 시험</td>
+            <td><span class="risk-badge r-mid">중간</span></td>
+          </tr>
+          <tr>
+            <td><strong>BRICS 공동 통화 구상</strong></td>
+            <td>브라질·러시아·인도·중국·남아공 +α</td>
+            <td class="td-last">2023 BRICS 정상회의에서 논의. 2024년 회원국 확대. 실현까지 수십 년 필요</td>
+            <td><span class="risk-badge r-low">낮음</span></td>
+          </tr>
+          <tr>
+            <td><strong>SWIFT 대체 결제망</strong></td>
+            <td>중국(CIPS) · 러시아(SPFS)</td>
+            <td class="td-last">중국 CIPS 거래량 증가 중이나 규모·신뢰성 격차 크고 달러 결제 SWIFT와 경쟁</td>
+            <td><span class="risk-badge r-mid">중간</span></td>
+          </tr>
+          <tr>
+            <td><strong>중앙은행 금 매입 증가</strong></td>
+            <td>중국·인도·폴란드·터키 등</td>
+            <td class="td-last">각국 중앙은행의 달러 외환보유고 → 금 전환 가속. 미국 국채 비중 조정</td>
+            <td><span class="risk-badge r-mid">중간</span></td>
+          </tr>
+          <tr>
+            <td><strong>러시아 제재 충격</strong></td>
+            <td>러시아 외 신흥국</td>
+            <td class="td-last">SWIFT 배제·달러 자산 동결 → "달러 보유 위험성" 인식 확산. 비서방권 이탈 유인</td>
+            <td><span class="risk-badge r-high">높음</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 달러 패권 방어선 -->
+  <div class="section animate delay-4">
+    <div class="section-title">달러 패권의 방어선 — 왜 아직 건재한가</div>
+    <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:12px;">
+      <div style="background:var(--surface-mid); border:1px solid var(--border); border-radius:12px; padding:16px;">
+        <div style="font-size:20px; margin-bottom:8px;">🏦</div>
+        <div style="font-size:13px; font-weight:700; margin-bottom:6px;">미국 국채 시장의 유동성</div>
+        <div style="font-size:12px; color:var(--text-sec); line-height:1.6;">규모 $27조(2024). 하루 거래량 $1조+. 세계에서 유일하게 언제든 사고팔 수 있는 "안전 자산". 대안이 없음.</div>
+      </div>
+      <div style="background:var(--surface-mid); border:1px solid var(--border); border-radius:12px; padding:16px;">
+        <div style="font-size:20px; margin-bottom:8px;">🛡️</div>
+        <div style="font-size:13px; font-weight:700; margin-bottom:6px;">SWIFT 금융 네트워크</div>
+        <div style="font-size:12px; color:var(--text-sec); line-height:1.6;">200개국, 1만1천+ 금융기관 연결. 대체 시스템 구축은 수십 년 소요. CIPS·SPFS는 아직 규모와 신뢰성 격차가 크다.</div>
+      </div>
+      <div style="background:var(--surface-mid); border:1px solid var(--border); border-radius:12px; padding:16px;">
+        <div style="font-size:20px; margin-bottom:8px;">⚓</div>
+        <div style="font-size:13px; font-weight:700; margin-bottom:6px;">미국 해군의 해상 통제력</div>
+        <div style="font-size:12px; color:var(--text-sec); line-height:1.6;">원유 수송 항로(호르무즈·말라카·수에즈) 보호. 항공모함 11척으로 글로벌 해상 패권 유지. 달러 vs 원유 안보의 최후 보루.</div>
+      </div>
+      <div style="background:var(--surface-mid); border:1px solid var(--border); border-radius:12px; padding:16px;">
+        <div style="font-size:20px; margin-bottom:8px;">🌐</div>
+        <div style="font-size:13px; font-weight:700; margin-bottom:6px;">네트워크 효과 + 관성</div>
+        <div style="font-size:12px; color:var(--text-sec); line-height:1.6;">전 세계 계약·부채·파생상품이 달러 기준. 시스템 전환 비용(switching cost)이 너무 커서 단기간 이탈 불가. 유로화조차 20년이 지나도 달러를 대체 못함.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 핵심 인사이트 -->
+  <div class="section animate delay-5">
+    <div class="section-title">핵심 인사이트</div>
+    <div class="hl-box">
+      <div class="hl-title">🔗 페트로달러와 미국의 "과도한 특권"</div>
+      <p>
+        달러가 기축통화이기 때문에 미국은 무역 적자와 재정 적자를 동시에 내면서도
+        국채 발행으로 자금을 조달할 수 있다. 다른 나라가 이런 적자를 내면 환율 위기가 오지만
+        미국은 달러를 찍어내면 된다. 프랑스 드골이 "Exorbitant Privilege(과도한 특권)"라 비판했던
+        이 구조가 <strong>페트로달러 체제로 50년간 강화</strong>됐다.
+      </p>
+    </div>
+    <div class="hl-box red">
+      <div class="hl-title">⚠️ 달러 무기화의 역설 — 신뢰 훼손</div>
+      <p>
+        러시아 외환보유고 동결($3,000억)과 SWIFT 배제는 달러 패권의 힘을 보여줬지만,
+        동시에 "달러 자산은 안전하지 않다"는 신호를 비서방 국가에 전달했다.
+        <strong>무기로 쓰일수록 신뢰 자산으로서의 가치는 하락</strong>한다.
+        탈달러화 가속의 가장 큰 트리거는 미국의 제재 남발이다.
+      </p>
+    </div>
+    <div class="hl-box blue">
+      <div class="hl-title">🇰🇷 한국에 미치는 영향</div>
+      <p>
+        한국은 원유를 달러로 수입하므로 <strong>달러 강세 = 수입 원가 상승</strong>이 직결된다.
+        달러 약세 시에는 반대. 환율과 유가는 별개 변수처럼 보이지만
+        페트로달러 구조 때문에 연동되는 경향이 있어 수입 물가 예측 시 두 변수를 함께 봐야 한다.
+        탈달러화 가속 시 한국의 외환 전략(외환보유고 구성, 통화스왑)도 재검토가 필요하다.
+      </p>
+    </div>
+  </div>
+
+  <!-- 3줄 요약 -->
+  <div class="section animate delay-6">
+    <div class="section-title">3줄 요약</div>
+    <div style="background:var(--surface-mid); border:1px solid var(--border); border-radius:12px; padding:20px 22px;">
+      <p style="font-size:14px; margin-bottom:10px;">
+        <strong style="color:#8b5cf6;">①</strong> 1974년 미-사우디 협정으로 "원유=달러 결제" 관행이 굳어지며 달러 패권의 물적 기반이 탄생했다.
+      </p>
+      <p style="font-size:14px; margin-bottom:10px;">
+        <strong style="color:#8b5cf6;">②</strong> 달러 강세면 유가 하락, 달러 약세면 유가 상승 — 역상관 구조로 한국 수입 물가에 두 변수가 동시에 영향을 준다.
+      </p>
+      <p style="font-size:14px;">
+        <strong style="color:#8b5cf6;">③</strong> 러시아 제재 이후 탈달러화가 가속 중이지만, 미국 국채 유동성·SWIFT·해군력의 네트워크 효과로 달러 패권은 당분간 유지될 전망이다.
+      </p>
+    </div>
+  </div>
+
+  <!-- RELATED / SERIES -->
+  <div class="related-section animate delay-6">
+    <div class="section-title">원유 시장 기초 시리즈</div>
+    <div class="related-grid">
+      <a href="crude-oil-3-benchmarks.html" class="related-card">
+        <div class="related-card-title">① WTI·브렌트·두바이</div>
+        <div class="related-card-tag">3대 기준 유종 완전 비교</div>
+      </a>
+      <a href="crude-to-fuel-price-mechanism.html" class="related-card">
+        <div class="related-card-title">② 원유→국내 유가 메커니즘</div>
+        <div class="related-card-tag">원가에서 주유소까지</div>
+      </a>
+      <a href="opec-production-cuts-mechanism.html" class="related-card">
+        <div class="related-card-title">③ OPEC+ 감산 메커니즘</div>
+        <div class="related-card-tag">감산→유가 전파 5단계</div>
+      </a>
+      <a href="shale-revolution-us-energy.html" class="related-card">
+        <div class="related-card-title">④ 셰일 혁명·미국 패권</div>
+        <div class="related-card-tag">세계 1위 산유국 탈환</div>
+      </a>
+      <a href="maritime-chokepoints-global.html" class="related-card">
+        <div class="related-card-title">세계 5대 해상 초크포인트</div>
+        <div class="related-card-tag">원유 운송 병목과 리스크</div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleTheme() {
+    var html = document.getElementById('htmlRoot');
+    var isDark = html.classList.contains('theme-dark');
+    html.classList.toggle('theme-dark', !isDark);
+    html.classList.toggle('theme-light', isDark);
+    document.getElementById('themeIcon').textContent = isDark ? '🌙' : '☀️';
+    try { localStorage.setItem('ka-theme', isDark ? 'light' : 'dark'); } catch(e){}
+  }
+  (function(){
+    try {
+      var t = localStorage.getItem('ka-theme');
+      if (t === 'light') {
+        document.getElementById('htmlRoot').classList.replace('theme-dark','theme-light');
+        document.getElementById('themeIcon').textContent = '🌙';
+      }
+    } catch(e){}
+  })();
+</script>
+</body>
+</html>
