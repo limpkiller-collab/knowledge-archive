@@ -251,31 +251,7 @@
       letter-spacing: 0.08em; text-transform: uppercase;
       color: var(--text-sec); margin-bottom: 12px;
     }
-    .hero-latest-row {
-      display: flex; align-items: flex-start; gap: 10px;
-      cursor: pointer; border-radius: 10px; padding: 8px;
-      margin: -8px; transition: background 0.15s;
-    }
-    .hero-latest-row:hover { background: var(--surface-highest); }
-    /* Tag filter collapse */
-    .tag-chips-wrapper {
-      display: flex; flex-wrap: wrap; gap: 6px;
-      overflow: hidden;
-      max-height: 36px; /* 1줄 = chip 28px + 여백 */
-      transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1);
-    }
-    .tag-chips-wrapper.expanded { max-height: 600px; }
-    .tag-toggle-btn {
-      align-self: center; flex-shrink: 0;
-      padding: 4px 11px; border-radius: 99px;
-      border: 1px solid var(--outline-v);
-      background: var(--surface-highest); color: var(--text-sec);
-      font-size: 11px; font-family: inherit;
-      cursor: pointer; font-weight: 600;
-      transition: background 0.15s, color 0.15s;
-      white-space: nowrap;
-    }
-    .tag-toggle-btn:hover { background: var(--surface-bright); color: var(--on-surface); }
+    .hero-latest-row { display: flex; align-items: flex-start; gap: 10px; }
     .hero-latest-icon {
       width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
       background: color-mix(in srgb, var(--tertiary), transparent 85%);
@@ -692,7 +668,7 @@
         <div class="hero-stat-card">
           <div>
             <div class="hero-stat-top-label">최근 등록</div>
-            <div class="hero-latest-row" id="heroLatestRow">
+            <div class="hero-latest-row">
               <div class="hero-latest-icon">
                 <span class="material-symbols-outlined" style="font-size:18px">auto_awesome</span>
               </div>
@@ -2327,20 +2303,18 @@
         seriesOrder: 11
       },
       {
-      id: "guru-returns-comparison",
-      title: "투자 구루 수익률 비교 — 11인의 성과 데이터 분석",
-      file: "cards/guru-returns-comparison.html",
-      date: "2026-04-15",
-      source: "투자 구루 열전 시리즈",
-      sourceUrl: "",
-      tags: ["수익률","CAGR","가치투자","성장주","글로벌매크로","패시브","리스크","복리"],
-      difficulty: "고급",
-      summary: "11인의 투자 구루 연평균 수익률(CAGR) 바 차트 비교 + 리스크·기간·전략별 맥락 분석. 단순 수익률 비교를 넘어 리스크 조정 관점과 한국 투자자 시사점 제시.",
-      related: ["guru-series-overview","warren-buffett","peter-lynch","george-soros","ray-dalio","john-bogle"],
-      color: "#f59e0b",
-      category: "투자·금융",
-      series: "투자 구루 열전",
-      seriesOrder: 12
+        id: "nvidia-ising-quantum-platform",
+        title: "NVIDIA Ising — 양자컴퓨팅의 CUDA가 되려는 엔비디아의 전략",
+        file: "cards/nvidia-ising-quantum-platform.html",
+        date: "2026-04-16",
+        source: "뉴스픽 DIG",
+        sourceUrl: "https://stibee.com/api/v1.0/emails/share/uTuzVTdMtVd6Jy8Blb-hB91AMstkWS0",
+        tags: ["양자컴퓨팅", "엔비디아", "CUDA", "오류수정", "플랫폼전략"],
+        difficulty: "중급",
+        summary: "엔비디아가 양자컴퓨터의 2대 난제(보정·오류수정)를 오픈소스로 풀어, CUDA 때처럼 플랫폼 종속을 만드는 장기 포석 — 2035년 $720억 시장 선점 전략",
+        related: ["quantum-basics", "quantum-companies", "qubit-technologies"],
+        color: "#76b900",
+        category: "기술·산업"
       }
     ];
     // ==========================================
@@ -2535,29 +2509,12 @@
       var tags = Object.keys(tagSet).sort();
       if (activeTag !== 'all' && !tagSet[activeTag]) activeTag = 'all';
       var container = document.getElementById('tagFilters');
-      var chipsHtml = '';
-      chipsHtml += '<button class="filter-chip' + (activeTag === 'all' ? ' active' : '') + '" onclick="filterTag(\'all\')">전체</button>';
+      var html = '<span class="filter-label">태그</span>';
+      html += '<button class="filter-chip' + (activeTag === 'all' ? ' active' : '') + '" onclick="filterTag(\'all\')">전체</button>';
       tags.forEach(function(tag) {
-        chipsHtml += '<button class="filter-chip' + (activeTag === tag ? ' active' : '') + '" onclick="filterTag(\'' + tag + '\')">#' + tag + '</button>';
+        html += '<button class="filter-chip' + (activeTag === tag ? ' active' : '') + '" onclick="filterTag(\'' + tag + '\')">#' + tag + '</button>';
       });
-      container.innerHTML =
-        '<span class="filter-label">태그</span>'
-        + '<div class="tag-chips-wrapper" id="tagChipsWrapper">' + chipsHtml + '</div>'
-        + '<button class="tag-toggle-btn" id="tagToggleBtn" style="display:none" onclick="toggleTagFilter()">더보기</button>';
-      // 오버플로우 체크 후 버튼 표시
-      requestAnimationFrame(function() {
-        var wrapper = document.getElementById('tagChipsWrapper');
-        var btn = document.getElementById('tagToggleBtn');
-        if (wrapper && btn) {
-          if (wrapper.scrollHeight > wrapper.clientHeight + 2) {
-            var hidden = tags.length + 1 - wrapper.querySelectorAll('.filter-chip').length;
-            btn.style.display = 'inline-flex';
-            btn.textContent = _tagExpanded ? '접기 ▲' : '더보기 +' + tags.length + '개';
-          } else {
-            btn.style.display = 'none';
-          }
-        }
-      });
+      container.innerHTML = html;
     }
 
     // ============ SPLIT TITLE ============
@@ -2699,13 +2656,8 @@
         var t = splitTitle(latest.title);
         var lT = document.getElementById('heroLatestTitle');
         var lD = document.getElementById('heroLatestDate');
-        var lR = document.getElementById('heroLatestRow');
         if (lT) lT.textContent = t.main;
         if (lD) lD.textContent = latest.date;
-        if (lR) {
-          lR.onclick = function() { location.href = latest.file; };
-          lR.title = latest.title + ' 열기';
-        }
       }
 
       // Sidebar
@@ -2935,15 +2887,6 @@
     })();
 
     // ============ TAG EXPAND TOGGLE ============
-    var _tagExpanded = false;
-    function toggleTagFilter() {
-      _tagExpanded = !_tagExpanded;
-      var wrapper = document.getElementById('tagChipsWrapper');
-      var btn = document.getElementById('tagToggleBtn');
-      if (wrapper) wrapper.classList.toggle('expanded', _tagExpanded);
-      if (btn) btn.textContent = _tagExpanded ? '접기 ▲' : ('더보기 +' + wrapper.querySelectorAll('.filter-chip').length + '개');
-    }
-
     function toggleTagExpand(btn) {
       var box = btn.previousElementSibling;
       var isExpanded = box.classList.toggle('expanded');
