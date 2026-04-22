@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ko" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>K배터리 위기 — 17조원 계약 해지와 중국의 역전</title>
+  <meta name="knowledge-id" content="k-battery-crisis-2026">
+  <meta name="knowledge-tags" content="배터리,전기차,LFP,중국,산업위기">
+  <meta name="knowledge-difficulty" content="중급">
+  <meta name="knowledge-date" content="2026-04-22">
+  <meta name="knowledge-source" content="뉴스픽 DIG">
+  <meta name="knowledge-category" content="기술·산업">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html.theme-dark {
+      --bg: #0A0A0A; --surface: #141414; --surface-hover: #1C1C1C;
+      --border: rgba(255,255,255,0.06); --text: #EDEDED; --text-secondary: #888;
+      --accent: #f43f5e; --accent2: #f97316;
+      --positive: #10b981; --negative: #f43f5e; --warning: #f59e0b;
+      --chip-accent: rgba(244,63,94,0.12);
+      --chip-green: rgba(16,185,129,0.12); --chip-amber: rgba(245,158,11,0.12);
+      --menu-bg: rgba(10,10,10,0.85); --menu-border: rgba(255,255,255,0.08);
+      --menu-text: #EDEDED; --menu-item-hover: rgba(255,255,255,0.06);
+    }
+    html.theme-light {
+      --bg: #FAFAF9; --surface: #FFFFFF; --surface-hover: #F5F5F4;
+      --border: #e5e5e5; --text: #1a1a1a; --text-secondary: #666;
+      --accent: #e11d48; --accent2: #ea580c;
+      --positive: #059669; --negative: #e11d48; --warning: #d97706;
+      --chip-accent: rgba(225,29,72,0.08);
+      --chip-green: rgba(5,150,105,0.08); --chip-amber: rgba(217,119,6,0.08);
+      --menu-bg: rgba(255,255,255,0.92); --menu-border: rgba(0,0,0,0.08);
+      --menu-text: #1a1a1a; --menu-item-hover: rgba(0,0,0,0.04);
+    }
+    body {
+      font-family: 'Noto Sans KR','Inter',sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.011em; transition: background 0.3s, color 0.3s; min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 10%,
+        color-mix(in srgb, var(--accent), transparent 88%), transparent);
+    }
+    h1 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; }
+    h2 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+    h3 { font-weight: 600; letter-spacing: -0.02em; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 64px 24px 80px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+    .viz-menu { position: fixed; top: 16px; right: 16px; z-index: 9999; }
+    .viz-menu-toggle { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--menu-border); background: var(--menu-bg); color: var(--menu-text); cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(12px); transition: all 0.2s; }
+    .viz-menu-toggle:hover { background: var(--menu-item-hover); }
+    .viz-menu-dropdown { position: absolute; top: calc(100% + 8px); right: 0; min-width: 196px; background: var(--menu-bg); backdrop-filter: blur(16px); border: 1px solid var(--menu-border); border-radius: 12px; padding: 6px; opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.96); transition: all 0.2s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+    .viz-menu-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .viz-menu-dropdown button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: none; background: transparent; color: var(--menu-text); font-size: 14px; font-family: inherit; cursor: pointer; border-radius: 8px; transition: background 0.15s; text-align: left; }
+    .viz-menu-dropdown button:hover { background: var(--menu-item-hover); }
+
+    .nav-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent); text-decoration: none; margin-bottom: 24px; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .nav-back:hover { background: var(--surface-hover); }
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); margin-bottom: 12px; }
+    .hero-sub { font-size: 15px; color: var(--text-secondary); max-width: 540px; margin: 0 auto; line-height: 1.7; }
+
+    .meta-bar { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 36px; font-size: 12px; color: var(--text-secondary); }
+    .diff-badge { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); }
+    .diff-intermediate { background: var(--chip-amber); color: var(--warning); }
+    .tag-chip { padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); }
+    .meta-item { display: inline-flex; align-items: center; gap: 4px; }
+    .category-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
+    .cat-기술산업 { background:rgba(139,92,246,0.12); color:#8b5cf6; border:1px solid rgba(139,92,246,0.3); }
+    html.theme-light .cat-기술산업 { background:rgba(139,92,246,0.08); }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 26px; transition: box-shadow 0.2s ease; }
+    html.theme-dark .card { box-shadow: 0 0 0 1px var(--border); }
+    html.theme-light .card { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .card:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 24px rgba(0,0,0,0.1); }
+    .section-title { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
+
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .kpi-item { text-align: center; padding: 18px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+    .kpi-value { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em; }
+    .kpi-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    .highlight-box { padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border); background: var(--chip-accent); font-size: 13.5px; line-height: 1.7; margin-bottom: 16px; }
+    .highlight-box strong { color: var(--accent); }
+
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+    .era-card { border-radius: 12px; padding: 22px; border: 1px solid var(--border); position: relative; overflow: hidden; }
+    .era-card .top-line { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+    .era-card.old .top-line { background: #64748b; }
+    .era-card.new .top-line { background: var(--accent); }
+    .era-label { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 10px; margin-top: 4px; }
+    .era-card.old .era-label { color: #64748b; }
+    .era-card.new .era-label { color: var(--accent); }
+    .era-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; }
+    .era-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; margin-bottom: 8px; color: var(--text-secondary); }
+    .era-item strong { color: var(--text); font-weight: 600; }
+    .era-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+    .era-card.old .era-dot { background: #64748b; }
+    .era-card.new .era-dot { background: var(--accent); }
+
+    .timeline { display: flex; flex-direction: column; gap: 0; margin-bottom: 20px; }
+    .timeline-item { display: flex; gap: 16px; }
+    .timeline-left { display: flex; flex-direction: column; align-items: center; width: 32px; flex-shrink: 0; }
+    .timeline-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); flex-shrink: 0; margin-top: 4px; }
+    .timeline-line { width: 2px; flex: 1; background: var(--border); margin: 4px 0; min-height: 20px; }
+    .timeline-item:last-child .timeline-line { display: none; }
+    .timeline-right { padding-bottom: 20px; flex: 1; }
+    .timeline-year { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .timeline-content { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+    .timeline-content strong { color: var(--text); }
+
+    .bar-chart { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+    .bar-item { display: flex; flex-direction: column; gap: 5px; }
+    .bar-header { display: flex; justify-content: space-between; font-size: 13px; }
+    .bar-label { font-weight: 500; }
+    .bar-value { font-weight: 700; color: var(--accent); }
+    .bar-track { height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 99px; }
+
+    .card-grid-inner { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 12px; margin-bottom: 20px; }
+    .inner-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+    .inner-card-icon { font-size: 1.4rem; margin-bottom: 8px; }
+    .inner-card-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    .inner-card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+    .related-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-section h3 { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; }
+    .related-card { display: block; text-decoration: none; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); transition: background 0.15s; }
+    .related-card:hover { background: var(--surface-hover); }
+    .related-card .r-label { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+    .related-card .r-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+    .footer-note { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.6s ease-out both; }
+    .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; } .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+    @media (max-width: 640px) {
+      .compare-grid, .kpi-row { grid-template-columns: 1fr; }
+      .container { padding: 48px 16px 60px; }
+    }
+    @media print {
+      body { background: white !important; }
+      .viz-menu { display: none !important; }
+      .card { break-inside: avoid; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="viz-menu">
+    <button class="viz-menu-toggle" onclick="toggleMenu()" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/>
+      </svg>
+    </button>
+    <div class="viz-menu-dropdown" id="vizMenuDropdown">
+      <button onclick="cycleTheme()"><span>◐</span><span>테마: <span id="themeLabel">Dark</span></span></button>
+      <button onclick="downloadImage()"><span>⤓</span><span>PNG 다운로드</span></button>
+      <button onclick="window.print()"><span>⎙</span><span>인쇄 / PDF</span></button>
+    </div>
+  </div>
+
+  <main id="main">
+    <div class="container">
+
+      <a href="../index.html" class="nav-back animate">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        지식 Archive
+      </a>
+
+      <header class="hero animate">
+        <div class="hero-badge">🔬 기술 · 산업</div>
+        <h1>K배터리 위기 — 17조원<br>계약 해지와 중국의 역전</h1>
+        <p class="hero-sub">한국 배터리 3사가 '공포의 12월'에 17.3조원 규모 계약을 잃었다. 기술력만으로는 가격을 이길 수 없었다.</p>
+      </header>
+
+      <div class="meta-bar animate d1">
+        <span class="category-badge cat-기술산업">🔬 기술·산업</span>
+        <span class="diff-badge diff-intermediate">중급</span>
+        <span class="tag-chip">#배터리</span>
+        <span class="tag-chip">#전기차</span>
+        <span class="tag-chip">#LFP</span>
+        <span class="tag-chip">#중국</span>
+        <span class="tag-chip">#산업위기</span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          2026.01.05
+        </span>
+        <span class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          뉴스픽 DIG
+        </span>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-row animate d2" role="region" aria-label="핵심 수치">
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--negative)">17.3조원</div>
+          <div class="kpi-label">12월 계약 해지 규모</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--warning)">10% 미만</div>
+          <div class="kpi-label">한국 3사 ESS 점유율</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color:var(--positive)">1,412만대</div>
+          <div class="kpi-label">중국 2025 EV 판매</div>
+        </div>
+      </div>
+
+      <!-- 하이라이트 -->
+      <div class="highlight-box animate d2">
+        2025년 12월 17~31일, 단 2주 만에 <strong>총 17조 3,000억원</strong> 규모의 배터리 계약이 해지됐어요.
+        LG에너지솔루션은 포드로부터 9.6조원, 엘앤에프는 테슬라 계약이 <strong>3.8조원 → 973만원</strong>으로 사실상 소멸.
+        한국이 기술력을 앞세워 다시 역전할 거라던 기대가 무너진 순간이에요.
+      </div>
+
+      <!-- 비교: NCM vs LFP -->
+      <div class="compare-grid animate d3" role="region" aria-label="NCM vs LFP 배터리 비교">
+        <div class="era-card old card">
+          <div class="top-line"></div>
+          <div style="padding-top:8px">
+            <div class="era-label">🇰🇷 한국 — NCM</div>
+            <div class="era-title">고성능·고가 전략</div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>원료:</strong> 니켈·코발트·망간 — 고가 희소금속 의존</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>장점:</strong> 높은 에너지밀도, 장거리 주행</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>약점:</strong> 가격 경쟁력 열위, 원자재 가격 변동 리스크</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>현실:</strong> 미국 보조금 폐지로 가격 민감도 급상승</div></div>
+          </div>
+        </div>
+        <div class="era-card new card">
+          <div class="top-line"></div>
+          <div style="padding-top:8px">
+            <div class="era-label">🇨🇳 중국 — LFP</div>
+            <div class="era-title">저가·대량 전략</div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>원료:</strong> 리튬인산철 — 저렴하고 풍부한 원자재</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>장점:</strong> 압도적 가격 경쟁력, 안정성</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>강점:</strong> CATL ESS 점유율 30%↑, BYD EV 세계 1위</div></div>
+            <div class="era-item"><div class="era-dot"></div><div><strong>추세:</strong> 기술 격차 축소 + 가격 우위 = 시장 장악</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 공포의 12월 타임라인 -->
+      <div class="card animate d3" style="margin-bottom:20px">
+        <div class="section-title">공포의 12월 — 계약 해지 타임라인</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">12월 17일</div>
+              <div class="timeline-content"><strong>포드 → LG에너지솔루션</strong> — 9조 6,000억원 규모 계약 해지 통보</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">12월 중순</div>
+              <div class="timeline-content"><strong>LG에너지솔루션 FBPS 사업 중단</strong> — 3조 9,000억원 계약 추가 소멸</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">12월 하순</div>
+              <div class="timeline-content"><strong>엘앤에프 — 테슬라 계약 사실상 소멸</strong> — 3.8조원 → 973만원으로 축소 (99.99% 감소)</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year">배경</div>
+              <div class="timeline-content"><strong>포스코퓨처엠 — GM 실적 부진</strong> — 107억$ 계약 중 실납품 20억$ (18.6%)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 막대 차트: 2025 EV 판매 -->
+      <div class="card animate d4" style="margin-bottom:20px">
+        <div class="section-title">2025년 전기차 판매 전망 (지역별)</div>
+        <div class="bar-chart">
+          <div class="bar-item">
+            <div class="bar-header"><span class="bar-label">🇨🇳 중국</span><span class="bar-value">1,412만대 (+26.6%)</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:100%; background:var(--negative)"></div></div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-header"><span class="bar-label">🇪🇺 유럽</span><span class="bar-value">374만대 (+27.2%)</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:26.5%; background:var(--accent2)"></div></div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-header"><span class="bar-label">🇺🇸 미국</span><span class="bar-value">159만대 (+1.8%)</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:11.3%; background:#64748b"></div></div>
+          </div>
+        </div>
+        <p style="font-size:12px; color:var(--text-secondary); margin-top:8px; text-align:center">미국 시장 성장이 사실상 정체 — 트럼프 정부 보조금 폐지 영향</p>
+      </div>
+
+      <!-- 위기 원인 3가지 -->
+      <div class="card-grid-inner animate d4">
+        <div class="inner-card">
+          <div class="inner-card-icon">💰</div>
+          <div class="inner-card-title">가격 경쟁력 열위</div>
+          <div class="inner-card-desc">중국 LFP 배터리가 저렴한 반면, 한국 NCM은 니켈·코발트 등 고가 원료 의존으로 가격 격차 해소 불가</div>
+        </div>
+        <div class="inner-card">
+          <div class="inner-card-icon">🇺🇸</div>
+          <div class="inner-card-title">미국 시장 부진</div>
+          <div class="inner-card-desc">트럼프 정부 EV 보조금 폐지 → 월 14만대 → 6.5만대로 급감. 완성차 업체가 배터리 주문 축소</div>
+        </div>
+        <div class="inner-card">
+          <div class="inner-card-icon">📉</div>
+          <div class="inner-card-title">점유율 역전</div>
+          <div class="inner-card-desc">2020~22년 세계 절반 이상 → 현재 중국(CATL, BYD)에 1위 내줌. 한국 3사 일제 하락</div>
+        </div>
+      </div>
+
+      <!-- 생존 전략 -->
+      <div class="card animate d5" style="margin-bottom:20px">
+        <div class="section-title">K배터리 생존 전략 — ESS + LFP 전환</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot" style="background:var(--positive)"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year" style="color:var(--positive)">LG에너지솔루션</div>
+              <div class="timeline-content"><strong>2027년</strong> 충북 오창에서 LFP 배터리 생산 시작 예정</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot" style="background:var(--positive)"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year" style="color:var(--positive)">SK온</div>
+              <div class="timeline-content"><strong>2026년 하반기</strong>부터 미국 공장에서 LFP 생산 개시</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="timeline-dot" style="background:var(--positive)"></div><div class="timeline-line"></div></div>
+            <div class="timeline-right">
+              <div class="timeline-year" style="color:var(--positive)">삼성SDI</div>
+              <div class="timeline-content"><strong>2026년 4분기</strong>부터 미국 공장에서 LFP 생산 전환</div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:13px; color:var(--text-secondary); line-height:1.7; margin-top:8px">
+          다만 ESS 시장에서도 CATL이 이미 <strong style="color:var(--text)">30% 이상</strong> 점유율을 확보한 상태. 한국 3사 합계는 10% 미만으로 후발 주자 입장.
+        </p>
+      </div>
+
+      <!-- 관련 지식 -->
+      <div class="related-section animate d5">
+        <h3>관련 지식</h3>
+        <div class="related-grid">
+          <a href="ev-battery-structure.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">EV 배터리 구조와 핵심 기술</div>
+          </a>
+          <a href="solid-state-battery-roadmap.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">전고체 배터리 로드맵</div>
+          </a>
+          <a href="supply-chain-restructuring.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">글로벌 공급망 재편</div>
+          </a>
+          <a href="us-china-semiconductor-war.html" class="related-card">
+            <div class="r-label">→ 관련</div>
+            <div class="r-title">미중 반도체 전쟁</div>
+          </a>
+        </div>
+      </div>
+
+      <p class="footer-note animate d5">출처: 뉴스픽 DIG (2026.01.05)</p>
+
+    </div>
+  </main>
+
+  <script>
+    var THEMES = ['theme-dark', 'theme-light'];
+    var THEME_LABELS = { 'theme-dark': 'Dark', 'theme-light': 'Light' };
+    (function() {
+      var saved = localStorage.getItem('ka-theme') || 'theme-dark';
+      document.documentElement.className = saved;
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[saved];
+    })();
+    function cycleTheme() {
+      var cur = document.documentElement.className;
+      var next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+      document.documentElement.className = next;
+      localStorage.setItem('ka-theme', next);
+      var lbl = document.getElementById('themeLabel');
+      if (lbl) lbl.textContent = THEME_LABELS[next];
+      closeMenu();
+    }
+    function toggleMenu() { document.getElementById('vizMenuDropdown').classList.toggle('open'); }
+    function closeMenu() { document.getElementById('vizMenuDropdown').classList.remove('open'); }
+    document.addEventListener('click', function(e) { if (!e.target.closest('.viz-menu')) closeMenu(); });
+    function downloadImage() {
+      closeMenu();
+      if (typeof htmlToImage === 'undefined') { alert('라이브러리 로딩 중...'); return; }
+      htmlToImage.toPng(document.getElementById('main'), { pixelRatio: 2 })
+        .then(function(dataUrl) {
+          var a = document.createElement('a');
+          a.download = 'k-battery-crisis-2026.png';
+          a.href = dataUrl;
+          a.click();
+        });
+    }
+  </script>
+</body>
+</html>
