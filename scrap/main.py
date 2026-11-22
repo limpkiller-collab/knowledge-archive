@@ -13,7 +13,7 @@ from . import covers, extract, html_store, notify, notion_store, summarize, urls
 from .models import Card, ExtractError
 
 SITE = "https://limpkiller-collab.github.io/knowledge-archive/"
-SOURCE_NAMES = {"article": "기사", "instagram_post": "인스타그램", "instagram_reel": "인스타그램 릴스", "youtube": "유튜브"}
+SOURCE_NAMES = {"article": "기사", "instagram_post": "인스타그램", "instagram_reel": "인스타그램 릴스", "youtube": "유튜브", "threads": "스레드"}
 
 
 def git_publish(root: Path, message: str) -> None:
@@ -80,6 +80,13 @@ def process(raw_url: str, note: str, category: str, root: Path, today: str, deps
         deps.notify("저장 실패", f"{e}\n{url}")
         return "실패"
 
+    if ex.url and ex.url != url:
+        # 공유용 짧은 주소였다. 실제 글 주소로 저장하고, 그 주소로 이미 저장한 카드는 그대로 둔다.
+        url = ex.url
+        existing = html_store.find_by_url(url, root)
+        if existing and not existing.get("partial"):
+            deps.notify("이미 저장됨", existing["title"], SITE + existing["file"])
+            return "중복"
     if existing:
         card_id = existing["id"]  # 부분 완료였던 카드를 같은 주소로 다시 만든다
     else:

@@ -4,7 +4,7 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   var TYPE_LABELS = {
     manual: '직접 정리', article: '기사', instagram_post: '인스타그램',
-    instagram_reel: '릴스', youtube: '유튜브'
+    instagram_reel: '릴스', youtube: '유튜브', threads: '스레드'
   };
   var DEFAULT_COLOR = '#333333';
 

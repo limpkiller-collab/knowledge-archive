@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 
 @dataclass
 class Extracted:
-    source_type: str  # article | instagram_post | instagram_reel | youtube
+    source_type: str  # article | instagram_post | instagram_reel | youtube | threads
     url: str
     title: str = ""
     author: str = ""

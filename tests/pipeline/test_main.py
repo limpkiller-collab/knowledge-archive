@@ -147,3 +147,16 @@ def test_multi_image_instagram_post_keeps_all_images(root):
     entry = json.loads((root / "scraps.json").read_text(encoding="utf-8"))[0]
     assert entry["images"] == ["covers/scrap-20261122-my-card/01.jpg", "covers/scrap-20261122-my-card/02.jpg"]
     assert entry["cover"] == "covers/scrap-20261122-my-card/01.jpg"
+
+
+def test_share_link_is_saved_under_real_address(root):
+    class Share(Fakes):
+        def extract(self, url):
+            return Extracted(source_type="threads", url="https://www.threads.com/@a/post/B", text="본문")
+
+    f = Share()
+    assert run(root, f, url="https://www.threads.com/share/xyz") == "완료"
+    entry = json.loads((root / "scraps.json").read_text(encoding="utf-8"))[0]
+    assert entry["sourceUrl"] == "https://www.threads.com/@a/post/B" and entry["sourceType"] == "threads"
+    assert run(root, f, url="https://www.threads.com/share/other") == "중복"
+    assert f.published == 1

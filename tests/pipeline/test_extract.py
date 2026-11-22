@@ -67,3 +67,25 @@ def test_instagram_images_fall_back_to_child_posts():
             "childPosts": [{"displayUrl": "https://cdn/1.jpg"}, {"displayUrl": "https://cdn/2.jpg"}, {}]}
     ex = extract._from_instagram("https://www.instagram.com/p/A/", "instagram_post", item, transcribe=None)
     assert ex.images == ["https://cdn/1.jpg", "https://cdn/2.jpg"]
+
+
+THREADS_HTML = """<html><head>
+<meta property="og:title" content="&#xcea1;&#xd2f4; (&#064;captain_0fficial) on Threads" />
+<meta property="og:url" content="https://www.threads.com/&#064;captain_0fficial/post/DgDAaCPj_-4" />
+<meta property="og:description" content="첫 줄 &amp; 둘째
+https://github.com/a/b" />
+<meta property="og:image" content="https://cdn/x.jpg?a=1&amp;b=2" />
+</head></html>"""
+
+
+def test_threads_reads_preview_meta():
+    ex = extract._from_threads("https://www.threads.com/share/_r6yYuEnH", THREADS_HTML)
+    assert ex.source_type == "threads" and ex.author == "captain_0fficial"
+    assert ex.url == "https://www.threads.com/@captain_0fficial/post/DgDAaCPj_-4"
+    assert ex.text == "첫 줄 & 둘째\nhttps://github.com/a/b"
+    assert ex.thumbnail_url == "https://cdn/x.jpg?a=1&b=2" and ex.images == [ex.thumbnail_url]
+
+
+def test_threads_without_text_raises():
+    with pytest.raises(ExtractError):
+        extract._from_threads("https://www.threads.com/share/x", "<html><head></head></html>")

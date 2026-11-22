@@ -34,3 +34,9 @@ def test_normalize_rejects_non_http():
 def test_youtube_id():
     assert youtube_id("https://www.youtube.com/watch?v=dQw4w9WgXcQ") == "dQw4w9WgXcQ"
     assert youtube_id("https://example.com") is None
+
+
+def test_threads_links():
+    assert classify("https://www.threads.com/share/_r6yYuEnH") == "threads"
+    assert classify("https://www.threads.net/@a/post/B") == "threads"
+    assert normalize("https://www.threads.com/@a/post/B?xmt=AQG0&slof=1") == "https://www.threads.com/@a/post/B"

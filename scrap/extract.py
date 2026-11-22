@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import html as html_lib
 import os
+import re
 from urllib.parse import urlsplit
 
 import requests
@@ -85,6 +87,38 @@ def _from_instagram(url: str, kind: str, item: dict, transcribe) -> Extracted:
     return ex
 
 
+META_TAG = re.compile(r"<meta\b[^>]*>", re.I)
+META_ATTR = re.compile(r'([a-zA-Z:_-]+)\s*=\s*"([^"]*)"')
+# 스레드는 로그인하지 않은 방문자에게 본문을 주지 않는다. 링크 미리보기용으로 주는 정보를 읽는다.
+PREVIEW_AGENT = "facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)"
+
+
+def _meta(html: str) -> dict:
+    """<meta property|name="…" content="…"> 값을 모은다. 같은 이름은 처음 나온 값을 쓴다."""
+    found = {}
+    for tag in META_TAG.findall(html):
+        attrs = {k.lower(): html_lib.unescape(v) for k, v in META_ATTR.findall(tag)}
+        key = attrs.get("property") or attrs.get("name")
+        if key and attrs.get("content"):
+            found.setdefault(key, attrs["content"])
+    return found
+
+
+def _from_threads(url: str, html: str) -> Extracted:
+    meta = _meta(html)
+    text = (meta.get("og:description") or "").strip()
+    if not text:
+        raise ExtractError("스레드 글을 읽지 못했습니다 (비공개이거나 삭제된 글)")
+    handle = re.search(r"\(@([A-Za-z0-9._]+)\)", meta.get("og:title") or "")
+    canonical = meta.get("og:url") or url
+    if classify(canonical) != "threads":
+        canonical = url
+    image = meta.get("og:image") or ""
+    return Extracted(source_type="threads", url=canonical.split("?")[0], text=text,
+                     author=handle.group(1) if handle else "", thumbnail_url=image,
+                     images=[image] if image else [])
+
+
 def _gemini_watch(url: str) -> str:
     """Gemini가 유튜브 영상을 직접 보고 내용을 글로 풀어 준다."""
     return gemini.generate([{"file_data": {"file_uri": url}}, {"text": WATCH_PROMPT}], timeout=600)
@@ -109,5 +143,9 @@ def run(url: str) -> Extracted:
         return _from_article(url, resp.text)
     if kind == "youtube":
         return _from_youtube(url)
+    if kind == "threads":
+        resp = requests.get(url, headers={"User-Agent": PREVIEW_AGENT}, timeout=30)
+        resp.raise_for_status()
+        return _from_threads(url, resp.text)
     item = _apify(IG_ACTOR, {"directUrls": [url], "resultsType": "posts", "resultsLimit": 1})
     return _from_instagram(url, kind, item, transcribe=stt.from_media_url)
