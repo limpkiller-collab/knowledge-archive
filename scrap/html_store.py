@@ -60,6 +60,8 @@ def save(card: Card, root: Path, note: str = "") -> None:
         "tags": [escape(t) for t in card.tags], "summary": escape(card.summary),
         "category": escape(card.category), "cover": card.cover, "coverWord": escape(card.cover_word),
     }
+    if note:
+        entry["partial"] = True  # 일부만 정리된 카드. 같은 링크를 다시 보내면 재처리한다
     path = root / "scraps.json"
     entries = [e for e in _read(path) if e.get("sourceUrl") != card.source_url]
     entries.insert(0, entry)

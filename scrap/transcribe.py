@@ -2,37 +2,55 @@ from __future__ import annotations
 
 import base64
 import os
-import subprocess
-import tempfile
-from pathlib import Path
 
 import requests
 
 GEMINI = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-PROMPT = "이 음성을 들리는 그대로 받아 적어라. 원래 언어를 유지하고, 설명이나 요약은 덧붙이지 않는다."
-MAX_AUDIO_BYTES = 14 * 1024 * 1024  # base64로 늘어난 뒤에도 요청 한도 20MB 안에 들도록
+PROMPT = ("이 영상(또는 음성)의 내용을 한국어로 빠짐없이 글로 옮겨라. "
+          "사람이 말하는 내용은 들리는 그대로 적고, 화면에 나오는 자막과 글자도 함께 적는다. "
+          "설명이나 평가는 덧붙이지 않는다.")
+MAX_INLINE_BYTES = 14 * 1024 * 1024  # base64로 늘어난 뒤에도 요청 한도 20MB 안에 들도록
+MAX_DOWNLOAD_BYTES = 80 * 1024 * 1024
 
 
-def from_media_url(media_url: str) -> str:
-    """영상 주소에서 음성만 뽑아 Gemini로 받아쓴다. 16kHz 모노 mp3로 줄여 요청 크기를 작게 유지한다."""
-    with tempfile.TemporaryDirectory() as tmp:
-        src, audio = Path(tmp) / "in.mp4", Path(tmp) / "out.mp3"
-        with requests.get(media_url, stream=True, timeout=60) as r:
-            r.raise_for_status()
-            with open(src, "wb") as f:
-                for chunk in r.iter_content(1 << 20):
-                    f.write(chunk)
-        subprocess.run(["ffmpeg", "-y", "-i", str(src), "-vn", "-ac", "1", "-ar", "16000", "-b:a", "32k", str(audio)],
-                       check=True, capture_output=True)
-        data = audio.read_bytes()
-    if len(data) > MAX_AUDIO_BYTES:
-        raise ValueError("음성이 너무 길어 받아쓸 수 없습니다")
+def _download(url: str, limit: int) -> bytes:
+    """파일을 내려받는다. limit를 넘으면 중단하고 빈 값을 돌려준다."""
+    chunks, size = [], 0
+    with requests.get(url, stream=True, timeout=60, headers={"User-Agent": "Mozilla/5.0 (compatible; link-scrap)"}) as r:
+        r.raise_for_status()
+        for chunk in r.iter_content(1 << 20):
+            size += len(chunk)
+            if size > limit:
+                return b""
+            chunks.append(chunk)
+    return b"".join(chunks)
+
+
+def _ask_gemini(data: bytes, mime_type: str) -> str:
     body = {"contents": [{"parts": [
-        {"inline_data": {"mime_type": "audio/mp3", "data": base64.b64encode(data).decode("ascii")}},
+        {"inline_data": {"mime_type": mime_type, "data": base64.b64encode(data).decode("ascii")}},
         {"text": PROMPT},
     ]}]}
     resp = requests.post(GEMINI.format(model=os.environ.get("GEMINI_MODEL") or "gemini-3.8-flash"),
                          headers={"x-goog-api-key": os.environ["GEMINI_API_KEY"]}, json=body, timeout=300)
-    resp.raise_for_status()
+    if resp.status_code >= 400:
+        print(f"gemini http {resp.status_code}: {resp.text[:300]}")
+        resp.raise_for_status()
     parts = resp.json()["candidates"][0]["content"]["parts"]
     return "".join(p.get("text", "") for p in parts).strip()
+
+
+def from_media_url(video_url: str, audio_url: str = "") -> str:
+    """릴스 영상을 Gemini가 직접 보고 듣게 해 내용을 글로 받는다.
+
+    영상이 작으면 영상째로 보낸다(화면 속 글자도 읽힌다). 크면 음성 파일만 보낸다.
+    """
+    video = _download(video_url, MAX_INLINE_BYTES) if video_url else b""
+    if video:
+        print(f"transcribe: video {len(video) // 1024} KB")
+        return _ask_gemini(video, "video/mp4")
+    audio = _download(audio_url, MAX_INLINE_BYTES) if audio_url else b""
+    if audio:
+        print(f"transcribe: audio {len(audio) // 1024} KB")
+        return _ask_gemini(audio, "audio/mp4")
+    raise ValueError("영상이 너무 커서 읽을 수 없습니다")

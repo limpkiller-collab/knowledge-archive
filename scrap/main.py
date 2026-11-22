@@ -56,7 +56,7 @@ def process(raw_url: str, note: str, category: str, root: Path, today: str, deps
         deps.notify("저장 실패", str(e))
         return "실패"
     existing = html_store.find_by_url(url, root)
-    if existing:
+    if existing and not existing.get("partial"):
         deps.notify("이미 저장됨", existing["title"], SITE + existing["file"])
         return "중복"
 
@@ -78,10 +78,13 @@ def process(raw_url: str, note: str, category: str, root: Path, today: str, deps
         deps.notify("저장 실패", f"{e}\n{url}")
         return "실패"
 
-    base_id = f"scrap-{today.replace('-', '')}-{out['slug']}"
-    card_id, n = base_id, 2
-    while (root / f"cards/{card_id}.html").exists():
-        card_id, n = f"{base_id}-{n}", n + 1
+    if existing:
+        card_id = existing["id"]  # 부분 완료였던 카드를 같은 주소로 다시 만든다
+    else:
+        base_id = f"scrap-{today.replace('-', '')}-{out['slug']}"
+        card_id, n = base_id, 2
+        while (root / f"cards/{card_id}.html").exists():
+            card_id, n = f"{base_id}-{n}", n + 1
     card = Card(id=card_id, title=out["title"], summary=out["summary"], key_points=out["key_points"],
                 category=out["category"], tags=out["tags"], cover_word=out["cover_word"],
                 source_type=ex.source_type, source=ex.author or SOURCE_NAMES[ex.source_type],

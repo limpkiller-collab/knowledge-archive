@@ -12,7 +12,7 @@ def test_instagram_post_maps_fields():
 
 
 def test_reel_transcription_failure_becomes_warning():
-    def boom(url):
+    def boom(url, audio_url=""):
         raise RuntimeError("stt down")
     item = {"caption": "캡션", "videoUrl": "https://cdn/v.mp4", "displayUrl": "https://cdn/t.jpg"}
     ex = extract._from_instagram("https://www.instagram.com/reel/A/", "instagram_reel", item, transcribe=boom)
@@ -48,3 +48,15 @@ def test_partial_instagram_data_is_used_with_warning():
     item = {"caption": "캡션", "error": "restricted_page", "_partial": True}
     ex = extract._from_instagram("https://www.instagram.com/p/A/", "instagram_post", item, transcribe=None)
     assert ex.text == "캡션" and any("일부 정보" in w for w in ex.warnings)
+
+
+def test_reel_passes_video_and_audio_urls():
+    seen = {}
+
+    def fake(video, audio=""):
+        seen["args"] = (video, audio)
+        return "받아쓴 내용"
+
+    item = {"caption": "캡션", "videoUrl": "https://cdn/v.mp4", "audioUrl": "https://cdn/a.m4a", "displayUrl": "https://cdn/t.jpg"}
+    ex = extract._from_instagram("https://www.instagram.com/reel/A/", "instagram_reel", item, transcribe=fake)
+    assert seen["args"] == ("https://cdn/v.mp4", "https://cdn/a.m4a") and ex.transcript == "받아쓴 내용" and ex.warnings == []

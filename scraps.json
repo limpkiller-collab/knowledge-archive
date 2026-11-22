@@ -17,7 +17,8 @@
     "summary": "50년 차 의류 공장 사장님이 니트를 옷걸이에 그냥 걸면 어깨에 뿔 자국이 생기므로 접어서 거는 방법을 알려준다.",
     "category": "패션",
     "cover": "covers/scrap-20261122-knit-hanger-shoulder-tip.jpg",
-    "coverWord": "니트 걸기"
+    "coverWord": "니트 걸기",
+    "partial": true
   },
   {
     "id": "scrap-20261122-yield-curve-basics",

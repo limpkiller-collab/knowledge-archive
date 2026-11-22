@@ -125,3 +125,11 @@ def test_auto_label_means_no_category(root):
     run(root, Fakes(), category="자동 분류")
     names = [c["name"] for c in json.loads((root / "categories.json").read_text(encoding="utf-8"))]
     assert names == ["테크", "etc"]
+
+
+def test_partial_card_is_reprocessed_in_place(root):
+    run(root, Fakes(warnings=["음성을 받아쓰지 못했습니다"]))
+    f = Fakes()
+    assert run(root, f) == "완료"
+    entries = json.loads((root / "scraps.json").read_text(encoding="utf-8"))
+    assert len(entries) == 1 and entries[0]["id"] == "scrap-20261122-my-card" and "partial" not in entries[0]

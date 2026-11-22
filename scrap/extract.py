@@ -66,9 +66,9 @@ def _from_instagram(url: str, kind: str, item: dict, transcribe) -> Extracted:
             ex.warnings.append("영상 파일을 받지 못해 캡션과 대표 화면만으로 정리했습니다")
         else:
             try:
-                ex.transcript = transcribe(ex.media_url)
+                ex.transcript = transcribe(ex.media_url, item.get("audioUrl") or "")
             except Exception as e:
-                print(f"transcribe failed: {type(e).__name__}")
+                print(f"transcribe failed: {type(e).__name__}: {str(e)[:200]}")
                 ex.warnings.append("음성을 받아쓰지 못해 캡션과 대표 화면만으로 정리했습니다")
     if not (ex.text or ex.transcript or ex.images):
         raise ExtractError("게시물에 정리할 내용이 없습니다")
