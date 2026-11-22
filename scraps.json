@@ -1,5 +1,25 @@
 [
   {
+    "id": "scrap-20261122-claude-code-find-skills-guide",
+    "title": "클로드 코드용 스킬 검색 스킬 find-skills 사용법",
+    "file": "cards/scrap-20261122-claude-code-find-skills-guide.html",
+    "date": "2026-11-22",
+    "source": "lazy_owen",
+    "sourceUrl": "https://www.instagram.com/reel/DgCTQgpT5C_/",
+    "sourceType": "instagram_reel",
+    "tags": [
+      "클로드코드",
+      "find-skills",
+      "AI에이전트",
+      "skills.sh",
+      "Vercel"
+    ],
+    "summary": "Vercel 엔지니어가 만든 find-skills는 클로드 코드에 하려는 일만 말하면 약 70만 개 스킬 목록에서 맞는 스킬을 찾아 설치 명령까지 보여 주는 스킬 전용 검색 엔진이다.",
+    "category": "테크",
+    "cover": "covers/scrap-20261122-claude-code-find-skills-guide.jpg",
+    "coverWord": "find-skills"
+  },
+  {
     "id": "scrap-20261122-henge-macos-on-ipad-iphone",
     "title": "헨지(Henge) 에뮬레이터로 아이패드·아이폰에서 macOS 실행하기",
     "file": "cards/scrap-20261122-henge-macos-on-ipad-iphone.html",
