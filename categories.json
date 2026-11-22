@@ -1,0 +1,9 @@
+[
+  { "name": "경제·투자", "color": "#1f3a2e" },
+  { "name": "기술·산업", "color": "#1d2f5c" },
+  { "name": "부동산", "color": "#5b3a1e" },
+  { "name": "시사·컬처", "color": "#5c1f2a" },
+  { "name": "패션", "color": "#6b2f55" },
+  { "name": "테크", "color": "#111111" },
+  { "name": "etc", "color": "#55524a" }
+]
