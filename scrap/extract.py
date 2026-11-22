@@ -51,13 +51,20 @@ def _from_instagram(url: str, kind: str, item: dict, transcribe) -> Extracted:
     ex = Extracted(source_type=kind, url=url, text=item.get("caption") or "", author=item.get("ownerUsername") or "",
                    published_at=(item.get("timestamp") or "")[:10], thumbnail_url=item.get("displayUrl") or "",
                    images=list(item.get("images") or ([item["displayUrl"]] if item.get("displayUrl") else [])))
+    print(f"instagram item: type={item.get('type')} productType={item.get('productType')} "
+          f"images={len(item.get('images') or [])} hasVideo={bool(item.get('videoUrl'))}")
     if kind == "instagram_reel":
-        ex.images = []
+        # 영상은 대표 화면 한 장만 이미지로 넘기고, 내용은 음성 받아쓰기로 얻는다.
+        ex.images = [ex.thumbnail_url] if ex.thumbnail_url else []
         ex.media_url = item.get("videoUrl") or ""
-        try:
-            ex.transcript = transcribe(ex.media_url) if ex.media_url else ""
-        except Exception:
-            ex.warnings.append("음성을 받아쓰지 못해 캡션만으로 정리했습니다")
+        if not ex.media_url:
+            ex.warnings.append("영상 파일을 받지 못해 캡션과 대표 화면만으로 정리했습니다")
+        else:
+            try:
+                ex.transcript = transcribe(ex.media_url)
+            except Exception as e:
+                print(f"transcribe failed: {type(e).__name__}")
+                ex.warnings.append("음성을 받아쓰지 못해 캡션과 대표 화면만으로 정리했습니다")
     if not (ex.text or ex.transcript or ex.images):
         raise ExtractError("게시물에 정리할 내용이 없습니다")
     return ex

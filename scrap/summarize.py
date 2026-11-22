@@ -49,23 +49,57 @@ def build_payload(ex: Extracted, note: str, categories: list[str]) -> dict:
 FALLBACK_MODELS = {"claude-opus-5-5", "claude-opus-5", "claude-sonnet-5-5", "claude-fable-5-2", "claude-fable-5-1"}
 
 
+def load_images(urls: list[str]) -> list[dict]:
+    """이미지를 직접 내려받아 Claude에 넘길 블록으로 만든다.
+
+    주소만 넘기면 Claude API가 사이트의 robots.txt 때문에 거절하는 경우가 있어(인스타그램 등) 파일 내용을 보낸다.
+    """
+    import base64
+    import io
+
+    import requests
+    from PIL import Image
+
+    blocks = []
+    for url in urls[:MAX_IMAGES]:
+        try:
+            resp = requests.get(url, headers={"User-Agent": "Mozilla/5.0 (compatible; link-scrap)"}, timeout=30)
+            resp.raise_for_status()
+            img = Image.open(io.BytesIO(resp.content)).convert("RGB")
+            img.thumbnail((1568, 1568))
+            buf = io.BytesIO()
+            img.save(buf, "JPEG", quality=85)
+            blocks.append({"type": "image", "source": {"type": "base64", "media_type": "image/jpeg",
+                                                       "data": base64.b64encode(buf.getvalue()).decode("ascii")}})
+        except Exception as e:
+            print(f"image skipped: {type(e).__name__}")
+    return blocks
+
+
 def call_claude(payload: dict) -> dict:
     """Claude API로 카드 데이터를 받는다. 구조화 출력으로 JSON 형식을 보장한다."""
     import anthropic
 
     model = os.environ.get("CLAUDE_MODEL") or "claude-opus-5-5"
-    content = [{"type": "image", "source": {"type": "url", "url": u}} for u in payload["images"]]
+    content = load_images(payload["images"])
+    print(f"summarize input: {len(content)} images, {len(payload['text'])} chars")
     content.append({"type": "text", "text": payload["text"]})
     extra = {}
     if model in FALLBACK_MODELS:
         # 안전 분류기가 요청을 거절하면 API가 같은 요청을 대체 모델로 한 번 더 실행한다.
         extra = {"betas": ["server-side-fallback-2026-07-01"], "fallbacks": "default"}
-    msg = anthropic.Anthropic().beta.messages.create(
-        model=model, max_tokens=16000, system=SYSTEM,
-        output_config={"effort": "medium", "format": {"type": "json_schema", "schema": SCHEMA}},
-        messages=[{"role": "user", "content": content}],
-        **extra,
-    )
+    try:
+        msg = anthropic.Anthropic().beta.messages.create(
+            model=model, max_tokens=16000, system=SYSTEM,
+            output_config={"effort": "medium", "format": {"type": "json_schema", "schema": SCHEMA}},
+            messages=[{"role": "user", "content": content}],
+            **extra,
+        )
+    except anthropic.APIStatusError as e:
+        print(f"claude api error {e.status_code}: {str(e.message)[:300]}")
+        raise SummarizeError(f"요약 요청이 거절되었습니다 (오류 {e.status_code})") from e
+    except anthropic.APIConnectionError as e:
+        raise SummarizeError("요약 서버에 연결하지 못했습니다") from e
     if msg.stop_reason == "refusal":
         raise SummarizeError("모델이 이 내용의 요약을 거절했습니다")
     if msg.stop_reason == "max_tokens":

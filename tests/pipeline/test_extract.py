@@ -17,6 +17,7 @@ def test_reel_transcription_failure_becomes_warning():
     item = {"caption": "캡션", "videoUrl": "https://cdn/v.mp4", "displayUrl": "https://cdn/t.jpg"}
     ex = extract._from_instagram("https://www.instagram.com/reel/A/", "instagram_reel", item, transcribe=boom)
     assert ex.transcript == "" and any("음성" in w for w in ex.warnings)
+    assert ex.images == ["https://cdn/t.jpg"]
 
 
 def test_youtube_uses_video_notes_and_thumbnail():
@@ -35,3 +36,9 @@ def test_youtube_failure_raises():
 def test_empty_article_raises():
     with pytest.raises(ExtractError):
         extract._from_article("https://e.com/a", html="<html><body></body></html>")
+
+
+def test_reel_without_video_url_warns():
+    item = {"caption": "캡션", "displayUrl": "https://cdn/t.jpg"}
+    ex = extract._from_instagram("https://www.instagram.com/reel/A/", "instagram_reel", item, transcribe=None)
+    assert any("영상 파일" in w for w in ex.warnings)
