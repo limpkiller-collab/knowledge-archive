@@ -51,3 +51,4 @@ def test_ensure_category_appends_new(tmp_path):
     assert html_store.ensure_category("패션", root) is False
     names = [c["name"] for c in json.loads((root / "categories.json").read_text(encoding="utf-8"))]
     assert names == ["패션", "여행"]
+    assert (root / "shortcut-menu.txt").read_text(encoding="utf-8").split("\n") == ["자동 분류", "패션", "여행", "새 카테고리 입력"]

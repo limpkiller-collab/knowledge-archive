@@ -19,7 +19,7 @@ SOURCE_NAMES = {"article": "기사", "instagram_post": "인스타그램", "insta
 def git_publish(root: Path, message: str) -> None:
     def git(*args):
         subprocess.run(["git", *args], cwd=root, check=True)
-    paths = [p for p in ("cards", "covers", "scraps.json", "categories.json") if (root / p).exists()]
+    paths = [p for p in ("cards", "covers", "scraps.json", "categories.json", "shortcut-menu.txt") if (root / p).exists()]
     git("add", *paths)
     git("commit", "-m", message)
     try:

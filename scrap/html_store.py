@@ -30,7 +30,15 @@ def ensure_category(name: str, root: Path) -> bool:
         return False
     cats.append({"name": name})
     _write(path, cats)
+    write_menu(root)
     return True
+
+
+def write_menu(root: Path) -> None:
+    """단축어가 그대로 보여줄 메뉴를 만든다. 한 줄에 항목 하나."""
+    names = [c["name"] for c in _read(root / "categories.json")]
+    lines = ["자동 분류", *names, "새 카테고리 입력"]
+    (root / "shortcut-menu.txt").write_text("\n".join(lines), encoding="utf-8")
 
 
 def render(card: Card, note: str = "") -> str:
