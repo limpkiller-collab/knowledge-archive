@@ -12,16 +12,18 @@
   var el = {};
 
   var CSS = ''
-    + '.km-btn{position:absolute;top:32px;right:24px;width:44px;height:44px;border:1px solid var(--border,#ddd);border-radius:50%;'
-    + 'background:var(--bg,#fff);color:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}'
-    + '.km-btn:hover{border-color:currentColor}'
-    + '.km-menu{position:absolute;top:82px;right:24px;z-index:20;min-width:200px;margin:0;padding:6px 0;'
-    + 'background:var(--bg,#fff);color:inherit;border:1px solid var(--rule,#111);box-shadow:0 8px 24px rgba(0,0,0,.18)}'
+    + '.km-btn{position:absolute;top:32px;right:16px;width:44px;height:44px;border:0;border-radius:8px;'
+    + 'background:transparent;color:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}'
+    + '.km-btn:hover{color:var(--accent,#b3261e)}'
+    + '.km-menu{position:absolute;top:80px;right:16px;z-index:20;width:236px;max-width:calc(100% - 32px);box-sizing:border-box;margin:0;padding:6px 0;'
+    + 'background:var(--bg,#fff);color:inherit;border:1px solid var(--border,#ddd);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.18)}'
     + '.km-menu[hidden]{display:none}'
-    + '.km-menu button{display:block;width:100%;min-height:44px;padding:0 16px;border:0;background:transparent;color:inherit;'
-    + 'font:inherit;font-size:15px;font-weight:700;text-align:left;cursor:pointer}'
+    + '.km-menu button{display:flex;align-items:center;gap:14px;width:100%;min-height:48px;padding:0 18px;border:0;background:transparent;color:inherit;'
+    + 'font:inherit;font-size:16px;font-weight:500;text-align:left;cursor:pointer}'
+    + '.km-menu button svg{flex:none}'
     + '.km-menu button:hover,.km-menu button:focus-visible{background:var(--border,#ddd)}'
     + '.km-menu .km-danger{color:var(--accent,#b3261e)}'
+    + '.km-sep{border-top:1px solid var(--border,#ddd);margin:6px 18px}'
     + '.km-dialog{width:min(92vw,480px);box-sizing:border-box;padding:24px;border:1px solid var(--rule,#111);border-radius:0;'
     + 'background:var(--bg,#fff);color:var(--text,#111);font-family:inherit}'
     + '.km-dialog::backdrop{background:rgba(0,0,0,.5)}'
@@ -40,6 +42,16 @@
     + '.km-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:50;max-width:88vw;padding:12px 18px;'
     + 'background:#111;color:#fff;font-size:14px;font-weight:700;line-height:1.5;border:1px solid #fff}'
     + '.km-toast[hidden]{display:none}';
+
+  var ICON = {
+    edit: '<path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/>',
+    share: '<path d="M12 15V3"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7"/>',
+    capture: '<path d="M4 8a2 2 0 0 1 2-2h1.5l1.5-2h6l1.5 2H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.2"/>',
+    remove: '<path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/>'
+  };
+  function icon(name) {
+    return '<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + ICON[name] + '</svg>';
+  }
 
   function h(tag, cls, text) {
     var n = document.createElement(tag);
@@ -252,15 +264,18 @@
     el.btn.setAttribute('aria-label', '카드 메뉴');
     el.btn.setAttribute('aria-haspopup', 'menu');
     el.btn.setAttribute('aria-expanded', 'false');
-    el.btn.innerHTML = '<svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><circle cx="4" cy="10" r="1.7"></circle><circle cx="10" cy="10" r="1.7"></circle><circle cx="16" cy="10" r="1.7"></circle></svg>';
+    el.btn.innerHTML = '<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle></svg>';
 
     el.menu = h('div', 'km-menu');
     el.menu.setAttribute('role', 'menu');
     el.menu.hidden = true;
-    [['편집', openEdit], ['공유', share], ['전체 화면 캡처', capture], ['삭제', remove, 'km-danger']].forEach(function (it) {
-      var b = h('button', it[2] || '', it[0]);
+    [['편집', openEdit, 'edit'], ['공유', share, 'share'], ['전체 화면 캡처', capture, 'capture'], ['삭제', remove, 'remove']].forEach(function (it) {
+      var b = h('button', it[2] === 'remove' ? 'km-danger' : '');
       b.type = 'button'; b.setAttribute('role', 'menuitem');
+      b.innerHTML = icon(it[2]);
+      b.appendChild(document.createTextNode(it[0]));
       b.addEventListener('click', function () { closeMenu(); it[1](); });
+      if (it[2] === 'remove') { var sep = h('div', 'km-sep'); sep.setAttribute('role', 'separator'); el.menu.appendChild(sep); }
       el.menu.appendChild(b);
     });
     main.appendChild(el.btn); main.appendChild(el.menu);
