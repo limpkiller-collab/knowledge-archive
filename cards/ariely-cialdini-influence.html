@@ -413,5 +413,7 @@
     document.addEventListener('click',function(e){if(!e.target.closest('.viz-menu')){const d=document.getElementById('vizMenuDropdown');if(d)d.classList.remove('open');}});
     function downloadImage(){const el=document.getElementById('main');htmlToImage.toPng(el,{quality:0.95,backgroundColor:getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()}).then(function(d){const a=document.createElement('a');a.download='ariely-cialdini-influence.png';a.href=d;a.click();});}
   </script>
+<script src="../js/archive-core.js"></script>
+<script src="../js/gallery.js"></script>
 </body>
 </html>

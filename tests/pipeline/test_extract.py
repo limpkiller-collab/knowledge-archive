@@ -60,3 +60,10 @@ def test_reel_passes_video_and_audio_urls():
     item = {"caption": "캡션", "videoUrl": "https://cdn/v.mp4", "audioUrl": "https://cdn/a.m4a", "displayUrl": "https://cdn/t.jpg"}
     ex = extract._from_instagram("https://www.instagram.com/reel/A/", "instagram_reel", item, transcribe=fake)
     assert seen["args"] == ("https://cdn/v.mp4", "https://cdn/a.m4a") and ex.transcript == "받아쓴 내용" and ex.warnings == []
+
+
+def test_instagram_images_fall_back_to_child_posts():
+    item = {"caption": "c", "displayUrl": "https://cdn/1.jpg",
+            "childPosts": [{"displayUrl": "https://cdn/1.jpg"}, {"displayUrl": "https://cdn/2.jpg"}, {}]}
+    ex = extract._from_instagram("https://www.instagram.com/p/A/", "instagram_post", item, transcribe=None)
+    assert ex.images == ["https://cdn/1.jpg", "https://cdn/2.jpg"]

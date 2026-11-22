@@ -50,10 +50,20 @@ def _from_article(url: str, html: str) -> Extracted:
                      thumbnail_url=(meta.image or "") if meta else "")
 
 
+def _post_images(item: dict) -> list[str]:
+    """게시물에 들어 있는 이미지 주소를 순서대로 모은다. 여러 장 게시물은 images 또는 childPosts에 담겨 온다."""
+    urls = list(item.get("images") or [])
+    if not urls:
+        urls = [c.get("displayUrl") for c in (item.get("childPosts") or []) if c.get("displayUrl")]
+    if not urls and item.get("displayUrl"):
+        urls = [item["displayUrl"]]
+    return urls
+
+
 def _from_instagram(url: str, kind: str, item: dict, transcribe) -> Extracted:
     ex = Extracted(source_type=kind, url=url, text=item.get("caption") or "", author=item.get("ownerUsername") or "",
                    published_at=(item.get("timestamp") or "")[:10], thumbnail_url=item.get("displayUrl") or "",
-                   images=list(item.get("images") or ([item["displayUrl"]] if item.get("displayUrl") else [])))
+                   images=_post_images(item))
     if item.get("_partial"):
         ex.warnings.append("인스타그램이 일부 정보만 제공해 캡션 중심으로 정리했습니다")
     print(f"instagram item: type={item.get('type')} productType={item.get('productType')} "

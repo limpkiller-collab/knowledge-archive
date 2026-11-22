@@ -20,7 +20,7 @@ def git_publish(root: Path, message: str) -> None:
     def git(*args, check=True):
         return subprocess.run(["git", *args], cwd=root, check=check)
     # 경로마다 따로 반영한다. 아직 없는 경로는 건너뛰고, 지워진 파일은 삭제로 반영된다.
-    for path in ("cards", "covers", "scraps.json", "categories.json", "shortcut-menu.txt"):
+    for path in ("cards", "covers", "scraps.json", "categories.json", "shortcut-menu.txt", "card-images.json"):
         git("add", "-A", "--", path, check=False)
     git("commit", "-m", message)
     try:
@@ -47,6 +47,7 @@ def wait_live(url: str, timeout: int = 150) -> None:
 
 
 REAL = SimpleNamespace(wait_live=wait_live, extract=extract.run, summarize=summarize.run, cover=covers.save,
+                       images=covers.save_all,
                        publish=git_publish, notion_save=notion_store.save, notify=notify.send)
 
 
@@ -91,6 +92,10 @@ def process(raw_url: str, note: str, category: str, root: Path, today: str, deps
                 source_type=ex.source_type, source=ex.author or SOURCE_NAMES[ex.source_type],
                 source_url=url, date=today)
     card.cover = deps.cover(card_id, ex.thumbnail_url, root)
+    if ex.source_type == "instagram_post" and len(ex.images) > 1:
+        # 여러 장 게시물은 전부 저장해 카드에서 넘겨 볼 수 있게 한다
+        card.images = getattr(deps, "images", lambda *a: [])(card_id, ex.images, root)
+        card.cover = card.cover or (card.images[0] if card.images else "")
     problems = list(ex.warnings)
 
     html_store.save(card, root, note=" · ".join(ex.warnings))

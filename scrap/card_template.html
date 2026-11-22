@@ -30,12 +30,14 @@ li::before { content: counter(p, decimal-leading-zero); font-weight: 900; color:
 <div class="kicker">$category · $type_label · $date</div>
 <h1>$title</h1>
 <p class="summary">$summary</p>
-$cover_html
+<div id="ka-gallery">$cover_html</div>
 <ol>
 $points_html
 </ol>
 <p class="note">$note</p>
 <a class="source" href="$source_url" rel="noopener noreferrer" target="_blank">원문 보기 ($source)</a>
 </main>
+<script src="../js/archive-core.js"></script>
+<script src="../js/gallery.js"></script>
 </body>
 </html>

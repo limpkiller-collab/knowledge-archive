@@ -50,3 +50,20 @@ test('typeLabel: 형식 이름', () => {
   assert.equal(core.typeLabel('youtube'), '유튜브');
   assert.equal(core.typeLabel('unknown'), '기사');
 });
+
+test('galleryFor: 게시물 이미지 뒤에 직접 추가한 이미지가 붙는다', () => {
+  const g = core.galleryFor({ cover: 'covers/a.jpg', images: ['covers/a/01.jpg', 'covers/a/02.jpg'] }, ['covers/a/u-1.jpg']);
+  assert.deepStrictEqual(g.map((x) => x.path), ['covers/a/01.jpg', 'covers/a/02.jpg', 'covers/a/u-1.jpg']);
+  assert.deepStrictEqual(g.map((x) => x.added), [false, false, true]);
+  assert.deepStrictEqual(core.galleryFor({ cover: 'covers/a.jpg' }, []).map((x) => x.path), ['covers/a.jpg']);
+  assert.deepStrictEqual(core.galleryFor({}, undefined), []);
+});
+
+test('cardKey와 editManifest', () => {
+  assert.strictEqual(core.cardKey({ file: 'cards/ai-trend-2025.html' }), 'ai-trend-2025');
+  const before = { a: ['x.jpg'], b: ['y.jpg'] };
+  const after = core.editManifest(before, 'a', ['z.jpg', 'x.jpg'], []);
+  assert.deepStrictEqual(after, { a: ['x.jpg', 'z.jpg'], b: ['y.jpg'] });
+  assert.deepStrictEqual(before.a, ['x.jpg']);
+  assert.deepStrictEqual(core.editManifest(after, 'b', [], ['y.jpg']), { a: ['x.jpg', 'z.jpg'] });
+});

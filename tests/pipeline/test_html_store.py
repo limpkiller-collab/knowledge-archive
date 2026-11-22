@@ -52,3 +52,26 @@ def test_ensure_category_appends_new(tmp_path):
     names = [c["name"] for c in json.loads((root / "categories.json").read_text(encoding="utf-8"))]
     assert names == ["패션", "여행"]
     assert (root / "shortcut-menu.txt").read_text(encoding="utf-8").split("\n") == ["자동 분류", "패션", "여행", "새 카테고리 입력"]
+
+
+def test_save_records_gallery_images(tmp_path):
+    root = setup_repo(tmp_path)
+    html_store.save(make_card(images=["covers/scrap-20261122-coat/01.jpg", "covers/scrap-20261122-coat/02.jpg"]), root)
+    entry = json.loads((root / "scraps.json").read_text(encoding="utf-8"))[0]
+    assert entry["images"] == ["covers/scrap-20261122-coat/01.jpg", "covers/scrap-20261122-coat/02.jpg"]
+    html = (root / "cards/scrap-20261122-coat.html").read_text(encoding="utf-8")
+    assert 'id="ka-gallery"' in html and "../js/gallery.js" in html
+    html_store.save(make_card(), root)
+    assert "images" not in json.loads((root / "scraps.json").read_text(encoding="utf-8"))[0]
+
+
+def test_remove_clears_gallery_folder_and_added_images(tmp_path):
+    root = setup_repo(tmp_path)
+    html_store.save(make_card(), root)
+    folder = root / "covers/scrap-20261122-coat"
+    folder.mkdir(parents=True)
+    (folder / "01.jpg").write_bytes(b"x")
+    (root / "card-images.json").write_text(json.dumps({"scrap-20261122-coat": ["covers/scrap-20261122-coat/u-1.jpg"], "other": ["a.jpg"]}), encoding="utf-8")
+    assert html_store.remove("scrap-20261122-coat", root)["id"] == "scrap-20261122-coat"
+    assert not folder.exists()
+    assert json.loads((root / "card-images.json").read_text(encoding="utf-8")) == {"other": ["a.jpg"]}

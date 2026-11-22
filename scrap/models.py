@@ -32,6 +32,7 @@ class Card:
     source_url: str
     date: str
     cover: str = ""
+    images: list[str] = field(default_factory=list)  # 게시물에 들어 있던 이미지 전체(스와이프 갤러리)
 
 
 class ExtractError(Exception):

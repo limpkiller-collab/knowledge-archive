@@ -36,7 +36,9 @@ def _props(url: str, status: str, note: str, card: Card | None) -> dict:
 
 
 def _children(card: Card | None, raw_text: str, warnings: list[str]) -> list:
-    blocks = [{"type": "bulleted_list_item", "bulleted_list_item": {"rich_text": _text(p)}}
+    blocks = [{"type": "image", "image": {"type": "external", "external": {"url": SITE + rel}}}
+              for rel in (card.images if card else [])]
+    blocks += [{"type": "bulleted_list_item", "bulleted_list_item": {"rich_text": _text(p)}}
               for p in (card.key_points if card else [])]
     blocks += [{"type": "callout", "callout": {"rich_text": _text(w)}} for w in warnings]
     if raw_text:

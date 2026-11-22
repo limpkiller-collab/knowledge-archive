@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 from html import escape
 from pathlib import Path
 from string import Template
@@ -60,6 +61,8 @@ def save(card: Card, root: Path, note: str = "") -> None:
         "tags": [escape(t) for t in card.tags], "summary": escape(card.summary),
         "category": escape(card.category), "cover": card.cover, "coverWord": escape(card.cover_word),
     }
+    if card.images:
+        entry["images"] = card.images
     if note:
         entry["partial"] = True  # 일부만 정리된 카드. 같은 링크를 다시 보내면 재처리한다
     path = root / "scraps.json"
@@ -69,7 +72,7 @@ def save(card: Card, root: Path, note: str = "") -> None:
 
 
 def remove(card_id: str, root: Path):
-    """카드 파일, 커버 이미지, 목록 항목을 지운다. 지운 항목을 돌려주고, 없으면 None."""
+    """카드 파일, 커버·갤러리 이미지, 목록 항목을 지운다. 지운 항목을 돌려주고, 없으면 None."""
     path = root / "scraps.json"
     entries = _read(path)
     entry = next((e for e in entries if e.get("id") == card_id), None)
@@ -80,4 +83,10 @@ def remove(card_id: str, root: Path):
         target = root / rel
         if target.is_file():
             target.unlink()
+    shutil.rmtree(root / "covers" / card_id, ignore_errors=True)  # 갤러리 이미지와 직접 추가한 이미지
+    manifest = root / "card-images.json"
+    if manifest.is_file():
+        added = _read(manifest)
+        if added.pop(card_id, None) is not None:
+            _write(manifest, added)
     return entry

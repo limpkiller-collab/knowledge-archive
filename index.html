@@ -2161,10 +2161,21 @@
 
     // ============ CARDS ============
     var VIDEO_BADGE = '<span class="cover-video" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1l7 4-7 4z" fill="#111111"></path></svg></span>';
+    var MULTI_BADGE = '<span class="cover-video cover-multi" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#111111" stroke-width="1.4"><rect x="1" y="3.5" width="7.5" height="7.5" rx="1"></rect><path d="M3.5 1h6.5a1 1 0 0 1 1 1v6.5"></path></svg></span>';
+    var ADDED_IMAGES = {};  // card-images.json: 카드에 직접 추가한 이미지
+    // 카드마다 넘겨 볼 이미지 수를 세고, 커버가 없는 카드는 첫 이미지를 썸네일로 쓴다.
+    function applyGalleries(cards) {
+      cards.forEach(function (k) {
+        var g = ArchiveCore.galleryFor(k, ADDED_IMAGES[ArchiveCore.cardKey(k)]);
+        k.imageCount = g.length;
+        if (!k.cover && g.length) k.cover = g[0].path;
+      });
+      return cards;
+    }
     function coverHtml(k) {
       var cv = ArchiveCore.coverFor(k, CATEGORIES);
       var isVideo = k.sourceType === 'instagram_reel' || k.sourceType === 'youtube';
-      var tail = (isVideo ? VIDEO_BADGE : '') + '<span class="cover-title">' + k.title + '</span></span>';
+      var tail = (isVideo ? VIDEO_BADGE : (k.imageCount > 1 ? MULTI_BADGE : '')) + '<span class="cover-title">' + k.title + '</span></span>';
       if (cv.kind === 'image') {
         return '<span class="card-cover is-image"><img src="' + attr(cv.src) + '" alt="" loading="lazy">' + tail;
       }
@@ -2449,9 +2460,10 @@
     }
     loadReadStatus();
     renderAll();
-    Promise.all([loadJson('categories.json', []), loadJson('scraps.json', [])]).then(function (res) {
+    Promise.all([loadJson('categories.json', []), loadJson('scraps.json', []), loadJson('card-images.json', {})]).then(function (res) {
       CATEGORIES = Array.isArray(res[0]) ? res[0] : [];
-      ALL_CARDS = ArchiveCore.mergeCards(KNOWLEDGE_DB, visibleScraps(res[1]));
+      ADDED_IMAGES = (res[2] && typeof res[2] === 'object' && !Array.isArray(res[2])) ? res[2] : {};
+      ALL_CARDS = applyGalleries(ArchiveCore.mergeCards(KNOWLEDGE_DB, visibleScraps(res[1])));
       renderAll();
     });
   </script>

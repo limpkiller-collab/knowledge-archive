@@ -48,8 +48,31 @@
 
   function typeLabel(t) { return TYPE_LABELS[t] || '기사'; }
 
+  // 카드 파일 이름(확장자 제외). 직접 추가한 이미지 목록(card-images.json)의 키로 쓴다.
+  function cardKey(card) {
+    return String((card && card.file) || '').split('/').pop().replace(/\.html$/, '');
+  }
+
+  // 카드에서 넘겨 볼 이미지 목록. 게시물 이미지(없으면 커버 한 장) 뒤에 직접 추가한 이미지가 붙는다.
+  function galleryFor(card, added) {
+    var base = card && card.images && card.images.length ? card.images : (card && card.cover ? [card.cover] : []);
+    return base.map(function (p) { return { path: p, added: false }; })
+      .concat((added || []).map(function (p) { return { path: p, added: true }; }));
+  }
+
+  // 직접 추가한 이미지 목록을 고친 새 객체를 돌려준다. 이미지가 하나도 남지 않은 카드는 키를 지운다.
+  function editManifest(manifest, key, add, remove) {
+    var out = {};
+    Object.keys(manifest || {}).forEach(function (k) { out[k] = manifest[k].slice(); });
+    var list = (out[key] || []).filter(function (p) { return (remove || []).indexOf(p) === -1; });
+    (add || []).forEach(function (p) { if (list.indexOf(p) === -1) list.push(p); });
+    if (list.length) out[key] = list; else delete out[key];
+    return out;
+  }
+
   return {
     mergeCards: mergeCards, filterCards: filterCards, countByCategory: countByCategory,
-    coverFor: coverFor, typeLabel: typeLabel, TYPE_LABELS: TYPE_LABELS
+    coverFor: coverFor, typeLabel: typeLabel, TYPE_LABELS: TYPE_LABELS,
+    cardKey: cardKey, galleryFor: galleryFor, editManifest: editManifest
   };
 });

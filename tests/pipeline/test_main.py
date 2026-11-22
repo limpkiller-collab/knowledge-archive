@@ -133,3 +133,17 @@ def test_partial_card_is_reprocessed_in_place(root):
     assert run(root, f) == "완료"
     entries = json.loads((root / "scraps.json").read_text(encoding="utf-8"))
     assert len(entries) == 1 and entries[0]["id"] == "scrap-20261122-my-card" and "partial" not in entries[0]
+
+
+def test_multi_image_instagram_post_keeps_all_images(root):
+    class Insta(Fakes):
+        def extract(self, url):
+            return Extracted(source_type="instagram_post", url=url, text="캡션", images=["https://c/1", "https://c/2"])
+
+        def images(self, card_id, urls, root):
+            return [f"covers/{card_id}/{i + 1:02d}.jpg" for i in range(len(urls))]
+
+    assert run(root, Insta(), url="https://www.instagram.com/p/ABC/") == "완료"
+    entry = json.loads((root / "scraps.json").read_text(encoding="utf-8"))[0]
+    assert entry["images"] == ["covers/scrap-20261122-my-card/01.jpg", "covers/scrap-20261122-my-card/02.jpg"]
+    assert entry["cover"] == "covers/scrap-20261122-my-card/01.jpg"

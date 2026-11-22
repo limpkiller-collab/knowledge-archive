@@ -262,5 +262,7 @@
     document.addEventListener('click',function(e){if(!e.target.closest('.viz-menu'))closeMenu();});
     function downloadImage(){closeMenu();if(typeof htmlToImage==='undefined'){alert('라이브러리 로딩 중...');return;}htmlToImage.toPng(document.getElementById('main'),{pixelRatio:2}).then(function(d){var a=document.createElement('a');a.download='korea-wgbi-inclusion.png';a.href=d;a.click();});}
   </script>
+<script src="../js/archive-core.js"></script>
+<script src="../js/gallery.js"></script>
 </body>
 </html>
