@@ -20,10 +20,18 @@ APIFY = "https://api.apify.com/v2/acts/{actor}/run-sync-get-dataset-items"
 
 def _apify(actor: str, payload: dict) -> dict:
     resp = requests.post(APIFY.format(actor=actor), params={"token": os.environ["APIFY_TOKEN"]}, json=payload, timeout=320)
-    resp.raise_for_status()
+    if resp.status_code >= 400:
+        # 실패 원인을 실행 기록에서 볼 수 있게 남긴다. Apify의 오류 본문에는 비밀 값이 없다.
+        print(f"apify http {resp.status_code}: {resp.text[:300]}")
+        raise ExtractError(f"인스타그램을 읽지 못했습니다 (Apify 오류 {resp.status_code})")
     items = resp.json()
-    if not items or items[0].get("error"):
+    if not items:
+        print("apify returned no items")
         raise ExtractError("게시물을 가져오지 못했습니다 (비공개이거나 차단됨)")
+    if items[0].get("error"):
+        print(f"apify item error: {items[0].get('error')} / {str(items[0].get('errorDescription'))[:200]}")
+        raise ExtractError("게시물을 가져오지 못했습니다 (비공개이거나 차단됨)")
+    print("apify item keys:", sorted(items[0].keys()))
     return items[0]
 
 

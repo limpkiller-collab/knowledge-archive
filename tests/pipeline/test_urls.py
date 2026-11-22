@@ -9,6 +9,7 @@ from scrap.urls import classify, normalize, youtube_id
     ("https://www.youtube.com/shorts/dQw4w9WgXcQ?feature=share", "https://www.youtube.com/watch?v=dQw4w9WgXcQ"),
     ("https://m.youtube.com/watch?v=dQw4w9WgXcQ&t=10s", "https://www.youtube.com/watch?v=dQw4w9WgXcQ"),
     ("  https://example.com/a/  ", "https://example.com/a/"),
+    ("https://www.instagram.com/reel/ABC/?cnvx=zzz", "https://www.instagram.com/reel/ABC/"),
 ])
 def test_normalize(raw, expected):
     assert normalize(raw) == expected

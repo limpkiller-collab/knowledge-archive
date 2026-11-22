@@ -31,6 +31,8 @@ def normalize(raw: str) -> str:
     if vid:
         return f"https://www.youtube.com/watch?v={vid}"
     query = urlencode([(k, v) for k, v in parse_qsl(parts.query) if not TRACKING.match(k)])
+    if parts.netloc.lower().removeprefix("www.") == "instagram.com":
+        query = ""  # 인스타그램 주소의 꼬리표는 모두 추적용이다
     return urlunsplit(("https", parts.netloc.lower(), parts.path, query, ""))
 
 
