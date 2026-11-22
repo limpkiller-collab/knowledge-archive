@@ -1,0 +1,48 @@
+name: scrap-link
+on:
+  repository_dispatch:
+    types: [scrap-link]
+concurrency:
+  group: scrap-link
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  scrap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -q -r requirements.txt
+      - name: Configure git
+        run: |
+          git config user.name "link-scrap-bot"
+          git config user.email "link-scrap-bot@users.noreply.github.com"
+      - name: Process link
+        env:
+          SCRAP_URL: ${{ github.event.client_payload.url }}
+          SCRAP_NOTE: ${{ github.event.client_payload.note }}
+          SCRAP_CATEGORY: ${{ github.event.client_payload.category }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          CLAUDE_MODEL: ${{ vars.CLAUDE_MODEL }}
+          SCRAP_STORE_COVERS: ${{ vars.SCRAP_STORE_COVERS }}
+        run: python -m scrap.main
+      - name: Notify on crash
+        if: failure()
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: |
+          curl -s -H "Title: scrap failed" -d "Workflow crashed. Check the Actions log." "https://ntfy.sh/${NTFY_TOPIC}"

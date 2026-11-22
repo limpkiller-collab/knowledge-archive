@@ -1,0 +1,58 @@
+from __future__ import annotations
+
+import json
+from html import escape
+from pathlib import Path
+from string import Template
+
+from .models import Card
+
+TYPE_LABELS = {"article": "기사", "instagram_post": "인스타그램", "instagram_reel": "릴스", "youtube": "유튜브"}
+TEMPLATE = Template((Path(__file__).parent / "card_template.html").read_text(encoding="utf-8"))
+
+
+def _read(path: Path):
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _write(path: Path, data) -> None:
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def find_by_url(url: str, root: Path):
+    return next((e for e in _read(root / "scraps.json") if e.get("sourceUrl") == url), None)
+
+
+def ensure_category(name: str, root: Path) -> bool:
+    path = root / "categories.json"
+    cats = _read(path)
+    if any(c["name"] == name for c in cats):
+        return False
+    cats.append({"name": name})
+    _write(path, cats)
+    return True
+
+
+def render(card: Card, note: str = "") -> str:
+    cover = f'<img class="cover" src="../{escape(card.cover)}" alt="">' if card.cover else ""
+    return TEMPLATE.substitute(
+        title=escape(card.title), summary=escape(card.summary), category=escape(card.category),
+        type_label=TYPE_LABELS.get(card.source_type, "기사"), date=card.date,
+        cover_html=cover, points_html="\n".join(f"<li>{escape(p)}</li>" for p in card.key_points),
+        note=escape(note), source_url=escape(card.source_url), source=escape(card.source),
+    )
+
+
+def save(card: Card, root: Path, note: str = "") -> None:
+    file = f"cards/{card.id}.html"
+    (root / file).write_text(render(card, note), encoding="utf-8")
+    entry = {
+        "id": card.id, "title": escape(card.title), "file": file, "date": card.date,
+        "source": escape(card.source), "sourceUrl": card.source_url, "sourceType": card.source_type,
+        "tags": [escape(t) for t in card.tags], "summary": escape(card.summary),
+        "category": escape(card.category), "cover": card.cover, "coverWord": escape(card.cover_word),
+    }
+    path = root / "scraps.json"
+    entries = [e for e in _read(path) if e.get("sourceUrl") != card.source_url]
+    entries.insert(0, entry)
+    _write(path, entries)

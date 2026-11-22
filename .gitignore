@@ -18,3 +18,8 @@ CLAUDE.md
 *.docx
 *.pdf
 *.pptx
+
+# Python
+.venv/
+__pycache__/
+.pytest_cache/

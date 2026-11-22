@@ -49,7 +49,7 @@
 | `scrap/main.py` | 전체 순서와 중복·실패 처리 |
 | `scrap/card_template.html` | 자동 카드 템플릿 |
 | `scrap/models.py` | `Extracted`, `Card` 자료 구조 |
-| `tests/scrap/` | pytest 테스트 |
+| `tests/pipeline/` | pytest 테스트 |
 | `.github/workflows/scrap-link.yml` | 워크플로 |
 | `docs/shortcut-setup.md` | 단축어·키 설정 안내 |
 | `requirements.txt`, `requirements-dev.txt` | 의존성 |
@@ -59,7 +59,7 @@
 ### Task 1: 뼈대와 자료 구조
 
 **Files:**
-- Create: `requirements.txt`, `requirements-dev.txt`, `scrap/__init__.py`, `scrap/models.py`, `tests/scrap/__init__.py`
+- Create: `requirements.txt`, `requirements-dev.txt`, `scrap/__init__.py`, `scrap/models.py`, `tests/pipeline/__init__.py`
 
 - [ ] **Step 1: 의존성 파일**
 
@@ -131,12 +131,12 @@ class ExtractError(Exception):
     """내용을 가져오지 못했을 때. 메시지는 알림에 그대로 쓴다."""
 ```
 
-`scrap/__init__.py`, `tests/scrap/__init__.py`는 빈 파일로 만든다.
+`scrap/__init__.py`, `tests/pipeline/__init__.py`는 빈 파일로 만든다.
 
 - [ ] **Step 4: Commit**
 
 ```bash
-git add requirements.txt requirements-dev.txt scrap tests/scrap .gitignore
+git add requirements.txt requirements-dev.txt scrap tests/pipeline .gitignore
 git commit -m "chore: 스크랩 파이프라인 뼈대와 자료 구조"
 ```
 
@@ -145,9 +145,9 @@ git commit -m "chore: 스크랩 파이프라인 뼈대와 자료 구조"
 ### Task 2: URL 정규화와 종류 판별
 
 **Files:**
-- Create: `scrap/urls.py`, `tests/scrap/test_urls.py`
+- Create: `scrap/urls.py`, `tests/pipeline/test_urls.py`
 
-- [ ] **Step 1: 실패하는 테스트 `tests/scrap/test_urls.py`**
+- [ ] **Step 1: 실패하는 테스트 `tests/pipeline/test_urls.py`**
 
 ```python
 import pytest
@@ -189,7 +189,7 @@ def test_youtube_id():
 
 - [ ] **Step 2: 실패 확인**
 
-Run: `.venv/bin/pytest tests/scrap/test_urls.py -q`
+Run: `.venv/bin/pytest tests/pipeline/test_urls.py -q`
 Expected: FAIL — `ModuleNotFoundError: No module named 'scrap.urls'`
 
 - [ ] **Step 3: 구현 `scrap/urls.py`**
@@ -244,13 +244,13 @@ def classify(url: str) -> str:
 
 - [ ] **Step 4: 통과 확인**
 
-Run: `.venv/bin/pytest tests/scrap/test_urls.py -q`
+Run: `.venv/bin/pytest tests/pipeline/test_urls.py -q`
 Expected: `13 passed`
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add scrap/urls.py tests/scrap/test_urls.py
+git add scrap/urls.py tests/pipeline/test_urls.py
 git commit -m "feat: URL 정규화와 링크 종류 판별"
 ```
 
@@ -259,9 +259,9 @@ git commit -m "feat: URL 정규화와 링크 종류 판별"
 ### Task 3: HTML 저장기
 
 **Files:**
-- Create: `scrap/html_store.py`, `scrap/card_template.html`, `tests/scrap/test_html_store.py`
+- Create: `scrap/html_store.py`, `scrap/card_template.html`, `tests/pipeline/test_html_store.py`
 
-- [ ] **Step 1: 실패하는 테스트 `tests/scrap/test_html_store.py`**
+- [ ] **Step 1: 실패하는 테스트 `tests/pipeline/test_html_store.py`**
 
 ```python
 import json
@@ -321,7 +321,7 @@ def test_ensure_category_appends_new(tmp_path):
 
 - [ ] **Step 2: 실패 확인**
 
-Run: `.venv/bin/pytest tests/scrap/test_html_store.py -q`
+Run: `.venv/bin/pytest tests/pipeline/test_html_store.py -q`
 Expected: FAIL — `cannot import name 'html_store'`
 
 - [ ] **Step 3: 템플릿 `scrap/card_template.html`**
@@ -437,13 +437,13 @@ def save(card: Card, root: Path, note: str = "") -> None:
 
 - [ ] **Step 5: 통과 확인**
 
-Run: `.venv/bin/pytest tests/scrap/test_html_store.py -q`
+Run: `.venv/bin/pytest tests/pipeline/test_html_store.py -q`
 Expected: `4 passed`
 
 - [ ] **Step 6: Commit**
 
 ```bash
-git add scrap/html_store.py scrap/card_template.html tests/scrap/test_html_store.py
+git add scrap/html_store.py scrap/card_template.html tests/pipeline/test_html_store.py
 git commit -m "feat: 스크랩 카드 HTML 생성과 scraps.json 갱신"
 ```
 
@@ -452,13 +452,13 @@ git commit -m "feat: 스크랩 카드 HTML 생성과 scraps.json 갱신"
 ### Task 4: 요약기
 
 **Files:**
-- Create: `scrap/summarize.py`, `tests/scrap/test_summarize.py`
+- Create: `scrap/summarize.py`, `tests/pipeline/test_summarize.py`
 
 - [ ] **Step 1: `claude-api` 스킬로 현재 API 확인**
 
 확인할 것: 도구 강제 호출(`tool_choice`)로 JSON을 받는 방법, URL 이미지 입력 블록 형식, 모델 ID. 아래 코드와 다르면 맞춘다.
 
-- [ ] **Step 2: 실패하는 테스트 `tests/scrap/test_summarize.py`**
+- [ ] **Step 2: 실패하는 테스트 `tests/pipeline/test_summarize.py`**
 
 Claude 호출은 `call_model` 인자로 주입해 테스트한다.
 
@@ -520,7 +520,7 @@ def test_long_transcript_is_truncated_with_warning():
 
 - [ ] **Step 3: 실패 확인**
 
-Run: `.venv/bin/pytest tests/scrap/test_summarize.py -q`
+Run: `.venv/bin/pytest tests/pipeline/test_summarize.py -q`
 Expected: FAIL — `cannot import name 'summarize'`
 
 - [ ] **Step 4: 구현 `scrap/summarize.py`**
@@ -610,13 +610,13 @@ def run(ex: Extracted, note: str, chosen_category: str, categories: list[str], c
 
 - [ ] **Step 5: 통과 확인**
 
-Run: `.venv/bin/pytest tests/scrap/test_summarize.py -q`
+Run: `.venv/bin/pytest tests/pipeline/test_summarize.py -q`
 Expected: `6 passed`
 
 - [ ] **Step 6: Commit**
 
 ```bash
-git add scrap/summarize.py tests/scrap/test_summarize.py
+git add scrap/summarize.py tests/pipeline/test_summarize.py
 git commit -m "feat: Claude API 요약기와 출력 검증"
 ```
 
@@ -627,7 +627,7 @@ git commit -m "feat: Claude API 요약기와 출력 검증"
 외부 서비스에 의존하는 부분이라 자동 테스트는 판별·조립 로직만 하고, 실제 동작은 Task 10에서 확인한다.
 
 **Files:**
-- Create: `scrap/extract.py`, `scrap/transcribe.py`, `tests/scrap/test_extract.py`
+- Create: `scrap/extract.py`, `scrap/transcribe.py`, `tests/pipeline/test_extract.py`
 
 - [ ] **Step 1: Apify 액터와 음성인식 API 확인**
 
@@ -636,7 +636,7 @@ git commit -m "feat: Claude API 요약기와 출력 검증"
 - Gemini: 공개 유튜브 주소를 `file_data.file_uri`로 넘기는 요청 형식, 현재 쓸 모델 이름, 영상 길이 한도. 모델 이름은 리포 변수 `GEMINI_MODEL`로 넣는다.
 - OpenAI 음성인식: 현재 모델 이름과 25MB 파일 한도.
 
-- [ ] **Step 2: 실패하는 테스트 `tests/scrap/test_extract.py`**
+- [ ] **Step 2: 실패하는 테스트 `tests/pipeline/test_extract.py`**
 
 ```python
 import pytest
@@ -680,7 +680,7 @@ def test_empty_article_raises():
 
 - [ ] **Step 3: 실패 확인**
 
-Run: `.venv/bin/pytest tests/scrap/test_extract.py -q`
+Run: `.venv/bin/pytest tests/pipeline/test_extract.py -q`
 Expected: FAIL — `cannot import name 'extract'`
 
 - [ ] **Step 4: 받아쓰기 `scrap/transcribe.py`**
@@ -807,13 +807,13 @@ def run(url: str) -> Extracted:
 
 - [ ] **Step 6: 통과 확인**
 
-Run: `.venv/bin/pytest tests/scrap/test_extract.py -q`
+Run: `.venv/bin/pytest tests/pipeline/test_extract.py -q`
 Expected: `5 passed`
 
 - [ ] **Step 7: Commit**
 
 ```bash
-git add scrap/extract.py scrap/transcribe.py tests/scrap/test_extract.py
+git add scrap/extract.py scrap/transcribe.py tests/pipeline/test_extract.py
 git commit -m "feat: 기사·인스타그램 추출, Gemini 유튜브 읽기, 릴스 받아쓰기"
 ```
 
@@ -822,9 +822,9 @@ git commit -m "feat: 기사·인스타그램 추출, Gemini 유튜브 읽기, �
 ### Task 6: 커버 저장
 
 **Files:**
-- Create: `scrap/covers.py`, `tests/scrap/test_covers.py`
+- Create: `scrap/covers.py`, `tests/pipeline/test_covers.py`
 
-- [ ] **Step 1: 실패하는 테스트 `tests/scrap/test_covers.py`**
+- [ ] **Step 1: 실패하는 테스트 `tests/pipeline/test_covers.py`**
 
 ```python
 import io
@@ -858,7 +858,7 @@ def test_returns_empty_when_disabled(tmp_path, monkeypatch):
 
 - [ ] **Step 2: 실패 확인**
 
-Run: `.venv/bin/pytest tests/scrap/test_covers.py -q`
+Run: `.venv/bin/pytest tests/pipeline/test_covers.py -q`
 Expected: FAIL — `cannot import name 'covers'`
 
 - [ ] **Step 3: 구현 `scrap/covers.py`**
@@ -903,13 +903,13 @@ def save(card_id: str, thumbnail_url: str, root: Path, fetch=_fetch) -> str:
 
 - [ ] **Step 4: 통과 확인**
 
-Run: `.venv/bin/pytest tests/scrap/test_covers.py -q`
+Run: `.venv/bin/pytest tests/pipeline/test_covers.py -q`
 Expected: `3 passed`
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add scrap/covers.py tests/scrap/test_covers.py
+git add scrap/covers.py tests/pipeline/test_covers.py
 git commit -m "feat: 링크 썸네일을 커버 이미지로 저장"
 ```
 
@@ -1041,9 +1041,9 @@ git commit -m "feat: 노션 저장기와 ntfy 알림"
 ### Task 8: 전체 순서 `main.py`
 
 **Files:**
-- Create: `scrap/main.py`, `tests/scrap/test_main.py`
+- Create: `scrap/main.py`, `tests/pipeline/test_main.py`
 
-- [ ] **Step 1: 실패하는 테스트 `tests/scrap/test_main.py`**
+- [ ] **Step 1: 실패하는 테스트 `tests/pipeline/test_main.py`**
 
 ```python
 import json
@@ -1146,7 +1146,7 @@ def test_invalid_url_notifies(root):
 
 - [ ] **Step 2: 실패 확인**
 
-Run: `.venv/bin/pytest tests/scrap/test_main.py -q`
+Run: `.venv/bin/pytest tests/pipeline/test_main.py -q`
 Expected: FAIL — `cannot import name 'main'`
 
 - [ ] **Step 3: 구현 `scrap/main.py`**
@@ -1256,7 +1256,7 @@ HTML 저장이나 push가 실패하면 예외가 그대로 올라가 워크플�
         card_id, n = f"{base_id}-{n}", n + 1
 ```
 
-테스트를 추가한다(`tests/scrap/test_main.py` 끝).
+테스트를 추가한다(`tests/pipeline/test_main.py` 끝).
 
 ```python
 def test_slug_collision_gets_suffix(root):
@@ -1268,13 +1268,13 @@ def test_slug_collision_gets_suffix(root):
 
 - [ ] **Step 5: 전체 테스트 통과 확인**
 
-Run: `.venv/bin/pytest tests/scrap -q`
+Run: `.venv/bin/pytest tests/pipeline -q`
 Expected: `39 passed`
 
 - [ ] **Step 6: Commit**
 
 ```bash
-git add scrap/main.py tests/scrap/test_main.py
+git add scrap/main.py tests/pipeline/test_main.py
 git commit -m "feat: 스크랩 전체 순서와 중복·실패 처리"
 ```
 
@@ -1344,7 +1344,7 @@ jobs:
           curl -s -H "Title: scrap failed" -d "Workflow crashed. Check the Actions log." "https://ntfy.sh/${NTFY_TOPIC}"
 ```
 
-`vars.CLAUDE_MODEL`과 `vars.SCRAP_STORE_COVERS`가 비어 있으면 빈 문자열이 넘어온다. `summarize.py`의 `os.environ.get("CLAUDE_MODEL", "claude-opus-5-5")`를 `os.environ.get("CLAUDE_MODEL") or "claude-opus-5-5"`로, `covers.py`의 조건을 `os.environ.get("SCRAP_STORE_COVERS") == "0"`으로 바꿔 빈 값에서도 기본값이 쓰이게 한다. 바꾼 뒤 `.venv/bin/pytest tests/scrap -q`가 여전히 통과하는지 확인한다.
+`vars.CLAUDE_MODEL`과 `vars.SCRAP_STORE_COVERS`가 비어 있으면 빈 문자열이 넘어온다. `summarize.py`의 `os.environ.get("CLAUDE_MODEL", "claude-opus-5-5")`를 `os.environ.get("CLAUDE_MODEL") or "claude-opus-5-5"`로, `covers.py`의 조건을 `os.environ.get("SCRAP_STORE_COVERS") == "0"`으로 바꿔 빈 값에서도 기본값이 쓰이게 한다. 바꾼 뒤 `.venv/bin/pytest tests/pipeline -q`가 여전히 통과하는지 확인한다.
 
 - [ ] **Step 3: `.github/workflows/test.yml`**
 
@@ -1365,7 +1365,7 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -q -r requirements-dev.txt
-      - run: pytest tests/scrap -q
+      - run: pytest tests/pipeline -q
       - run: node --test tests/*.test.js
 ```
 

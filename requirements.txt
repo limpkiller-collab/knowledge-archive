@@ -1,0 +1,6 @@
+anthropic
+notion-client
+trafilatura
+requests
+Pillow
+lxml_html_clean

@@ -1,0 +1,94 @@
+from __future__ import annotations
+
+import datetime
+import json
+import os
+import re
+import subprocess
+import sys
+from pathlib import Path
+from types import SimpleNamespace
+
+from . import covers, extract, html_store, notify, notion_store, summarize, urls
+from .models import Card, ExtractError
+
+SOURCE_NAMES = {"article": "기사", "instagram_post": "인스타그램", "instagram_reel": "인스타그램 릴스", "youtube": "유튜브"}
+
+
+def git_publish(root: Path, message: str) -> None:
+    def git(*args):
+        subprocess.run(["git", *args], cwd=root, check=True)
+    paths = [p for p in ("cards", "covers", "scraps.json", "categories.json") if (root / p).exists()]
+    git("add", *paths)
+    git("commit", "-m", message)
+    try:
+        git("push")
+    except subprocess.CalledProcessError:
+        git("pull", "--rebase")
+        git("push")
+
+
+REAL = SimpleNamespace(extract=extract.run, summarize=summarize.run, cover=covers.save,
+                       publish=git_publish, notion_save=notion_store.save, notify=notify.send)
+
+
+def process(raw_url: str, note: str, category: str, root: Path, today: str, deps=REAL) -> str:
+    try:
+        url = urls.normalize(raw_url)
+    except ValueError as e:
+        deps.notify("저장 실패", str(e))
+        return "실패"
+    if html_store.find_by_url(url, root):
+        deps.notify("이미 저장됨", url)
+        return "중복"
+
+    category = re.sub(r"\s+", " ", category).strip()[:20]
+    if category:
+        html_store.ensure_category(category, root)
+    categories = [c["name"] for c in json.loads((root / "categories.json").read_text(encoding="utf-8"))]
+
+    try:
+        ex = deps.extract(url)
+        out = deps.summarize(ex, note, category, categories)
+    except (ExtractError, summarize.SummarizeError) as e:
+        try:
+            deps.notion_save(url, "실패", note)
+        except Exception:
+            pass
+        deps.notify("저장 실패", f"{e}\n{url}")
+        return "실패"
+
+    base_id = f"scrap-{today.replace('-', '')}-{out['slug']}"
+    card_id, n = base_id, 2
+    while (root / f"cards/{card_id}.html").exists():
+        card_id, n = f"{base_id}-{n}", n + 1
+    card = Card(id=card_id, title=out["title"], summary=out["summary"], key_points=out["key_points"],
+                category=out["category"], tags=out["tags"], cover_word=out["cover_word"],
+                source_type=ex.source_type, source=ex.author or SOURCE_NAMES[ex.source_type],
+                source_url=url, date=today)
+    card.cover = deps.cover(card_id, ex.thumbnail_url, root)
+    problems = list(ex.warnings)
+
+    html_store.save(card, root, note=" · ".join(ex.warnings))
+    deps.publish(root, f"scrap: {card.title}")
+
+    link = ""
+    try:
+        status = "부분 완료" if problems else "완료"
+        link = deps.notion_save(url, status, note, card=card,
+                                raw_text="\n\n".join(p for p in [ex.text, ex.transcript] if p), warnings=ex.warnings)
+    except Exception:
+        problems.append("노션 저장에 실패했습니다")
+
+    if problems:
+        deps.notify("부분 저장", f"{card.title}\n" + "\n".join(problems), link)
+        return "부분 완료"
+    deps.notify("저장 완료", card.title, link)
+    return "완료"
+
+
+if __name__ == "__main__":
+    result = process(os.environ["SCRAP_URL"], os.environ.get("SCRAP_NOTE", ""), os.environ.get("SCRAP_CATEGORY", ""),
+                     Path.cwd(), today=datetime.date.today().isoformat())
+    print(result)
+    sys.exit(0)

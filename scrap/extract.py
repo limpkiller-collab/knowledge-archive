@@ -1,0 +1,85 @@
+from __future__ import annotations
+
+import os
+
+import requests
+import trafilatura
+
+from . import transcribe as stt
+from .models import Extracted, ExtractError
+from .urls import classify, youtube_id
+
+IG_ACTOR = "apify~instagram-scraper"
+GEMINI = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+WATCH_PROMPT = """이 영상의 내용을 한국어로 빠짐없이 글로 풀어 써라.
+첫 줄에 영상 제목과 채널 이름을 적는다. 이어서 영상이 말하는 주장, 근거, 수치, 순서, 예시를 시간 순서대로 적는다.
+화면에만 나오는 글자나 도표의 내용도 포함한다. 의견이나 평가는 덧붙이지 않는다."""
+APIFY = "https://api.apify.com/v2/acts/{actor}/run-sync-get-dataset-items"
+
+
+def _apify(actor: str, payload: dict) -> dict:
+    resp = requests.post(APIFY.format(actor=actor), params={"token": os.environ["APIFY_TOKEN"]}, json=payload, timeout=320)
+    resp.raise_for_status()
+    items = resp.json()
+    if not items or items[0].get("error"):
+        raise ExtractError("게시물을 가져오지 못했습니다 (비공개이거나 차단됨)")
+    return items[0]
+
+
+def _from_article(url: str, html: str) -> Extracted:
+    text = trafilatura.extract(html, include_comments=False) or ""
+    if len(text.strip()) < 200:
+        raise ExtractError("기사 본문을 찾지 못했습니다")
+    meta = trafilatura.extract_metadata(html)
+    return Extracted(source_type="article", url=url, text=text, title=(meta.title or "") if meta else "",
+                     author=(meta.author or "") if meta else "", published_at=(meta.date or "") if meta else "",
+                     thumbnail_url=(meta.image or "") if meta else "")
+
+
+def _from_instagram(url: str, kind: str, item: dict, transcribe) -> Extracted:
+    ex = Extracted(source_type=kind, url=url, text=item.get("caption") or "", author=item.get("ownerUsername") or "",
+                   published_at=(item.get("timestamp") or "")[:10], thumbnail_url=item.get("displayUrl") or "",
+                   images=list(item.get("images") or ([item["displayUrl"]] if item.get("displayUrl") else [])))
+    if kind == "instagram_reel":
+        ex.images = []
+        ex.media_url = item.get("videoUrl") or ""
+        try:
+            ex.transcript = transcribe(ex.media_url) if ex.media_url else ""
+        except Exception:
+            ex.warnings.append("음성을 받아쓰지 못해 캡션만으로 정리했습니다")
+    if not (ex.text or ex.transcript or ex.images):
+        raise ExtractError("게시물에 정리할 내용이 없습니다")
+    return ex
+
+
+def _gemini_watch(url: str) -> str:
+    """Gemini가 유튜브 영상을 직접 보고 내용을 글로 풀어 준다."""
+    body = {"contents": [{"parts": [{"file_data": {"file_uri": url}}, {"text": WATCH_PROMPT}]}]}
+    resp = requests.post(GEMINI.format(model=os.environ.get("GEMINI_MODEL") or "gemini-3.8-flash"),
+                         headers={"x-goog-api-key": os.environ["GEMINI_API_KEY"]}, json=body, timeout=600)
+    resp.raise_for_status()
+    parts = resp.json()["candidates"][0]["content"]["parts"]
+    return "".join(p.get("text", "") for p in parts).strip()
+
+
+def _from_youtube(url: str, watch=_gemini_watch) -> Extracted:
+    try:
+        notes = watch(url)
+    except Exception as e:
+        raise ExtractError("영상을 읽지 못했습니다 (비공개이거나 너무 긴 영상)") from e
+    if not notes:
+        raise ExtractError("영상에서 정리할 내용을 찾지 못했습니다")
+    return Extracted(source_type="youtube", url=url, transcript=notes,
+                     thumbnail_url=f"https://i.ytimg.com/vi/{youtube_id(url)}/hqdefault.jpg")
+
+
+def run(url: str) -> Extracted:
+    kind = classify(url)
+    if kind == "article":
+        resp = requests.get(url, headers={"User-Agent": "Mozilla/5.0 (compatible; link-scrap)"}, timeout=30)
+        resp.raise_for_status()
+        return _from_article(url, resp.text)
+    if kind == "youtube":
+        return _from_youtube(url)
+    item = _apify(IG_ACTOR, {"directUrls": [url], "resultsType": "posts", "resultsLimit": 1})
+    return _from_instagram(url, kind, item, transcribe=stt.from_media_url)
