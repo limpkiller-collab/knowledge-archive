@@ -27,15 +27,22 @@ def _download(url: str, limit: int) -> bytes:
 
 
 def _ask_gemini(data: bytes, mime_type: str) -> str:
+    import time
+
     body = {"contents": [{"parts": [
         {"inline_data": {"mime_type": mime_type, "data": base64.b64encode(data).decode("ascii")}},
         {"text": PROMPT},
     ]}]}
-    resp = requests.post(GEMINI.format(model=os.environ.get("GEMINI_MODEL") or "gemini-3.8-flash"),
-                         headers={"x-goog-api-key": os.environ["GEMINI_API_KEY"]}, json=body, timeout=150)
-    if resp.status_code >= 400:
-        print(f"gemini http {resp.status_code}: {resp.text[:300]}")
-        resp.raise_for_status()
+    url = GEMINI.format(model=os.environ.get("GEMINI_MODEL") or "gemini-3.8-flash")
+    for attempt in range(4):
+        resp = requests.post(url, headers={"x-goog-api-key": os.environ["GEMINI_API_KEY"]}, json=body, timeout=150)
+        if resp.status_code < 400:
+            break
+        print(f"gemini http {resp.status_code}: {' '.join(resp.text.split())[:300]}")
+        # 503(과부하)과 429(요청 한도)는 잠시 뒤 다시 시도하면 풀리는 경우가 많다.
+        if resp.status_code not in (429, 500, 503) or attempt == 3:
+            resp.raise_for_status()
+        time.sleep(15 * (attempt + 1))
     parts = resp.json()["candidates"][0]["content"]["parts"]
     return "".join(p.get("text", "") for p in parts).strip()
 
