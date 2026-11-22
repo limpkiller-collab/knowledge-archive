@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>헨지(Henge) 에뮬레이터로 아이패드·아이폰에서 macOS 실행하기</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #ffffff; --text: #111111; --sec: #555555; --rule: #111111; --border: #dddddd; --accent: #b3261e; }
+html.theme-dark { --bg: #111111; --text: #f5f5f5; --sec: #b8b8b8; --rule: #f5f5f5; --border: #3a3a3a; --accent: #ff8a80; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; letter-spacing: -0.02em; }
+main { max-width: 720px; margin: 0 auto; padding: 32px 24px 64px; }
+a { color: var(--text); } a:hover { color: var(--accent); }
+.back { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 700; }
+.kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--accent); border-top: 4px solid var(--rule); padding-top: 14px; }
+h1 { font-size: 36px; font-weight: 900; line-height: 1.25; letter-spacing: -0.04em; margin: 12px 0 16px; }
+.summary { font-size: 17px; line-height: 1.75; color: var(--sec); margin: 0 0 24px; }
+.cover { width: 100%; display: block; margin-bottom: 24px; }
+ol { list-style: none; margin: 0 0 24px; padding: 0; border-top: 1px solid var(--rule); counter-reset: p; }
+li { counter-increment: p; display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 16px; line-height: 1.65; }
+li::before { content: counter(p, decimal-leading-zero); font-weight: 900; color: var(--accent); }
+.note { font-size: 13px; color: var(--sec); line-height: 1.6; }
+.source { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
+</style>
+<script>if (localStorage.getItem('viz-theme') === 'dark') document.documentElement.classList.add('theme-dark');</script>
+</head>
+<body>
+<main>
+<a class="back" href="../index.html">지식 Archive로 돌아가기</a>
+<div class="kicker">테크 · 유튜브 · 2026-11-22</div>
+<h1>헨지(Henge) 에뮬레이터로 아이패드·아이폰에서 macOS 실행하기</h1>
+<p class="summary">iOS·iPadOS에서 macOS를 구동하는 에뮬레이터 헨지를 사이드로딩으로 설치하고 M1 아이패드와 아이폰 듀오에서 직접 실행해 본 과정과 사용 소감을 정리한 글이다.</p>
+<img class="cover" src="../covers/scrap-20261122-henge-macos-on-ipad-iphone.jpg" alt="">
+<ol>
+<li>헨지는 11월 초 공개된 에뮬레이터로, 미러링이 아니라 아이패드·아이폰 기기 자체에서 macOS를 구동한다.</li>
+<li>설치 최소 조건은 아이폰 A14 칩·iOS 17 이상, 아이패드 A14·M1 칩·iPadOS 17 이상이며 약 43GB 이상의 저장공간이 필요하다.</li>
+<li>공식 앱스토어 앱이 아니어서 PC의 아이로더로 사이드스토어를 설치한 뒤 개발자 모드, 앱 신뢰, LocalDevVPN 연결을 거쳐 Henge.ipa를 사이드로딩해야 하며, 무료 개발자 계정은 7일마다 갱신이 필요하다.</li>
+<li>GetMoreRam 앱으로 메모리 제한을 풀어 Extra Memory를 켜고, JIT 페어링 설정을 마친 뒤 앱 내에서 macOS 버전을 골라 설치한다.</li>
+<li>현재 macOS 내 애플 아이디 로그인 시 오류가 발생해 로그인 단계를 건너뛰어야 하며, 앱스토어 앱 대신 포토샵 등은 웹에서 직접 내려받아 설치할 수 있다.</li>
+<li>아이폰 듀오에서는 ForceDuoApp으로 헨지의 SDK를 27.1로 바꾸고 해상도를 1920x1320으로 설정해 화면을 꽉 채웠으며, 램 8GB 할당 시 사파리·유튜브·포토샵이 나름 쓸 만했다.</li>
+<li>구형 칩과 적은 램의 M1 아이패드는 느려 가벼운 작업 외에는 어려웠고, 에뮬레이터의 한계로 아직 진짜 맥을 대체하기는 어렵다는 평가다.</li>
+</ol>
+<p class="note"></p>
+<a class="source" href="https://www.youtube.com/watch?v=SM6OHVqPP4w" rel="noopener noreferrer" target="_blank">원문 보기 (유튜브)</a>
+</main>
+</body>
+</html>
