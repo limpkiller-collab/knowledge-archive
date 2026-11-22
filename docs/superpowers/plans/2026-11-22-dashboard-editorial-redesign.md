@@ -30,6 +30,7 @@
 | `tests/archive-core.test.js` (신규) | 위 함수의 테스트 |
 | `tools/migrate_categories.py` (신규) | `index.html`의 옛 카테고리 값을 새 값으로 바꾸는 일회성 스크립트 |
 | `index.html` (수정) | 스타일·마크업·렌더 함수 개편 |
+| `tools/make_icon.py`, `icons/`, `manifest.webmanifest` (신규) | 아이폰 홈 화면 아이콘 |
 
 ---
 
@@ -705,7 +706,118 @@ git commit -m "feat: 리스트/카드 뷰 전환과 커버 이미지 추가"
 
 ---
 
-### Task 6: 리포 밖 정리와 배포 확인
+### Task 6: 아이폰 홈 화면 아이콘
+
+확정 시안은 "5. 카드 네 장"이다. 검은 바탕(#111111)에 정사각형 네 장을 2×2로 놓고, 왼쪽 위 한 장만 붉은색(#e5483d), 나머지는 흰색이다. 모서리 둥글림은 iOS가 알아서 하므로 이미지는 꽉 찬 정사각형으로 만든다.
+
+**Files:**
+- Create: `tools/make_icon.py`, `icons/apple-touch-icon.png`, `icons/icon-512.png`, `manifest.webmanifest`
+- Modify: `index.html` (`<head>`), `.gitignore`
+
+- [ ] **Step 1: 아이콘 생성 스크립트 `tools/make_icon.py`**
+
+외부 라이브러리 없이 PNG를 쓴다.
+
+```python
+"""홈 화면 아이콘을 만든다: 검은 바탕에 카드 네 장, 왼쪽 위만 붉은색."""
+import struct
+import zlib
+from pathlib import Path
+
+BG, RED, WHITE = (0x11, 0x11, 0x11), (0xE5, 0x48, 0x3D), (0xFF, 0xFF, 0xFF)
+
+
+def pixels(size: int):
+    pad, gap = round(size * 28 / 180), round(size * 12 / 180)
+    cell = (size - 2 * pad - gap) // 2
+    starts = (pad, pad + cell + gap)
+
+    def color(x, y):
+        for row, y0 in enumerate(starts):
+            for col, x0 in enumerate(starts):
+                if x0 <= x < x0 + cell and y0 <= y < y0 + cell:
+                    return RED if (row, col) == (0, 0) else WHITE
+        return BG
+
+    return [[color(x, y) for x in range(size)] for y in range(size)]
+
+
+def write_png(path: Path, size: int) -> None:
+    raw = b"".join(b"\x00" + bytes(c for px in row for c in px) for row in pixels(size))
+
+    def chunk(kind: bytes, data: bytes) -> bytes:
+        return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data))
+
+    png = (b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", size, size, 8, 2, 0, 0, 0))
+           + chunk(b"IDAT", zlib.compress(raw, 9)) + chunk(b"IEND", b""))
+    path.parent.mkdir(exist_ok=True)
+    path.write_bytes(png)
+
+
+if __name__ == "__main__":
+    write_png(Path("icons/apple-touch-icon.png"), 180)
+    write_png(Path("icons/icon-512.png"), 512)
+```
+
+- [ ] **Step 2: 생성하고 눈으로 확인**
+
+Run: `python3 tools/make_icon.py && file icons/*.png`
+Expected: `icons/apple-touch-icon.png: PNG image data, 180 x 180, 8-bit/color RGB` 와 `icons/icon-512.png: PNG image data, 512 x 512, 8-bit/color RGB`
+
+Read 도구로 `icons/apple-touch-icon.png`를 열어 왼쪽 위가 붉고 나머지 세 장이 흰색인지 확인한다.
+
+- [ ] **Step 3: `.gitignore`에 예외 추가**
+
+`.gitignore`가 `*.png`를 무시하므로 `*.png` 줄 바로 아래에 추가한다.
+
+```
+!icons/*.png
+```
+
+- [ ] **Step 4: `manifest.webmanifest` 작성**
+
+```json
+{
+  "name": "지식 Archive",
+  "short_name": "지식 Archive",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#111111",
+  "icons": [
+    { "src": "icons/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
+```
+
+- [ ] **Step 5: `index.html`의 `<head>`에 추가**
+
+`<title>지식 Archive</title>` 바로 아래에 넣는다.
+
+```html
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="icons/icon-512.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="apple-mobile-web-app-title" content="지식 Archive">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#111111">
+```
+
+- [ ] **Step 6: 브라우저에서 확인**
+
+`preview_start`로 띄운 뒤 네트워크 요청에서 `icons/apple-touch-icon.png`와 `manifest.webmanifest`가 200으로 오는지, 탭 아이콘이 바뀌었는지 확인한다. 실제 홈 화면 추가는 배포 후 사용자가 아이폰 사파리의 "홈 화면에 추가"로 확인한다.
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add tools/make_icon.py icons manifest.webmanifest index.html .gitignore
+git commit -m "feat: 아이폰 홈 화면 아이콘과 웹앱 매니페스트"
+```
+
+---
+
+### Task 7: 리포 밖 정리와 배포 확인
 
 - [ ] **Step 1: 지식카드 등록 스킬의 카테고리 이름 확인**
 
