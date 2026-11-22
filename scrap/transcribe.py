@@ -32,7 +32,7 @@ def _ask_gemini(data: bytes, mime_type: str) -> str:
         {"text": PROMPT},
     ]}]}
     resp = requests.post(GEMINI.format(model=os.environ.get("GEMINI_MODEL") or "gemini-3.8-flash"),
-                         headers={"x-goog-api-key": os.environ["GEMINI_API_KEY"]}, json=body, timeout=300)
+                         headers={"x-goog-api-key": os.environ["GEMINI_API_KEY"]}, json=body, timeout=150)
     if resp.status_code >= 400:
         print(f"gemini http {resp.status_code}: {resp.text[:300]}")
         resp.raise_for_status()
@@ -41,16 +41,24 @@ def _ask_gemini(data: bytes, mime_type: str) -> str:
 
 
 def from_media_url(video_url: str, audio_url: str = "") -> str:
-    """릴스 영상을 Gemini가 직접 보고 듣게 해 내용을 글로 받는다.
+    """릴스의 내용을 Gemini로 글로 옮긴다.
 
-    영상이 작으면 영상째로 보낸다(화면 속 글자도 읽힌다). 크면 음성 파일만 보낸다.
+    음성 파일이 있으면 그것을 먼저 쓴다(작고 빠르다). 없거나 실패하면 영상째로 보낸다.
     """
-    video = _download(video_url, MAX_INLINE_BYTES) if video_url else b""
-    if video:
-        print(f"transcribe: video {len(video) // 1024} KB")
-        return _ask_gemini(video, "video/mp4")
-    audio = _download(audio_url, MAX_INLINE_BYTES) if audio_url else b""
-    if audio:
-        print(f"transcribe: audio {len(audio) // 1024} KB")
-        return _ask_gemini(audio, "audio/mp4")
-    raise ValueError("영상이 너무 커서 읽을 수 없습니다")
+    errors = []
+    for label, url, mime in (("audio", audio_url, "audio/mp4"), ("video", video_url, "video/mp4")):
+        if not url:
+            continue
+        try:
+            data = _download(url, MAX_INLINE_BYTES)
+            if not data:
+                errors.append(f"{label}: too large")
+                continue
+            print(f"transcribe: {label} {len(data) // 1024} KB")
+            text = _ask_gemini(data, mime)
+            if text:
+                return text
+            errors.append(f"{label}: empty answer")
+        except Exception as e:
+            errors.append(f"{label}: {type(e).__name__}")
+    raise ValueError("; ".join(errors) or "no media url")
