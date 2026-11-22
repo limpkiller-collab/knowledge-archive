@@ -65,3 +65,13 @@ def save(url: str, status: str, note: str, card: Card | None = None, raw_text: s
         page = client.pages.create(parent={"type": "data_source_id", "data_source_id": source_id},
                                    properties=props, children=blocks, **extra)
     return page["url"]
+
+
+def delete(url: str) -> int:
+    """같은 URL의 행을 모두 휴지통으로 보낸다. 보낸 개수를 돌려준다."""
+    client = Client(auth=os.environ["NOTION_TOKEN"])
+    source_id = client.databases.retrieve(database_id=os.environ["NOTION_DATABASE_ID"])["data_sources"][0]["id"]
+    found = client.data_sources.query(data_source_id=source_id, filter={"property": "URL", "url": {"equals": url}})
+    for page in found["results"]:
+        client.pages.update(page_id=page["id"], in_trash=True)
+    return len(found["results"])

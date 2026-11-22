@@ -1,0 +1,38 @@
+name: scrap-delete
+on:
+  repository_dispatch:
+    types: [scrap-delete]
+concurrency:
+  group: scrap-link
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -q -r requirements.txt
+      - name: Configure git
+        run: |
+          git config user.name "link-scrap-bot"
+          git config user.email "link-scrap-bot@users.noreply.github.com"
+      - name: Delete card
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: python -m scrap.delete
+      - name: Notify on crash
+        if: failure()
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: |
+          curl -s -H "Title: scrap delete failed" -d "Workflow crashed. Check the Actions log." "https://ntfy.sh/${NTFY_TOPIC}"

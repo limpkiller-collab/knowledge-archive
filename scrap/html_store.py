@@ -66,3 +66,18 @@ def save(card: Card, root: Path, note: str = "") -> None:
     entries = [e for e in _read(path) if e.get("sourceUrl") != card.source_url]
     entries.insert(0, entry)
     _write(path, entries)
+
+
+def remove(card_id: str, root: Path):
+    """카드 파일, 커버 이미지, 목록 항목을 지운다. 지운 항목을 돌려주고, 없으면 None."""
+    path = root / "scraps.json"
+    entries = _read(path)
+    entry = next((e for e in entries if e.get("id") == card_id), None)
+    if entry is None:
+        return None
+    _write(path, [e for e in entries if e.get("id") != card_id])
+    for rel in (f"cards/{card_id}.html", f"covers/{card_id}.jpg"):
+        target = root / rel
+        if target.is_file():
+            target.unlink()
+    return entry

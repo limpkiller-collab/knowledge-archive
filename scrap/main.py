@@ -17,10 +17,11 @@ SOURCE_NAMES = {"article": "기사", "instagram_post": "인스타그램", "insta
 
 
 def git_publish(root: Path, message: str) -> None:
-    def git(*args):
-        subprocess.run(["git", *args], cwd=root, check=True)
-    paths = [p for p in ("cards", "covers", "scraps.json", "categories.json", "shortcut-menu.txt") if (root / p).exists()]
-    git("add", *paths)
+    def git(*args, check=True):
+        return subprocess.run(["git", *args], cwd=root, check=check)
+    # 경로마다 따로 반영한다. 아직 없는 경로는 건너뛰고, 지워진 파일은 삭제로 반영된다.
+    for path in ("cards", "covers", "scraps.json", "categories.json", "shortcut-menu.txt"):
+        git("add", "-A", "--", path, check=False)
     git("commit", "-m", message)
     try:
         git("push")

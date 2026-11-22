@@ -156,6 +156,10 @@
       border: 1px solid var(--border); font-size: 12px; color: var(--text-sec);
     }
     .read-btn:hover { border-color: var(--rule); color: var(--text); }
+    .del-btn { flex: none; min-height: 32px; padding: 0 10px; background: none; border: 1px solid var(--border); font-size: 12px; color: var(--text-sec); }
+    .del-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .del-btn + .read-btn { margin-left: 0; }
+    .card-foot .del-btn { margin-left: auto; }
     .ka-card.is-read .read-btn { background: var(--rule); border-color: var(--rule); color: var(--bg); font-weight: 700; }
 
     .card-cover { display: none; }
@@ -2154,6 +2158,8 @@
           + '<span class="card-title">' + k.title + '</span>'
           + '<span class="card-summary">' + k.summary + '</span></a>'
           + '<div class="card-foot">' + series
+          + (k.sourceType !== 'manual'
+            ? '<button type="button" class="del-btn" onclick="deleteCard(\'' + attr(jsStr(k.id)) + '\')">삭제</button>' : '')
           + '<button type="button" class="read-btn" onclick="toggleRead(\'' + attr(jsStr(k.id)) + '\')" aria-pressed="' + isRead + '">'
           + (isRead ? '읽음 ✓' : '읽음 표시') + '</button></div></article>';
       }).join('');
@@ -2172,6 +2178,61 @@
       if (activeTag !== 'all') desc.push('#' + activeTag);
       if (searchQuery) desc.push('"' + searchQuery + '"');
       byId('activeFilters').textContent = desc.join(' · ');
+    }
+
+    // ============ DELETE (자동 스크랩 카드만) ============
+    var DISPATCH_URL = 'https://api.github.com/repos/limpkiller-collab/knowledge-archive/dispatches';
+    function hiddenIds() {
+      try { return JSON.parse(localStorage.getItem('ka-deleted') || '[]'); } catch (e) { return []; }
+    }
+    function setHiddenIds(ids) {
+      try { localStorage.setItem('ka-deleted', JSON.stringify(ids)); } catch (e) {}
+    }
+    function visibleScraps(scraps) {
+      var list = Array.isArray(scraps) ? scraps : [];
+      var present = {};
+      list.forEach(function (k) { present[k.id] = true; });
+      // 삭제 요청 후 사이트가 갱신될 때까지는 숨겨 두고, 실제로 사라진 뒤에는 목록에서 뺀다.
+      var hidden = hiddenIds().filter(function (id) { return present[id]; });
+      setHiddenIds(hidden);
+      return list.filter(function (k) { return hidden.indexOf(k.id) === -1; });
+    }
+    function deleteToken(forceAsk) {
+      var token = null;
+      try { token = localStorage.getItem('ka-gh-token'); } catch (e) {}
+      if (token && !forceAsk) return token;
+      token = window.prompt('삭제하려면 GitHub 토큰이 필요합니다.\n단축어에 넣은 것과 같은 토큰을 붙여넣으세요. 이 기기의 브라우저에만 저장됩니다.');
+      token = token ? token.trim() : '';
+      if (!token) return null;
+      try { localStorage.setItem('ka-gh-token', token); } catch (e) {}
+      return token;
+    }
+    function deleteCard(id) {
+      var card = ALL_CARDS.filter(function (k) { return k.id === id; })[0];
+      if (!card || card.sourceType === 'manual') return;
+      if (!window.confirm('이 카드를 삭제할까요?\n\n' + card.title.replace(/&[a-z#0-9]+;/gi, ' ') + '\n\n사이트와 노션에서 함께 지워집니다.')) return;
+      var token = deleteToken(false);
+      if (!token) return;
+      fetch(DISPATCH_URL, {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' },
+        body: JSON.stringify({ event_type: 'scrap-delete', client_payload: { id: id } })
+      }).then(function (r) {
+        if (r.status === 204) {
+          setHiddenIds(hiddenIds().concat([id]));
+          ALL_CARDS = ALL_CARDS.filter(function (k) { return k.id !== id; });
+          renderAll();
+          return;
+        }
+        if (r.status === 401 || r.status === 403 || r.status === 404) {
+          try { localStorage.removeItem('ka-gh-token'); } catch (e) {}
+          window.alert('토큰이 맞지 않아 삭제하지 못했습니다. 다시 시도하면 토큰을 새로 묻습니다.');
+          return;
+        }
+        window.alert('삭제 요청에 실패했습니다 (오류 ' + r.status + ').');
+      }).catch(function () {
+        window.alert('삭제 요청을 보내지 못했습니다. 연결을 확인해 주세요.');
+      });
     }
 
     // ============ SEARCH ============
@@ -2357,7 +2418,7 @@
     renderAll();
     Promise.all([loadJson('categories.json', []), loadJson('scraps.json', [])]).then(function (res) {
       CATEGORIES = Array.isArray(res[0]) ? res[0] : [];
-      ALL_CARDS = ArchiveCore.mergeCards(KNOWLEDGE_DB, res[1]);
+      ALL_CARDS = ArchiveCore.mergeCards(KNOWLEDGE_DB, visibleScraps(res[1]));
       renderAll();
     });
   </script>
