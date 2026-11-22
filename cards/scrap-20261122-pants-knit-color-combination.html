@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>바지 색상별 니트 색조합 공식</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #ffffff; --text: #111111; --sec: #555555; --rule: #111111; --border: #dddddd; --accent: #b3261e; }
+html.theme-dark { --bg: #111111; --text: #f5f5f5; --sec: #b8b8b8; --rule: #f5f5f5; --border: #3a3a3a; --accent: #ff8a80; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; letter-spacing: -0.02em; }
+main { max-width: 720px; margin: 0 auto; padding: 32px 24px 64px; }
+a { color: var(--text); } a:hover { color: var(--accent); }
+.back { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 700; }
+.kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--accent); border-top: 4px solid var(--rule); padding-top: 14px; }
+h1 { font-size: 36px; font-weight: 900; line-height: 1.25; letter-spacing: -0.04em; margin: 12px 0 16px; }
+.summary { font-size: 17px; line-height: 1.75; color: var(--sec); margin: 0 0 24px; }
+.cover { width: 100%; display: block; margin-bottom: 24px; }
+ol { list-style: none; margin: 0 0 24px; padding: 0; border-top: 1px solid var(--rule); counter-reset: p; }
+li { counter-increment: p; display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 16px; line-height: 1.65; }
+li::before { content: counter(p, decimal-leading-zero); font-weight: 900; color: var(--accent); }
+.note { font-size: 13px; color: var(--sec); line-height: 1.6; }
+.source { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
+</style>
+<script>if (localStorage.getItem('viz-theme') === 'dark') document.documentElement.classList.add('theme-dark');</script>
+</head>
+<body>
+<main>
+<a class="back" href="../index.html">지식 Archive로 돌아가기</a>
+<div class="kicker">패션 · 릴스 · 2026-11-22</div>
+<h1>바지 색상별 니트 색조합 공식</h1>
+<p class="summary">베이지·블랙·연청·진청 바지 각각에 어울리는 니트 색상 네 가지씩을 정리한 코디 공식이다.</p>
+<img class="cover" src="../covers/scrap-20261122-pants-knit-color-combination.jpg" alt="">
+<ol>
+<li>베이지 바지에는 네이비, 버건디, 블랙, 브라운 니트가 어울린다.</li>
+<li>블랙 바지에는 그레이, 레드, 크림, 블랙 니트가 어울린다.</li>
+<li>연청 바지에는 네이비, 카키, 베이지, 그레이 니트가 어울린다.</li>
+<li>진청 바지에는 블랙, 오렌지, 베이지, 그린 니트가 어울린다.</li>
+<li>영상 속 코디 정보는 댓글을 남기면 알려준다고 안내한다.</li>
+</ol>
+<p class="note"></p>
+<a class="source" href="https://www.instagram.com/reel/DfeclelO-bN/" rel="noopener noreferrer" target="_blank">원문 보기 (ustar.kr)</a>
+</main>
+</body>
+</html>
