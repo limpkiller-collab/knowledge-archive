@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+from urllib.parse import urlsplit
 
 import requests
 import trafilatura
@@ -31,8 +32,10 @@ def _from_article(url: str, html: str) -> Extracted:
     if len(text.strip()) < 200:
         raise ExtractError("기사 본문을 찾지 못했습니다")
     meta = trafilatura.extract_metadata(html)
+    # 출처 이름은 사이트 이름을 쓴다. 본문에서 뽑은 작성자 값은 엉뚱한 글자가 섞이는 일이 있어 쓰지 않는다.
+    site = ((meta.sitename or "") if meta else "") or urlsplit(url).netloc.replace("www.", "", 1)
     return Extracted(source_type="article", url=url, text=text, title=(meta.title or "") if meta else "",
-                     author=(meta.author or "") if meta else "", published_at=(meta.date or "") if meta else "",
+                     author=site, published_at=(meta.date or "") if meta else "",
                      thumbnail_url=(meta.image or "") if meta else "")
 
 

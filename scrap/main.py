@@ -87,8 +87,18 @@ def process(raw_url: str, note: str, category: str, root: Path, today: str, deps
     return "완료"
 
 
+def read_request() -> dict:
+    """요청 내용을 읽는다. Actions에서는 이벤트 파일에서 직접 읽어 메모가 공개 실행 기록에 찍히지 않게 한다."""
+    path = os.environ.get("GITHUB_EVENT_PATH")
+    if path and not os.environ.get("SCRAP_URL"):
+        payload = json.loads(Path(path).read_text(encoding="utf-8")).get("client_payload") or {}
+        return {k: str(payload.get(k) or "") for k in ("url", "note", "category")}
+    return {"url": os.environ.get("SCRAP_URL", ""), "note": os.environ.get("SCRAP_NOTE", ""),
+            "category": os.environ.get("SCRAP_CATEGORY", "")}
+
+
 if __name__ == "__main__":
-    result = process(os.environ["SCRAP_URL"], os.environ.get("SCRAP_NOTE", ""), os.environ.get("SCRAP_CATEGORY", ""),
-                     Path.cwd(), today=datetime.date.today().isoformat())
+    req = read_request()
+    result = process(req["url"], req["note"], req["category"], Path.cwd(), today=datetime.date.today().isoformat())
     print(result)
     sys.exit(0)

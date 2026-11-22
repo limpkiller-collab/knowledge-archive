@@ -26,9 +26,6 @@ jobs:
           git config user.email "link-scrap-bot@users.noreply.github.com"
       - name: Process link
         env:
-          SCRAP_URL: ${{ github.event.client_payload.url }}
-          SCRAP_NOTE: ${{ github.event.client_payload.note }}
-          SCRAP_CATEGORY: ${{ github.event.client_payload.category }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}

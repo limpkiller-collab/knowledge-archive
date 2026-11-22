@@ -101,3 +101,11 @@ def test_slug_collision_gets_suffix(root):
     run(root, Fakes(), url="https://e.com/b")
     ids = [e["id"] for e in json.loads((root / "scraps.json").read_text(encoding="utf-8"))]
     assert ids == ["scrap-20261122-my-card-2", "scrap-20261122-my-card"]
+
+
+def test_read_request_prefers_event_file(tmp_path, monkeypatch):
+    event = tmp_path / "event.json"
+    event.write_text(json.dumps({"client_payload": {"url": "https://e.com/a", "note": "메모"}}), encoding="utf-8")
+    monkeypatch.setenv("GITHUB_EVENT_PATH", str(event))
+    monkeypatch.delenv("SCRAP_URL", raising=False)
+    assert main.read_request() == {"url": "https://e.com/a", "note": "메모", "category": ""}
