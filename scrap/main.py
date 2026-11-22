@@ -22,6 +22,8 @@ def git_publish(root: Path, message: str) -> None:
     # 경로마다 따로 반영한다. 아직 없는 경로는 건너뛰고, 지워진 파일은 삭제로 반영된다.
     for path in ("cards", "covers", "scraps.json", "categories.json", "shortcut-menu.txt", "card-images.json"):
         git("add", "-A", "--", path, check=False)
+    if git("diff", "--cached", "--quiet", check=False).returncode == 0:
+        return  # 바뀐 것이 없다(값을 그대로 저장한 편집 등)
     git("commit", "-m", message)
     try:
         git("push")
