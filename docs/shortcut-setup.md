@@ -8,8 +8,7 @@
 |---|---|---|
 | Anthropic | 카드 요약 | Claude Console의 API Keys |
 | Apify | 인스타그램 게시물·릴스 읽기 | Apify Console의 Settings › API & Integrations |
-| OpenAI | 릴스 음성 받아쓰기 | OpenAI Platform의 API keys |
-| Google AI Studio | 유튜브 영상 읽기 (Gemini) | Google AI Studio의 Get API key |
+| Google AI Studio | 유튜브 영상 읽기, 릴스 음성 받아쓰기 (Gemini) | Google AI Studio의 Get API key |
 
 ## 2. 노션 연결
 
@@ -43,7 +42,6 @@ Secrets:
 - `NOTION_TOKEN`
 - `NOTION_DATABASE_ID`
 - `APIFY_TOKEN`
-- `OPENAI_API_KEY`
 - `GEMINI_API_KEY`
 - `NTFY_TOPIC`
 
@@ -52,7 +50,7 @@ Variables (모두 선택 사항, 비우면 기본값):
 | 이름 | 기본값 | 설명 |
 |---|---|---|
 | `CLAUDE_MODEL` | `claude-opus-5-5` | 요약에 쓰는 Claude 모델 |
-| `GEMINI_MODEL` | `gemini-3.8-flash` | 유튜브를 읽는 Gemini 모델 |
+| `GEMINI_MODEL` | `gemini-3.8-flash` | 유튜브를 읽고 릴스 음성을 받아쓰는 Gemini 모델 |
 | `SCRAP_STORE_COVERS` | 저장함 | `0`이면 썸네일을 저장하지 않고 글자형 커버만 쓴다 |
 
 ## 5. 단축어용 GitHub 토큰
