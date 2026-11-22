@@ -177,7 +177,7 @@ test('typeLabel: 형식 이름', () => {
 
 - [ ] **Step 2: 실패 확인**
 
-Run: `node --test tests/`
+Run: `node --test tests/*.test.js`
 Expected: FAIL — `Cannot find module '../js/archive-core.js'`
 
 - [ ] **Step 3: 구현 `js/archive-core.js`**
@@ -242,7 +242,7 @@ Expected: FAIL — `Cannot find module '../js/archive-core.js'`
 
 - [ ] **Step 4: 통과 확인**
 
-Run: `node --test tests/`
+Run: `node --test tests/*.test.js`
 Expected: `pass 6`, `fail 0`
 
 - [ ] **Step 5: Commit**
@@ -694,7 +694,7 @@ Expected: `[]`
 
 - [ ] **Step 6: 전체 테스트 재실행**
 
-Run: `node --test tests/`
+Run: `node --test tests/*.test.js`
 Expected: `pass 6`, `fail 0`
 
 - [ ] **Step 7: Commit**

@@ -13,6 +13,7 @@ CLAUDE.md
 
 # 임시/스크린샷
 *.png
+!icons/*.png
 *.xlsx
 *.docx
 *.pdf

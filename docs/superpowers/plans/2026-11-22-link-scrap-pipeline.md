@@ -1366,7 +1366,7 @@ jobs:
           cache: pip
       - run: pip install -q -r requirements-dev.txt
       - run: pytest tests/scrap -q
-      - run: node --test tests/
+      - run: node --test tests/*.test.js
 ```
 
 - [ ] **Step 4: `docs/shortcut-setup.md` 작성**

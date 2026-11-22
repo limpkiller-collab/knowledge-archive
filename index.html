@@ -1,488 +1,195 @@
 <!DOCTYPE html>
-<html lang="ko" id="htmlRoot" class="theme-dark">
+<html lang="ko" id="htmlRoot" class="theme-light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>지식 Archive</title>
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="icons/icon-512.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="apple-mobile-web-app-title" content="지식 Archive">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#111111">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
     /* ============================
-       DESIGN TOKENS — Obsidian Curator
+       DESIGN TOKENS — Editorial
        ============================ */
     :root {
-      --bg:              #0e0e0e;
-      --surface-low:     #131313;
-      --surface-mid:     #1a1919;
-      --surface-high:    #201f1f;
-      --surface-highest: #262626;
-      --surface-bright:  #2c2c2c;
-      --primary:         #85adff;
-      --primary-fixed:   #6e9fff;
-      --on-primary-fixed:#000000;
-      --secondary:       #69f6b8;
-      --tertiary:        #ff6f7e;
-      --on-surface:      #ffffff;
-      --on-surface-v:    #adaaaa;
-      --outline-v:       #494847;
-      --border:          rgba(255,255,255,0.05);
-      --text:            #ffffff;
-      --text-sec:        #adaaaa;
-      --accent:          #6e9fff;
+      --bg: #ffffff; --surface: #f4f4f4;
+      --text: #111111; --text-sec: #555555;
+      --rule: #111111; --border: #dddddd;
+      --accent: #b3261e;
     }
-    html.theme-light {
-      --bg:              #FAFAFA;
-      --surface-low:     #FFFFFF;
-      --surface-mid:     #F9FAFB;
-      --surface-high:    #FFFFFF;
-      --surface-highest: #F3F4F6;
-      --surface-bright:  #FFFFFF;
-      --primary:         #2563EB;
-      --primary-fixed:   #2563EB;
-      --on-primary-fixed:#FFFFFF;
-      --secondary:       #059669;
-      --tertiary:        #E11D48;
-      --on-surface:      #111827;
-      --on-surface-v:    #4B5563;
-      --outline-v:       #E0E0E0;
-      --border:          rgba(0,0,0,0.06);
-      --text:            #111827;
-      --text-sec:        #4B5563;
-      --accent:          #2563EB;
+    html.theme-dark {
+      --bg: #111111; --surface: #1d1d1d;
+      --text: #f5f5f5; --text-sec: #b8b8b8;
+      --rule: #f5f5f5; --border: #3a3a3a;
+      --accent: #ff8a80;
     }
 
-    /* ============================
-       RESET & BASE
-       ============================ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
-    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
-
-    .material-symbols-outlined {
-      font-family: 'Material Symbols Outlined';
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-      line-height: 1; display: inline-block; vertical-align: middle;
-      font-feature-settings: 'liga';
-      -webkit-font-feature-settings: 'liga';
-    }
-    .fill-icon { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     body {
-      font-family: 'Inter', 'Noto Sans KR', -apple-system, sans-serif;
+      font-family: 'Noto Sans KR', -apple-system, sans-serif;
       background: var(--bg); color: var(--text);
       line-height: 1.6; -webkit-font-smoothing: antialiased;
-      letter-spacing: -0.011em; min-height: 100vh;
-      transition: background 0.3s, color 0.3s;
+      letter-spacing: -0.02em; min-height: 100vh;
     }
+    button { font: inherit; letter-spacing: inherit; color: inherit; cursor: pointer; }
+    a { color: var(--text); }
 
-    /* ============================
-       TOP APP BAR
-       ============================ */
-    .topbar {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      height: 64px;
-      background: color-mix(in srgb, var(--bg), transparent 30%);
-      backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px);
-      border-bottom: 1px solid var(--border);
-      box-shadow: 0 0 40px -10px color-mix(in srgb, var(--primary), transparent 85%);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 24px; gap: 16px;
-    }
-    .topbar-brand {
-      font-size: 17px; font-weight: 900; letter-spacing: -0.03em;
-      color: var(--on-surface); white-space: nowrap; flex-shrink: 0;
-    }
-    .topbar-search {
-      flex: 1; max-width: 400px;
-      display: flex; align-items: center; gap: 8px;
-      background: var(--surface-highest);
-      border: 1px solid var(--outline-v);
-      border-radius: 99px; padding: 8px 16px;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .topbar-search:focus-within {
-      border-color: var(--primary-fixed);
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary), transparent 80%);
-    }
-    .topbar-search input {
-      background: transparent; border: none; outline: none;
-      font-size: 14px; font-family: inherit; color: var(--text);
-      width: 100%;
-    }
-    .topbar-search input::placeholder { color: var(--text-sec); }
-    .topbar-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
-    .icon-btn {
-      width: 36px; height: 36px; border-radius: 50%;
-      border: none; background: transparent;
-      color: var(--text-sec); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.15s, color 0.15s; font-size: 20px;
-    }
-    .icon-btn:hover { background: var(--surface-high); color: var(--on-surface); }
-
-    /* ============================
-       SIDEBAR
-       ============================ */
+    /* ===== SIDEBAR ===== */
     .sidebar {
-      position: fixed; top: 64px; left: 0; bottom: 0;
-      width: 240px; z-index: 90;
-      background: var(--bg);
-      border-right: 1px solid var(--border);
-      display: none;
-      flex-direction: column;
-      padding: 20px 12px;
-      overflow-y: auto;
+      position: fixed; top: 0; left: 0; bottom: 0; width: 250px; padding: 32px 22px 24px;
+      border-right: 1px solid var(--rule); overflow-y: auto; display: flex; flex-direction: column;
     }
-    @media (min-width: 1024px) { .sidebar { display: flex; } }
+    .brand {
+      font-size: 26px; font-weight: 900; line-height: 1.1; letter-spacing: -0.05em;
+      padding-bottom: 18px; border-bottom: 4px solid var(--rule);
+    }
+    .nav-label { font-size: 11px; font-weight: 900; letter-spacing: 0.08em; color: var(--text-sec); padding: 20px 0 6px; }
+    .nav-item {
+      display: flex; align-items: center; width: 100%; min-height: 44px; padding: 0;
+      background: none; border: 0; border-bottom: 1px solid var(--border);
+      font-size: 15px; font-weight: 500; text-align: left;
+    }
+    .nav-item:hover { color: var(--accent); }
+    .nav-item.active { font-weight: 900; color: var(--accent); }
+    .nav-count { margin-left: auto; font-size: 13px; color: var(--text-sec); }
+    .nav-item.active .nav-count { color: var(--accent); }
+    .sidebar-foot { margin-top: auto; padding-top: 24px; display: flex; flex-direction: column; gap: 12px; }
+    .read-progress { font-size: 12px; color: var(--text-sec); }
+    .progress-track { height: 3px; background: var(--border); margin-top: 6px; }
+    .progress-fill { height: 100%; background: var(--rule); width: 0; }
+    .tool-row { display: flex; gap: 8px; }
+    .tool-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      min-height: 44px; padding: 0 12px; background: none; border: 1px solid var(--rule); font-size: 13px; font-weight: 700;
+    }
+    .tool-btn:hover { background: var(--rule); color: var(--bg); }
 
-    .sidebar-section-label {
-      font-size: 10.5px; font-weight: 700;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      color: var(--text-sec); padding: 0 10px; margin-bottom: 6px;
+    /* ===== MAIN ===== */
+    .main { margin-left: 250px; padding: 28px 40px 64px; }
+    .inner { max-width: 1040px; display: flex; flex-direction: column; gap: 28px; }
+    .masthead {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px;
+      border-bottom: 1px solid var(--rule); padding-bottom: 12px; font-size: 13px; color: var(--text-sec);
     }
-    .sidebar-nav { display: flex; flex-direction: column; gap: 2px; }
-    .sidebar-nav-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 9px 10px; border-radius: 8px;
-      border: none; background: transparent;
-      color: var(--text-sec); font-size: 13.5px; font-family: inherit;
-      cursor: pointer; text-align: left;
-      transition: background 0.15s, color 0.15s;
-      width: 100%;
+    .search {
+      margin-left: auto; display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--rule); height: 44px; color: var(--text);
     }
-    .sidebar-nav-item:hover { background: var(--surface-low); color: var(--on-surface); }
-    .sidebar-nav-item.active {
-      background: var(--surface-low);
-      color: var(--on-surface); font-weight: 600;
-      border-right: 2px solid var(--primary-fixed);
+    .search input {
+      width: 220px; max-width: 60vw; border: 0; background: transparent; outline: none;
+      font: inherit; font-size: 14px; color: var(--text);
     }
-    .sidebar-nav-item .nav-icon { font-size: 18px; flex-shrink: 0; }
-    .sidebar-nav-item .nav-label { flex: 1; }
-    .sidebar-nav-item .nav-count {
-      font-size: 11px; font-weight: 700;
-      background: var(--surface-highest); color: var(--text-sec);
-      padding: 1px 6px; border-radius: 99px;
-      min-width: 20px; text-align: center;
-    }
-    .sidebar-nav-item.active .nav-count {
-      background: color-mix(in srgb, var(--primary-fixed), transparent 85%);
-      color: var(--primary-fixed);
-    }
+    .search input::placeholder { color: var(--text-sec); }
 
-    .sidebar-status {
-      margin-top: auto; margin-bottom: 80px;
-      background: var(--surface-mid);
-      border: 1px solid var(--border);
-      border-radius: 12px; padding: 16px;
+    .lead-row { display: flex; flex-wrap: wrap; gap: 40px; }
+    .lead { flex: 999 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 16px; text-decoration: none; }
+    .kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--accent); }
+    .lead-title { font-size: 42px; font-weight: 900; line-height: 1.2; letter-spacing: -0.04em; }
+    .lead:hover .lead-title { color: var(--accent); }
+    .lead-summary { font-size: 17px; line-height: 1.75; color: var(--text-sec); max-width: 600px; }
+    .lead-more {
+      font-size: 14px; font-weight: 700; min-height: 44px; display: inline-flex; align-items: center;
+      border-top: 1px solid var(--rule); border-bottom: 1px solid var(--border);
     }
-    .sidebar-status-label {
-      font-size: 10px; font-weight: 700;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      color: var(--primary-fixed); margin-bottom: 8px;
-    }
-    .sidebar-status-text { font-size: 12px; color: var(--text-sec); line-height: 1.5; }
-    .progress-bar-wrap {
-      height: 4px; background: var(--surface-highest);
-      border-radius: 99px; overflow: hidden; margin-top: 10px;
-    }
-    .progress-bar-fill {
-      height: 100%; background: var(--primary-fixed);
-      border-radius: 99px;
-      box-shadow: 0 0 10px color-mix(in srgb, var(--primary), transparent 60%);
-      transition: width 1s cubic-bezier(0.4,0,0.2,1);
-    }
+    .recent { flex: 1 1 300px; min-width: 0; }
+    .recent h2 { font-size: 14px; font-weight: 900; padding-bottom: 10px; border-bottom: 2px solid var(--rule); }
+    .recent-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); text-decoration: none; }
+    .recent-item:hover .recent-title { color: var(--accent); }
+    .recent-no { font-size: 22px; font-weight: 900; color: var(--text-sec); line-height: 1.2; width: 30px; flex: none; }
+    .recent-title { font-size: 15px; font-weight: 700; line-height: 1.45; display: block; margin-top: 4px; }
+    .item-meta { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--text-sec); }
 
-    /* ============================
-       MAIN CONTENT
-       ============================ */
-    .main-content {
-      padding-top: 64px;
-      padding-bottom: 96px;
+    /* ===== LIST HEAD & FILTERS ===== */
+    .section-head {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px;
+      border-top: 4px solid var(--rule); padding-top: 10px;
     }
-    @media (min-width: 1024px) { .main-content { margin-left: 240px; } }
+    .section-head h2 { font-size: 14px; font-weight: 900; }
+    .active-filters { font-size: 13px; color: var(--accent); font-weight: 700; }
+    .head-tools { margin-left: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; }
+    .text-tab {
+      min-height: 44px; background: none; border: 0; border-bottom: 2px solid transparent;
+      font-size: 13px; color: var(--text-sec);
+    }
+    .text-tab.active { font-weight: 900; color: var(--text); border-bottom-color: var(--rule); }
+    .view-toggle { display: flex; border: 1px solid var(--rule); }
+    .view-toggle button { min-height: 44px; padding: 0 16px; border: 0; background: var(--bg); font-size: 13px; font-weight: 500; }
+    .view-toggle button[aria-pressed="true"] { background: var(--rule); color: var(--bg); font-weight: 900; }
 
-    .content-inner {
-      max-width: 960px; margin: 0 auto;
-      padding: 32px 24px 40px;
-    }
-    @media (max-width: 640px) { .content-inner { padding: 24px 16px 40px; } }
-
-    /* ============================
-       HERO SECTION
-       ============================ */
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px; margin-bottom: 32px;
-    }
-    @media (min-width: 640px) { .hero-grid { grid-template-columns: 1.6fr 1fr; } }
-
-    .hero-card {
-      background: var(--surface-low);
-      border-radius: 16px; padding: 28px;
-      position: relative; overflow: hidden;
-    }
-    .hero-glow {
-      position: absolute; top: -60px; right: -60px;
-      width: 200px; height: 200px;
-      background: color-mix(in srgb, var(--primary), transparent 93%);
-      filter: blur(80px); pointer-events: none;
-    }
-    .hero-title {
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
-      font-weight: 900; letter-spacing: -0.03em; line-height: 1.1;
-      margin-bottom: 8px; position: relative; z-index: 1;
-    }
-    .hero-sub { font-size: 13px; color: var(--text-sec); margin-bottom: 24px; position: relative; z-index: 1; }
-    .hero-progress-label {
-      font-size: 10px; font-weight: 700;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      color: var(--primary-fixed); margin-bottom: 4px;
-    }
-    .hero-progress-nums { font-size: 13px; font-weight: 700; float: right; }
-    .hero-stat-card {
-      background: var(--surface-high);
-      border: 1px solid var(--border);
-      border-radius: 16px; padding: 24px;
-      display: flex; flex-direction: column; justify-content: space-between;
-    }
-    .hero-stat-top-label {
-      font-size: 10px; font-weight: 700;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      color: var(--text-sec); margin-bottom: 12px;
-    }
-    .hero-latest-row { display: flex; align-items: flex-start; gap: 10px; }
-    .hero-latest-icon {
-      width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
-      background: color-mix(in srgb, var(--tertiary), transparent 85%);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--tertiary); font-size: 18px;
-    }
-    .hero-latest-title { font-weight: 700; font-size: 13px; line-height: 1.4; }
-    .hero-latest-date { font-size: 11px; color: var(--text-sec); margin-top: 3px; }
-    .hero-bottom-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding-top: 16px; margin-top: 16px;
-      border-top: 1px solid var(--border);
-    }
-    .hero-total-num { font-size: 28px; font-weight: 900; }
-    .hero-total-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-sec); }
-    .shuffle-btn {
-      width: 40px; height: 40px; border-radius: 50%;
-      border: 1px solid var(--outline-v); background: transparent;
-      color: var(--text-sec); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .shuffle-btn:hover { border-color: var(--primary-fixed); color: var(--primary-fixed); }
-
-    /* ============================
-       FILTER AREA
-       ============================ */
-    .filter-section { margin-bottom: 24px; }
-    .filter-row {
-      display: flex; align-items: center; gap: 6px;
-      flex-wrap: wrap; margin-bottom: 8px;
-    }
-    .filter-label {
-      font-size: 10.5px; font-weight: 700;
-      letter-spacing: 0.06em; text-transform: uppercase;
-      color: var(--text-sec); margin-right: 2px; flex-shrink: 0;
-    }
-    .filter-chip {
-      padding: 4px 12px; border-radius: 99px;
-      border: 1px solid var(--outline-v);
-      background: transparent; color: var(--text-sec);
-      font-size: 12.5px; font-family: inherit;
-      cursor: pointer; transition: all 0.15s; font-weight: 500;
-      display: inline-flex; align-items: center; gap: 4px;
-    }
-    .filter-chip:hover { background: var(--surface-high); color: var(--on-surface); }
-    .filter-chip.active {
-      background: var(--primary-fixed); color: var(--on-primary-fixed);
-      border-color: var(--primary-fixed);
-    }
-    .cat-count {
-      min-width: 16px; height: 14px; padding: 0 4px;
-      border-radius: 99px; font-size: 10px; font-weight: 700;
-      background: rgba(255,255,255,0.18); color: inherit; text-align: center;
-    }
-    .filter-chip.active .cat-count { background: rgba(0,0,0,0.2); }
-    html.theme-light .cat-count { background: rgba(0,0,0,0.10); }
-
-    .cat-divider { border: none; border-top: 1px solid var(--border); margin: 4px 0 8px; }
-
-    /* Category badge colors */
-    .cat-badge {
-      display: inline-flex; align-items: center; gap: 3px;
-      padding: 2px 8px; border-radius: 99px;
-      font-size: 10.5px; font-weight: 600; white-space: nowrap;
-    }
-    .cat-투자주식 { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.25); }
-    .cat-경제거시 { background:rgba(99,102,241,0.12); color:#6366f1; border:1px solid rgba(99,102,241,0.25); }
-    .cat-기술산업 { background:rgba(133,173,255,0.12); color:#85adff; border:1px solid rgba(133,173,255,0.25); }
-    .cat-부동산   { background:rgba(245,158,11,0.12); color:#f59e0b; border:1px solid rgba(245,158,11,0.25); }
-    .cat-시사컬처 { background:rgba(255,111,126,0.12); color:#ff6f7e; border:1px solid rgba(255,111,126,0.25); }
-    html.theme-light .cat-기술산업 { background:rgba(37,99,235,0.07); color:#2563eb; border-color:rgba(37,99,235,0.2); }
-
-    /* ============================
-       RESULTS INFO
-       ============================ */
-    .results-info {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 18px; font-size: 13px; color: var(--text-sec);
-    }
-    .active-filter-label { font-size: 12px; color: var(--primary-fixed); font-weight: 500; }
-
-    /* ============================
-       CARD GRID
-       ============================ */
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
-    }
-    @media (max-width: 640px) { .card-grid { grid-template-columns: 1fr; } }
-
-    .ka-card {
-      position: relative;
-      background: var(--surface-high);
-      border: 1px solid var(--border);
-      border-radius: 14px; padding: 22px;
-      text-decoration: none; color: inherit;
-      display: flex; flex-direction: column; gap: 10px;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s;
-      overflow: hidden;
-    }
-    .ka-card:hover {
-      border-color: color-mix(in srgb, var(--card-accent, var(--primary)), transparent 55%);
-      box-shadow: 0 8px 32px -8px color-mix(in srgb, var(--card-accent, var(--primary)), transparent 70%);
-    }
-    .ka-card.is-read { opacity: 0.5; }
-    .ka-card.is-read:hover { opacity: 1; }
-
-    /* Top accent stripe */
-    .card-stripe {
-      position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      border-radius: 14px 14px 0 0;
-    }
-
-    /* Read button (shows on hover) */
-    .card-read-btn {
-      position: absolute; top: 12px; right: 12px; z-index: 2;
-      width: 24px; height: 24px; border-radius: 50%;
-      border: 1.5px solid var(--outline-v); background: var(--surface-highest);
-      color: var(--text-sec); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s; opacity: 0;
-    }
-    .ka-card:hover .card-read-btn { opacity: 1; }
-    .ka-card.is-read .card-read-btn {
-      opacity: 1;
-      background: #10b981; border-color: #10b981; color: #fff;
-    }
-
-    .card-category-row { display: flex; align-items: center; gap: 6px; }
-    .card-title {
-      font-size: 15px; font-weight: 700;
-      letter-spacing: -0.02em; line-height: 1.38;
-    }
-    .card-subtitle {
-      font-size: 11.5px; font-weight: 600;
-      color: var(--card-accent, var(--primary));
-      letter-spacing: 0.01em;
-      margin-top: -4px;
-    }
-    .card-summary { font-size: 12.5px; color: var(--text-sec); line-height: 1.65; flex: 1; }
-    .card-meta {
-      display: flex; align-items: flex-start; gap: 6px;
-      flex-wrap: nowrap; font-size: 11px; margin-top: 2px;
-    }
-    .card-tag {
-      padding: 2px 7px; border-radius: 4px; font-size: 11px;
-      background: var(--surface-highest); color: var(--text-sec);
-      border: 1px solid var(--border); font-weight: 500;
-    }
-    .card-date { font-size: 11px; color: var(--text-sec); flex-shrink: 0; }
-    /* Tag collapsible */
-    .card-tags-area { flex: 1; min-width: 0; }
-    .card-tags-box { display: flex; flex-wrap: wrap; gap: 4px; overflow: hidden; max-height: 44px; }
-    .card-tags-box.expanded { max-height: none; }
-    .card-tags-more {
-      margin-top: 3px; display: inline-block; font-size: 10px; cursor: pointer;
-      padding: 1px 6px; border-radius: 4px; font-weight: 600;
-      background: var(--surface-highest); color: var(--text-sec);
-      border: 1px solid var(--border); white-space: nowrap; line-height: 1.8;
-    }
-
-    /* Series badge (on card) */
-    .series-badge {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700;
-      letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap;
-      background: rgba(59,130,246,0.13); color: #60a5fa;
-      border: 1px solid rgba(59,130,246,0.25);
-    }
-    html.theme-light .series-badge { background: rgba(37,99,235,0.08); color: #2563eb; border-color: rgba(37,99,235,0.2); }
-
-    /* Series banner (shown above card grid when series filtered) */
+    .filters { display: flex; flex-direction: column; }
+    .filters details { border-bottom: 1px solid var(--border); }
+    .filters summary { min-height: 44px; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; cursor: pointer; }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 0 14px; max-height: 190px; overflow-y: auto; }
+    .chip { min-height: 32px; padding: 0 10px; background: none; border: 1px solid var(--border); font-size: 12px; color: var(--text-sec); }
+    .chip:hover { border-color: var(--rule); color: var(--text); }
+    .chip.active { background: var(--rule); border-color: var(--rule); color: var(--bg); font-weight: 700; }
     .series-banner {
-      display: flex; align-items: center; gap: 12px;
-      padding: 12px 18px; border-radius: 12px; margin-bottom: 16px;
-      background: rgba(59,130,246,0.07); border: 1px solid rgba(59,130,246,0.2);
-      font-size: 13px;
+      display: none; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rule);
     }
-    .series-banner-icon { font-size: 18px; flex-shrink: 0; }
-    .series-banner-name { font-weight: 700; color: #60a5fa; }
-    html.theme-light .series-banner-name { color: #2563eb; }
-    .series-banner-desc { color: var(--text-sec); font-size: 12px; }
-    .series-banner-clear {
-      margin-left: auto; padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(59,130,246,0.3);
-      background: transparent; color: #60a5fa; font-size: 11px; font-weight: 600;
-      cursor: pointer; font-family: inherit; transition: background 0.15s;
-    }
-    .series-banner-clear:hover { background: rgba(59,130,246,0.12); }
+    .series-banner-name { font-size: 17px; font-weight: 900; }
+    .series-banner-desc { font-size: 13px; color: var(--text-sec); }
+    .series-banner button { margin-left: auto; flex: none; }
 
-    /* Series filter chip variant */
-    .filter-chip.series-chip { border-color: rgba(59,130,246,0.3); }
-    .filter-chip.series-chip.active { background: rgba(59,130,246,0.85); color: #fff; border-color: transparent; }
+    /* ===== CARDS ===== */
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 0 32px; }
+    .ka-card { display: flex; flex-direction: column; border-bottom: 1px solid var(--border); padding: 18px 0 6px; min-width: 0; }
+    .card-link { display: flex; flex-direction: column; gap: 8px; text-decoration: none; }
+    .card-title { font-size: 19px; font-weight: 900; line-height: 1.4; letter-spacing: -0.03em; }
+    .card-link:hover .card-title { color: var(--accent); }
+    .ka-card.is-read .card-title { color: var(--text-sec); font-weight: 700; }
+    .card-summary {
+      font-size: 13px; line-height: 1.6; color: var(--text-sec);
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .card-foot { display: flex; align-items: center; gap: 8px; margin-top: auto; padding-top: 4px; min-height: 44px; }
+    .card-tags { font-size: 12px; color: var(--text-sec); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+    .series-link { background: none; border: 0; font-size: 12px; font-weight: 700; text-decoration: underline; min-height: 44px; white-space: nowrap; }
+    .read-btn {
+      margin-left: auto; flex: none; min-height: 32px; padding: 0 10px; background: none;
+      border: 1px solid var(--border); font-size: 12px; color: var(--text-sec);
+    }
+    .read-btn:hover { border-color: var(--rule); color: var(--text); }
+    .ka-card.is-read .read-btn { background: var(--rule); border-color: var(--rule); color: var(--bg); font-weight: 700; }
 
-    /* Difficulty dot */
-    .diff-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      display: inline-block; flex-shrink: 0;
+    .card-cover { display: none; }
+    .card-grid.view-card { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 32px 28px; }
+    .card-grid.view-card .ka-card { padding: 0 0 6px; border-bottom-color: var(--rule); }
+    .card-grid.view-card .card-cover {
+      display: flex; flex-direction: column; justify-content: space-between;
+      aspect-ratio: 16 / 9; padding: 16px; color: #ffffff; overflow: hidden; margin-bottom: 4px;
     }
+    .card-grid.view-card .card-cover.is-image { padding: 0; background: var(--surface); }
+    .card-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cover-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; }
+    .cover-word { font-size: 48px; font-weight: 900; line-height: 1.05; letter-spacing: -0.05em; overflow-wrap: anywhere; }
+    .cover-word.is-long { font-size: 32px; }
 
-    /* ============================
-       EMPTY STATE
-       ============================ */
-    .empty-state {
-      text-align: center; padding: 60px 20px; color: var(--text-sec);
-    }
-    .empty-state .e-icon { font-size: 56px; opacity: 0.3; display: block; margin-bottom: 12px; }
-    .empty-state p { font-size: 14px; }
+    .empty-state { display: none; padding: 56px 0; text-align: center; color: var(--text-sec); font-size: 15px; }
 
-    /* ============================
-       MOBILE BOTTOM NAV
-       ============================ */
-    .mobile-nav {
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
-      display: flex; justify-content: space-around; align-items: center;
-      height: 60px; padding: 0 16px;
-      background: color-mix(in srgb, var(--bg), transparent 15%);
-      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-      border-top: 1px solid var(--border);
+    @media (max-width: 760px) {
+      .sidebar { position: static; width: auto; border-right: 0; border-bottom: 1px solid var(--rule); padding: 20px 20px 12px; overflow: visible; }
+      .brand { font-size: 22px; padding-bottom: 12px; }
+      .brand br { display: none; }
+      .nav-label { padding: 12px 0 0; }
+      .sidebar-nav { display: flex; gap: 18px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .nav-item { width: auto; flex: none; border-bottom: 0; white-space: nowrap; gap: 6px; }
+      .nav-count { margin-left: 0; }
+      .sidebar-foot { flex-direction: row; align-items: center; justify-content: space-between; padding-top: 8px; }
+      .read-progress { flex: 1; }
+      .main { margin-left: 0; padding: 20px 20px 48px; }
+      .lead-title { font-size: 30px; }
+      .lead-row { gap: 28px; }
+      .search { margin-left: 0; width: 100%; }
+      .search input { width: 100%; max-width: none; }
+      .head-tools { margin-left: 0; width: 100%; justify-content: space-between; }
     }
-    @media (min-width: 1024px) { .mobile-nav { display: none; } }
-    .mobile-nav-btn {
-      display: flex; flex-direction: column; align-items: center;
-      gap: 2px; background: transparent; border: none;
-      color: var(--text-sec); cursor: pointer;
-      font-size: 10px; font-family: inherit;
-      transition: color 0.15s; padding: 4px 12px;
-    }
-    .mobile-nav-btn.active { color: var(--primary); }
-    .mobile-nav-btn .material-symbols-outlined { font-size: 22px; }
 
     /* ============================
        SWIPE OVERLAY (unchanged)
@@ -560,201 +267,95 @@
     }
     .swipe-read-btn.is-read:hover { background: #059669; border-color: #059669; }
 
-    /* ============================
-       ANIMATIONS
-       ============================ */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .fade-in { animation: fadeInUp 0.45s ease-out both; }
-    .delay-1 { animation-delay: 0.05s; }
-    .delay-2 { animation-delay: 0.1s; }
-    .delay-3 { animation-delay: 0.15s; }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation: none !important; transition: none !important; }
-    }
-    @media print {
-      .topbar, .sidebar, .mobile-nav, .filter-section, .hero-grid { display: none !important; }
-      .main-content { margin-left: 0 !important; padding-top: 0 !important; }
-      .ka-card { break-inside: avoid; box-shadow: none; }
-    }
-
-    /* Mobile search bar (shows below topbar on small screens) */
-    .mobile-searchbar {
-      display: none; position: fixed; top: 64px; left: 0; right: 0; z-index: 150;
-      padding: 10px 16px; background: var(--bg);
-      border-bottom: 1px solid var(--border);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.18);
-    }
-    .mobile-searchbar.visible { display: block; }
-    @media (max-width: 767px) {
-      .topbar-search { display: none; }
-      .mobile-searchbar .topbar-search { display: flex !important; }
-    }
   </style>
 </head>
 <body>
-  <a href="#main" style="position:absolute;left:-9999px" onfocus="this.style.cssText='position:fixed;left:16px;top:16px;z-index:10001;padding:8px 16px;background:var(--accent);color:white;text-decoration:none;border-radius:4px;'" onblur="this.style.left='-9999px'">콘텐츠로 바로가기</a>
+  <a href="#main" class="sr-only">본문으로 건너뛰기</a>
 
-  <!-- ===== TOP APP BAR ===== -->
-  <header class="topbar" role="banner">
-    <div style="display:flex;align-items:center;gap:16px;flex:1;min-width:0;">
-      <span class="topbar-brand">지식 Archive</span>
-      <div class="topbar-search" role="search">
-        <span class="material-symbols-outlined" style="font-size:17px;color:var(--text-sec);flex-shrink:0;cursor:pointer" onclick="document.getElementById('searchInput').focus()">search</span>
-        <input type="text" id="searchInput" placeholder="제목·태그·키워드 검색…" aria-label="지식 검색">
+  <nav class="sidebar" aria-label="카테고리 메뉴">
+    <div class="brand">지식 <br>Archive</div>
+    <div class="nav-label">카테고리</div>
+    <div class="sidebar-nav" id="catNav"></div>
+    <div class="nav-label">형식</div>
+    <div class="sidebar-nav" id="typeNav"></div>
+    <div class="sidebar-foot">
+      <div class="read-progress">
+        읽음 <strong id="readCount">0</strong> / <span id="totalCount">0</span>
+        <div class="progress-track"><div class="progress-fill" id="readProgress"></div></div>
       </div>
-    </div>
-    <div class="topbar-actions">
-      <button class="icon-btn" onclick="toggleMobileSearch()" aria-label="모바일 검색" id="mobileSearchToggle" style="display:none">
-        <span class="material-symbols-outlined" style="font-size:20px">search</span>
-      </button>
-      <button class="icon-btn" onclick="cycleTheme()" aria-label="테마 전환" id="themeBtn">
-        <span class="material-symbols-outlined" style="font-size:20px" id="themeIcon">dark_mode</span>
-      </button>
-    </div>
-  </header>
-
-  <!-- Mobile search bar -->
-  <div class="mobile-searchbar" id="mobileSearchBar">
-    <div class="topbar-search" style="max-width:100%;border-radius:10px;">
-      <span class="material-symbols-outlined" style="font-size:17px;color:var(--text-sec)">search</span>
-      <input type="text" id="searchInputMobile" placeholder="검색…" aria-label="지식 검색(모바일)">
-    </div>
-  </div>
-
-  <!-- ===== SIDEBAR ===== -->
-  <nav class="sidebar" role="navigation" aria-label="카테고리 네비게이션">
-    <div class="sidebar-section-label">카테고리</div>
-    <div class="sidebar-nav" id="sidebarNav">
-      <!-- dynamically rendered -->
-    </div>
-    <div class="sidebar-status">
-      <div class="sidebar-status-label">Archive Status</div>
-      <div class="sidebar-status-text">
-        총 <strong id="sidebarTotal">0</strong>개 지식<br>
-        읽음 <strong id="sidebarRead">0</strong>개
-      </div>
-      <div class="progress-bar-wrap">
-        <div class="progress-bar-fill" id="sidebarProgress" style="width:0%"></div>
+      <div class="tool-row">
+        <button type="button" class="tool-btn" onclick="cycleTheme()" id="themeBtn" aria-label="테마 전환">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg>
+          <span id="themeLabel">다크</span>
+        </button>
+        <button type="button" class="tool-btn" onclick="openSwipeView()" aria-label="랜덤 보기">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"></path></svg>
+          랜덤
+        </button>
       </div>
     </div>
   </nav>
 
-  <!-- ===== MAIN ===== -->
-  <main class="main-content" id="main" role="main">
-    <div class="content-inner">
+  <main class="main" id="main">
+    <div class="inner">
+      <header class="masthead">
+        <span>하나의 지식, 하나의 페이지 · 직접 정리한 카드와 보낸 링크가 한곳에 쌓입니다</span>
+        <label class="search">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+          <input type="text" id="searchInput" placeholder="제목·태그·키워드 검색" aria-label="지식 검색">
+        </label>
+      </header>
 
-      <!-- HERO -->
-      <section class="hero-grid fade-in" aria-label="통계">
-        <div class="hero-card">
-          <div class="hero-glow"></div>
-          <h1 class="hero-title">지식 Archive</h1>
-          <p class="hero-sub">하나의 지식, 하나의 페이지. 쌓이는 지식의 허브.</p>
-          <div style="position:relative;z-index:1;max-width:320px;">
-            <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-              <span class="hero-progress-label">읽기 진도</span>
-              <span style="font-size:13px;font-weight:700;">
-                <span id="heroReadCount">0</span> / <span id="heroTotal">0</span>
-              </span>
+      <div class="lead-row" id="leadRow">
+        <a class="lead" id="leadCard" href="#"></a>
+        <aside class="recent" aria-label="최근 추가">
+          <h2>최근 추가</h2>
+          <div id="recentList"></div>
+        </aside>
+      </div>
+
+      <section aria-label="전체 카드" style="display:flex;flex-direction:column;gap:4px;">
+        <div class="section-head">
+          <h2 id="listTitle">전체 카드</h2>
+          <span class="item-meta" id="resultsCount">0장</span>
+          <span class="active-filters" id="activeFilters"></span>
+          <div class="head-tools">
+            <div role="group" aria-label="읽음 필터" style="display:flex;gap:16px;">
+              <button type="button" class="text-tab active" id="readTab-all" onclick="filterRead('all')">전체</button>
+              <button type="button" class="text-tab" id="readTab-unread" onclick="filterRead('unread')">미읽음</button>
+              <button type="button" class="text-tab" id="readTab-read" onclick="filterRead('read')">읽음</button>
             </div>
-            <div class="progress-bar-wrap" style="height:6px;">
-              <div class="progress-bar-fill" id="heroProgress" style="width:0%"></div>
+            <div class="view-toggle" role="group" aria-label="보기 방식">
+              <button type="button" id="viewBtn-list" aria-pressed="true" onclick="setView('list')">리스트</button>
+              <button type="button" id="viewBtn-card" aria-pressed="false" onclick="setView('card')">카드</button>
             </div>
           </div>
         </div>
-        <div class="hero-stat-card">
+
+        <div class="filters">
+          <details id="tagDetails">
+            <summary>태그 <span class="item-meta" id="tagSummary"></span></summary>
+            <div class="chip-row" id="tagFilters"></div>
+          </details>
+          <details id="seriesDetails">
+            <summary>시리즈 <span class="item-meta" id="seriesSummary"></span></summary>
+            <div class="chip-row" id="seriesFilters"></div>
+          </details>
+        </div>
+
+        <div class="series-banner" id="seriesBanner">
           <div>
-            <div class="hero-stat-top-label">최근 등록</div>
-            <div class="hero-latest-row">
-              <div class="hero-latest-icon">
-                <span class="material-symbols-outlined" style="font-size:18px">auto_awesome</span>
-              </div>
-              <div>
-                <div class="hero-latest-title" id="heroLatestTitle">—</div>
-                <div class="hero-latest-date" id="heroLatestDate">—</div>
-              </div>
-            </div>
+            <div class="series-banner-name" id="seriesBannerName"></div>
+            <div class="series-banner-desc" id="seriesBannerDesc"></div>
           </div>
-          <div class="hero-bottom-row">
-            <div>
-              <div class="hero-total-num" id="heroTotalBig">0</div>
-              <div class="hero-total-label">총 지식</div>
-            </div>
-            <button class="shuffle-btn" onclick="openSwipeView()" title="랜덤 스와이프 보기" aria-label="랜덤 보기">
-              <span class="material-symbols-outlined" style="font-size:18px">shuffle</span>
-            </button>
-          </div>
+          <button type="button" class="tool-btn" onclick="filterSeries('all')">시리즈 해제</button>
         </div>
+
+        <div class="card-grid" id="cardGrid" role="list" aria-label="지식 카드 목록"></div>
+        <div class="empty-state" id="emptyState">조건에 맞는 카드가 없습니다.</div>
       </section>
-
-      <!-- FILTERS -->
-      <div class="filter-section fade-in delay-1">
-        <div class="filter-row" id="readFilters" role="group" aria-label="읽음 필터">
-          <span class="filter-label">읽음</span>
-          <button class="filter-chip active" id="readChip-all" onclick="filterRead('all')">전체</button>
-          <button class="filter-chip" id="readChip-unread" onclick="filterRead('unread')">미읽음</button>
-          <button class="filter-chip" id="readChip-read" onclick="filterRead('read')">읽음 ✓</button>
-        </div>
-        <hr class="cat-divider">
-        <div class="filter-row" id="catFilters" role="group" aria-label="카테고리 필터">
-          <!-- dynamically rendered -->
-        </div>
-        <div class="filter-row" id="tagFilters" role="group" aria-label="태그 필터">
-          <!-- dynamically rendered -->
-        </div>
-        <div class="filter-row" id="seriesFilters" role="group" aria-label="시리즈 필터" style="display:none;">
-          <!-- dynamically rendered -->
-        </div>
-      </div>
-
-      <!-- RESULTS INFO -->
-      <div class="results-info fade-in delay-2">
-        <span id="resultsCount">0개 지식 표시 중</span>
-        <span class="active-filter-label" id="activeFilters"></span>
-      </div>
-
-      <!-- SERIES BANNER (shown when series filter active) -->
-      <div class="series-banner" id="seriesBanner" style="display:none;">
-        <span class="series-banner-icon">📚</span>
-        <div>
-          <div class="series-banner-name" id="seriesBannerName"></div>
-          <div class="series-banner-desc" id="seriesBannerDesc"></div>
-        </div>
-        <button class="series-banner-clear" onclick="filterSeries('all')">✕ 해제</button>
-      </div>
-
-      <!-- CARD GRID -->
-      <div class="card-grid" id="cardGrid" role="list" aria-label="지식 카드 목록"></div>
-      <div class="empty-state" id="emptyState" style="display:none;">
-        <span class="material-symbols-outlined e-icon">search_off</span>
-        <p>검색 결과가 없습니다.</p>
-      </div>
-
-    </div><!-- /content-inner -->
+    </div>
   </main>
-
-  <!-- ===== MOBILE BOTTOM NAV ===== -->
-  <nav class="mobile-nav" role="navigation" aria-label="모바일 네비게이션">
-    <button class="mobile-nav-btn" onclick="toggleMobileSearch()" id="mobileNavSearch">
-      <span class="material-symbols-outlined">search</span>
-      <span>검색</span>
-    </button>
-    <button class="mobile-nav-btn active" onclick="filterCategory('all')" id="mobileNavAll">
-      <span class="material-symbols-outlined fill-icon">grid_view</span>
-      <span>전체</span>
-    </button>
-    <button class="mobile-nav-btn" onclick="openSwipeView()">
-      <span class="material-symbols-outlined">shuffle</span>
-      <span>랜덤</span>
-    </button>
-    <button class="mobile-nav-btn" onclick="filterRead(activeReadFilter === 'unread' ? 'all' : 'unread')" id="mobileNavUnread">
-      <span class="material-symbols-outlined">bookmarks</span>
-      <span>미읽음</span>
-    </button>
-  </nav>
 
   <!-- ===== SWIPE OVERLAY ===== -->
   <div class="swipe-overlay" id="swipeOverlay" role="dialog" aria-modal="true" aria-label="랜덤 카드 보기">
@@ -787,6 +388,7 @@
     </div>
   </div>
 
+  <script src="js/archive-core.js"></script>
   <script>
     // ==========================================
     // 📚 KNOWLEDGE DATABASE
@@ -2348,101 +1950,120 @@
     // ==========================================
 
     // ============ STATE ============
-    var activeTag          = 'all';
-    var searchQuery        = '';
-    var activeReadFilter   = 'all';
-    var activeCategory     = 'all';
-    var activeSeries       = 'all';
-    var readStatus         = {};
+    var activeTag        = 'all';
+    var searchQuery      = '';
+    var activeReadFilter = 'all';
+    var activeCategory   = 'all';
+    var activeSeries     = 'all';
+    var activeType       = 'all';
+    var activeView       = 'list';
+    var readStatus       = {};
+    var CATEGORIES       = [];
+    var ALL_CARDS        = ArchiveCore.mergeCards(KNOWLEDGE_DB, []);
+    try { if (localStorage.getItem('ka-view') === 'card') activeView = 'card'; } catch (e) {}
+
+    function byId(id) { return document.getElementById(id); }
+    function jsStr(s) { return String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'"); }
+    function attr(s) { return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;'); }
 
     // ============ READ STATUS ============
     function loadReadStatus() {
-      try { readStatus = JSON.parse(localStorage.getItem('ka-read-status') || '{}'); } catch(e) { readStatus = {}; }
+      try { readStatus = JSON.parse(localStorage.getItem('ka-read-status') || '{}'); } catch (e) { readStatus = {}; }
     }
     function saveReadStatus() {
-      try { localStorage.setItem('ka-read-status', JSON.stringify(readStatus)); } catch(e) {}
+      try { localStorage.setItem('ka-read-status', JSON.stringify(readStatus)); } catch (e) {}
     }
-    function toggleRead(id, event) {
-      event.preventDefault(); event.stopPropagation();
-      readStatus[id] = !readStatus[id];
-      if (!readStatus[id]) delete readStatus[id];
-      saveReadStatus(); renderCards(); renderStats();
+    function setRead(id, on) {
+      if (on) readStatus[id] = true; else delete readStatus[id];
+      saveReadStatus();
+    }
+    function toggleRead(id) {
+      setRead(id, !readStatus[id]);
+      renderCards(); renderStats();
     }
     function updateSwipeReadBtn() {
       if (!swipeCards.length) return;
-      var k = swipeCards[swipeIndex];
-      var btn = document.getElementById('swipeReadBtn');
-      if (!btn) return;
-      var isRead = !!readStatus[k.id];
+      var isRead = !!readStatus[swipeCards[swipeIndex].id];
+      var btn = byId('swipeReadBtn');
       btn.className = 'swipe-read-btn' + (isRead ? ' is-read' : '');
       btn.title = isRead ? '읽음 해제' : '읽음 표시';
-      btn.setAttribute('aria-label', isRead ? '읽음 해제' : '읽음 표시');
+      btn.setAttribute('aria-label', btn.title);
     }
     function toggleSwipeRead() {
       if (!swipeCards.length) return;
-      var k = swipeCards[swipeIndex];
-      readStatus[k.id] = !readStatus[k.id];
-      if (!readStatus[k.id]) delete readStatus[k.id];
-      saveReadStatus(); updateSwipeReadBtn(); renderCards(); renderStats();
+      var id = swipeCards[swipeIndex].id;
+      setRead(id, !readStatus[id]);
+      updateSwipeReadBtn(); renderCards(); renderStats();
     }
+
+    // ============ FILTER ACTIONS ============
     function filterRead(val) {
       activeReadFilter = val;
-      ['all','unread','read'].forEach(function(v) {
-        var el = document.getElementById('readChip-' + v);
-        if (el) el.className = 'filter-chip' + (v === val ? ' active' : '');
+      ['all', 'unread', 'read'].forEach(function (v) {
+        byId('readTab-' + v).className = 'text-tab' + (v === val ? ' active' : '');
       });
       renderCards();
     }
-
-    // ============ CATEGORY FILTER ============
     function filterCategory(cat) {
-      activeCategory = cat;
-      activeTag = 'all';
-      activeSeries = 'all';
-      renderTagFilters();
-      renderSeriesFilters();
+      activeCategory = cat; activeTag = 'all'; activeSeries = 'all';
+      renderNav(); renderTagFilters(); renderSeriesFilters(); renderCards();
+    }
+    function filterType(t) { activeType = t; renderNav(); renderCards(); }
+    function filterTag(tag) { activeTag = tag; renderTagFilters(); renderCards(); }
+    function filterSeries(s) { activeSeries = s; renderSeriesFilters(); renderCards(); }
+    function setView(v) {
+      activeView = v;
+      try { localStorage.setItem('ka-view', v); } catch (e) {}
       renderCards();
     }
+    function currentFilter() {
+      return { category: activeCategory, type: activeType, tag: activeTag,
+               series: activeSeries, read: activeReadFilter, query: searchQuery };
+    }
+    function filterCards() { return ArchiveCore.filterCards(ALL_CARDS, currentFilter(), readStatus); }
 
-    // ============ SERIES FILTER ============
-    function filterSeries(s) {
-      activeSeries = s;
-      renderSeriesFilters();
-      renderCards();
+    // ============ SIDEBAR ============
+    function navButton(label, count, active, onclick) {
+      return '<button type="button" class="nav-item' + (active ? ' active' : '') + '" onclick="' + onclick + '"'
+        + ' aria-current="' + (active ? 'true' : 'false') + '">' + label
+        + (count === null ? '' : '<span class="nav-count">' + count + '</span>') + '</button>';
+    }
+    function renderNav() {
+      var names = CATEGORIES.map(function (c) { return c.name; });
+      var counts = ArchiveCore.countByCategory(ALL_CARDS, names);
+      var html = navButton('전체', ALL_CARDS.length, activeCategory === 'all', "filterCategory('all')");
+      Object.keys(counts).forEach(function (n) {
+        html += navButton(n, counts[n], activeCategory === n, "filterCategory('" + attr(jsStr(n)) + "')");
+      });
+      byId('catNav').innerHTML = html;
+
+      var typeCounts = {};
+      ALL_CARDS.forEach(function (k) { typeCounts[k.sourceType] = (typeCounts[k.sourceType] || 0) + 1; });
+      var thtml = navButton('전체', null, activeType === 'all', "filterType('all')");
+      Object.keys(ArchiveCore.TYPE_LABELS).forEach(function (t) {
+        thtml += navButton(ArchiveCore.typeLabel(t), typeCounts[t] || 0, activeType === t, "filterType('" + t + "')");
+      });
+      byId('typeNav').innerHTML = thtml;
     }
 
-    function renderSeriesFilters() {
-      // 현재 보이는 카드 중 series 있는 것 수집
-      var seriesMap = {};
-      KNOWLEDGE_DB.forEach(function(k) {
-        if (k.series) {
-          if (!seriesMap[k.series]) seriesMap[k.series] = 0;
-          seriesMap[k.series]++;
-        }
+    // ============ TAG & SERIES FILTERS ============
+    function renderTagFilters() {
+      var tagSet = {};
+      ALL_CARDS.forEach(function (k) {
+        if (activeCategory !== 'all' && k.category !== activeCategory) return;
+        (k.tags || []).forEach(function (t) { tagSet[t] = true; });
       });
-      var seriesList = Object.keys(seriesMap);
-      var container = document.getElementById('seriesFilters');
-      if (!container) return;
-
-      if (seriesList.length === 0) {
-        container.style.display = 'none';
-        return;
-      }
-      container.style.display = '';
-
-      var html = '<span class="filter-label">시리즈</span>';
-      html += '<button class="filter-chip series-chip' + (activeSeries === 'all' ? ' active' : '') + '" onclick="filterSeries(\'all\')">전체</button>';
-      seriesList.forEach(function(s) {
-        var cnt = seriesMap[s];
-        html += '<button class="filter-chip series-chip' + (activeSeries === s ? ' active' : '')
-          + '" onclick="filterSeries(\'' + s.replace(/'/g, "\\'") + '\')">'
-          + '📚 ' + s
-          + '<span class="cat-count">' + cnt + '</span>'
-          + '</button>';
+      var tags = Object.keys(tagSet).sort();
+      if (activeTag !== 'all' && !tagSet[activeTag]) activeTag = 'all';
+      var html = '<button type="button" class="chip' + (activeTag === 'all' ? ' active' : '') + '" onclick="filterTag(\'all\')">전체</button>';
+      tags.forEach(function (tag) {
+        html += '<button type="button" class="chip' + (activeTag === tag ? ' active' : '')
+          + '" onclick="filterTag(\'' + attr(jsStr(tag)) + '\')">#' + tag + '</button>';
       });
-      container.innerHTML = html;
+      byId('tagFilters').innerHTML = html;
+      byId('tagSummary').textContent = activeTag === 'all' ? tags.length + '개' : '#' + activeTag;
+    }
 
-      // 시리즈 배너
       var SERIES_META = {
         "ETF 분석 시리즈":            "커버드콜·지표 분석·5종 비교 — ETF 투자 완전 정복 4편 시리즈",
         "휴리스틱 & 인지 편향 시리즈": "System 1/2 · 3대 휴리스틱 · 《생각에 관한 생각》 — 인지 편향의 뿌리를 파헤치는 3편 시리즈",
@@ -2452,302 +2073,127 @@
         "국채·채권시장 시리즈": "WGBI·BBGA·GBI-EM 3대 채권지수 완전 정리 + 한국 WGBI 편입 파급 효과 — 채권시장 초보부터 중급자까지 2편 시리즈",
         "미-중 패권 경쟁 시리즈": "반도체 전쟁 · AI 패권 · 대만 위기 · 위안화 국제화 · BRICS 확장 · 공급망 재편 — 기술·경제·군사·통화 4대 전선 종합 6편 시리즈"
       };
-      var banner = document.getElementById('seriesBanner');
-      if (!banner) return;
+
+    function renderSeriesFilters() {
+      var seriesMap = {};
+      ALL_CARDS.forEach(function (k) { if (k.series) seriesMap[k.series] = (seriesMap[k.series] || 0) + 1; });
+      var list = Object.keys(seriesMap);
+      byId('seriesDetails').style.display = list.length ? '' : 'none';
+      var html = '<button type="button" class="chip' + (activeSeries === 'all' ? ' active' : '') + '" onclick="filterSeries(\'all\')">전체</button>';
+      list.forEach(function (s) {
+        html += '<button type="button" class="chip' + (activeSeries === s ? ' active' : '')
+          + '" onclick="filterSeries(\'' + attr(jsStr(s)) + '\')">' + s + ' ' + seriesMap[s] + '</button>';
+      });
+      byId('seriesFilters').innerHTML = html;
+      byId('seriesSummary').textContent = activeSeries === 'all' ? list.length + '개' : activeSeries;
+
+      var banner = byId('seriesBanner');
       if (activeSeries !== 'all') {
-        var cnt2 = seriesMap[activeSeries] || 0;
-        document.getElementById('seriesBannerName').textContent = activeSeries;
-        var desc = SERIES_META[activeSeries] || ('이 시리즈의 지식 카드 ' + cnt2 + '개');
-        document.getElementById('seriesBannerDesc').textContent = desc + ' (' + cnt2 + '편)';
+        var cnt = seriesMap[activeSeries] || 0;
+        byId('seriesBannerName').textContent = activeSeries;
+        byId('seriesBannerDesc').textContent = (SERIES_META[activeSeries] || '이 시리즈의 지식 카드') + ' (' + cnt + '편)';
         banner.style.display = 'flex';
       } else {
         banner.style.display = 'none';
       }
     }
 
-    // ============ RENDER SIDEBAR NAV ============
-    var _CATS = [
-      { id: 'all',      label: '전체',     icon: 'grid_view',    cls: '' },
-      { id: '투자·주식', label: '투자·주식', icon: 'trending_up',  cls: 'cat-투자주식' },
-      { id: '경제·거시', label: '경제·거시', icon: 'public',       cls: 'cat-경제거시' },
-      { id: '기술·산업', label: '기술·산업', icon: 'memory',       cls: 'cat-기술산업' },
-      { id: '부동산',    label: '부동산',   icon: 'apartment',    cls: 'cat-부동산'   },
-      { id: '시사·컬처', label: '시사·컬처', icon: 'theater_comedy',cls: 'cat-시사컬처' }
-    ];
-
-    function renderSidebarNav(counts, total) {
-      var nav = document.getElementById('sidebarNav');
-      if (!nav) return;
-      var html = '';
-      _CATS.forEach(function(c) {
-        var cnt = c.id === 'all' ? total : (counts[c.id] || 0);
-        var isActive = activeCategory === c.id;
-        html += '<button class="sidebar-nav-item' + (isActive ? ' active' : '') + '" onclick="filterCategory(\'' + c.id + '\')" aria-current="' + (isActive ? 'page' : 'false') + '">'
-          + '<span class="material-symbols-outlined nav-icon' + (isActive ? ' fill-icon' : '') + '">' + c.icon + '</span>'
-          + '<span class="nav-label">' + c.label + '</span>'
-          + '<span class="nav-count">' + cnt + '</span>'
-          + '</button>';
-      });
-      nav.innerHTML = html;
+    // ============ LEAD & STATS ============
+    function metaLine(k) {
+      return k.category + ' · ' + ArchiveCore.typeLabel(k.sourceType) + ' · ' + k.date;
+    }
+    function renderLead() {
+      var lead = ALL_CARDS[0];
+      if (!lead) return;
+      var el = byId('leadCard');
+      el.href = lead.file;
+      el.innerHTML = '<span class="kicker">최신 · ' + metaLine(lead) + '</span>'
+        + '<span class="lead-title">' + lead.title + '</span>'
+        + '<span class="lead-summary">' + lead.summary + '</span>'
+        + '<span class="lead-more">카드 열기</span>';
+      byId('recentList').innerHTML = ALL_CARDS.slice(1, 6).map(function (k, i) {
+        return '<a class="recent-item" href="' + k.file + '"><span class="recent-no">' + (i + 1) + '</span>'
+          + '<span><span class="item-meta">' + metaLine(k) + '</span>'
+          + '<span class="recent-title">' + k.title + '</span></span></a>';
+      }).join('');
+    }
+    function renderStats() {
+      var total = ALL_CARDS.length;
+      var read = ALL_CARDS.filter(function (k) { return !!readStatus[k.id]; }).length;
+      byId('readCount').textContent = read;
+      byId('totalCount').textContent = total;
+      byId('readProgress').style.width = (total ? Math.round(read / total * 100) : 0) + '%';
+      renderLead();
     }
 
-    // ============ RENDER CAT FILTER CHIPS (main area) ============
-    function renderCatFilters() {
-      var counts = {}, total = 0;
-      KNOWLEDGE_DB.forEach(function(k) {
-        var matchSearch = true;
-        if (searchQuery) {
-          var q = searchQuery.toLowerCase();
-          matchSearch = k.title.toLowerCase().indexOf(q) !== -1
-            || k.summary.toLowerCase().indexOf(q) !== -1
-            || k.tags.join(' ').toLowerCase().indexOf(q) !== -1
-            || k.source.toLowerCase().indexOf(q) !== -1;
-        }
-        var isRead = !!readStatus[k.id];
-        var matchRead = activeReadFilter === 'all'
-          || (activeReadFilter === 'read' && isRead)
-          || (activeReadFilter === 'unread' && !isRead);
-        if (matchSearch && matchRead) {
-          counts[k.category] = (counts[k.category] || 0) + 1;
-          total++;
-        }
-      });
-
-      var html = '<span class="filter-label">분류</span>';
-      _CATS.forEach(function(c) {
-        var cnt = c.id === 'all' ? total : (counts[c.id] || 0);
-        var isActive = activeCategory === c.id;
-        html += '<button class="filter-chip' + (isActive ? ' active' : '')
-          + '" id="catChip-' + c.id + '" onclick="filterCategory(\'' + c.id + '\')">'
-          + c.label
-          + '<span class="cat-count">' + cnt + '</span>'
-          + '</button>';
-      });
-      document.getElementById('catFilters').innerHTML = html;
-      renderSidebarNav(counts, total);
+    // ============ CARDS ============
+    function coverHtml(k) {
+      var cv = ArchiveCore.coverFor(k, CATEGORIES);
+      if (cv.kind === 'image') {
+        return '<span class="card-cover is-image"><img src="' + attr(cv.src) + '" alt="" loading="lazy"></span>';
+      }
+      return '<span class="card-cover" aria-hidden="true" style="background:' + cv.color + '">'
+        + '<span class="cover-label">' + k.category + '</span>'
+        + '<span class="cover-word' + (cv.word.length > 6 ? ' is-long' : '') + '">' + cv.word + '</span></span>';
     }
-
-    // ============ RENDER TAG FILTERS ============
-    function renderTagFilters() {
-      var catFiltered = KNOWLEDGE_DB.filter(function(k) {
-        return activeCategory === 'all' || k.category === activeCategory;
-      });
-      var tagSet = {};
-      catFiltered.forEach(function(k) { k.tags.forEach(function(t) { tagSet[t] = true; }); });
-      var tags = Object.keys(tagSet).sort();
-      if (activeTag !== 'all' && !tagSet[activeTag]) activeTag = 'all';
-      var container = document.getElementById('tagFilters');
-      var html = '<span class="filter-label">태그</span>';
-      html += '<button class="filter-chip' + (activeTag === 'all' ? ' active' : '') + '" onclick="filterTag(\'all\')">전체</button>';
-      tags.forEach(function(tag) {
-        html += '<button class="filter-chip' + (activeTag === tag ? ' active' : '') + '" onclick="filterTag(\'' + tag + '\')">#' + tag + '</button>';
-      });
-      container.innerHTML = html;
-    }
-
-    // ============ SPLIT TITLE ============
-    function splitTitle(title) {
-      var sep = title.indexOf(' — ');
-      if (sep === -1) sep = title.indexOf(' \u2014 ');
-      if (sep === -1) return { main: title, sub: '' };
-      return { main: title.slice(0, sep), sub: title.slice(sep + 3) };
-    }
-
-    // ============ FILTER ============
-    function filterCards() {
-      return KNOWLEDGE_DB.filter(function(k) {
-        var matchTag    = activeTag === 'all' || k.tags.indexOf(activeTag) !== -1;
-        var matchSearch = true;
-        if (searchQuery) {
-          var q = searchQuery.toLowerCase();
-          matchSearch = k.title.toLowerCase().indexOf(q) !== -1
-            || k.summary.toLowerCase().indexOf(q) !== -1
-            || k.tags.join(' ').toLowerCase().indexOf(q) !== -1
-            || k.source.toLowerCase().indexOf(q) !== -1;
-        }
-        var isRead   = !!readStatus[k.id];
-        var matchRead = activeReadFilter === 'all'
-          || (activeReadFilter === 'read' && isRead)
-          || (activeReadFilter === 'unread' && !isRead);
-        var matchCat    = activeCategory === 'all' || k.category === activeCategory;
-        var matchSeries = activeSeries === 'all' || k.series === activeSeries;
-        return matchTag && matchSearch && matchRead && matchCat && matchSeries;
-      });
-    }
-
-    // ============ RENDER CARDS ============
     function renderCards() {
       var filtered = filterCards();
-      var grid     = document.getElementById('cardGrid');
-      var empty    = document.getElementById('emptyState');
+      var grid = byId('cardGrid');
+      var f = currentFilter();
+      var narrowed = f.category !== 'all' || f.type !== 'all' || f.tag !== 'all' || f.series !== 'all' || !!f.query;
 
-      if (filtered.length === 0) {
-        grid.innerHTML = ''; empty.style.display = 'block';
-      } else {
-        empty.style.display = 'none';
-        var _CI = {
-          '투자·주식': 'cat-투자주식',
-          '경제·거시': 'cat-경제거시',
-          '기술·산업': 'cat-기술산업',
-          '부동산':    'cat-부동산',
-          '시사·컬처': 'cat-시사컬처'
-        };
-        var _ICONS = {
-          '투자·주식': 'trending_up',
-          '경제·거시': 'public',
-          '기술·산업': 'memory',
-          '부동산':    'apartment',
-          '시사·컬처': 'theater_comedy'
-        };
-        var checkSvg = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-        var html = '';
-        filtered.forEach(function(k, i) {
-          var t = splitTitle(k.title);
-          var isRead   = !!readStatus[k.id];
-          var catCls   = _CI[k.category] || '';
-          var catIcon  = _ICONS[k.category] || 'label';
-          var allTagsHtml = k.tags.map(function(tag) {
-            return '<span class="card-tag">#' + tag + '</span>';
-          }).join('');
-          var moreBtnHtml = k.tags.length > 1
-            ? '<button class="card-tags-more" style="display:none" onclick="event.preventDefault();event.stopPropagation();toggleTagExpand(this)">더보기</button>'
-            : '';
-          var tagsHtml = '<div class="card-tags-area"><div class="card-tags-box">' + allTagsHtml + '</div>' + moreBtnHtml + '</div>';
-          var catBadge = k.category
-            ? '<span class="cat-badge ' + catCls + '">'
-              + '<span class="material-symbols-outlined" style="font-size:11px">' + catIcon + '</span>'
-              + k.category + '</span>'
-            : '';
-          var seriesBadge = k.series
-            ? '<span class="series-badge" onclick="event.preventDefault();filterSeries(\'' + k.series.replace(/'/g, "\\'") + '\')">📚 ' + k.series + '</span>'
-            : '';
+      grid.innerHTML = filtered.map(function (k) {
+        var isRead = !!readStatus[k.id];
+        var tags = (k.tags || []).slice(0, 3).map(function (t) { return '#' + t; }).join(' ');
+        var series = k.series
+          ? '<button type="button" class="series-link" onclick="filterSeries(\'' + attr(jsStr(k.series)) + '\')">' + k.series + '</button>'
+          : '<span class="card-tags">' + tags + '</span>';
+        return '<article class="ka-card' + (isRead ? ' is-read' : '') + '" role="listitem">'
+          + '<a class="card-link" href="' + k.file + '">' + coverHtml(k)
+          + '<span class="item-meta">' + metaLine(k) + '</span>'
+          + '<span class="card-title">' + k.title + '</span>'
+          + '<span class="card-summary">' + k.summary + '</span></a>'
+          + '<div class="card-foot">' + series
+          + '<button type="button" class="read-btn" onclick="toggleRead(\'' + attr(jsStr(k.id)) + '\')" aria-pressed="' + isRead + '">'
+          + (isRead ? '읽음 ✓' : '읽음 표시') + '</button></div></article>';
+      }).join('');
 
-          html += '<a href="' + k.file + '" class="ka-card' + (isRead ? ' is-read' : '') + '" role="listitem"'
-            + ' style="--card-accent:' + k.color + ';animation-delay:' + (i * 0.04) + 's">'
-            + '<div class="card-stripe" style="background:' + k.color + '"></div>'
-            + '<button class="card-read-btn" onclick="toggleRead(\'' + k.id + '\', event)" title="' + (isRead ? '읽음 해제' : '읽음 표시') + '" aria-label="' + (isRead ? '읽음 해제' : '읽음 표시') + '">' + checkSvg + '</button>'
-            + '<div class="card-category-row">' + catBadge + (seriesBadge ? '<span style="margin-left:4px">' + seriesBadge + '</span>' : '') + '</div>'
-            + '<div class="card-title">' + t.main + '</div>'
-            + (t.sub ? '<div class="card-subtitle">' + t.sub + '</div>' : '')
-            + '<div class="card-summary">' + k.summary + '</div>'
-            + '<div class="card-meta">' + tagsHtml + '<span class="card-date">' + k.date + '</span></div>'
-            + '</a>';
-        });
-        grid.innerHTML = html;
-        // Post-render: show 더보기 button only when tags actually overflow
-        requestAnimationFrame(function() {
-          grid.querySelectorAll('.card-tags-area').forEach(function(area) {
-            var box = area.querySelector('.card-tags-box');
-            var btn = area.querySelector('.card-tags-more');
-            if (!box || !btn) return;
-            if (box.scrollHeight > box.clientHeight + 1) {
-              btn.style.display = 'inline-block';
-              btn.textContent = '더보기';
-            } else {
-              btn.style.display = 'none';
-            }
-          });
-        });
-      }
-      document.getElementById('resultsCount').textContent = filtered.length + '개 지식 표시 중';
-      renderCatFilters();
+      grid.classList.toggle('view-card', activeView === 'card');
+      byId('viewBtn-list').setAttribute('aria-pressed', String(activeView === 'list'));
+      byId('viewBtn-card').setAttribute('aria-pressed', String(activeView === 'card'));
+      byId('emptyState').style.display = filtered.length ? 'none' : 'block';
+      byId('leadRow').style.display = narrowed ? 'none' : '';
+      byId('listTitle').textContent = activeCategory === 'all' ? '전체 카드' : activeCategory;
+      byId('resultsCount').textContent = filtered.length + '장';
 
-      renderSeriesFilters();
-
-      var filterDesc = [];
-      if (activeSeries !== 'all') filterDesc.push('📚 ' + activeSeries);
-      if (activeTag !== 'all') filterDesc.push('#' + activeTag);
-      if (searchQuery) filterDesc.push('"' + searchQuery + '"');
-      document.getElementById('activeFilters').textContent = filterDesc.length ? filterDesc.join(' · ') : '';
-    }
-
-    // ============ RENDER STATS ============
-    function renderStats() {
-      var total   = KNOWLEDGE_DB.length;
-      var readCnt = KNOWLEDGE_DB.filter(function(k) { return !!readStatus[k.id]; }).length;
-      var pct     = total > 0 ? Math.round(readCnt / total * 100) : 0;
-
-      // Hero section
-      var hR = document.getElementById('heroReadCount');
-      var hT = document.getElementById('heroTotal');
-      var hTB = document.getElementById('heroTotalBig');
-      var hP = document.getElementById('heroProgress');
-      if (hR)  hR.textContent  = readCnt;
-      if (hT)  hT.textContent  = total;
-      if (hTB) hTB.textContent = total;
-      if (hP)  hP.style.width  = pct + '%';
-
-      // Latest
-      if (total > 0) {
-        var sorted = KNOWLEDGE_DB.slice().sort(function(a,b) { return b.date.localeCompare(a.date); });
-        var latest = sorted[0];
-        var t = splitTitle(latest.title);
-        var lT = document.getElementById('heroLatestTitle');
-        var lD = document.getElementById('heroLatestDate');
-        if (lT) lT.textContent = t.main;
-        if (lD) lD.textContent = latest.date;
-      }
-
-      // Sidebar
-      var sT = document.getElementById('sidebarTotal');
-      var sR = document.getElementById('sidebarRead');
-      var sP = document.getElementById('sidebarProgress');
-      if (sT) sT.textContent = total;
-      if (sR) sR.textContent = readCnt;
-      if (sP) sP.style.width = pct + '%';
-    }
-
-    // ============ TAG FILTER ============
-    function filterTag(tag) {
-      activeTag = tag; renderTagFilters(); renderCards();
+      var desc = [];
+      if (activeType !== 'all') desc.push(ArchiveCore.typeLabel(activeType));
+      if (activeSeries !== 'all') desc.push(activeSeries);
+      if (activeTag !== 'all') desc.push('#' + activeTag);
+      if (searchQuery) desc.push('"' + searchQuery + '"');
+      byId('activeFilters').textContent = desc.join(' · ');
     }
 
     // ============ SEARCH ============
     var searchTimer;
-    function onSearchInput(val) {
+    byId('searchInput').addEventListener('input', function (e) {
       clearTimeout(searchTimer);
-      searchTimer = setTimeout(function() {
-        searchQuery = val.trim();
-        renderCards();
-      }, 200);
-    }
-    document.getElementById('searchInput').addEventListener('input', function(e) {
-      onSearchInput(e.target.value);
-      var mob = document.getElementById('searchInputMobile');
-      if (mob) mob.value = e.target.value;
+      var val = e.target.value;
+      searchTimer = setTimeout(function () { searchQuery = val.trim(); renderCards(); }, 200);
     });
-    var mobSearch = document.getElementById('searchInputMobile');
-    if (mobSearch) {
-      mobSearch.addEventListener('input', function(e) {
-        onSearchInput(e.target.value);
-        document.getElementById('searchInput').value = e.target.value;
-      });
-    }
-
-    // ============ MOBILE SEARCH TOGGLE ============
-    function toggleMobileSearch() {
-      var bar = document.getElementById('mobileSearchBar');
-      if (!bar) return;
-      var isHidden = bar.style.display === '' || bar.style.display === 'none';
-      bar.style.display = isHidden ? 'block' : 'none';
-      if (isHidden) {
-        var inp = document.getElementById('searchInputMobile');
-        if (inp) setTimeout(function() { inp.focus(); }, 80);
-      }
-    }
 
     // ============ THEME ============
-    var currentTheme = 'dark';
+    var currentTheme = 'light';
     function applyTheme(t) {
-      document.getElementById('htmlRoot').className = 'theme-' + t;
-      var icon = document.getElementById('themeIcon');
-      if (icon) icon.textContent = t === 'dark' ? 'dark_mode' : 'light_mode';
-      localStorage.setItem('viz-theme', t);
       currentTheme = t;
+      byId('htmlRoot').className = 'theme-' + t;
+      byId('themeLabel').textContent = t === 'dark' ? '라이트' : '다크';
+      try { localStorage.setItem('viz-theme', t); } catch (e) {}
     }
     function cycleTheme() { applyTheme(currentTheme === 'dark' ? 'light' : 'dark'); }
-    var savedTheme = localStorage.getItem('viz-theme');
-    applyTheme(savedTheme || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+    var savedTheme = null;
+    try { savedTheme = localStorage.getItem('viz-theme'); } catch (e) {}
+    applyTheme(savedTheme === 'dark' || savedTheme === 'light' ? savedTheme : 'light');
 
     // ============ SWIPE VIEW ============
     var swipeCards = [], swipeIndex = 0, swipeAnimating = false;
@@ -2898,35 +2344,22 @@
       if (e.target === this) closeSwipeView();
     });
 
-    // ============ MOBILE TOPBAR SEARCH VISIBILITY ============
-    (function() {
-      var toggle = document.getElementById('mobileSearchToggle');
-      function checkWidth() {
-        if (window.innerWidth < 768) {
-          if (toggle) toggle.style.display = 'flex';
-        } else {
-          if (toggle) toggle.style.display = 'none';
-          var bar = document.getElementById('mobileSearchBar');
-          if (bar) bar.style.display = 'none';
-        }
-      }
-      checkWidth();
-      window.addEventListener('resize', checkWidth);
-    })();
-
-    // ============ TAG EXPAND TOGGLE ============
-    function toggleTagExpand(btn) {
-      var box = btn.previousElementSibling;
-      var isExpanded = box.classList.toggle('expanded');
-      btn.textContent = isExpanded ? '접기' : '더보기';
-    }
-
     // ============ INIT ============
+    function renderAll() {
+      renderNav(); renderTagFilters(); renderSeriesFilters(); renderStats(); renderCards();
+    }
+    function loadJson(path, fallback) {
+      return fetch(path, { cache: 'no-cache' })
+        .then(function (r) { return r.ok ? r.json() : fallback; })
+        .catch(function () { return fallback; });
+    }
     loadReadStatus();
-    renderTagFilters();
-    renderCatFilters();
-    renderStats();
-    renderCards();
+    renderAll();
+    Promise.all([loadJson('categories.json', []), loadJson('scraps.json', [])]).then(function (res) {
+      CATEGORIES = Array.isArray(res[0]) ? res[0] : [];
+      ALL_CARDS = ArchiveCore.mergeCards(KNOWLEDGE_DB, res[1]);
+      renderAll();
+    });
   </script>
 </body>
 </html>
