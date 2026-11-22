@@ -18,25 +18,5 @@
     "category": "패션",
     "cover": "covers/scrap-20261122-knit-hanger-shoulder-tip.jpg",
     "coverWord": "니트 보관"
-  },
-  {
-    "id": "scrap-20261122-yield-curve-basics",
-    "title": "수익률 곡선의 개념과 구성 요건",
-    "file": "cards/scrap-20261122-yield-curve-basics.html",
-    "date": "2026-11-22",
-    "source": "ko.wikipedia.org",
-    "sourceUrl": "https://ko.wikipedia.org/wiki/%EC%88%98%EC%9D%B5%EB%A5%A0_%EA%B3%A1%EC%84%A0",
-    "sourceType": "article",
-    "tags": [
-      "수익률곡선",
-      "채권",
-      "금리",
-      "국채",
-      "기간구조"
-    ],
-    "summary": "수익률 곡선은 채권 등 채무 상품의 수익률이 만기까지 남은 기간에 따라 어떻게 변하는지를 나타낸 그래프로, 금리의 기간구조와 경제에 대한 투자자 기대를 보여준다.",
-    "category": "경제·투자",
-    "cover": "",
-    "coverWord": "수익률 곡선"
   }
 ]
