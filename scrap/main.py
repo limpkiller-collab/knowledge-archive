@@ -12,6 +12,7 @@ from types import SimpleNamespace
 from . import covers, extract, html_store, notify, notion_store, summarize, urls
 from .models import Card, ExtractError
 
+SITE = "https://limpkiller-collab.github.io/knowledge-archive/"
 SOURCE_NAMES = {"article": "기사", "instagram_post": "인스타그램", "instagram_reel": "인스타그램 릴스", "youtube": "유튜브"}
 
 
@@ -28,7 +29,23 @@ def git_publish(root: Path, message: str) -> None:
         git("push")
 
 
-REAL = SimpleNamespace(extract=extract.run, summarize=summarize.run, cover=covers.save,
+def wait_live(url: str, timeout: int = 150) -> None:
+    """사이트 배포가 끝나 카드 주소가 열릴 때까지 기다린다. 알림을 눌렀을 때 빈 페이지가 뜨지 않게 하려는 것이다."""
+    import time
+
+    import requests
+
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        try:
+            if requests.get(url, timeout=10).status_code == 200:
+                return
+        except requests.RequestException:
+            pass
+        time.sleep(5)
+
+
+REAL = SimpleNamespace(wait_live=wait_live, extract=extract.run, summarize=summarize.run, cover=covers.save,
                        publish=git_publish, notion_save=notion_store.save, notify=notify.send)
 
 
@@ -38,8 +55,9 @@ def process(raw_url: str, note: str, category: str, root: Path, today: str, deps
     except ValueError as e:
         deps.notify("저장 실패", str(e))
         return "실패"
-    if html_store.find_by_url(url, root):
-        deps.notify("이미 저장됨", url)
+    existing = html_store.find_by_url(url, root)
+    if existing:
+        deps.notify("이미 저장됨", existing["title"], SITE + existing["file"])
         return "중복"
 
     category = re.sub(r"\s+", " ", category).strip()[:20]
@@ -72,14 +90,15 @@ def process(raw_url: str, note: str, category: str, root: Path, today: str, deps
     html_store.save(card, root, note=" · ".join(ex.warnings))
     deps.publish(root, f"scrap: {card.title}")
 
-    link = ""
+    link = f"{SITE}cards/{card.id}.html"
     try:
         status = "부분 완료" if problems else "완료"
-        link = deps.notion_save(url, status, note, card=card,
+        deps.notion_save(url, status, note, card=card,
                                 raw_text="\n\n".join(p for p in [ex.text, ex.transcript] if p), warnings=ex.warnings)
     except Exception:
         problems.append("노션 저장에 실패했습니다")
 
+    getattr(deps, "wait_live", lambda u: None)(link)
     if problems:
         deps.notify("부분 저장", f"{card.title}\n" + "\n".join(problems), link)
         return "부분 완료"

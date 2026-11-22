@@ -9,7 +9,7 @@ SUMMARY = {"title": "제목", "summary": "한 줄", "key_points": ["a"], "catego
 
 class Fakes:
     def __init__(self, extract_error=None, notion_error=None, warnings=()):
-        self.notes, self.notion, self.published = [], [], 0
+        self.notes, self.notion, self.published, self.links = [], [], 0, []
         self.extract_error, self.notion_error, self.warnings = extract_error, notion_error, list(warnings)
 
     def extract(self, url):
@@ -34,6 +34,7 @@ class Fakes:
 
     def notify(self, title, message, link=""):
         self.notes.append((title, message))
+        self.links.append(link)
 
 
 @pytest.fixture
@@ -109,3 +110,12 @@ def test_read_request_prefers_event_file(tmp_path, monkeypatch):
     monkeypatch.setenv("GITHUB_EVENT_PATH", str(event))
     monkeypatch.delenv("SCRAP_URL", raising=False)
     assert main.read_request() == {"url": "https://e.com/a", "note": "메모", "category": ""}
+
+
+def test_notification_links_to_site_card(root):
+    f = Fakes()
+    run(root, f)
+    assert f.links == ["https://limpkiller-collab.github.io/knowledge-archive/cards/scrap-20261122-my-card.html"]
+    g = Fakes()
+    run(root, g)
+    assert g.links == f.links and g.notes[0] == ("이미 저장됨", "제목")
