@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 import base64
-import os
 
 import requests
 
-GEMINI = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+from . import gemini
+
 PROMPT = ("이 영상(또는 음성)의 내용을 한국어로 빠짐없이 글로 옮겨라. "
           "사람이 말하는 내용은 들리는 그대로 적고, 화면에 나오는 자막과 글자도 함께 적는다. "
           "설명이나 평가는 덧붙이지 않는다.")
@@ -27,24 +27,10 @@ def _download(url: str, limit: int) -> bytes:
 
 
 def _ask_gemini(data: bytes, mime_type: str) -> str:
-    import time
-
-    body = {"contents": [{"parts": [
+    return gemini.generate([
         {"inline_data": {"mime_type": mime_type, "data": base64.b64encode(data).decode("ascii")}},
         {"text": PROMPT},
-    ]}]}
-    url = GEMINI.format(model=os.environ.get("GEMINI_MODEL") or "gemini-3.8-flash")
-    for attempt in range(4):
-        resp = requests.post(url, headers={"x-goog-api-key": os.environ["GEMINI_API_KEY"]}, json=body, timeout=150)
-        if resp.status_code < 400:
-            break
-        print(f"gemini http {resp.status_code}: {' '.join(resp.text.split())[:300]}")
-        # 503(과부하)과 429(요청 한도)는 잠시 뒤 다시 시도하면 풀리는 경우가 많다.
-        if resp.status_code not in (429, 500, 503) or attempt == 3:
-            resp.raise_for_status()
-        time.sleep(15 * (attempt + 1))
-    parts = resp.json()["candidates"][0]["content"]["parts"]
-    return "".join(p.get("text", "") for p in parts).strip()
+    ])
 
 
 def from_media_url(video_url: str, audio_url: str = "") -> str:

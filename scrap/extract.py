@@ -6,12 +6,12 @@ from urllib.parse import urlsplit
 import requests
 import trafilatura
 
+from . import gemini
 from . import transcribe as stt
 from .models import Extracted, ExtractError
 from .urls import classify, youtube_id
 
 IG_ACTOR = "apify~instagram-scraper"
-GEMINI = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 WATCH_PROMPT = """이 영상의 내용을 한국어로 빠짐없이 글로 풀어 써라.
 첫 줄에 영상 제목과 채널 이름을 적는다. 이어서 영상이 말하는 주장, 근거, 수치, 순서, 예시를 시간 순서대로 적는다.
 화면에만 나오는 글자나 도표의 내용도 포함한다. 의견이나 평가는 덧붙이지 않는다."""
@@ -77,12 +77,7 @@ def _from_instagram(url: str, kind: str, item: dict, transcribe) -> Extracted:
 
 def _gemini_watch(url: str) -> str:
     """Gemini가 유튜브 영상을 직접 보고 내용을 글로 풀어 준다."""
-    body = {"contents": [{"parts": [{"file_data": {"file_uri": url}}, {"text": WATCH_PROMPT}]}]}
-    resp = requests.post(GEMINI.format(model=os.environ.get("GEMINI_MODEL") or "gemini-3.8-flash"),
-                         headers={"x-goog-api-key": os.environ["GEMINI_API_KEY"]}, json=body, timeout=600)
-    resp.raise_for_status()
-    parts = resp.json()["candidates"][0]["content"]["parts"]
-    return "".join(p.get("text", "") for p in parts).strip()
+    return gemini.generate([{"file_data": {"file_uri": url}}, {"text": WATCH_PROMPT}], timeout=600)
 
 
 def _from_youtube(url: str, watch=_gemini_watch) -> Extracted:
