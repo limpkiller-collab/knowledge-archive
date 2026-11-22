@@ -119,3 +119,9 @@ def test_notification_links_to_site_card(root):
     g = Fakes()
     run(root, g)
     assert g.links == f.links and g.notes[0] == ("이미 저장됨", "제목")
+
+
+def test_auto_label_means_no_category(root):
+    run(root, Fakes(), category="자동 분류")
+    names = [c["name"] for c in json.loads((root / "categories.json").read_text(encoding="utf-8"))]
+    assert names == ["테크", "etc"]

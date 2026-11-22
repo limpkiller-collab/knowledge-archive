@@ -61,6 +61,8 @@ def process(raw_url: str, note: str, category: str, root: Path, today: str, deps
         return "중복"
 
     category = re.sub(r"\s+", " ", category).strip()[:20]
+    if category == "자동 분류":  # 단축어 메뉴의 "자동 분류" 항목은 빈 값과 같다
+        category = ""
     if category:
         html_store.ensure_category(category, root)
     categories = [c["name"] for c in json.loads((root / "categories.json").read_text(encoding="utf-8"))]
