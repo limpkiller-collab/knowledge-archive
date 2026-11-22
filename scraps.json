@@ -1,5 +1,25 @@
 [
   {
+    "id": "scrap-20261122-pickle-pc-open-source-tools",
+    "title": "피클(Pickle)을 PC와 연결하는 오픈소스 프로젝트 3가지",
+    "file": "cards/scrap-20261122-pickle-pc-open-source-tools.html",
+    "date": "2026-11-22",
+    "source": "captainmobile_0fficial",
+    "sourceUrl": "https://www.threads.com/@captainmobile_0fficial/post/DgDAaCPj_-4",
+    "sourceType": "threads",
+    "tags": [
+      "피클",
+      "오픈소스",
+      "원격제어",
+      "Claude Code",
+      "AI에이전트"
+    ],
+    "summary": "휴대폰에서만 쓰던 AI 서비스 피클을 PC 원격 제어, 웹 활용, 로컬 AI 코딩 에이전트 연결로 확장할 수 있는 깃허브 오픈소스 3가지를 소개한다.",
+    "category": "테크",
+    "cover": "covers/scrap-20261122-pickle-pc-open-source-tools.jpg",
+    "coverWord": "피클 연결"
+  },
+  {
     "id": "scrap-20261122-fall-outfit-color-combinations",
     "title": "가을 코디에 참고하기 좋은 옷 컬러 조합 30가지",
     "file": "cards/scrap-20261122-fall-outfit-color-combinations.html",
