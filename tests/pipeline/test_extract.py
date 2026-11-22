@@ -42,3 +42,9 @@ def test_reel_without_video_url_warns():
     item = {"caption": "캡션", "displayUrl": "https://cdn/t.jpg"}
     ex = extract._from_instagram("https://www.instagram.com/reel/A/", "instagram_reel", item, transcribe=None)
     assert any("영상 파일" in w for w in ex.warnings)
+
+
+def test_partial_instagram_data_is_used_with_warning():
+    item = {"caption": "캡션", "error": "restricted_page", "_partial": True}
+    ex = extract._from_instagram("https://www.instagram.com/p/A/", "instagram_post", item, transcribe=None)
+    assert ex.text == "캡션" and any("일부 정보" in w for w in ex.warnings)

@@ -30,7 +30,10 @@ def _apify(actor: str, payload: dict) -> dict:
         raise ExtractError("게시물을 가져오지 못했습니다 (비공개이거나 차단됨)")
     if items[0].get("error"):
         print(f"apify item error: {items[0].get('error')} / {str(items[0].get('errorDescription'))[:200]}")
-        raise ExtractError("게시물을 가져오지 못했습니다 (비공개이거나 차단됨)")
+        # 인스타그램이 로그인하지 않은 방문자에게 일부 정보만 주는 게시물이 있다. 캡션이라도 있으면 그것으로 진행한다.
+        if not (items[0].get("caption") or items[0].get("displayUrl")):
+            raise ExtractError("게시물을 가져오지 못했습니다 (비공개이거나 열람이 제한됨)")
+        items[0]["_partial"] = True
     print("apify item keys:", sorted(items[0].keys()))
     return items[0]
 
@@ -51,6 +54,8 @@ def _from_instagram(url: str, kind: str, item: dict, transcribe) -> Extracted:
     ex = Extracted(source_type=kind, url=url, text=item.get("caption") or "", author=item.get("ownerUsername") or "",
                    published_at=(item.get("timestamp") or "")[:10], thumbnail_url=item.get("displayUrl") or "",
                    images=list(item.get("images") or ([item["displayUrl"]] if item.get("displayUrl") else [])))
+    if item.get("_partial"):
+        ex.warnings.append("인스타그램이 일부 정보만 제공해 캡션 중심으로 정리했습니다")
     print(f"instagram item: type={item.get('type')} productType={item.get('productType')} "
           f"images={len(item.get('images') or [])} hasVideo={bool(item.get('videoUrl'))}")
     if kind == "instagram_reel":
