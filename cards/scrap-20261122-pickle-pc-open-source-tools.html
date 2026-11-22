@@ -9,7 +9,7 @@
 :root { --bg: #ffffff; --text: #111111; --sec: #555555; --rule: #111111; --border: #dddddd; --accent: #b3261e; }
 html.theme-dark { --bg: #111111; --text: #f5f5f5; --sec: #b8b8b8; --rule: #f5f5f5; --border: #3a3a3a; --accent: #ff8a80; }
 body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; letter-spacing: -0.02em; }
-main { max-width: 720px; margin: 0 auto; padding: 32px 24px 64px; }
+main { position: relative; max-width: 720px; margin: 0 auto; padding: 32px 24px 64px; }
 a { color: var(--text); } a:hover { color: var(--accent); }
 .back { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 700; }
 .kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--accent); border-top: 4px solid var(--rule); padding-top: 14px; }
@@ -17,8 +17,15 @@ h1 { font-size: 36px; font-weight: 900; line-height: 1.25; letter-spacing: -0.04
 .summary { font-size: 17px; line-height: 1.75; color: var(--sec); margin: 0 0 24px; }
 .cover { width: 100%; display: block; margin-bottom: 24px; }
 ol { list-style: none; margin: 0 0 24px; padding: 0; border-top: 1px solid var(--rule); counter-reset: p; }
-li { counter-increment: p; display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 16px; line-height: 1.65; }
-li::before { content: counter(p, decimal-leading-zero); font-weight: 900; color: var(--accent); }
+ol li { counter-increment: p; display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 16px; line-height: 1.65; }
+ol li::before { content: counter(p, decimal-leading-zero); font-weight: 900; color: var(--accent); }
+.tags { font-size: 14px; font-weight: 700; color: var(--accent); margin: -12px 0 24px; line-height: 1.7; }
+.tags:empty { display: none; }
+.links-title { font-size: 14px; font-weight: 900; margin: 0 0 4px; }
+.links { list-style: none; margin: 0 0 24px; padding: 0; border-top: 1px solid var(--rule); }
+.links li { padding: 12px 0; border-bottom: 1px solid var(--border); }
+.links a { display: block; font-size: 16px; font-weight: 700; line-height: 1.5; }
+.links span { display: block; font-size: 13px; color: var(--sec); overflow-wrap: anywhere; line-height: 1.5; }
 .note { font-size: 13px; color: var(--sec); line-height: 1.6; }
 .source { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
 </style>
@@ -29,15 +36,22 @@ li::before { content: counter(p, decimal-leading-zero); font-weight: 900; color:
 <a class="back" href="../index.html">지식 Archive로 돌아가기</a>
 <div class="kicker">테크 · 스레드 · 2026-11-22</div>
 <h1>피클(Pickle)을 PC와 연결하는 오픈소스 프로젝트 3가지</h1>
-<p class="summary">휴대폰에서만 쓰던 AI 서비스 피클을 PC 원격 제어, 웹 활용, 로컬 AI 코딩 에이전트 연결로 확장할 수 있는 깃허브 오픈소스 3가지를 소개한다.</p>
+<p class="summary">휴대폰 AI 앱 피클을 Windows PC 원격 제어, PC 웹 활용, Mac의 Claude Code·Codex 연결 등에 쓸 수 있게 해 주는 깃허브 오픈소스 세 가지를 소개한다.</p>
+<p class="tags">#피클 #오픈소스 #원격제어 #Claude Code #AI 에이전트</p>
 <div id="ka-gallery"><img class="cover" src="../covers/scrap-20261122-pickle-pc-open-source-tools.jpg" alt=""></div>
 <ol>
 <li>피클을 휴대폰에서만 쓰지 않고 PC와 연결해 활용할 수 있는 오픈소스들이 깃허브에 있다.</li>
 <li>pickle-pc-control은 피클로 Windows PC에 명령을 전달하고 PowerShell, Python 자동화까지 연결할 수 있다.</li>
 <li>pickle-desk는 브라우저와 Google Sheets를 이용해 PC 웹에서 피클에 작업을 요청하고 결과를 확인할 수 있다.</li>
-<li>pickle-runner는 피클을 Mac의 파일, 터미널, Claude Code·Codex 같은 로컬 AI CLI와 연결하는 프로젝트다.</li>
+<li>pickle-runner는 피클을 Mac에 연결해 파일, 터미널, Claude Code·Codex 같은 로컬 AI 코딩 에이전트를 쓸 수 있게 하는 프로젝트다.</li>
 <li>AI에게 질문만 하는 것을 넘어 내 컴퓨터에서 실제 작업까지 시키는 방향으로 가고 있다.</li>
 </ol>
+<h2 class="links-title">본문에 나온 링크</h2>
+<ul class="links">
+<li><a href="https://github.com/nahyunseok/pickle-pc-control" rel="noopener noreferrer" target="_blank">pickle-pc-control (Windows PC 원격 제어)</a><span>https://github.com/nahyunseok/pickle-pc-control</span></li>
+<li><a href="https://github.com/techinpark/pickle-desk" rel="noopener noreferrer" target="_blank">pickle-desk (PC 웹에서 피클 활용)</a><span>https://github.com/techinpark/pickle-desk</span></li>
+<li><a href="https://github.com/Seungyub-Jeon/pickle-runner" rel="noopener noreferrer" target="_blank">pickle-runner (Mac용 Claude Code·Codex 연결)</a><span>https://github.com/Seungyub-Jeon/pickle-runner</span></li>
+</ul>
 <p class="note"></p>
 <a class="source" href="https://www.threads.com/@captainmobile_0fficial/post/DgDAaCPj_-4" rel="noopener noreferrer" target="_blank">원문 보기 (captainmobile_0fficial)</a>
 </main>
