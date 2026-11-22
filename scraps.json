@@ -1,5 +1,35 @@
 [
   {
+    "id": "scrap-20261122-stock-investor-ai-prompts",
+    "title": "주식 투자자를 위한 AI 프롬프트 6가지",
+    "file": "cards/scrap-20261122-stock-investor-ai-prompts.html",
+    "date": "2026-11-22",
+    "source": "2za.now",
+    "sourceUrl": "https://www.instagram.com/p/Df_YFgiI0p1/",
+    "sourceType": "instagram_post",
+    "tags": [
+      "주식투자",
+      "AI프롬프트",
+      "적정주가",
+      "포트폴리오",
+      "리스크관리"
+    ],
+    "summary": "적정주가 산출, 기업 심층 분석, 투자 의사결정 검증, 뉴스 수혜주 발굴, 포트폴리오 최적화, 하락장 대응까지 주식 투자 단계별로 AI에 입력할 수 있는 역할 지정형 프롬프트를 소개한다.",
+    "category": "경제·투자",
+    "cover": "covers/scrap-20261122-stock-investor-ai-prompts.jpg",
+    "coverWord": "투자 프롬프트",
+    "images": [
+      "covers/scrap-20261122-stock-investor-ai-prompts/01.jpg",
+      "covers/scrap-20261122-stock-investor-ai-prompts/02.jpg",
+      "covers/scrap-20261122-stock-investor-ai-prompts/03.jpg",
+      "covers/scrap-20261122-stock-investor-ai-prompts/04.jpg",
+      "covers/scrap-20261122-stock-investor-ai-prompts/05.jpg",
+      "covers/scrap-20261122-stock-investor-ai-prompts/06.jpg",
+      "covers/scrap-20261122-stock-investor-ai-prompts/07.jpg",
+      "covers/scrap-20261122-stock-investor-ai-prompts/08.jpg"
+    ]
+  },
+  {
     "id": "scrap-20261122-pickle-pc-open-source-tools",
     "title": "피클(Pickle)을 PC와 연결하는 오픈소스 프로젝트 3가지",
     "file": "cards/scrap-20261122-pickle-pc-open-source-tools.html",
