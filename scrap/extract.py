@@ -3,7 +3,7 @@ from __future__ import annotations
 import html as html_lib
 import os
 import re
-from urllib.parse import urlsplit
+from urllib.parse import parse_qsl, urlsplit
 
 import requests
 import trafilatura
@@ -104,19 +104,71 @@ def _meta(html: str) -> dict:
     return found
 
 
-def _from_threads(url: str, html: str) -> Extracted:
+A_TAG = re.compile(r'<a\b[^>]*?href="([^"]*)"[^>]*>(.*?)</a>', re.S)
+TAG = re.compile(r"<[^>]+>")
+
+
+def _real_link(href: str, label: str) -> str:
+    """스레드 본문 속 링크를 원래 주소로 바꾼다. 해시태그·멘션 같은 스레드 내부 링크는 보이는 글자를 그대로 둔다."""
+    href = html_lib.unescape(href)
+    parts = urlsplit(href)
+    if parts.netloc.endswith(("l.facebook.com", "l.threads.com", "l.threads.net", "l.instagram.com")):
+        target = dict(parse_qsl(parts.query)).get("u", "")
+        if target.startswith(("http://", "https://")):
+            return target
+    if parts.scheme in ("http", "https") and classify(href) != "threads":
+        return href
+    return label
+
+
+def _threads_embed(html: str) -> dict:
+    """스레드 임베드 페이지에서 본문(링크는 원래 주소로), 이미지, 영상 주소를 꺼낸다."""
+    out = {"text": "", "images": [], "videos": []}
+    end = html.find('class="PostDateContainer"')
+    post = html[:end] if end != -1 else html
+    start = post.find('class="BodyTextContainer"')
+    media_at = re.search(r'class="[^"]*MediaContainer', post)
+    if start != -1:
+        stops = [i for i in (post.find('class="LinkAttachment', start), media_at.start() if media_at and media_at.start() > start else -1) if i != -1]
+        stop = post.rfind("<", start, min(stops)) if stops else len(post)  # 멈출 곳은 그 태그의 시작이다
+        body = post[post.index(">", start) + 1:stop]
+        body = A_TAG.sub(lambda m: _real_link(m.group(1), TAG.sub("", m.group(2))), body)
+        body = re.sub(r"<br\s*/?>", "\n", body)
+        out["text"] = html_lib.unescape(TAG.sub("", body)).strip()
+    if media_at:
+        media = post[media_at.start():]
+        out["images"] = [html_lib.unescape(u) for u in re.findall(r'<img\b[^>]*?src="([^"]+)"', media)]
+        out["videos"] = [html_lib.unescape(u) for u in re.findall(r'<source\b[^>]*?src="([^"]+)"', media)]
+    return out
+
+
+def _from_threads(url: str, html: str, embed_html: str = "", transcribe=None) -> Extracted:
     meta = _meta(html)
-    text = (meta.get("og:description") or "").strip()
-    if not text:
+    embed = _threads_embed(embed_html) if embed_html else {"text": "", "images": [], "videos": []}
+    # 임베드 본문은 길이 제한이 없고 링크의 원래 주소를 알 수 있다. 못 받았으면 미리보기 설명을 쓴다.
+    text = embed["text"] or (meta.get("og:description") or "").strip()
+    if not (text or embed["images"] or embed["videos"]):
         raise ExtractError("스레드 글을 읽지 못했습니다 (비공개이거나 삭제된 글)")
     handle = re.search(r"\(@([A-Za-z0-9._]+)\)", meta.get("og:title") or "")
+    preview = meta.get("og:image") or ""
+    images = embed["images"] or ([preview] if preview else [])
+    ex = Extracted(source_type="threads", url=_threads_canonical(url, meta), text=text,
+                   author=handle.group(1) if handle else "", thumbnail_url=images[0] if images else "",
+                   images=images, media_url=embed["videos"][0] if embed["videos"] else "")
+    if ex.media_url and transcribe:
+        try:
+            ex.transcript = transcribe(ex.media_url, "")
+        except Exception as e:
+            print(f"transcribe failed: {type(e).__name__}: {str(e)[:200]}")
+            ex.warnings.append("영상의 음성을 받아쓰지 못해 글과 이미지만으로 정리했습니다")
+    return ex
+
+
+def _threads_canonical(url: str, meta: dict) -> str:
     canonical = meta.get("og:url") or url
     if classify(canonical) != "threads":
         canonical = url
-    image = meta.get("og:image") or ""
-    return Extracted(source_type="threads", url=canonical.split("?")[0], text=text,
-                     author=handle.group(1) if handle else "", thumbnail_url=image,
-                     images=[image] if image else [])
+    return canonical.split("?")[0]
 
 
 def _gemini_watch(url: str) -> str:
@@ -144,8 +196,15 @@ def run(url: str) -> Extracted:
     if kind == "youtube":
         return _from_youtube(url)
     if kind == "threads":
-        resp = requests.get(url, headers={"User-Agent": PREVIEW_AGENT}, timeout=30)
+        agent = {"User-Agent": PREVIEW_AGENT}
+        resp = requests.get(url, headers=agent, timeout=30)
         resp.raise_for_status()
-        return _from_threads(url, resp.text)
+        embed_html = ""
+        try:
+            embed = requests.get(_threads_canonical(url, _meta(resp.text)) + "/embed", headers=agent, timeout=30)
+            embed_html = embed.text if embed.ok else ""
+        except requests.RequestException as e:
+            print(f"threads embed failed: {type(e).__name__}")
+        return _from_threads(url, resp.text, embed_html, transcribe=stt.from_media_url)
     item = _apify(IG_ACTOR, {"directUrls": [url], "resultsType": "posts", "resultsLimit": 1})
     return _from_instagram(url, kind, item, transcribe=stt.from_media_url)

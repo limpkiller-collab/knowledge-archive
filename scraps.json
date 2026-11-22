@@ -94,7 +94,8 @@
     "summary": "휴대폰에서만 쓰던 AI 서비스 피클을 PC 원격 제어, 웹 활용, 로컬 AI 코딩 에이전트 연결로 확장할 수 있는 깃허브 오픈소스 3가지를 소개한다.",
     "category": "테크",
     "cover": "covers/scrap-20261122-pickle-pc-open-source-tools.jpg",
-    "coverWord": "피클 연결"
+    "coverWord": "피클 연결",
+    "partial": true
   },
   {
     "id": "scrap-20261122-fall-outfit-color-combinations",

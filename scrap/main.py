@@ -97,9 +97,9 @@ def process(raw_url: str, note: str, category: str, root: Path, today: str, deps
     card = Card(id=card_id, title=out["title"], summary=out["summary"], key_points=out["key_points"],
                 category=out["category"], tags=out["tags"], cover_word=out["cover_word"],
                 source_type=ex.source_type, source=ex.author or SOURCE_NAMES[ex.source_type],
-                source_url=url, date=today)
+                source_url=url, date=today, links=[l for l in out.get("links") or [] if l["url"] != url])
     card.cover = deps.cover(card_id, ex.thumbnail_url, root)
-    if ex.source_type == "instagram_post" and len(ex.images) > 1:
+    if ex.source_type in ("instagram_post", "threads") and len(ex.images) > 1:
         # 여러 장 게시물은 전부 저장해 카드에서 넘겨 볼 수 있게 한다
         card.images = getattr(deps, "images", lambda *a: [])(card_id, ex.images, root)
         card.cover = card.cover or (card.images[0] if card.images else "")

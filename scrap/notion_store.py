@@ -40,6 +40,9 @@ def _children(card: Card | None, raw_text: str, warnings: list[str]) -> list:
               for rel in (card.images if card else [])]
     blocks += [{"type": "bulleted_list_item", "bulleted_list_item": {"rich_text": _text(p)}}
               for p in (card.key_points if card else [])]
+    blocks += [{"type": "bulleted_list_item", "bulleted_list_item": {"rich_text": [
+        {"type": "text", "text": {"content": l["label"][:200], "link": {"url": l["url"]}}}]}}
+        for l in (card.links if card else [])]
     blocks += [{"type": "callout", "callout": {"rich_text": _text(w)}} for w in warnings]
     if raw_text:
         blocks.append({"type": "toggle", "toggle": {
@@ -76,4 +79,16 @@ def delete(url: str) -> int:
     found = client.data_sources.query(data_source_id=source_id, filter={"property": "URL", "url": {"equals": url}})
     for page in found["results"]:
         client.pages.update(page_id=page["id"], in_trash=True)
+    return len(found["results"])
+
+
+def update_meta(url: str, title: str, category: str, tags: list[str]) -> int:
+    """같은 URL의 행에서 제목·카테고리·태그를 고친다. 고친 개수를 돌려준다."""
+    client = Client(auth=os.environ["NOTION_TOKEN"])
+    source_id = client.databases.retrieve(database_id=os.environ["NOTION_DATABASE_ID"])["data_sources"][0]["id"]
+    found = client.data_sources.query(data_source_id=source_id, filter={"property": "URL", "url": {"equals": url}})
+    props = {"제목": {"title": _text(title)}, "카테고리": {"select": {"name": category}},
+             "태그": {"multi_select": [{"name": t.replace(",", " ")[:100]} for t in tags]}}
+    for page in found["results"]:
+        client.pages.update(page_id=page["id"], properties=props)
     return len(found["results"])

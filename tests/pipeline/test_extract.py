@@ -89,3 +89,28 @@ def test_threads_reads_preview_meta():
 def test_threads_without_text_raises():
     with pytest.raises(ExtractError):
         extract._from_threads("https://www.threads.com/share/x", "<html><head></head></html>")
+
+
+EMBED_HTML = """<div class="x"><span class="BodyTextContainer"><span>첫 줄
+</span><a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fgithub.com%2Fa%2Fb&amp;h=AUD" target="_blank">github.com/a…</a><span>
+둘째 </span><a href="https://www.threads.com/search?q=tag">#태그</a></span>
+<div class="MediaContainer"><div class="MediaScrollImageContainer"><img class="img" src="https://cdn/1.jpg?a=1&amp;b=2" height="300" /></div>
+<div class="MediaScrollImageContainer"><video controls="1"><source src="https://cdn/v.mp4" /></video></div>
+<div class="MediaScrollImageContainer"><img class="img" src="https://cdn/2.jpg" /></div></div>
+<div class="PostDateContainer"><img src="https://cdn/after.jpg" /></div></div>"""
+
+
+def test_threads_embed_gives_full_text_links_and_all_media():
+    calls = []
+    ex = extract._from_threads("https://www.threads.com/share/x", THREADS_HTML, EMBED_HTML,
+                               transcribe=lambda v, a: calls.append(v) or "받아쓴 말")
+    assert ex.text == "첫 줄\nhttps://github.com/a/b\n둘째 #태그"
+    assert ex.images == ["https://cdn/1.jpg?a=1&b=2", "https://cdn/2.jpg"] and ex.thumbnail_url == ex.images[0]
+    assert ex.media_url == "https://cdn/v.mp4" and calls == ["https://cdn/v.mp4"] and ex.transcript == "받아쓴 말"
+
+
+def test_threads_video_transcription_failure_becomes_warning():
+    def boom(v, a):
+        raise ValueError("too large")
+    ex = extract._from_threads("https://www.threads.com/share/x", THREADS_HTML, EMBED_HTML, transcribe=boom)
+    assert ex.transcript == "" and len(ex.warnings) == 1

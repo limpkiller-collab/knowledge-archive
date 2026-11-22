@@ -12,7 +12,7 @@ def ex(**kw):
 
 
 def test_returns_validated_result():
-    assert summarize.run(ex(), "", "", CATS, call_model=lambda p: dict(GOOD)) == GOOD
+    assert summarize.run(ex(), "", "", CATS, call_model=lambda p: dict(GOOD)) == {**GOOD, "links": []}
 
 
 def test_chosen_category_overrides_model():
@@ -51,3 +51,13 @@ def test_long_transcript_is_truncated_with_warning():
     summarize.run(e, "", "", CATS, call_model=fake)
     assert len(seen["p"]["text"]) < 125000
     assert any("잘라" in w for w in e.warnings)
+
+
+def test_links_keep_only_urls_found_in_text():
+    text = "첫째 https://github.com/a/b. 둘째 (https://example.com/x?y=1) 다시 https://github.com/a/b"
+    suggested = [{"label": "프로젝트 A", "url": "https://github.com/a/b"}, {"label": "지어낸 것", "url": "https://evil.example/z"}]
+    assert summarize.pick_links(text, suggested) == [
+        {"label": "프로젝트 A", "url": "https://github.com/a/b"},
+        {"label": "example.com", "url": "https://example.com/x?y=1"},
+    ]
+    assert summarize.pick_links("링크 없음", suggested) == []

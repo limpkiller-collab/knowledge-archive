@@ -75,3 +75,33 @@ def test_remove_clears_gallery_folder_and_added_images(tmp_path):
     assert html_store.remove("scrap-20261122-coat", root)["id"] == "scrap-20261122-coat"
     assert not folder.exists()
     assert json.loads((root / "card-images.json").read_text(encoding="utf-8")) == {"other": ["a.jpg"]}
+
+
+def test_render_shows_tags_and_links(tmp_path):
+    root = setup_repo(tmp_path)
+    html_store.save(make_card(links=[{"label": "A <b>", "url": "https://github.com/a/b?x=1&y=2"}]), root)
+    html = (root / "cards/scrap-20261122-coat.html").read_text(encoding="utf-8")
+    assert '<p class="tags">#코트</p>' in html and "../js/card-menu.js" in html
+    assert '<a href="https://github.com/a/b?x=1&amp;y=2" rel="noopener noreferrer" target="_blank">A &lt;b&gt;</a>' in html
+
+
+def test_update_changes_index_and_card_file(tmp_path):
+    root = setup_repo(tmp_path)
+    html_store.save(make_card(), root)
+    entry = html_store.update("scrap-20261122-coat", root, "새 <제목> \\1", "새분류", ["a", "b&c"])
+    assert entry["title"] == "새 &lt;제목&gt; \\1" and entry["category"] == "새분류" and entry["tags"] == ["a", "b&amp;c"]
+    html = (root / "cards/scrap-20261122-coat.html").read_text(encoding="utf-8")
+    assert "<title>새 &lt;제목&gt; \\1</title>" in html and "<h1>새 &lt;제목&gt; \\1</h1>" in html
+    assert '<div class="kicker">새분류 · 인스타그램 · 2026-11-22</div>' in html
+    assert '<p class="tags">#a #b&amp;c</p>' in html and "<li>첫째</li>" in html
+    assert any(c["name"] == "새분류" for c in json.loads((root / "categories.json").read_text(encoding="utf-8")))
+    assert html_store.update("scrap-none", root, "t", "c", []) is None
+
+
+def test_update_adds_tags_line_to_older_cards(tmp_path):
+    root = setup_repo(tmp_path)
+    html_store.save(make_card(), root)
+    file = root / "cards/scrap-20261122-coat.html"
+    file.write_text(file.read_text(encoding="utf-8").replace('<p class="tags">#코트</p>\n', ""), encoding="utf-8")
+    html_store.update("scrap-20261122-coat", root, "제목", "패션", ["x"])
+    assert '</p>\n<p class="tags">#x</p>' in file.read_text(encoding="utf-8")

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import shutil
 from html import escape
 from pathlib import Path
@@ -42,9 +43,23 @@ def write_menu(root: Path) -> None:
     (root / "shortcut-menu.txt").write_text("\n".join(lines), encoding="utf-8")
 
 
+def _tags_html(tags) -> str:
+    return " ".join(f"#{escape(t)}" for t in tags)
+
+
+def _links_html(links) -> str:
+    if not links:
+        return ""
+    items = "\n".join(
+        f'<li><a href="{escape(l["url"])}" rel="noopener noreferrer" target="_blank">{escape(l["label"])}</a>'
+        f'<span>{escape(l["url"])}</span></li>' for l in links)
+    return f'<h2 class="links-title">본문에 나온 링크</h2>\n<ul class="links">\n{items}\n</ul>'
+
+
 def render(card: Card, note: str = "") -> str:
     cover = f'<img class="cover" src="../{escape(card.cover)}" alt="">' if card.cover else ""
     return TEMPLATE.substitute(
+        tags_html=_tags_html(card.tags), links_html=_links_html(card.links),
         title=escape(card.title), summary=escape(card.summary), category=escape(card.category),
         type_label=TYPE_LABELS.get(card.source_type, "기사"), date=card.date,
         cover_html=cover, points_html="\n".join(f"<li>{escape(p)}</li>" for p in card.key_points),
@@ -89,4 +104,30 @@ def remove(card_id: str, root: Path):
         added = _read(manifest)
         if added.pop(card_id, None) is not None:
             _write(manifest, added)
+    return entry
+
+
+def update(card_id: str, root: Path, title: str, category: str, tags: list[str]):
+    """카드의 제목·분류·태그를 고친다. 목록과 카드 파일을 함께 바꾸고 고친 항목을 돌려준다. 없으면 None."""
+    path = root / "scraps.json"
+    entries = _read(path)
+    entry = next((e for e in entries if e.get("id") == card_id), None)
+    if entry is None:
+        return None
+    entry.update({"title": escape(title), "category": escape(category), "tags": [escape(t) for t in tags]})
+    _write(path, entries)
+    ensure_category(category, root)
+    file = root / entry["file"]
+    if file.is_file():
+        html = file.read_text(encoding="utf-8")
+        html = re.sub(r"<title>.*?</title>", lambda m: f"<title>{escape(title)}</title>", html, count=1, flags=re.S)
+        html = re.sub(r"<h1>.*?</h1>", lambda m: f"<h1>{escape(title)}</h1>", html, count=1, flags=re.S)
+        html = re.sub(r'(<div class="kicker">)[^<]*?( · [^<]*</div>)',
+                      lambda m: m.group(1) + escape(category) + m.group(2), html, count=1)
+        tags_p = f'<p class="tags">{_tags_html(tags)}</p>'
+        if '<p class="tags">' in html:
+            html = re.sub(r'<p class="tags">.*?</p>', lambda m: tags_p, html, count=1, flags=re.S)
+        else:
+            html = re.sub(r'(<p class="summary">.*?</p>)', lambda m: m.group(1) + "\n" + tags_p, html, count=1, flags=re.S)
+        file.write_text(html, encoding="utf-8")
     return entry
