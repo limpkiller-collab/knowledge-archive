@@ -2529,8 +2529,41 @@
         .then(function (r) { return r.ok ? r.json() : fallback; })
         .catch(function () { return fallback; });
     }
+    // ============ 돌아왔을 때 보던 화면 그대로 ============
+    // 카드를 열 때 필터와 스크롤 위치를 적어 두었다가, 카드에서 돌아오면 그대로 되돌린다.
+    var RETURN_KEY = 'ka-return';
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest ? e.target.closest('a[href^="cards/"]') : null;
+      if (!a) return;
+      try {
+        sessionStorage.setItem(RETURN_KEY, JSON.stringify({ y: window.scrollY, category: activeCategory, type: activeType,
+          tag: activeTag, series: activeSeries, read: activeReadFilter, query: searchQuery }));
+      } catch (err) {}
+    });
+    var returnState = null;
+    try {
+      returnState = JSON.parse(sessionStorage.getItem(RETURN_KEY) || 'null');
+      sessionStorage.removeItem(RETURN_KEY);
+    } catch (e) {}
+    if (new URLSearchParams(location.search).get('series')) returnState = null;  // 시리즈 링크로 들어온 경우
+    if (returnState) {
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      activeCategory = returnState.category || 'all';
+      activeType = returnState.type || 'all';
+      activeTag = returnState.tag || 'all';
+      activeSeries = returnState.series || 'all';
+      searchQuery = returnState.query || '';
+      byId('searchInput').value = searchQuery;
+      if (['all', 'unread', 'read'].indexOf(returnState.read) !== -1) filterRead(returnState.read);
+    }
+    // 뒤로 가기로 화면이 통째로 되살아난 경우에는 이미 보던 그대로이므로 적어 둔 것만 지운다.
+    window.addEventListener('pageshow', function (e) {
+      if (e.persisted) { try { sessionStorage.removeItem(RETURN_KEY); } catch (err) {} }
+    });
+
     loadReadStatus();
     renderAll();
+    if (returnState) window.scrollTo(0, returnState.y || 0);
     Promise.all([loadJson('categories.json', []), loadJson('scraps.json', []), loadJson('card-images.json', {})]).then(function (res) {
       CATEGORIES = Array.isArray(res[0]) ? res[0] : [];
       ADDED_IMAGES = (res[2] && typeof res[2] === 'object' && !Array.isArray(res[2])) ? res[2] : {};
@@ -2539,6 +2572,7 @@
       var wanted = new URLSearchParams(location.search).get('series');
       if (wanted && ALL_CARDS.some(function (k) { return k.series === wanted; })) activeSeries = wanted;
       renderAll();
+      if (returnState) window.scrollTo(0, returnState.y || 0);
     });
   </script>
 </body>
