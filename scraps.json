@@ -1,5 +1,25 @@
 [
   {
+    "id": "scrap-20261124-macbook-useful-shortcuts",
+    "title": "맥북 필수 단축키 모음",
+    "file": "cards/scrap-20261124-macbook-useful-shortcuts.html",
+    "date": "2026-11-24",
+    "source": "보낸 사진",
+    "sourceUrl": "https://github.com/limpkiller-collab/knowledge-archive-inbox/tree/main/inbox/20261124-022145",
+    "sourceType": "photo",
+    "tags": [
+      "맥북",
+      "단축키",
+      "macOS",
+      "생산성",
+      "스크린샷"
+    ],
+    "summary": "시스템·스크린샷·파인더·텍스트 편집·브라우저·창 제어 등 6개 분야와 기타 유용한 기능으로 나눠 맥북 단축키를 정리한 인포그래픽이다.",
+    "category": "테크",
+    "cover": "covers/scrap-20261124-macbook-useful-shortcuts.jpg",
+    "coverWord": "맥북 단축키"
+  },
+  {
     "id": "scrap-20261124-claude-capcut-video-editing",
     "title": "클로드로 캡컷 영상 편집하는 3단계 방법과 프롬프트",
     "file": "cards/scrap-20261124-claude-capcut-video-editing.html",
