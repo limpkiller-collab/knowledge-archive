@@ -1,5 +1,25 @@
 [
   {
+    "id": "scrap-20261123-app-screen-transition-types",
+    "title": "앱 화면 전환 방식 9가지: 푸시, 모달, 탭 전환, 카드 확장 등",
+    "file": "cards/scrap-20261123-app-screen-transition-types.html",
+    "date": "2026-11-23",
+    "source": "uxwoodytips",
+    "sourceUrl": "https://www.instagram.com/reel/DfcPS3CptfI/",
+    "sourceType": "instagram_reel",
+    "tags": [
+      "UI",
+      "UX",
+      "화면전환",
+      "프로덕트디자인",
+      "디자인용어"
+    ],
+    "summary": "앱에서 화면이 넘어가는 방식은 푸시, 모달 등장, 탭 전환, 카드 확장 등으로 서로 다르며 각각 고유한 이름이 있다.",
+    "category": "테크",
+    "cover": "covers/scrap-20261123-app-screen-transition-types.jpg",
+    "coverWord": "화면 전환"
+  },
+  {
     "id": "scrap-20261123-progress-indicator-ui-types",
     "title": "진행 상황을 보여주는 UI 9가지와 그 이름",
     "file": "cards/scrap-20261123-progress-indicator-ui-types.html",
