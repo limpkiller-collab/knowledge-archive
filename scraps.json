@@ -37,7 +37,8 @@
     "summary": "비슷해 보이지만 이름이 다른 UI 요소 9쌍(알럿·컨펌, 드롭다운·피커 등)을 구분해 정리하고, AI에게 디자인을 요청할 때 이 이름을 쓰라고 권한다.",
     "category": "테크",
     "cover": "covers/scrap-20261123-confusing-ui-component-pairs.jpg",
-    "coverWord": "UI 용어"
+    "coverWord": "UI 용어",
+    "series": "UI디자인"
   },
   {
     "id": "scrap-20261123-nine-loading-ui-patterns",
