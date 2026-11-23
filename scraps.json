@@ -1,5 +1,24 @@
 [
   {
+    "id": "scrap-20261124-deeper-work-prompt-template",
+    "title": "작업을 더 깊이 있게 만드는 프롬프트 템플릿",
+    "file": "cards/scrap-20261124-deeper-work-prompt-template.html",
+    "date": "2026-11-24",
+    "source": "보낸 사진",
+    "sourceUrl": "https://github.com/limpkiller-collab/knowledge-archive-inbox/tree/main/inbox/20261124-021854",
+    "sourceType": "photo",
+    "tags": [
+      "프롬프트",
+      "AI 활용",
+      "프롬프트 엔지니어링",
+      "검증"
+    ],
+    "summary": "작업을 양이 아닌 깊이 측면에서 개선하도록, 전문가의 관점·원천 자료·방법과 도구·검증 수단을 먼저 묻고 이를 반영해 프롬프트를 다시 쓰게 하는 프롬프트다.",
+    "category": "테크",
+    "cover": "covers/scrap-20261124-deeper-work-prompt-template.jpg",
+    "coverWord": "깊이 프롬프트"
+  },
+  {
     "id": "scrap-20261123-commute-economy-study-routine",
     "title": "KB 리서치 모닝코멘트로 하는 출근길 5분 경제 공부법",
     "file": "cards/scrap-20261123-commute-economy-study-routine.html",
