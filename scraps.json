@@ -1,5 +1,39 @@
 [
   {
+    "id": "scrap-20261123-github-weekly-top10-univer",
+    "title": "깃허브 주간 TOP10 (11/22 기준): 4년 된 유니버가 1위",
+    "file": "cards/scrap-20261123-github-weekly-top10-univer.html",
+    "date": "2026-11-23",
+    "source": "aiscene.kr",
+    "sourceUrl": "https://www.instagram.com/p/DgFOZpnkcGO/",
+    "sourceType": "instagram_post",
+    "tags": [
+      "깃허브",
+      "오픈소스",
+      "GitHub트렌딩",
+      "AI도구",
+      "개발자"
+    ],
+    "summary": "11월 22일 기준 깃허브 주간 트렌딩을 이번 주 받은 별 순으로 정리한 결과, 2022년에 생긴 표·문서 편집기 SDK 유니버가 별 7,539개로 1위에 올랐고 지난주 TOP10 중 9개가 밀려났다.",
+    "category": "테크",
+    "cover": "covers/scrap-20261123-github-weekly-top10-univer.jpg",
+    "coverWord": "깃허브 TOP10",
+    "images": [
+      "covers/scrap-20261123-github-weekly-top10-univer/01.jpg",
+      "covers/scrap-20261123-github-weekly-top10-univer/02.jpg",
+      "covers/scrap-20261123-github-weekly-top10-univer/03.jpg",
+      "covers/scrap-20261123-github-weekly-top10-univer/04.jpg",
+      "covers/scrap-20261123-github-weekly-top10-univer/05.jpg",
+      "covers/scrap-20261123-github-weekly-top10-univer/06.jpg",
+      "covers/scrap-20261123-github-weekly-top10-univer/07.jpg",
+      "covers/scrap-20261123-github-weekly-top10-univer/08.jpg",
+      "covers/scrap-20261123-github-weekly-top10-univer/09.jpg",
+      "covers/scrap-20261123-github-weekly-top10-univer/10.jpg",
+      "covers/scrap-20261123-github-weekly-top10-univer/11.jpg",
+      "covers/scrap-20261123-github-weekly-top10-univer/12.jpg"
+    ]
+  },
+  {
     "id": "scrap-20261123-nine-graph-types-for-papers",
     "title": "논문에 자주 쓰는 그래프 9가지와 용도",
     "file": "cards/scrap-20261123-nine-graph-types-for-papers.html",
