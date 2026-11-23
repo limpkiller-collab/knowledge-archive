@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>로딩 화면 패턴 9가지와 그 이름</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #ffffff; --text: #111111; --sec: #555555; --rule: #111111; --border: #dddddd; --accent: #b3261e; }
+html.theme-dark { --bg: #111111; --text: #f5f5f5; --sec: #b8b8b8; --rule: #f5f5f5; --border: #3a3a3a; --accent: #ff8a80; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; letter-spacing: -0.02em; }
+main { position: relative; max-width: 720px; margin: 0 auto; padding: 32px 24px 64px; }
+a { color: var(--text); } a:hover { color: var(--accent); }
+.back { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 700; }
+.kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--accent); border-top: 4px solid var(--rule); padding-top: 14px; }
+h1 { font-size: 36px; font-weight: 900; line-height: 1.25; letter-spacing: -0.04em; margin: 12px 0 16px; }
+.summary { font-size: 17px; line-height: 1.75; color: var(--sec); margin: 0 0 24px; }
+.cover { width: 100%; display: block; margin-bottom: 24px; }
+ol { list-style: none; margin: 0 0 24px; padding: 0; border-top: 1px solid var(--rule); counter-reset: p; }
+ol li { counter-increment: p; display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 16px; line-height: 1.65; }
+ol li::before { content: counter(p, decimal-leading-zero); font-weight: 900; color: var(--accent); }
+.tags { font-size: 14px; font-weight: 700; color: var(--accent); margin: -12px 0 24px; line-height: 1.7; }
+.tags:empty { display: none; }
+.links-title { font-size: 14px; font-weight: 900; margin: 0 0 4px; }
+.links { list-style: none; margin: 0 0 24px; padding: 0; border-top: 1px solid var(--rule); }
+.links li { padding: 12px 0; border-bottom: 1px solid var(--border); }
+.links a { display: block; font-size: 16px; font-weight: 700; line-height: 1.5; }
+.links span { display: block; font-size: 13px; color: var(--sec); overflow-wrap: anywhere; line-height: 1.5; }
+.note { font-size: 13px; color: var(--sec); line-height: 1.6; }
+.source { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
+</style>
+<script>if (localStorage.getItem('viz-theme') === 'dark') document.documentElement.classList.add('theme-dark');</script>
+</head>
+<body>
+<main>
+<a class="back" href="../index.html">지식 Archive로 돌아가기</a>
+<div class="kicker">테크 · 릴스 · 2026-11-23</div>
+<h1>로딩 화면 패턴 9가지와 그 이름</h1>
+<p class="summary">디자인 리뷰나 AI에게 화면을 요청할 때 로딩 패턴의 정확한 이름을 말하면 결과물이 달라지므로, 스피너부터 로딩 버튼까지 9가지 로딩 패턴 이름을 정리했다.</p>
+<p class="tags">#UX디자인 #로딩패턴 #UI컴포넌트 #스켈레톤스크린 #낙관적UI</p>
+<div id="ka-gallery"><img class="cover" src="../covers/scrap-20261123-nine-loading-ui-patterns.jpg" alt=""></div>
+<ol>
+<li>디자인 리뷰에서 그냥 로딩을 넣어 달라고 하면 개발자는 대부분 스피너를 넣는다.</li>
+<li>로딩 패턴의 이름을 구체적으로 말하면 만들어지는 화면이 달라지며, AI에게 화면을 요청할 때도 마찬가지다.</li>
+<li>로딩 패턴 9가지는 스피너, 스켈레톤, 진행 바, 진행 링, 단계 표시, 블러 업, 낙관적 UI, 스트리밍 텍스트, 로딩 버튼이다.</li>
+<li>진행 바와 진행 링은 0%에서 100%까지 진행률을 수치로 보여 주는 패턴이다.</li>
+<li>낙관적 UI는 좋아요 수가 127에서 128로 바로 반영되는 것처럼 결과를 먼저 보여 주는 패턴이다.</li>
+<li>로딩 버튼은 &#x27;저장하기&#x27;에서 &#x27;저장했어요&#x27;로 버튼 자체가 상태를 보여 주는 패턴이다.</li>
+<li>작성자는 각 패턴을 언제 쓰는지 고정 댓글에 한 줄씩 정리해 두겠다고 밝혔다.</li>
+</ol>
+
+<p class="note"></p>
+<a class="source" href="https://www.instagram.com/reel/De8qZcQpMfX/" rel="noopener noreferrer" target="_blank">원문 보기 (uxwoodytips)</a>
+</main>
+<script src="../js/archive-core.js"></script>
+<script src="../js/gallery.js"></script>
+<script src="../js/card-menu.js"></script>
+</body>
+</html>
