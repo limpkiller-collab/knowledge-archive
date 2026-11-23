@@ -38,7 +38,8 @@
     "summary": "토글·체크박스, 팝업·모달처럼 자주 쓰지만 이름을 몰랐던 UI 요소 100개를 모아, AI에게 화면을 요청할 때 정확한 이름으로 말하도록 돕는 자료다.",
     "category": "테크",
     "cover": "covers/scrap-20261122-ui-names-100-for-ai.jpg",
-    "coverWord": "UI 이름"
+    "coverWord": "UI 이름",
+    "series": "UI디자인"
   },
   {
     "id": "scrap-20261122-pickle-pc-open-source-tools",
