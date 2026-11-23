@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>헷갈리는 UI 요소 짝 9가지와 정확한 이름</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #ffffff; --text: #111111; --sec: #555555; --rule: #111111; --border: #dddddd; --accent: #b3261e; }
+html.theme-dark { --bg: #111111; --text: #f5f5f5; --sec: #b8b8b8; --rule: #f5f5f5; --border: #3a3a3a; --accent: #ff8a80; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; letter-spacing: -0.02em; }
+main { position: relative; max-width: 720px; margin: 0 auto; padding: 32px 24px 64px; }
+a { color: var(--text); } a:hover { color: var(--accent); }
+.back { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 700; }
+.kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--accent); border-top: 4px solid var(--rule); padding-top: 14px; }
+h1 { font-size: 36px; font-weight: 900; line-height: 1.25; letter-spacing: -0.04em; margin: 12px 0 16px; }
+.summary { font-size: 17px; line-height: 1.75; color: var(--sec); margin: 0 0 24px; }
+.cover { width: 100%; display: block; margin-bottom: 24px; }
+ol { list-style: none; margin: 0 0 24px; padding: 0; border-top: 1px solid var(--rule); counter-reset: p; }
+ol li { counter-increment: p; display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 16px; line-height: 1.65; }
+ol li::before { content: counter(p, decimal-leading-zero); font-weight: 900; color: var(--accent); }
+.tags { font-size: 14px; font-weight: 700; color: var(--accent); margin: -12px 0 24px; line-height: 1.7; }
+.tags:empty { display: none; }
+.links-title { font-size: 14px; font-weight: 900; margin: 0 0 4px; }
+.links { list-style: none; margin: 0 0 24px; padding: 0; border-top: 1px solid var(--rule); }
+.links li { padding: 12px 0; border-bottom: 1px solid var(--border); }
+.links a { display: block; font-size: 16px; font-weight: 700; line-height: 1.5; }
+.links span { display: block; font-size: 13px; color: var(--sec); overflow-wrap: anywhere; line-height: 1.5; }
+.note { font-size: 13px; color: var(--sec); line-height: 1.6; }
+.source { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
+</style>
+<script>if (localStorage.getItem('viz-theme') === 'dark') document.documentElement.classList.add('theme-dark');</script>
+</head>
+<body>
+<main>
+<a class="back" href="../index.html">지식 Archive로 돌아가기</a>
+<div class="kicker">테크 · 릴스 · 2026-11-23</div>
+<h1>헷갈리는 UI 요소 짝 9가지와 정확한 이름</h1>
+<p class="summary">비슷해 보이지만 이름이 다른 UI 요소 9쌍(알럿·컨펌, 드롭다운·피커 등)을 구분해 정리하고, AI에게 디자인을 요청할 때 이 이름을 쓰라고 권한다.</p>
+<p class="tags">#UI디자인 #UI용어 #AI디자인 #바이브코딩 #앱디자인</p>
+<div id="ka-gallery"><img class="cover" src="../covers/scrap-20261123-confusing-ui-component-pairs.jpg" alt=""></div>
+<ol>
+<li>확인 버튼만 있는 창은 알럿(Alert), 취소 버튼까지 있으면 컨펌(Confirm)이다.</li>
+<li>눌러서 목록이 아래로 펼쳐지면 드롭다운(Dropdown), 아래에서 올라와 돌려서 고르면 피커(Picker)다.</li>
+<li>입력 칸에 흐리게 쓰여 있다가 입력하면 사라지는 글씨는 플레이스홀더(Placeholder), 입력해도 위에 남는 이름은 라벨(Label)이다.</li>
+<li>화면 위에 동그랗게 떠 있는 버튼은 플로팅 버튼, 맨 아래에 붙어 있는 버튼은 하단 고정 버튼이다.</li>
+<li>한 장씩 넘기는 배너는 캐러셀, 옆으로 밀어 보는 목록은 가로 스크롤이며, 맨 위 제목 영역은 상단 바, 맨 아래 메뉴 묶음은 탭 바다.</li>
+<li>쪽 번호로 넘기면 페이징, 끝없이 이어지면 무한 스크롤이고, 진척을 막대로 보여 주면 진행 바, 단계를 점으로 보여 주면 단계 표시다.</li>
+<li>접었다 펴는 목록은 아코디언, 눌러서 이어 보는 방식은 더보기이며, AI에게는 &#x27;버튼 예쁘게&#x27; 대신 이런 이름으로 요청하라고 권한다.</li>
+</ol>
+
+<p class="note"></p>
+<a class="source" href="https://www.instagram.com/reel/Df171NSATRr/" rel="noopener noreferrer" target="_blank">원문 보기 (uxwoodytips)</a>
+</main>
+<script src="../js/archive-core.js"></script>
+<script src="../js/gallery.js"></script>
+<script src="../js/card-menu.js"></script>
+</body>
+</html>
