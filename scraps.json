@@ -17,7 +17,8 @@
     "summary": "날짜 입력 UI는 달력 외에도 휠 피커, 빠른 선택 칩, 체크인 체크아웃 등 여러 종류가 있으니 AI에게는 정확한 UI 이름으로 요청하는 것이 좋다는 팁이다.",
     "category": "테크",
     "cover": "covers/scrap-20261123-date-picker-ui-types.jpg",
-    "coverWord": "날짜 UI"
+    "coverWord": "날짜 UI",
+    "series": "UI디자인"
   },
   {
     "id": "scrap-20261122-ui-names-100-for-ai",
