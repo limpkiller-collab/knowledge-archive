@@ -1,5 +1,25 @@
 [
   {
+    "id": "scrap-20261123-nvidia-reinstates-jensen-huang-ceo",
+    "title": "엔비디아 이사회, 젠슨 황 사장·CEO 및 이사 복귀 결정 속보",
+    "file": "cards/scrap-20261123-nvidia-reinstates-jensen-huang-ceo.html",
+    "date": "2026-11-23",
+    "source": "보낸 사진",
+    "sourceUrl": "https://github.com/limpkiller-collab/knowledge-archive-inbox/tree/main/inbox/20261124-012803",
+    "sourceType": "photo",
+    "tags": [
+      "엔비디아",
+      "젠슨 황",
+      "CEO 복귀",
+      "이사회",
+      "기업 지배구조"
+    ],
+    "summary": "Newsquawk 속보 헤드라인에 따르면 엔비디아 이사회는 젠슨 황과의 논의 끝에 만장일치로 그를 사장·CEO 및 이사회 이사로 복귀시키기로 했다.",
+    "category": "기술·산업",
+    "cover": "covers/scrap-20261123-nvidia-reinstates-jensen-huang-ceo.jpg",
+    "coverWord": "젠슨 황 복귀"
+  },
+  {
     "id": "scrap-20261123-commute-economy-study-routine",
     "title": "KB 리서치 모닝코멘트로 하는 출근길 5분 경제 공부법",
     "file": "cards/scrap-20261123-commute-economy-study-routine.html",
