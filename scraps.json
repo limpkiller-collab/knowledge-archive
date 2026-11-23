@@ -1,5 +1,25 @@
 [
   {
+    "id": "scrap-20261123-nine-graph-types-for-papers",
+    "title": "논문에 자주 쓰는 그래프 9가지와 용도",
+    "file": "cards/scrap-20261123-nine-graph-types-for-papers.html",
+    "date": "2026-11-23",
+    "source": "skariai",
+    "sourceUrl": "https://www.instagram.com/reel/DgEYyB_Bs9z/",
+    "sourceType": "instagram_reel",
+    "tags": [
+      "데이터시각화",
+      "그래프",
+      "논문",
+      "통계",
+      "연구방법"
+    ],
+    "summary": "같은 데이터라도 그래프 선택에 따라 결과가 달리 보이므로, 논문에 자주 쓰이는 그래프 9가지를 각각 언제 쓰는지 정리한 콘텐츠다.",
+    "category": "테크",
+    "cover": "covers/scrap-20261123-nine-graph-types-for-papers.jpg",
+    "coverWord": "그래프 9가지"
+  },
+  {
     "id": "scrap-20261123-confusing-ui-component-pairs",
     "title": "헷갈리는 UI 요소 짝 9가지와 정확한 이름",
     "file": "cards/scrap-20261123-confusing-ui-component-pairs.html",
