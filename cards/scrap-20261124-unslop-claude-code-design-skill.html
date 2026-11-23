@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>언슬롭(unslop): AI 티 나는 화면을 고쳐 주는 클로드 코드 디자인 스킬</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #ffffff; --text: #111111; --sec: #555555; --rule: #111111; --border: #dddddd; --accent: #b3261e; }
+html.theme-dark { --bg: #111111; --text: #f5f5f5; --sec: #b8b8b8; --rule: #f5f5f5; --border: #3a3a3a; --accent: #ff8a80; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; letter-spacing: -0.02em; }
+main { position: relative; max-width: 720px; margin: 0 auto; padding: 32px 24px 64px; }
+a { color: var(--text); } a:hover { color: var(--accent); }
+.back { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 700; }
+.kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--accent); border-top: 4px solid var(--rule); padding-top: 14px; }
+h1 { font-size: 36px; font-weight: 900; line-height: 1.25; letter-spacing: -0.04em; margin: 12px 0 16px; }
+.summary { font-size: 17px; line-height: 1.75; color: var(--sec); margin: 0 0 24px; }
+.cover { width: 100%; display: block; margin-bottom: 24px; }
+ol { list-style: none; margin: 0 0 24px; padding: 0; border-top: 1px solid var(--rule); counter-reset: p; }
+ol li { counter-increment: p; display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 16px; line-height: 1.65; }
+ol li::before { content: counter(p, decimal-leading-zero); font-weight: 900; color: var(--accent); }
+.tags { font-size: 14px; font-weight: 700; color: var(--accent); margin: -12px 0 24px; line-height: 1.7; }
+.tags:empty { display: none; }
+.links-title { font-size: 14px; font-weight: 900; margin: 0 0 4px; }
+.links { list-style: none; margin: 0 0 24px; padding: 0; border-top: 1px solid var(--rule); }
+.links li { padding: 12px 0; border-bottom: 1px solid var(--border); }
+.links a { display: block; font-size: 16px; font-weight: 700; line-height: 1.5; }
+.links span { display: block; font-size: 13px; color: var(--sec); overflow-wrap: anywhere; line-height: 1.5; }
+.note { font-size: 13px; color: var(--sec); line-height: 1.6; }
+.source { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
+</style>
+<script>if (localStorage.getItem('viz-theme') === 'dark') document.documentElement.classList.add('theme-dark');</script>
+</head>
+<body>
+<main>
+<a class="back" href="../index.html">지식 Archive로 돌아가기</a>
+<div class="kicker">테크 · 사진 · 2026-11-24</div>
+<h1>언슬롭(unslop): AI 티 나는 화면을 고쳐 주는 클로드 코드 디자인 스킬</h1>
+<p class="summary">언슬롭은 클로드 코드에 넣어 쓰는 무료 디자인 스킬로, 보라 그라데이션 같은 AI 티를 체크리스트로 찾아낸 뒤 9단계에 걸쳐 화면을 고쳐 준다.</p>
+<p class="tags">#클로드코드 #AI디자인 #unslop #UI개선 #디자인스킬</p>
+<div id="ka-gallery"><img class="cover" src="../covers/scrap-20261124-unslop-claude-code-design-skill.jpg" alt=""></div>
+<ol>
+<li>언슬롭(unslop)은 클로드 코드에 넣어 쓰는 디자인 스킬로, 스킬은 무료지만 클로드 코드는 따로 있어야 한다.</li>
+<li>고치기 전에 보라 그라데이션, 번진 빛, 이모지 아이콘, &quot;!!&quot; 같은 AI 티를 약 60개 항목의 체크리스트로 먼저 찾는다.</li>
+<li>간격, 색, 아이콘, 문구, 글씨, 배치, 디테일, 그림, 움직임의 9단계로 나눠 화면을 고친다.</li>
+<li>대시보드와 랜딩 페이지 모두에 적용할 수 있다.</li>
+<li>원하면 고쳐지는 과정을 10초 미만의 정사각형 영상으로 만들어 주며, 이를 위해 Playwright와 ffmpeg가 필요하다.</li>
+<li>제작자는 Damir Sokolovsky이며 CC BY 4.0 라이선스로 공개되어 있다.</li>
+</ol>
+
+<p class="note"></p>
+<a class="source" href="https://github.com/limpkiller-collab/knowledge-archive-inbox/tree/main/inbox/20261124-022022" rel="noopener noreferrer" target="_blank">원문 보기 (보낸 사진)</a>
+</main>
+<script src="../js/archive-core.js"></script>
+<script src="../js/gallery.js"></script>
+<script src="../js/card-menu.js"></script>
+</body>
+</html>

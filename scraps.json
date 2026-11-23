@@ -1,5 +1,25 @@
 [
   {
+    "id": "scrap-20261124-unslop-claude-code-design-skill",
+    "title": "언슬롭(unslop): AI 티 나는 화면을 고쳐 주는 클로드 코드 디자인 스킬",
+    "file": "cards/scrap-20261124-unslop-claude-code-design-skill.html",
+    "date": "2026-11-24",
+    "source": "보낸 사진",
+    "sourceUrl": "https://github.com/limpkiller-collab/knowledge-archive-inbox/tree/main/inbox/20261124-022022",
+    "sourceType": "photo",
+    "tags": [
+      "클로드코드",
+      "AI디자인",
+      "unslop",
+      "UI개선",
+      "디자인스킬"
+    ],
+    "summary": "언슬롭은 클로드 코드에 넣어 쓰는 무료 디자인 스킬로, 보라 그라데이션 같은 AI 티를 체크리스트로 찾아낸 뒤 9단계에 걸쳐 화면을 고쳐 준다.",
+    "category": "테크",
+    "cover": "covers/scrap-20261124-unslop-claude-code-design-skill.jpg",
+    "coverWord": "unslop"
+  },
+  {
     "id": "scrap-20261124-deeper-work-prompt-template",
     "title": "작업을 더 깊이 있게 만드는 프롬프트 템플릿",
     "file": "cards/scrap-20261124-deeper-work-prompt-template.html",
