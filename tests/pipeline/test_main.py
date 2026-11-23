@@ -160,3 +160,15 @@ def test_share_link_is_saved_under_real_address(root):
     assert entry["sourceUrl"] == "https://www.threads.com/@a/post/B" and entry["sourceType"] == "threads"
     assert run(root, f, url="https://www.threads.com/share/other") == "중복"
     assert f.published == 1
+
+
+def test_today_is_korean_date(monkeypatch):
+    import datetime
+
+    class Clock(datetime.datetime):
+        @classmethod
+        def now(cls, tz=None):
+            return datetime.datetime(2026, 11, 23, 16, 30, tzinfo=datetime.timezone.utc).astimezone(tz)
+
+    monkeypatch.setattr(main.datetime, "datetime", Clock)
+    assert main.today_kst() == "2026-11-24"  # UTC로는 23일 16시 30분, 한국은 24일 새벽

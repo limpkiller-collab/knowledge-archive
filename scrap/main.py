@@ -126,6 +126,12 @@ def process(raw_url: str, note: str, category: str, root: Path, today: str, deps
     return "완료"
 
 
+def today_kst() -> str:
+    """카드에 적을 오늘 날짜. Actions 서버 시간(UTC)이 아니라 한국 시간 기준이다."""
+    kst = datetime.timezone(datetime.timedelta(hours=9))
+    return datetime.datetime.now(kst).date().isoformat()
+
+
 def read_request() -> dict:
     """요청 내용을 읽는다. Actions에서는 이벤트 파일에서 직접 읽어 메모가 공개 실행 기록에 찍히지 않게 한다."""
     path = os.environ.get("GITHUB_EVENT_PATH")
@@ -138,6 +144,6 @@ def read_request() -> dict:
 
 if __name__ == "__main__":
     req = read_request()
-    result = process(req["url"], req["note"], req["category"], Path.cwd(), today=datetime.date.today().isoformat())
+    result = process(req["url"], req["note"], req["category"], Path.cwd(), today=today_kst())
     print(result)
     sys.exit(0)

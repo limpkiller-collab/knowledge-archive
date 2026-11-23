@@ -7,7 +7,6 @@
 from __future__ import annotations
 
 import base64
-import datetime
 import io
 import json
 import os
@@ -17,7 +16,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 from . import covers, html_store, notify, notion_store, summarize
-from .main import SITE, git_publish, wait_live
+from .main import SITE, git_publish, today_kst, wait_live
 from .models import Card, Extracted, ExtractError
 
 INBOX_REPO = "limpkiller-collab/knowledge-archive-inbox"
@@ -197,5 +196,5 @@ def process(payload: dict, root: Path, today: str, deps=REAL) -> str:
 
 if __name__ == "__main__":
     event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text(encoding="utf-8"))
-    print(process(event.get("client_payload") or {}, Path.cwd(), today=datetime.date.today().isoformat()))
+    print(process(event.get("client_payload") or {}, Path.cwd(), today=today_kst()))
     sys.exit(0)
