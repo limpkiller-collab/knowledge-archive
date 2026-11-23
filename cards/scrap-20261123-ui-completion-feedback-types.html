@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UI 완료 표시 9가지와 그 이름</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #ffffff; --text: #111111; --sec: #555555; --rule: #111111; --border: #dddddd; --accent: #b3261e; }
+html.theme-dark { --bg: #111111; --text: #f5f5f5; --sec: #b8b8b8; --rule: #f5f5f5; --border: #3a3a3a; --accent: #ff8a80; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; letter-spacing: -0.02em; }
+main { position: relative; max-width: 720px; margin: 0 auto; padding: 32px 24px 64px; }
+a { color: var(--text); } a:hover { color: var(--accent); }
+.back { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 700; }
+.kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--accent); border-top: 4px solid var(--rule); padding-top: 14px; }
+h1 { font-size: 36px; font-weight: 900; line-height: 1.25; letter-spacing: -0.04em; margin: 12px 0 16px; }
+.summary { font-size: 17px; line-height: 1.75; color: var(--sec); margin: 0 0 24px; }
+.cover { width: 100%; display: block; margin-bottom: 24px; }
+ol { list-style: none; margin: 0 0 24px; padding: 0; border-top: 1px solid var(--rule); counter-reset: p; }
+ol li { counter-increment: p; display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 16px; line-height: 1.65; }
+ol li::before { content: counter(p, decimal-leading-zero); font-weight: 900; color: var(--accent); }
+.tags { font-size: 14px; font-weight: 700; color: var(--accent); margin: -12px 0 24px; line-height: 1.7; }
+.tags:empty { display: none; }
+.links-title { font-size: 14px; font-weight: 900; margin: 0 0 4px; }
+.links { list-style: none; margin: 0 0 24px; padding: 0; border-top: 1px solid var(--rule); }
+.links li { padding: 12px 0; border-bottom: 1px solid var(--border); }
+.links a { display: block; font-size: 16px; font-weight: 700; line-height: 1.5; }
+.links span { display: block; font-size: 13px; color: var(--sec); overflow-wrap: anywhere; line-height: 1.5; }
+.note { font-size: 13px; color: var(--sec); line-height: 1.6; }
+.source { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
+</style>
+<script>if (localStorage.getItem('viz-theme') === 'dark') document.documentElement.classList.add('theme-dark');</script>
+</head>
+<body>
+<main>
+<a class="back" href="../index.html">지식 Archive로 돌아가기</a>
+<div class="kicker">테크 · 릴스 · 2026-11-23</div>
+<h1>UI 완료 표시 9가지와 그 이름</h1>
+<p class="summary">체크 그리기부터 완료 화면까지 UI의 완료 표시 9가지를 소개하며, 일이 클수록 축하도 크게 하는 것이 기준이라고 설명한다.</p>
+<p class="tags">#UI디자인 #UX디자인 #마이크로인터랙션 #완료모션 #디자인용어</p>
+<div id="ka-gallery"><img class="cover" src="../covers/scrap-20261123-ui-completion-feedback-types.jpg" alt=""></div>
+<ol>
+<li>완료 표시는 체크 그리기, 할 일 줄긋기, 버튼 모핑, 진행률 완료, 보냄 애니메이션, 스탬프, 배지 획득, 컨페티, 완료 화면의 9가지로 나뉜다.</li>
+<li>체크가 슥 그려지는 것은 체크 그리기, 할 일에 줄이 그어지는 것은 할 일 줄긋기라고 부른다.</li>
+<li>버튼이 빙글 돌다 체크로 바뀌는 것은 버튼 모핑, 바가 차고 완료로 바뀌는 것은 진행률 완료다.</li>
+<li>슉 날아가는 것은 보냄 애니메이션, 쾅 찍히는 것은 스탬프다.</li>
+<li>제대로 축하하고 싶을 때는 배지 획득, 컨페티, 완료 화면을 사용한다.</li>
+<li>작은 일은 체크 그리기나 할 일 줄긋기로 가볍게, 큰 일은 배지 획득이나 완료 화면으로 크게 축하한다.</li>
+<li>일이 클수록 축하도 크게 하는 것이 완료 표시 선택의 기준이다.</li>
+</ol>
+
+<p class="note"></p>
+<a class="source" href="https://www.instagram.com/reel/DfYwNCOsta6/" rel="noopener noreferrer" target="_blank">원문 보기 (uxwoodytips)</a>
+</main>
+<script src="../js/archive-core.js"></script>
+<script src="../js/gallery.js"></script>
+<script src="../js/card-menu.js"></script>
+</body>
+</html>
