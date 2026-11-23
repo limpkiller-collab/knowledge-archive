@@ -90,7 +90,55 @@ Variables (모두 선택 사항, 비우면 기본값):
 
 문제가 있으면 리포의 Actions 탭에서 `scrap-link` 실행 기록을 본다.
 
+## 8. 사진·PDF 보내기
+
+사진이나 PDF 파일을 보내도 카드로 정리된다. 파일은 링크와 달리 크기가 커서, 단축어가 **비공개 저장소**(받은 파일함)에 먼저 올리고 나서 정리를 요청한다. 원본 파일은 이 비공개 저장소에만 남는다.
+
+### 8-1. 받은 파일함 저장소 만들기
+
+1. GitHub에서 새 저장소를 만든다. 이름은 `knowledge-archive-inbox`, 공개 범위는 반드시 **Private**.
+2. "Add a README file"을 켜서 만든다(빈 저장소로 두지 않는다).
+
+### 8-2. 토큰 권한
+
+1. 5번에서 만든 단축어용 토큰의 Repository access에 `knowledge-archive-inbox`를 추가한다. Contents 권한(Read and write)이 두 저장소에 함께 적용된다. 토큰을 새로 만들었다면 단축어의 토큰도 바꾼다.
+2. `knowledge-archive` 리포의 Settings › Secrets and variables › Actions에 Secret `INBOX_TOKEN`을 추가한다. 값은 받은 파일함을 읽을 수 있는 토큰이다. 위의 단축어용 토큰을 그대로 넣어도 되고, `knowledge-archive-inbox`의 Contents 읽기 권한만 가진 토큰을 따로 만들어 넣어도 된다.
+
+저장소 이름을 다르게 지었다면 Variables에 `INBOX_REPO`를 `계정/저장소이름`으로 등록한다.
+
+### 8-3. 단축어 만들기
+
+새 단축어를 만들고 "공유 시트에 표시"를 켠 뒤, 받는 입력을 **이미지, PDF, 파일**로 제한한다. 동작은 순서대로:
+
+1. **현재 날짜** → **날짜 포맷**: 사용자화, 포맷 문자열 `yyyyMMdd-HHmmss`. 결과를 변수 `묶음`에 넣는다.
+2. (선택) 6번 단축어의 1~5번과 같은 방식으로 카테고리와 메모를 받는다. 생략하면 자동 분류된다.
+3. **각 항목 반복**: 단축어 입력
+   1. **Base64 인코딩**: 반복 항목, 줄 바꿈은 **없음**
+   2. **URL 내용 가져오기**
+      - URL: `https://api.github.com/repos/limpkiller-collab/knowledge-archive-inbox/contents/inbox/` 뒤에 `묶음` 변수, `/`, **반복 인덱스**를 붙인다. 예: `…/contents/inbox/20261124-101500/1`
+      - 방식: **PUT**
+      - 헤더: `Authorization: Bearer <토큰>`, `Accept: application/vnd.github+json`
+      - 본문(JSON): `message`는 `add`, `content`는 Base64 인코딩 결과
+4. **반복 끝** 다음에 **URL 내용 가져오기**
+   - URL: `https://api.github.com/repos/limpkiller-collab/knowledge-archive/dispatches`
+   - 방식: POST, 헤더는 위와 같다
+   - 본문(JSON): `event_type`은 `scrap-file`, `client_payload`는 사전으로 `batch`(`묶음` 변수), `category`, `note`
+5. **알림 표시**: "보냈습니다. 1~3분 뒤 알림이 옵니다"
+
+파일 이름과 확장자는 신경 쓰지 않아도 된다. 내용으로 사진인지 PDF인지 구분한다.
+
+### 8-4. 동작
+
+- 한 번에 보낸 파일은 카드 한 장이 된다. 사진은 10장, 파일은 12개까지, PDF는 합쳐서 20MB까지.
+- 사진은 크기를 줄여 카드의 커버와 갤러리에 싣는다. 사이트가 공개이므로 사진도 공개된다.
+- PDF 원본은 사이트에 올리지 않는다. 요약만 카드가 된다.
+- 아이폰 사진(HEIC)도 그대로 보내면 된다.
+- 카드의 "원문 보기"는 받은 파일함의 해당 폴더로 연결된다. 비공개 저장소라 본인만 열 수 있다.
+
 ## 알려진 한계
+
+- 사진·PDF로 만든 카드는 본문에 적힌 링크를 따로 모으지 않는다.
+- 받은 파일함의 원본은 자동으로 지우지 않는다. 필요하면 저장소에서 직접 지운다.
 
 - 비공개 인스타그램 계정, 비공개·일부 공개 유튜브 영상은 읽지 못한다.
 - 인스타그램 추출은 외부 서비스에 의존하므로 인스타그램 쪽 변경으로 예고 없이 실패할 수 있다.

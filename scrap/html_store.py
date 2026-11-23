@@ -9,7 +9,8 @@ from string import Template
 
 from .models import Card
 
-TYPE_LABELS = {"article": "기사", "instagram_post": "인스타그램", "instagram_reel": "릴스", "youtube": "유튜브", "threads": "스레드"}
+TYPE_LABELS = {"article": "기사", "instagram_post": "인스타그램", "instagram_reel": "릴스", "youtube": "유튜브", "threads": "스레드",
+               "photo": "사진", "pdf": "PDF"}
 TEMPLATE = Template((Path(__file__).parent / "card_template.html").read_text(encoding="utf-8"))
 
 

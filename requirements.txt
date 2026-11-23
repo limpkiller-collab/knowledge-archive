@@ -3,4 +3,5 @@ notion-client
 trafilatura
 requests
 Pillow
+pillow-heif
 lxml_html_clean

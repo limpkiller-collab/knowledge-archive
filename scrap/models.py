@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 
 @dataclass
 class Extracted:
-    source_type: str  # article | instagram_post | instagram_reel | youtube | threads
+    source_type: str  # article | instagram_post | instagram_reel | youtube | threads | photo | pdf
     url: str
     title: str = ""
     author: str = ""
@@ -16,6 +16,7 @@ class Extracted:
     thumbnail_url: str = ""
     media_url: str = ""
     warnings: list[str] = field(default_factory=list)
+    attachments: list[dict] = field(default_factory=list)  # 직접 보낸 사진·PDF. Claude에 그대로 넘길 블록
 
 
 @dataclass
