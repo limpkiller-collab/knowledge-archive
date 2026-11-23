@@ -107,14 +107,23 @@ def remove(card_id: str, root: Path):
     return entry
 
 
-def update(card_id: str, root: Path, title: str, category: str, tags: list[str]):
-    """카드의 제목·분류·태그를 고친다. 목록과 카드 파일을 함께 바꾸고 고친 항목을 돌려준다. 없으면 None."""
+def update(card_id: str, root: Path, title: str, category: str, tags: list[str], series: str | None = None):
+    """카드의 제목·분류·태그를 고친다. 목록과 카드 파일을 함께 바꾸고 고친 항목을 돌려준다. 없으면 None.
+
+    series를 주면 시리즈도 바꾼다. 빈 문자열이면 연결을 푼다. 직접 정리한 지식카드의 시리즈 이름과
+    글자 그대로 같아야 한 시리즈로 묶이므로 이스케이프하지 않고, 꺾쇠만 뺀 채 저장한다."""
     path = root / "scraps.json"
     entries = _read(path)
     entry = next((e for e in entries if e.get("id") == card_id), None)
     if entry is None:
         return None
     entry.update({"title": escape(title), "category": escape(category), "tags": [escape(t) for t in tags]})
+    if series is not None:
+        series = re.sub(r"[<>]", "", series).strip()
+        if series:
+            entry["series"] = series
+        else:
+            entry.pop("series", None)
     _write(path, entries)
     ensure_category(category, root)
     file = root / entry["file"]

@@ -2464,6 +2464,9 @@
       CATEGORIES = Array.isArray(res[0]) ? res[0] : [];
       ADDED_IMAGES = (res[2] && typeof res[2] === 'object' && !Array.isArray(res[2])) ? res[2] : {};
       ALL_CARDS = applyGalleries(ArchiveCore.mergeCards(KNOWLEDGE_DB, visibleScraps(res[1])));
+      // 카드 화면의 시리즈 링크(?series=이름)로 들어오면 그 시리즈만 보여 준다.
+      var wanted = new URLSearchParams(location.search).get('series');
+      if (wanted && ALL_CARDS.some(function (k) { return k.series === wanted; })) activeSeries = wanted;
       renderAll();
     });
   </script>

@@ -31,14 +31,17 @@ def clean_tags(tags) -> list[str]:
 
 
 def process(payload: dict, root: Path, deps=REAL) -> str:
-    """자동 스크랩 카드의 제목·분류·태그를 사이트와 노션에서 고친다."""
+    """자동 스크랩 카드의 제목·분류·태그를 사이트와 노션에서 고친다.
+
+    payload에 series가 있으면 시리즈 연결도 바꾼다(빈 값이면 해제). 시리즈는 사이트에만 저장한다."""
     card_id = str(payload.get("id") or "")
     title, category = _clean(payload.get("title"), 120), _clean(payload.get("category"), 20)
     if not CARD_ID.match(card_id) or not title or not category:
         deps.notify("수정 실패", "고칠 수 없는 카드이거나 제목·분류가 비어 있습니다")
         return "실패"
     tags = clean_tags(payload.get("tags"))
-    entry = html_store.update(card_id, root, title, category, tags)
+    series = _clean(payload.get("series"), 40) if "series" in payload else None
+    entry = html_store.update(card_id, root, title, category, tags, series)
     if entry is None:
         deps.notify("수정 실패", "이미 지워졌거나 없는 카드입니다")
         return "없음"

@@ -1,4 +1,4 @@
-// 카드 화면 오른쪽 위의 ⋯ 메뉴: 편집(제목·분류·해시태그), 공유, 전체 화면 캡처, 삭제.
+// 카드 화면 오른쪽 위의 ⋯ 메뉴: 편집(제목·분류·해시태그), 시리즈 연결, 공유, 전체 화면 캡처, 삭제.
 // 링크로 저장한 카드(scraps.json에 있는 카드)에서만 나타난다.
 (function () {
   var DISPATCH_URL = 'https://api.github.com/repos/limpkiller-collab/knowledge-archive/dispatches';
@@ -9,6 +9,7 @@
 
   var card = null;       // scraps.json 항목
   var categories = [];
+  var seriesNames = [];  // 지금 있는 시리즈 이름 (지식카드 + 링크로 저장한 카드)
   var el = {};
 
   var CSS = ''
@@ -39,12 +40,16 @@
     + '.km-actions button:disabled{opacity:.5;cursor:default}'
     + '.km-actions [hidden]{display:none}'
     + '.km-shot{display:block;max-width:100%;max-height:55vh;margin:0 auto;border:1px solid var(--border,#ddd)}'
+    + '.km-series{display:inline-flex;align-items:center;gap:6px;min-height:44px;margin:-12px 0 16px;font-size:14px;font-weight:700;'
+    + 'color:inherit;text-decoration:underline;text-underline-offset:3px}'
+    + '.km-series[hidden]{display:none}'
     + '.km-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:50;max-width:88vw;padding:12px 18px;'
     + 'background:#111;color:#fff;font-size:14px;font-weight:700;line-height:1.5;border:1px solid #fff}'
     + '.km-toast[hidden]{display:none}';
 
   var ICON = {
     edit: '<path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/>',
+    series: '<path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 12.5l9 5 9-5"/><path d="M3 17l9 5 9-5"/>',
     share: '<path d="M12 15V3"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7"/>',
     capture: '<path d="M4 8a2 2 0 0 1 2-2h1.5l1.5-2h6l1.5 2H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.2"/>',
     remove: '<path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12"/><path d="M9 7V4h6v3"/>'
@@ -126,6 +131,21 @@
     showTags(tags);
   }
 
+  // 시리즈에 연결된 카드는 해시태그 아래에 시리즈 이름을 보여 준다. 누르면 대시보드가 그 시리즈만 보여 준다.
+  function showSeries(name) {
+    var a = el.series;
+    if (!a) {
+      a = el.series = h('a', 'km-series');
+      a.target = '_top';
+      var anchor = document.querySelector('main .tags') || document.querySelector('main .summary');
+      if (!anchor) return;
+      anchor.parentNode.insertBefore(a, anchor.nextSibling);
+    }
+    a.hidden = !name;
+    a.textContent = name ? '시리즈 · ' + name + ' ›' : '';
+    a.href = ROOT + 'index.html?series=' + encodeURIComponent(name || '');
+  }
+
   // ---------- 편집 ----------
   function openEdit() {
     var d = el.edit;
@@ -164,6 +184,44 @@
       applyToPage(title, category, tags);
       d.close();
       toast('수정을 요청했습니다. 사이트와 노션에는 1~2분 뒤 반영됩니다.');
+    });
+  }
+
+  // ---------- 시리즈 연결 ----------
+  function openSeries() {
+    var d = el.seriesDlg;
+    var sel = d.querySelector('#km-series');
+    sel.innerHTML = '';
+    var none = h('option', '', '연결 안 함'); none.value = ''; sel.appendChild(none);
+    var names = seriesNames.slice();
+    if (card.series && names.indexOf(card.series) === -1) names.push(card.series);
+    names.sort(function (a, b) { return a.localeCompare(b, 'ko'); }).forEach(function (n) {
+      var o = h('option', '', n); o.value = n; sel.appendChild(o);
+    });
+    var other = h('option', '', '새 시리즈 직접 입력…'); other.value = '__new__'; sel.appendChild(other);
+    sel.value = card.series || '';
+    d.querySelector('#km-newseries-wrap').hidden = true;
+    d.querySelector('#km-newseries').value = '';
+    d.showModal();
+  }
+  function saveSeries(e) {
+    e.preventDefault();
+    var d = el.seriesDlg;
+    var sel = d.querySelector('#km-series').value;
+    var name = (sel === '__new__' ? d.querySelector('#km-newseries').value : sel)
+      .replace(/[<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, 40);
+    if (sel === '__new__' && !name) { toast('새 시리즈 이름을 입력해 주세요.'); return; }
+    if (name === (card.series || '')) { d.close(); return; }
+    var save = d.querySelector('.km-primary');
+    save.disabled = true;
+    dispatch('scrap-edit', { id: key, title: card.title, category: card.category, tags: card.tags, series: name }).then(function (ok) {
+      save.disabled = false;
+      if (!ok) return;
+      card.series = name;
+      if (name && seriesNames.indexOf(name) === -1) seriesNames.push(name);
+      showSeries(name);
+      d.close();
+      toast(name ? '시리즈에 연결했습니다. 대시보드에는 1~2분 뒤 반영됩니다.' : '시리즈 연결을 풀었습니다. 대시보드에는 1~2분 뒤 반영됩니다.');
     });
   }
 
@@ -269,7 +327,7 @@
     el.menu = h('div', 'km-menu');
     el.menu.setAttribute('role', 'menu');
     el.menu.hidden = true;
-    [['편집', openEdit, 'edit'], ['공유', share, 'share'], ['전체 화면 캡처', capture, 'capture'], ['삭제', remove, 'remove']].forEach(function (it) {
+    [['편집', openEdit, 'edit'], ['시리즈 연결', openSeries, 'series'], ['공유', share, 'share'], ['전체 화면 캡처', capture, 'capture'], ['삭제', remove, 'remove']].forEach(function (it) {
       var b = h('button', it[2] === 'remove' ? 'km-danger' : '');
       b.type = 'button'; b.setAttribute('role', 'menuitem');
       b.innerHTML = icon(it[2]);
@@ -295,6 +353,18 @@
       var isNew = e.target.value === '__new__';
       el.edit.querySelector('#km-newcat-wrap').hidden = !isNew;
       if (isNew) el.edit.querySelector('#km-newcat').focus();
+    });
+
+    el.seriesDlg = dialog('<form method="dialog"><h2>시리즈 연결</h2>'
+      + '<label for="km-series">시리즈</label><select id="km-series"></select>'
+      + '<div id="km-newseries-wrap" hidden><label for="km-newseries">새 시리즈 이름</label><input id="km-newseries" type="text" maxlength="40" autocomplete="off"></div>'
+      + '<p class="km-help">같은 시리즈의 카드는 대시보드의 시리즈 필터에서 모아 볼 수 있습니다.</p>'
+      + '<div class="km-actions"><button type="button" data-close>취소</button><button type="submit" class="km-primary">저장</button></div></form>');
+    el.seriesDlg.querySelector('form').addEventListener('submit', saveSeries);
+    el.seriesDlg.querySelector('#km-series').addEventListener('change', function (e) {
+      var isNew = e.target.value === '__new__';
+      el.seriesDlg.querySelector('#km-newseries-wrap').hidden = !isNew;
+      if (isNew) el.seriesDlg.querySelector('#km-newseries').focus();
     });
 
     el.shot = dialog('<h2>전체 화면 캡처</h2><img class="km-shot" alt="카드 전체 화면 이미지">'
@@ -326,14 +396,30 @@
       .catch(function () { return fallback; });
   }
 
+  // 직접 정리한 지식카드의 시리즈 이름은 대시보드(index.html)의 카드 목록에 적혀 있다.
+  function loadManualSeries() {
+    return fetch(ROOT + 'index.html', { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.text() : ''; })
+      .then(function (text) {
+        var out = [], m, re = /^\s*series:\s*"([^"\n]+)"/gm;
+        while ((m = re.exec(text))) if (out.indexOf(m[1]) === -1) out.push(m[1]);
+        return out;
+      }).catch(function () { return []; });
+  }
+
   function start() {
-    Promise.all([loadJson('scraps.json', []), loadJson('categories.json', [])]).then(function (res) {
-      var entry = (Array.isArray(res[0]) ? res[0] : []).filter(function (s) { return s.id === key; })[0];
+    Promise.all([loadJson('scraps.json', []), loadJson('categories.json', []), loadManualSeries()]).then(function (res) {
+      var scraps = Array.isArray(res[0]) ? res[0] : [];
+      var entry = scraps.filter(function (s) { return s.id === key; })[0];
       if (!entry) return;
-      card = { title: decode(entry.title), category: decode(entry.category), tags: (entry.tags || []).map(decode) };
+      card = { title: decode(entry.title), category: decode(entry.category), tags: (entry.tags || []).map(decode),
+        series: entry.series || '' };
+      seriesNames = res[2].slice();
+      scraps.forEach(function (s) { if (s.series && seriesNames.indexOf(s.series) === -1) seriesNames.push(s.series); });
       categories = (Array.isArray(res[1]) ? res[1] : []).map(function (c) { return { name: c.name }; });
       mount();
       showTags(card.tags);
+      showSeries(card.series);
     });
   }
 

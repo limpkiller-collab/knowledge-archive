@@ -55,3 +55,15 @@ def test_edit_reports_notion_failure(root):
     f = Fakes(notion_error=RuntimeError("x"))
     assert edit.process({"id": "scrap-20261122-a", "title": "t", "category": "etc", "tags": []}, root, f) == "부분 완료"
     assert f.notes[0][0] == "부분 수정"
+
+
+def test_edit_connects_and_disconnects_series(root):
+    f = Fakes()
+    base = {"id": "scrap-20261122-a", "title": "카드", "category": "etc", "tags": []}
+    assert edit.process({**base, "series": "  투자 & <b>편향</b>  시리즈 "}, root, f) == "완료"
+    entry = json.loads((root / "scraps.json").read_text(encoding="utf-8"))[0]
+    assert entry["series"] == "투자 & b편향/b 시리즈"
+    edit.process(base, root, f)  # series가 없으면 그대로 둔다
+    assert json.loads((root / "scraps.json").read_text(encoding="utf-8"))[0]["series"] == "투자 & b편향/b 시리즈"
+    edit.process({**base, "series": ""}, root, f)
+    assert "series" not in json.loads((root / "scraps.json").read_text(encoding="utf-8"))[0]
