@@ -58,7 +58,8 @@
     "summary": "디자인 리뷰나 AI에게 화면을 요청할 때 로딩 패턴의 정확한 이름을 말하면 결과물이 달라지므로, 스피너부터 로딩 버튼까지 9가지 로딩 패턴 이름을 정리했다.",
     "category": "테크",
     "cover": "covers/scrap-20261123-nine-loading-ui-patterns.jpg",
-    "coverWord": "로딩 패턴"
+    "coverWord": "로딩 패턴",
+    "series": "UI디자인"
   },
   {
     "id": "scrap-20261123-shopping-app-list-ui-patterns",
