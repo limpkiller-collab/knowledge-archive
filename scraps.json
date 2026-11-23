@@ -1,5 +1,25 @@
 [
   {
+    "id": "scrap-20261124-claude-capcut-video-editing",
+    "title": "클로드로 캡컷 영상 편집하는 3단계 방법과 프롬프트",
+    "file": "cards/scrap-20261124-claude-capcut-video-editing.html",
+    "date": "2026-11-24",
+    "source": "보낸 사진",
+    "sourceUrl": "https://github.com/limpkiller-collab/knowledge-archive-inbox/tree/main/inbox/20261124-022035",
+    "sourceType": "photo",
+    "tags": [
+      "클로드",
+      "캡컷",
+      "AI 영상 편집",
+      "프롬프트",
+      "브이로그"
+    ],
+    "summary": "인스타그램 사용자 designeryodi가 Raw 영상과 BGM을 폴더에 정리하고 캡컷에서 불러온 뒤 클로드에 프롬프트와 레퍼런스 영상을 넣어 AI로 영상 편집을 맡기는 방법을 소개한다.",
+    "category": "테크",
+    "cover": "covers/scrap-20261124-claude-capcut-video-editing.jpg",
+    "coverWord": "AI 영상 편집"
+  },
+  {
     "id": "scrap-20261124-unslop-claude-code-design-skill",
     "title": "언슬롭(unslop): AI 티 나는 화면을 고쳐 주는 클로드 코드 디자인 스킬",
     "file": "cards/scrap-20261124-unslop-claude-code-design-skill.html",

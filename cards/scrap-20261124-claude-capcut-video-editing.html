@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>클로드로 캡컷 영상 편집하는 3단계 방법과 프롬프트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #ffffff; --text: #111111; --sec: #555555; --rule: #111111; --border: #dddddd; --accent: #b3261e; }
+html.theme-dark { --bg: #111111; --text: #f5f5f5; --sec: #b8b8b8; --rule: #f5f5f5; --border: #3a3a3a; --accent: #ff8a80; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; letter-spacing: -0.02em; }
+main { position: relative; max-width: 720px; margin: 0 auto; padding: 32px 24px 64px; }
+a { color: var(--text); } a:hover { color: var(--accent); }
+.back { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 700; }
+.kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--accent); border-top: 4px solid var(--rule); padding-top: 14px; }
+h1 { font-size: 36px; font-weight: 900; line-height: 1.25; letter-spacing: -0.04em; margin: 12px 0 16px; }
+.summary { font-size: 17px; line-height: 1.75; color: var(--sec); margin: 0 0 24px; }
+.cover { width: 100%; display: block; margin-bottom: 24px; }
+ol { list-style: none; margin: 0 0 24px; padding: 0; border-top: 1px solid var(--rule); counter-reset: p; }
+ol li { counter-increment: p; display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 16px; line-height: 1.65; }
+ol li::before { content: counter(p, decimal-leading-zero); font-weight: 900; color: var(--accent); }
+.tags { font-size: 14px; font-weight: 700; color: var(--accent); margin: -12px 0 24px; line-height: 1.7; }
+.tags:empty { display: none; }
+.links-title { font-size: 14px; font-weight: 900; margin: 0 0 4px; }
+.links { list-style: none; margin: 0 0 24px; padding: 0; border-top: 1px solid var(--rule); }
+.links li { padding: 12px 0; border-bottom: 1px solid var(--border); }
+.links a { display: block; font-size: 16px; font-weight: 700; line-height: 1.5; }
+.links span { display: block; font-size: 13px; color: var(--sec); overflow-wrap: anywhere; line-height: 1.5; }
+.note { font-size: 13px; color: var(--sec); line-height: 1.6; }
+.source { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
+</style>
+<script>if (localStorage.getItem('viz-theme') === 'dark') document.documentElement.classList.add('theme-dark');</script>
+</head>
+<body>
+<main>
+<a class="back" href="../index.html">지식 Archive로 돌아가기</a>
+<div class="kicker">테크 · 사진 · 2026-11-24</div>
+<h1>클로드로 캡컷 영상 편집하는 3단계 방법과 프롬프트</h1>
+<p class="summary">인스타그램 사용자 designeryodi가 Raw 영상과 BGM을 폴더에 정리하고 캡컷에서 불러온 뒤 클로드에 프롬프트와 레퍼런스 영상을 넣어 AI로 영상 편집을 맡기는 방법을 소개한다.</p>
+<p class="tags">#클로드 #캡컷 #AI 영상 편집 #프롬프트 #브이로그</p>
+<div id="ka-gallery"><img class="cover" src="../covers/scrap-20261124-claude-capcut-video-editing.jpg" alt=""></div>
+<ol>
+<li>작성자는 AI 편집 특유의 티 나는 결과가 싫어 쓰지 않았지만, 일과 인스타그램·유튜브 편집을 병행하며 시간이 부족해 사용해 봤다고 말한다.</li>
+<li>1단계로 폴더를 하나 만들어 Raw 영상 클립과 BGM을 모두 넣는다.</li>
+<li>2단계로 캡컷에서 모든 영상 클립을 불러오고 파일명을 설정한 뒤 캡컷 창을 완전히 닫는다.</li>
+<li>3단계로 클로드에서 새 프로젝트를 만들고 프롬프트를 그대로 붙여넣은 뒤 참고할 레퍼런스 영상도 함께 넣는다.</li>
+<li>프롬프트는 반복·실수·긴 공백 컷 편집, 카메라 영상과 화면 녹화 전환, 채도·대비를 올리고 그림자를 낮춘 조정 레이어 추가를 요청한다.</li>
+<li>또한 주요 순간에 카메라 영상에 느리고 부드러운 줌인을 넣고, Creative 폴더의 BGM을 배경음악으로 추가하도록 지시한다.</li>
+<li>더 자세한 프롬프트와 방법은 노션에 정리되어 있으며 댓글을 남기면 링크를 보내준다고 안내한다.</li>
+</ol>
+
+<p class="note"></p>
+<a class="source" href="https://github.com/limpkiller-collab/knowledge-archive-inbox/tree/main/inbox/20261124-022035" rel="noopener noreferrer" target="_blank">원문 보기 (보낸 사진)</a>
+</main>
+<script src="../js/archive-core.js"></script>
+<script src="../js/gallery.js"></script>
+<script src="../js/card-menu.js"></script>
+</body>
+</html>
