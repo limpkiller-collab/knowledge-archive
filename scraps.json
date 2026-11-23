@@ -59,7 +59,8 @@
     "summary": "앱에서 화면이 넘어가는 방식은 푸시, 모달 등장, 탭 전환, 카드 확장 등으로 서로 다르며 각각 고유한 이름이 있다.",
     "category": "테크",
     "cover": "covers/scrap-20261123-app-screen-transition-types.jpg",
-    "coverWord": "화면 전환"
+    "coverWord": "화면 전환",
+    "series": "UI디자인"
   },
   {
     "id": "scrap-20261123-progress-indicator-ui-types",
