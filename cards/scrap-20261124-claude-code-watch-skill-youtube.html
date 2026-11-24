@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>클로드 코드 /watch 스킬로 유튜브 강의를 학습시켜 스킬 만들기</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #ffffff; --text: #111111; --sec: #555555; --rule: #111111; --border: #dddddd; --accent: #b3261e; }
+html.theme-dark { --bg: #111111; --text: #f5f5f5; --sec: #b8b8b8; --rule: #f5f5f5; --border: #3a3a3a; --accent: #ff8a80; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; letter-spacing: -0.02em; }
+main { position: relative; max-width: 720px; margin: 0 auto; padding: 32px 24px 64px; }
+a { color: var(--text); } a:hover { color: var(--accent); }
+.back { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 700; }
+.kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--accent); border-top: 4px solid var(--rule); padding-top: 14px; }
+h1 { font-size: 36px; font-weight: 900; line-height: 1.25; letter-spacing: -0.04em; margin: 12px 0 16px; }
+.summary { font-size: 17px; line-height: 1.75; color: var(--sec); margin: 0 0 24px; }
+.cover { width: 100%; display: block; margin-bottom: 24px; }
+ol { list-style: none; margin: 0 0 24px; padding: 0; border-top: 1px solid var(--rule); counter-reset: p; }
+ol li { counter-increment: p; display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 16px; line-height: 1.65; }
+ol li::before { content: counter(p, decimal-leading-zero); font-weight: 900; color: var(--accent); }
+.tags { font-size: 14px; font-weight: 700; color: var(--accent); margin: -12px 0 24px; line-height: 1.7; }
+.tags:empty { display: none; }
+.links-title { font-size: 14px; font-weight: 900; margin: 0 0 4px; }
+.links { list-style: none; margin: 0 0 24px; padding: 0; border-top: 1px solid var(--rule); }
+.links li { padding: 12px 0; border-bottom: 1px solid var(--border); }
+.links a { display: block; font-size: 16px; font-weight: 700; line-height: 1.5; }
+.links span { display: block; font-size: 13px; color: var(--sec); overflow-wrap: anywhere; line-height: 1.5; }
+.note { font-size: 13px; color: var(--sec); line-height: 1.6; }
+.source { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
+</style>
+<script>if (localStorage.getItem('viz-theme') === 'dark') document.documentElement.classList.add('theme-dark');</script>
+</head>
+<body>
+<main>
+<a class="back" href="../index.html">지식 Archive로 돌아가기</a>
+<div class="kicker">테크 · 릴스 · 2026-11-24</div>
+<h1>클로드 코드 /watch 스킬로 유튜브 강의를 학습시켜 스킬 만들기</h1>
+<p class="summary">깃허브 무료 스킬 /watch를 클로드 코드에 설치하면 유튜브 영상 주소만으로 클로드가 화면과 음성을 분석해 내용을 학습하고, 이를 새로운 스킬로 만들 수 있다.</p>
+<p class="tags">#클로드 코드 #AI 스킬 #유튜브 학습 #생산성 #브랜딩</p>
+<div id="ka-gallery"><img class="cover" src="../covers/scrap-20261124-claude-code-watch-skill-youtube.jpg" alt=""></div>
+<ol>
+<li>/watch는 깃허브에서 별 2만 개 이상을 받은 클로드 코드용 무료 스킬이다.</li>
+<li>영상 주소를 주면 클로드가 화면은 이미지로, 말은 텍스트로 추출해 직접 영상을 본다.</li>
+<li>자막에 없는 화면 속 내용까지 읽어 낼 수 있다.</li>
+<li>에디터가 브랜딩 강의 3편(조회수 합 236만)을 넣고 &#x27;보고 배워서 스킬로 만들어 줘&#x27;라고 하자 클로드에 브랜딩 스킬이 생겼다.</li>
+<li>생성된 브랜딩 스킬은 소개글을 강의 내용대로 한 문장, 사연, 증거 순서로 고쳐 준다.</li>
+<li>설치는 명령어 두 줄이면 되며, 클로드 데스크톱 앱의 Code 화면에서도 설치할 수 있다.</li>
+<li>클로드 코드는 Pro 이상 유료 요금제에 포함되어 있다.</li>
+</ol>
+
+<p class="note"></p>
+<a class="source" href="https://www.instagram.com/reel/DgHgFQFRw9v/" rel="noopener noreferrer" target="_blank">원문 보기 (ai.trend.kr)</a>
+</main>
+<script src="../js/archive-core.js"></script>
+<script src="../js/gallery.js"></script>
+<script src="../js/card-menu.js"></script>
+</body>
+</html>

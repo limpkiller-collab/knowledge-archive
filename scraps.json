@@ -1,5 +1,25 @@
 [
   {
+    "id": "scrap-20261124-claude-code-watch-skill-youtube",
+    "title": "클로드 코드 /watch 스킬로 유튜브 강의를 학습시켜 스킬 만들기",
+    "file": "cards/scrap-20261124-claude-code-watch-skill-youtube.html",
+    "date": "2026-11-24",
+    "source": "ai.trend.kr",
+    "sourceUrl": "https://www.instagram.com/reel/DgHgFQFRw9v/",
+    "sourceType": "instagram_reel",
+    "tags": [
+      "클로드 코드",
+      "AI 스킬",
+      "유튜브 학습",
+      "생산성",
+      "브랜딩"
+    ],
+    "summary": "깃허브 무료 스킬 /watch를 클로드 코드에 설치하면 유튜브 영상 주소만으로 클로드가 화면과 음성을 분석해 내용을 학습하고, 이를 새로운 스킬로 만들 수 있다.",
+    "category": "테크",
+    "cover": "covers/scrap-20261124-claude-code-watch-skill-youtube.jpg",
+    "coverWord": "/watch"
+  },
+  {
     "id": "scrap-20261124-europe-travel-by-month",
     "title": "월별로 여행 가기 좋은 여행지 (유럽편)",
     "file": "cards/scrap-20261124-europe-travel-by-month.html",
