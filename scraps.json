@@ -1,5 +1,24 @@
 [
   {
+    "id": "scrap-20261124-europe-travel-by-month",
+    "title": "월별로 여행 가기 좋은 유럽 여행지와 축제 시즌",
+    "file": "cards/scrap-20261124-europe-travel-by-month.html",
+    "date": "2026-11-24",
+    "source": "보낸 사진",
+    "sourceUrl": "https://github.com/limpkiller-collab/knowledge-archive-inbox/tree/main/inbox/20261124-222422",
+    "sourceType": "photo",
+    "tags": [
+      "유럽여행",
+      "여행시기",
+      "축제",
+      "해외여행"
+    ],
+    "summary": "트립고잉이 유럽 13개국의 여행하기 좋은 시기와 대표 축제를 월별 표로 정리한 자료다.",
+    "category": "etc",
+    "cover": "covers/scrap-20261124-europe-travel-by-month.jpg",
+    "coverWord": "유럽 축제"
+  },
+  {
     "id": "scrap-20261124-small-dog-age-chart",
     "title": "소형견(9kg 미만) 나이를 사람 나이로 환산한 표",
     "file": "cards/scrap-20261124-small-dog-age-chart.html",
