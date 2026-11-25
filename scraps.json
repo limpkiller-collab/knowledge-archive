@@ -1,5 +1,32 @@
 [
   {
+    "id": "scrap-20261126-mastering-claude-code-lecture",
+    "title": "클로드 코드 창시자 보리스 체르니의 28분 입문 강의 &#x27;Mastering Claude Code in 30 minutes&#x27;",
+    "file": "cards/scrap-20261126-mastering-claude-code-lecture.html",
+    "date": "2026-11-26",
+    "source": "prompt_what",
+    "sourceUrl": "https://www.instagram.com/p/DgKAypkEXjv/",
+    "sourceType": "instagram_post",
+    "tags": [
+      "클로드코드",
+      "보리스체르니",
+      "앤트로픽",
+      "CLAUDE.md",
+      "AI코딩"
+    ],
+    "summary": "클로드 코드를 만든 보리스 체르니가 설치 직후 설정부터 CLAUDE.md 활용까지 처음 사용하는 순서대로 보여 주는 앤트로픽 공식 유튜브 강의를 소개한다.",
+    "category": "테크",
+    "cover": "covers/scrap-20261126-mastering-claude-code-lecture.jpg",
+    "coverWord": "Claude Code",
+    "images": [
+      "covers/scrap-20261126-mastering-claude-code-lecture/01.jpg",
+      "covers/scrap-20261126-mastering-claude-code-lecture/02.jpg",
+      "covers/scrap-20261126-mastering-claude-code-lecture/03.jpg",
+      "covers/scrap-20261126-mastering-claude-code-lecture/04.jpg",
+      "covers/scrap-20261126-mastering-claude-code-lecture/05.jpg"
+    ]
+  },
+  {
     "id": "scrap-20261125-hang-pants-on-hanger-tip",
     "title": "50년 차 공장 사장이 알려주는 바지 옷걸이에 거는 법",
     "file": "cards/scrap-20261125-hang-pants-on-hanger-tip.html",
