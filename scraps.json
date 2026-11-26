@@ -1,5 +1,25 @@
 [
   {
+    "id": "scrap-20261126-app-chart-types-names",
+    "title": "앱에서 숫자를 보여주는 그래프 9가지와 그 이름",
+    "file": "cards/scrap-20261126-app-chart-types-names.html",
+    "date": "2026-11-26",
+    "source": "uxwoodytips",
+    "sourceUrl": "https://www.instagram.com/reel/Dfqxz4okrEs/",
+    "sourceType": "instagram_reel",
+    "tags": [
+      "UI디자인",
+      "UX디자인",
+      "데이터시각화",
+      "앱디자인",
+      "차트"
+    ],
+    "summary": "앱 화면에서 숫자를 시각화하는 막대 그래프, 도넛 차트, 스파크라인, 게이지, 히트맵 등 9가지 그래프의 이름과 생김새를 소개한다.",
+    "category": "테크",
+    "cover": "covers/scrap-20261126-app-chart-types-names.jpg",
+    "coverWord": "차트 이름"
+  },
+  {
     "id": "scrap-20261126-mastering-claude-code-lecture",
     "title": "클로드 코드 창시자 보리스 체르니의 28분 입문 강의 &#x27;Mastering Claude Code in 30 minutes&#x27;",
     "file": "cards/scrap-20261126-mastering-claude-code-lecture.html",
