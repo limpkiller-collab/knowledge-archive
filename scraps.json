@@ -1,5 +1,34 @@
 [
   {
+    "id": "scrap-20261127-mole-mac-cleanup-tool",
+    "title": "Mole: 맥 저장공간을 정리하는 무료 오픈소스 터미널 도구",
+    "file": "cards/scrap-20261127-mole-mac-cleanup-tool.html",
+    "date": "2026-11-27",
+    "source": "ai.asap.kr",
+    "sourceUrl": "https://www.instagram.com/p/DgMEj1VCAsw/",
+    "sourceType": "instagram_post",
+    "tags": [
+      "Mole",
+      "맥 정리",
+      "오픈소스",
+      "저장공간",
+      "터미널"
+    ],
+    "summary": "Mole은 캐시·로그·앱 찌꺼기를 찾아 비우고 폴더별 용량과 시스템 상태까지 보여 주는 무료 오픈소스 맥 정리 도구다.",
+    "category": "테크",
+    "cover": "covers/scrap-20261127-mole-mac-cleanup-tool.jpg",
+    "coverWord": "Mole",
+    "images": [
+      "covers/scrap-20261127-mole-mac-cleanup-tool/01.jpg",
+      "covers/scrap-20261127-mole-mac-cleanup-tool/02.jpg",
+      "covers/scrap-20261127-mole-mac-cleanup-tool/03.jpg",
+      "covers/scrap-20261127-mole-mac-cleanup-tool/04.jpg",
+      "covers/scrap-20261127-mole-mac-cleanup-tool/05.jpg",
+      "covers/scrap-20261127-mole-mac-cleanup-tool/06.jpg",
+      "covers/scrap-20261127-mole-mac-cleanup-tool/07.jpg"
+    ]
+  },
+  {
     "id": "scrap-20261126-app-chart-types-names",
     "title": "앱에서 숫자를 보여주는 그래프 9가지와 그 이름",
     "file": "cards/scrap-20261126-app-chart-types-names.html",
