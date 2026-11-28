@@ -1,5 +1,25 @@
 [
   {
+    "id": "scrap-20261128-jump-desktop-keyboard-input-fix",
+    "title": "Jump Desktop으로 아이폰에서 맥 원격 접속 시 키보드 입력 오류와 해결법",
+    "file": "cards/scrap-20261128-jump-desktop-keyboard-input-fix.html",
+    "date": "2026-11-28",
+    "source": "클리앙",
+    "sourceUrl": "https://www.clien.net/service/board/cm_mac/19199868",
+    "sourceType": "article",
+    "tags": [
+      "Jump Desktop",
+      "원격 데스크톱",
+      "맥OS",
+      "한영 전환",
+      "키보드 오류"
+    ],
+    "summary": "아이폰에 블루투스 키보드를 연결해 Jump Desktop으로 맥북을 원격 제어할 때 로그인 암호가 입력되지 않거나 cmd 키가 눌린 상태로 인식되는 문제는 주로 한영 전환 상태 불일치 때문이며, 영문 입력 상태로 맞추는 것이 핵심 해결책으로 제시됐다.",
+    "category": "테크",
+    "cover": "",
+    "coverWord": "Jump Desktop"
+  },
+  {
     "id": "scrap-20261127-mole-mac-cleanup-tool",
     "title": "Mole: 맥 저장공간을 정리하는 무료 오픈소스 터미널 도구",
     "file": "cards/scrap-20261127-mole-mac-cleanup-tool.html",
