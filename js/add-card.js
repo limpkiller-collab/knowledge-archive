@@ -8,7 +8,7 @@
   var MAX_FILES = 12;
   var MAX_FILE_BYTES = 25 * 1024 * 1024;
   var NEW = '__new__';
-  var d, fab, busy = false;
+  var d, fab, toastEl, toastTimer, busy = false;
 
   var css = ''
     + '.ac-fab{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:40;width:56px;height:56px;'
@@ -31,7 +31,11 @@
     + '.ac-actions button{min-height:44px;padding:0 18px;border:1px solid var(--rule);background:transparent;color:inherit;'
     + 'font:inherit;font-size:14px;font-weight:700;cursor:pointer}'
     + '.ac-actions .ac-primary{background:var(--text);color:var(--bg)}'
-    + '.ac-actions button:disabled{opacity:.5;cursor:default}';
+    + '.ac-actions button:disabled{opacity:.5;cursor:default}'
+    + '.ac-toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:60;'
+    + 'width:max-content;max-width:calc(100vw - 32px);box-sizing:border-box;padding:12px 16px;background:var(--text);color:var(--bg);'
+    + 'font-size:14px;font-weight:700;line-height:1.5}'
+    + '.ac-toast[hidden]{display:none}';
 
   function $(sel) { return d.querySelector(sel); }
 
@@ -39,6 +43,13 @@
     var el = $('.ac-status');
     el.textContent = msg || '';
     el.className = 'ac-status' + (isError ? ' error' : '');
+  }
+
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.hidden = true; }, 6000);
   }
 
   function getToken() {
@@ -155,7 +166,9 @@
     work.then(function () {
       $('form').reset();
       $('#ac-new-category').hidden = true;
-      status('보냈습니다. 1~2분 뒤 카드가 만들어지고 알림이 옵니다. 새로고침하면 목록에 나타납니다.');
+      status('');
+      d.close();
+      toast('보냈습니다. 1~2분 뒤 카드가 만들어지고 알림이 옵니다.');
     }).catch(function (err) {
       status(err && err.shown ? err.message : '보내지 못했습니다. 연결을 확인해 주세요.', true);
     }).then(function () {
@@ -198,6 +211,12 @@
     fab.innerHTML = '<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><path d="M12 5v14M5 12h14"></path></svg>';
     fab.addEventListener('click', open);
     document.body.appendChild(fab);
+
+    toastEl = document.createElement('div');
+    toastEl.className = 'ac-toast';
+    toastEl.setAttribute('role', 'status');
+    toastEl.hidden = true;
+    document.body.appendChild(toastEl);
 
     d = document.createElement('dialog');
     d.className = 'ac-dialog';
