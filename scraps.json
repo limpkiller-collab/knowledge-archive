@@ -1,25 +1,5 @@
 [
   {
-    "id": "scrap-20261128-mac-right-command-hangul-key",
-    "title": "맥북 오른쪽 커맨드키를 한영 전환키로 바꾸는 방법",
-    "file": "cards/scrap-20261128-mac-right-command-hangul-key.html",
-    "date": "2026-11-28",
-    "source": "sudoSoooooo",
-    "sourceUrl": "https://soobysu.tistory.com/175",
-    "sourceType": "article",
-    "tags": [
-      "macOS",
-      "한영전환",
-      "키매핑",
-      "hidutil",
-      "터미널"
-    ],
-    "summary": "터미널에서 hidutil 키 매핑 스크립트와 LaunchAgent를 등록해 오른쪽 커맨드키를 F18로 바꾼 뒤, 입력 소스 전환 단축키로 지정해 한영키처럼 쓰는 방법을 정리한 글이다.",
-    "category": "테크",
-    "cover": "covers/scrap-20261128-mac-right-command-hangul-key.jpg",
-    "coverWord": "한영키"
-  },
-  {
     "id": "scrap-20261128-jump-desktop-keyboard-input-fix",
     "title": "Jump Desktop으로 아이폰에서 맥 원격 접속 시 키보드 입력 오류와 해결법",
     "file": "cards/scrap-20261128-jump-desktop-keyboard-input-fix.html",
