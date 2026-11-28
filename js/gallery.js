@@ -29,7 +29,10 @@
     + '.kg-slide{flex:0 0 100%;height:100%;scroll-snap-align:center;scroll-snap-stop:always;display:flex;align-items:center;justify-content:center}'
     + '.kg-slide img{width:100%;height:100%;object-fit:contain;display:block;margin:0}'
     + '.kg-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%;'
-    + 'background:rgba(255,255,255,.92);color:#111;font-size:22px;line-height:1;cursor:pointer;display:none;align-items:center;justify-content:center;padding:0}'
+    + 'background:rgba(255,255,255,.92);color:#111;font-size:22px;line-height:1;cursor:pointer;display:none;align-items:center;justify-content:center;padding:0;'
+    // 평소에는 옅게 두어 사진 속 글을 가리지 않고, 마우스를 올리거나 초점이 가면 또렷해진다.
+    + 'opacity:.28;box-shadow:0 0 0 1px rgba(0,0,0,.3);transition:opacity .15s}'
+    + '.kg-nav:hover,.kg-nav:focus-visible{opacity:1}'
     + '.kg-prev{left:10px}.kg-next{right:10px}'
     + '@media (hover:hover){.kg-nav{display:flex}}'
     + '.kg-nav[hidden]{display:none}'
