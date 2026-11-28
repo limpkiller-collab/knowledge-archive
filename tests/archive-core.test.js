@@ -67,3 +67,26 @@ test('cardKey와 editManifest', () => {
   assert.deepStrictEqual(before.a, ['x.jpg']);
   assert.deepStrictEqual(core.editManifest(after, 'b', [], ['y.jpg']), { a: ['x.jpg', 'z.jpg'] });
 });
+
+test('filterCards: 즐겨찾기만 보기는 별표한 카드만 남기고 다른 조건과 함께 적용된다', () => {
+  const all = core.mergeCards(manual, scraps);
+  const base = { category: 'all', type: 'all', tag: 'all', series: 'all', read: 'all', query: '' };
+  assert.deepEqual(core.filterCards(all, { ...base, starred: true }, {}, { a: true, s1: true }).map((c) => c.id), ['s1', 'a']);
+  assert.deepEqual(core.filterCards(all, { ...base, starred: true, category: '패션' }, {}, { a: true, s1: true }).map((c) => c.id), ['s1']);
+  assert.equal(core.filterCards(all, { ...base, starred: true }, {}, undefined).length, 0);
+  assert.equal(core.filterCards(all, base, {}, { a: true }).length, 3);
+});
+
+test('tagCounts·pickTags: 많이 쓴 태그를 먼저 고르고, 검색하면 추천에 없는 태그도 찾는다', () => {
+  const cards = [
+    { category: '경제·투자', tags: ['투자', '금리'] }, { category: '경제·투자', tags: ['투자', 'ETF'] },
+    { category: '패션', tags: ['코트', '투자'] }, { category: '패션', tags: [] }
+  ];
+  const counts = core.tagCounts(cards, 'all');
+  assert.deepEqual(counts[0], { tag: '투자', count: 3 });
+  assert.deepEqual(core.pickTags(counts, '', 1).map((c) => c.tag), ['투자']);
+  assert.equal(core.pickTags(counts, '', 3).length, 3);
+  assert.deepEqual(core.pickTags(counts, '#코', 2).map((c) => c.tag), ['코트']);
+  assert.deepEqual(core.pickTags(counts, 'etf', 2).map((c) => c.tag), ['ETF']);
+  assert.deepEqual(core.tagCounts(cards, '패션').map((c) => c.tag), ['코트', '투자']);
+});

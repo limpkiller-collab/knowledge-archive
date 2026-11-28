@@ -86,38 +86,25 @@
 
     /* ===== MAIN ===== */
     .main { margin-left: 250px; padding: 28px 40px 64px; }
-    .inner { max-width: 1040px; display: flex; flex-direction: column; gap: 28px; }
-    .masthead {
-      display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px;
-      border-bottom: 1px solid var(--rule); padding-bottom: 12px; font-size: 13px; color: var(--text-sec);
-    }
+    .inner { max-width: 1040px; display: flex; flex-direction: column; gap: 16px; }
+    [hidden] { display: none !important; }
     .search {
-      margin-left: auto; display: flex; align-items: center; gap: 8px;
-      border-bottom: 1px solid var(--rule); height: 44px; color: var(--text);
+      display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 14px;
+      border: 1px solid var(--rule); color: var(--text);
     }
+    .search:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
     .search input {
-      width: 220px; max-width: 60vw; border: 0; background: transparent; outline: none;
-      font: inherit; font-size: 14px; color: var(--text);
+      flex: 1; min-width: 0; border: 0; background: transparent; outline: none;
+      font: inherit; font-size: 16px; color: var(--text);
     }
     .search input::placeholder { color: var(--text-sec); }
-
-    .lead-row { display: flex; flex-wrap: wrap; gap: 40px; }
-    .lead { flex: 999 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 16px; text-decoration: none; }
-    .kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--accent); }
-    .lead-title { font-size: 42px; font-weight: 900; line-height: 1.2; letter-spacing: -0.04em; }
-    .lead:hover .lead-title { color: var(--accent); }
-    .lead-summary { font-size: 17px; line-height: 1.75; color: var(--text-sec); max-width: 600px; }
-    .lead-more {
-      font-size: 14px; font-weight: 700; min-height: 44px; display: inline-flex; align-items: center;
-      border-top: 1px solid var(--rule); border-bottom: 1px solid var(--border);
-    }
-    .recent { flex: 1 1 300px; min-width: 0; }
-    .recent h2 { font-size: 14px; font-weight: 900; padding-bottom: 10px; border-bottom: 2px solid var(--rule); }
-    .recent-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); text-decoration: none; }
-    .recent-item:hover .recent-title { color: var(--accent); }
-    .recent-no { font-size: 22px; font-weight: 900; color: var(--text-sec); line-height: 1.2; width: 30px; flex: none; }
-    .recent-title { font-size: 15px; font-weight: 700; line-height: 1.45; display: block; margin-top: 4px; }
     .item-meta { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--text-sec); }
+
+    /* 최근 추가: 접어 두는 작은 목록 */
+    .recent-item { display: flex; align-items: baseline; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--border); text-decoration: none; }
+    .recent-item:hover .recent-title { color: var(--accent); }
+    .recent-item .item-meta { flex: none; }
+    .recent-title { font-size: 14px; font-weight: 700; line-height: 1.4; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* ===== LIST HEAD & FILTERS ===== */
     .section-head {
@@ -125,8 +112,8 @@
       border-top: 4px solid var(--rule); padding-top: 10px;
     }
     .section-head h2 { font-size: 14px; font-weight: 900; }
-    .active-filters { font-size: 13px; color: var(--accent); font-weight: 700; }
-    .head-tools { margin-left: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; }
+    .read-tabs { margin-left: auto; display: flex; gap: 16px; }
+    .text-tab[aria-pressed="true"] { font-weight: 900; color: var(--accent); border-bottom-color: var(--accent); }
     .text-tab {
       min-height: 44px; background: none; border: 0; border-bottom: 2px solid transparent;
       font-size: 13px; color: var(--text-sec);
@@ -136,13 +123,35 @@
     .view-toggle button { min-height: 44px; padding: 0 16px; border: 0; background: var(--bg); font-size: 13px; font-weight: 500; }
     .view-toggle button[aria-pressed="true"] { background: var(--rule); color: var(--bg); font-weight: 900; }
 
-    .filters { display: flex; flex-direction: column; }
-    .filters details { border-bottom: 1px solid var(--border); }
-    .filters summary { min-height: 44px; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; cursor: pointer; }
-    .chip-row { display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 0 14px; max-height: 190px; overflow-y: auto; }
-    .chip { min-height: 32px; padding: 0 10px; background: none; border: 1px solid var(--border); font-size: 12px; color: var(--text-sec); }
+    .tag-bar { display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+    .bar-label { flex: none; font-size: 13px; font-weight: 700; line-height: 32px; }
+    .tag-chips { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; gap: 6px; max-height: 110px; overflow-y: auto; }
+    .tag-none { font-size: 12px; color: var(--text-sec); line-height: 32px; }
+    .tag-search {
+      flex: none; width: 150px; height: 32px; padding: 0 10px; border: 1px solid var(--border); border-radius: 0;
+      background: var(--bg); color: var(--text); font: inherit; font-size: 13px; -webkit-appearance: none; appearance: none;
+    }
+    .tag-search:focus { border-color: var(--rule); }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 0 12px; max-height: 190px; overflow-y: auto; border-bottom: 1px solid var(--border); }
+    .chip { flex: none; min-height: 32px; padding: 0 10px; background: none; border: 1px solid var(--border); font-size: 12px; color: var(--text-sec); white-space: nowrap; }
     .chip:hover { border-color: var(--rule); color: var(--text); }
     .chip.active { background: var(--rule); border-color: var(--rule); color: var(--bg); font-weight: 700; }
+    .chip-count { margin-left: 4px; opacity: 0.7; }
+    .active-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .active-chip {
+      display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 8px 0 10px; max-width: 100%;
+      background: var(--surface); border: 1px solid var(--rule); font-size: 12px; font-weight: 700;
+    }
+    .active-chip span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .active-chip:hover { border-color: var(--accent); color: var(--accent); }
+    .reset-btn { min-height: 32px; padding: 0 4px; margin-left: auto; background: none; border: 0; font-size: 12px; font-weight: 700; text-decoration: underline; color: var(--text-sec); }
+    .reset-btn:hover { color: var(--accent); }
+    .fold-row { display: flex; gap: 20px; border-bottom: 1px solid var(--border); }
+    .fold-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0; background: none; border: 0; font-size: 13px; font-weight: 700; }
+    .fold-btn::before { content: '▸'; font-size: 11px; color: var(--text-sec); }
+    .fold-btn[aria-expanded="true"]::before { content: '▾'; }
+    .fold-panel { border-bottom: 1px solid var(--border); }
+    .fold-panel .recent-item:last-child { border-bottom: 0; }
     .series-banner {
       display: none; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rule);
     }
@@ -152,7 +161,7 @@
 
     /* ===== CARDS ===== */
     .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 0 32px; }
-    .ka-card { display: flex; flex-direction: column; border-bottom: 1px solid var(--border); padding: 18px 0 6px; min-width: 0; }
+    .ka-card { position: relative; display: flex; flex-direction: column; border-bottom: 1px solid var(--border); padding: 18px 0 6px; min-width: 0; }
     .card-link { display: flex; flex-direction: column; gap: 8px; text-decoration: none; }
     .card-title { font-size: 19px; font-weight: 900; line-height: 1.4; letter-spacing: -0.03em; }
     .card-link:hover .card-title { color: var(--accent); }
@@ -210,29 +219,76 @@
     .card-grid.view-grid .ka-card.is-read .card-cover { opacity: 0.55; }
     .card-grid.view-grid .card-link:hover .card-cover { outline: 3px solid var(--accent); outline-offset: -3px; }
 
+    /* 즐겨찾기 별표 */
+    .star-btn { flex: none; display: flex; align-items: center; justify-content: center; width: 40px; height: 44px; padding: 0; background: none; border: 0; color: var(--text-sec); }
+    .star-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
+    .star-btn:hover { color: var(--text); }
+    .star-btn.on { color: var(--accent); }
+    .star-btn.on svg { fill: currentColor; }
+    .card-grid.view-card .star-btn, .card-grid.view-grid .star-btn {
+      position: absolute; top: 4px; right: 4px; z-index: 2; width: 32px; height: 32px; background: rgba(0,0,0,0.55); color: #ffffff;
+    }
+    .card-grid.view-card .star-btn.on, .card-grid.view-grid .star-btn.on { color: #ffd54a; }
+    .card-grid.view-card .cover-video, .card-grid.view-grid .cover-video { top: 10px; right: 42px; }
+    @media (hover: hover) {
+      .card-grid.view-grid .star-btn:not(.on) { opacity: 0; }
+      .card-grid.view-grid .ka-card:hover .star-btn, .card-grid.view-grid .star-btn:focus-visible { opacity: 1; }
+    }
+
+    /* 리스트: 한 줄에 제목과 핵심 정보만 */
+    .card-grid.view-list { display: block; }
+    .card-grid.view-list .ka-card { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; padding: 0; }
+    .card-grid.view-list .card-link { gap: 1px; padding: 9px 0; min-width: 0; }
+    .card-grid.view-list .card-title { order: 1; font-size: 15px; line-height: 1.45; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card-grid.view-list .item-meta { order: 2; font-weight: 500; letter-spacing: 0; }
+    .card-grid.view-list .card-summary { display: none; }
+    .card-grid.view-list .card-foot { margin: 0; padding: 0 0 0 16px; min-height: 0; }
+    .card-grid.view-list .card-tags, .card-grid.view-list .series-link { max-width: 240px; }
+    .read-check { display: none; }
+
     .empty-state { display: none; padding: 56px 0; text-align: center; color: var(--text-sec); font-size: 15px; }
+    .empty-state .reset-btn { display: block; margin: 8px auto 0; font-size: 14px; min-height: 44px; }
 
     @media (max-width: 760px) {
-      .sidebar { position: static; width: auto; border-right: 0; border-bottom: 1px solid var(--rule); padding: 20px 20px 12px; overflow: visible; }
-      .brand { font-size: 22px; padding-bottom: 12px; }
+      /* 모바일은 한 줄 세로 흐름으로 다시 줄 세운다: 이름 → 검색 → 분류·형식 → 목록 → 읽음 현황 */
+      body { display: flex; flex-direction: column; padding: 0 20px 96px; position: relative; }
+      .sidebar, .main, .inner, .sidebar-foot { display: contents; }
+      .brand { order: 1; font-size: 22px; line-height: 44px; padding: 8px 0 0; border-bottom: 0; }
       .brand br { display: none; }
-      .nav-label { padding: 12px 0 0; }
-      .sidebar-nav { display: flex; gap: 18px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .tool-row { position: absolute; top: 8px; right: 20px; }
+      .tool-btn { padding: 0 10px; }
+      .masthead { order: 2; margin: 4px 0 4px; }
+      .nav-label { display: none; }
+      .sidebar-nav { order: 3; display: flex; gap: 18px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; flex: none; }
+      .sidebar-nav::-webkit-scrollbar { display: none; }
+      #typeNav { order: 4; border-top: 1px solid var(--border); }
       .nav-item { width: auto; flex: none; border-bottom: 0; white-space: nowrap; gap: 6px; }
       .nav-count { margin-left: 0; }
-      .sidebar-foot { flex-direction: row; align-items: center; justify-content: space-between; padding-top: 8px; }
-      .read-progress { flex: 1; }
-      .main { margin-left: 0; padding: 20px 20px 48px; }
-      .lead-title { font-size: 30px; }
-      .lead-row { gap: 28px; }
-      .search { margin-left: 0; width: 100%; }
-      .search input { width: 100%; max-width: none; }
-      .head-tools { margin-left: 0; width: 100%; justify-content: space-between; }
+      .list-section { order: 5; margin-top: 4px; }
+      .read-progress { order: 6; margin-top: 32px; }
+      .section-head .view-toggle { order: 2; margin-left: auto; }
+      .read-tabs { order: 3; width: 100%; margin-left: 0; }
+      .text-tab { min-height: 40px; }
+      .tag-bar { align-items: center; }
+      .bar-label { display: none; }
+      .tag-chips { order: 2; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; max-height: none; scrollbar-width: none; }
+      .tag-chips::-webkit-scrollbar { display: none; }
+      .tag-search { order: 1; width: 104px; font-size: 16px; }
       .card-grid.view-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0 -20px; }
       .card-grid.view-card { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px; }
       .cover-title { font-size: 11px; }
       .card-grid.view-card .card-title { font-size: 15px; }
-      .view-toggle button { padding: 0 12px; }
+      .view-toggle button { padding: 0 12px; min-height: 40px; }
+      .card-grid.view-list .ka-card { grid-template-columns: 36px minmax(0, 1fr) auto; }
+      .card-grid.view-list .star-btn { width: 36px; justify-content: flex-start; }
+      .card-grid.view-list .card-title {
+        white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      }
+      .card-grid.view-list .card-foot { padding-left: 8px; }
+      .card-grid.view-list .card-tags, .card-grid.view-list .series-link, .card-grid.view-list .del-btn { display: none; }
+      .card-grid.view-list .read-btn { width: 36px; min-height: 36px; padding: 0; }
+      .card-grid.view-list .read-label { display: none; }
+      .card-grid.view-list .read-check { display: inline; }
     }
 
     /* ============================
@@ -343,50 +399,46 @@
   <main class="main" id="main">
     <div class="inner">
       <header class="masthead">
-        <span>하나의 지식, 하나의 페이지 · 직접 정리한 카드와 보낸 링크가 한곳에 쌓입니다</span>
         <label class="search">
-          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
-          <input type="text" id="searchInput" placeholder="제목·태그·키워드 검색" aria-label="지식 검색">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+          <input type="search" id="searchInput" placeholder="제목·태그·키워드로 저장한 자료 찾기" aria-label="지식 검색" autocomplete="off">
         </label>
       </header>
 
-      <div class="lead-row" id="leadRow">
-        <a class="lead" id="leadCard" href="#"></a>
-        <aside class="recent" aria-label="최근 추가">
-          <h2>최근 추가</h2>
-          <div id="recentList"></div>
-        </aside>
-      </div>
-
-      <section aria-label="전체 카드" style="display:flex;flex-direction:column;gap:4px;">
+      <section aria-label="자료 목록" class="list-section" style="display:flex;flex-direction:column;">
         <div class="section-head">
           <h2 id="listTitle">전체 카드</h2>
-          <span class="item-meta" id="resultsCount">0장</span>
-          <span class="active-filters" id="activeFilters"></span>
-          <div class="head-tools">
-            <div role="group" aria-label="읽음 필터" style="display:flex;gap:16px;">
-              <button type="button" class="text-tab active" id="readTab-all" onclick="filterRead('all')">전체</button>
-              <button type="button" class="text-tab" id="readTab-unread" onclick="filterRead('unread')">미읽음</button>
-              <button type="button" class="text-tab" id="readTab-read" onclick="filterRead('read')">읽음</button>
-            </div>
-            <div class="view-toggle" role="group" aria-label="보기 방식">
-              <button type="button" id="viewBtn-list" aria-pressed="true" onclick="setView('list')">리스트</button>
-              <button type="button" id="viewBtn-card" aria-pressed="false" onclick="setView('card')">카드</button>
-              <button type="button" id="viewBtn-grid" aria-pressed="false" onclick="setView('grid')">그리드</button>
-            </div>
+          <span class="item-meta" id="resultsCount" aria-live="polite">0장</span>
+          <div class="read-tabs" role="group" aria-label="읽음·즐겨찾기 필터">
+            <button type="button" class="text-tab active" id="readTab-all" onclick="filterRead('all')">전체</button>
+            <button type="button" class="text-tab" id="readTab-unread" onclick="filterRead('unread')">미읽음</button>
+            <button type="button" class="text-tab" id="readTab-read" onclick="filterRead('read')">읽음</button>
+            <button type="button" class="text-tab" id="starTab" aria-pressed="false" onclick="toggleStarFilter()">★ 즐겨찾기</button>
+          </div>
+          <div class="view-toggle" role="group" aria-label="보기 방식">
+            <button type="button" id="viewBtn-list" aria-pressed="true" onclick="setView('list')">리스트</button>
+            <button type="button" id="viewBtn-card" aria-pressed="false" onclick="setView('card')">카드</button>
+            <button type="button" id="viewBtn-grid" aria-pressed="false" onclick="setView('grid')">그리드</button>
           </div>
         </div>
 
-        <div class="filters">
-          <details id="tagDetails">
-            <summary>태그 <span class="item-meta" id="tagSummary"></span></summary>
-            <div class="chip-row" id="tagFilters"></div>
-          </details>
-          <details id="seriesDetails">
-            <summary>시리즈 <span class="item-meta" id="seriesSummary"></span></summary>
-            <div class="chip-row" id="seriesFilters"></div>
-          </details>
+        <div class="tag-bar">
+          <span class="bar-label">태그</span>
+          <div class="tag-chips" id="tagFilters" role="group" aria-label="자주 쓴 태그"></div>
+          <input type="search" class="tag-search" id="tagSearch" placeholder="태그 검색" aria-label="태그 검색" autocomplete="off">
         </div>
+
+        <div class="active-row" id="activeRow" hidden>
+          <span id="activeChips" style="display:contents"></span>
+          <button type="button" class="reset-btn" onclick="resetFilters()">필터 초기화</button>
+        </div>
+
+        <div class="fold-row" id="fold-row-el">
+          <button type="button" class="fold-btn" id="seriesToggle" aria-expanded="false" aria-controls="seriesFilters" onclick="toggleFold('series')">시리즈 <span class="item-meta" id="seriesSummary"></span></button>
+          <button type="button" class="fold-btn" id="recentToggle" aria-expanded="false" aria-controls="recentList" onclick="toggleFold('recent')">최근 추가</button>
+        </div>
+        <div class="chip-row" id="seriesFilters" hidden></div>
+        <div class="fold-panel" id="recentList" hidden></div>
 
         <div class="series-banner" id="seriesBanner">
           <div>
@@ -397,7 +449,7 @@
         </div>
 
         <div class="card-grid" id="cardGrid" role="list" aria-label="지식 카드 목록"></div>
-        <div class="empty-state" id="emptyState">조건에 맞는 카드가 없습니다.</div>
+        <div class="empty-state" id="emptyState">조건에 맞는 카드가 없습니다.<button type="button" class="reset-btn" onclick="resetFilters()">필터 초기화</button></div>
       </section>
     </div>
   </main>
@@ -2003,6 +2055,10 @@
     var activeType       = 'all';
     var activeView       = 'grid';
     var readStatus       = {};
+    var starred          = {};   // 즐겨찾기 별표 (이 기기의 브라우저에 저장)
+    var starOnly         = false;
+    var tagQuery         = '';
+    var foldOpen         = { series: false, recent: false };
     var CATEGORIES       = [];
     var ALL_CARDS        = ArchiveCore.mergeCards(KNOWLEDGE_DB, []);
     try {
@@ -2013,6 +2069,17 @@
     function byId(id) { return document.getElementById(id); }
     function jsStr(s) { return String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'"); }
     function attr(s) { return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;'); }
+
+    // ============ 즐겨찾기 ============
+    function loadStarred() {
+      try { starred = JSON.parse(localStorage.getItem('ka-starred') || '{}') || {}; } catch (e) { starred = {}; }
+    }
+    function toggleStar(id) {
+      if (starred[id]) delete starred[id]; else starred[id] = true;
+      try { localStorage.setItem('ka-starred', JSON.stringify(starred)); } catch (e) {}
+      renderCards();
+    }
+    function toggleStarFilter() { starOnly = !starOnly; renderCards(); }
 
     // ============ READ STATUS ============
     function loadReadStatus() {
@@ -2045,19 +2112,42 @@
     }
 
     // ============ FILTER ACTIONS ============
-    function filterRead(val) {
-      activeReadFilter = val;
-      ['all', 'unread', 'read'].forEach(function (v) {
-        byId('readTab-' + v).className = 'text-tab' + (v === val ? ' active' : '');
-      });
-      renderCards();
-    }
+    function filterRead(val) { activeReadFilter = val; renderCards(); }
     function filterCategory(cat) {
       activeCategory = cat; activeTag = 'all'; activeSeries = 'all';
       renderNav(); renderTagFilters(); renderSeriesFilters(); renderCards();
     }
     function filterType(t) { activeType = t; renderNav(); renderCards(); }
-    function filterTag(tag) { activeTag = tag; renderTagFilters(); renderCards(); }
+    function filterTag(tag) { activeTag = (tag === activeTag) ? 'all' : tag; renderTagFilters(); renderCards(); }
+    // 결과 위 칩에서 조건 하나만 푼다. 다른 조건은 그대로 둔다.
+    function clearFilter(kind) {
+      if (kind === 'category') activeCategory = 'all';
+      if (kind === 'type') activeType = 'all';
+      if (kind === 'tag') activeTag = 'all';
+      if (kind === 'series') activeSeries = 'all';
+      if (kind === 'read') activeReadFilter = 'all';
+      if (kind === 'star') starOnly = false;
+      if (kind === 'query') { searchQuery = ''; byId('searchInput').value = ''; }
+      renderNav(); renderTagFilters(); renderSeriesFilters(); renderCards();
+    }
+    // 탐색 조건만 처음으로 되돌린다. 저장해 둔 별표와 읽음 표시는 건드리지 않는다.
+    function resetFilters() {
+      activeCategory = 'all'; activeType = 'all'; activeTag = 'all'; activeSeries = 'all';
+      activeReadFilter = 'all'; starOnly = false; searchQuery = ''; tagQuery = '';
+      byId('searchInput').value = ''; byId('tagSearch').value = '';
+      renderNav(); renderTagFilters(); renderSeriesFilters(); renderCards();
+    }
+    function toggleFold(name) {
+      foldOpen[name] = !foldOpen[name];
+      try { localStorage.setItem('ka-fold', JSON.stringify(foldOpen)); } catch (e) {}
+      renderFolds();
+    }
+    function renderFolds() {
+      byId('seriesToggle').setAttribute('aria-expanded', String(foldOpen.series));
+      byId('seriesFilters').hidden = !foldOpen.series;
+      byId('recentToggle').setAttribute('aria-expanded', String(foldOpen.recent));
+      byId('recentList').hidden = !foldOpen.recent || byId('recentToggle').hidden;
+    }
     function filterSeries(s) { activeSeries = s; renderSeriesFilters(); renderCards(); }
     function setView(v) {
       activeView = v;
@@ -2066,9 +2156,9 @@
     }
     function currentFilter() {
       return { category: activeCategory, type: activeType, tag: activeTag,
-               series: activeSeries, read: activeReadFilter, query: searchQuery };
+               series: activeSeries, read: activeReadFilter, query: searchQuery, starred: starOnly };
     }
-    function filterCards() { return ArchiveCore.filterCards(ALL_CARDS, currentFilter(), readStatus); }
+    function filterCards() { return ArchiveCore.filterCards(ALL_CARDS, currentFilter(), readStatus, starred); }
 
     // ============ SIDEBAR ============
     function navButton(label, count, active, onclick) {
@@ -2095,21 +2185,17 @@
     }
 
     // ============ TAG & SERIES FILTERS ============
+    var TOP_TAGS = 8;
     function renderTagFilters() {
-      var tagSet = {};
-      ALL_CARDS.forEach(function (k) {
-        if (activeCategory !== 'all' && k.category !== activeCategory) return;
-        (k.tags || []).forEach(function (t) { tagSet[t] = true; });
-      });
-      var tags = Object.keys(tagSet).sort();
-      if (activeTag !== 'all' && !tagSet[activeTag]) activeTag = 'all';
-      var html = '<button type="button" class="chip' + (activeTag === 'all' ? ' active' : '') + '" onclick="filterTag(\'all\')">전체</button>';
-      tags.forEach(function (tag) {
-        html += '<button type="button" class="chip' + (activeTag === tag ? ' active' : '')
-          + '" onclick="filterTag(\'' + attr(jsStr(tag)) + '\')">#' + tag + '</button>';
-      });
-      byId('tagFilters').innerHTML = html;
-      byId('tagSummary').textContent = activeTag === 'all' ? tags.length + '개' : '#' + activeTag;
+      var counts = ArchiveCore.tagCounts(ALL_CARDS, activeCategory);
+      if (activeTag !== 'all' && !counts.some(function (c) { return c.tag === activeTag; })) activeTag = 'all';
+      var shown = ArchiveCore.pickTags(counts, tagQuery, TOP_TAGS);
+      byId('tagFilters').innerHTML = shown.length ? shown.map(function (c) {
+        var on = activeTag === c.tag;
+        return '<button type="button" class="chip' + (on ? ' active' : '') + '" aria-pressed="' + on + '"'
+          + ' onclick="filterTag(\'' + attr(jsStr(c.tag)) + '\')">#' + c.tag + '<span class="chip-count">' + c.count + '</span></button>';
+      }).join('') : '<span class="tag-none">일치하는 태그가 없습니다</span>';
+      byId('tagSearch').placeholder = '태그 검색 (' + counts.length + '개)';
     }
 
       var SERIES_META = {
@@ -2126,14 +2212,14 @@
       var seriesMap = {};
       ALL_CARDS.forEach(function (k) { if (k.series) seriesMap[k.series] = (seriesMap[k.series] || 0) + 1; });
       var list = Object.keys(seriesMap);
-      byId('seriesDetails').style.display = list.length ? '' : 'none';
+      byId('seriesToggle').hidden = !list.length;
       var html = '<button type="button" class="chip' + (activeSeries === 'all' ? ' active' : '') + '" onclick="filterSeries(\'all\')">전체</button>';
       list.forEach(function (s) {
         html += '<button type="button" class="chip' + (activeSeries === s ? ' active' : '')
           + '" onclick="filterSeries(\'' + attr(jsStr(s)) + '\')">' + s + ' ' + seriesMap[s] + '</button>';
       });
       byId('seriesFilters').innerHTML = html;
-      byId('seriesSummary').textContent = activeSeries === 'all' ? list.length + '개' : activeSeries;
+      byId('seriesSummary').textContent = list.length + '개';
 
       var banner = byId('seriesBanner');
       if (activeSeries !== 'all') {
@@ -2150,19 +2236,10 @@
     function metaLine(k) {
       return k.category + ' · ' + ArchiveCore.typeLabel(k.sourceType) + ' · ' + k.date;
     }
-    function renderLead() {
-      var lead = ALL_CARDS[0];
-      if (!lead) return;
-      var el = byId('leadCard');
-      el.href = lead.file;
-      el.innerHTML = '<span class="kicker">최신 · ' + metaLine(lead) + '</span>'
-        + '<span class="lead-title">' + lead.title + '</span>'
-        + '<span class="lead-summary">' + lead.summary + '</span>'
-        + '<span class="lead-more">카드 열기</span>';
-      byId('recentList').innerHTML = ALL_CARDS.slice(1, 6).map(function (k, i) {
-        return '<a class="recent-item" href="' + k.file + '"><span class="recent-no">' + (i + 1) + '</span>'
-          + '<span><span class="item-meta">' + metaLine(k) + '</span>'
-          + '<span class="recent-title">' + k.title + '</span></span></a>';
+    function renderRecent() {
+      byId('recentList').innerHTML = ALL_CARDS.slice(0, 5).map(function (k) {
+        return '<a class="recent-item" href="' + k.file + '"><span class="item-meta">' + k.date.slice(5) + '</span>'
+          + '<span class="recent-title">' + k.title + '</span></a>';
       }).join('');
     }
     function renderStats() {
@@ -2171,7 +2248,7 @@
       byId('readCount').textContent = read;
       byId('totalCount').textContent = total;
       byId('readProgress').style.width = (total ? Math.round(read / total * 100) : 0) + '%';
-      renderLead();
+      renderRecent();
     }
 
     // ============ CARDS ============
@@ -2198,45 +2275,68 @@
         + '<span class="cover-label" aria-hidden="true">' + k.category + '</span>'
         + '<span class="cover-word' + (cv.word.length > 4 ? ' is-long' : '') + '" aria-hidden="true">' + cv.word + '</span>' + tail;
     }
+    var STAR_SVG = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3.6l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z"></path></svg>';
+    function activeChip(label, kind) {
+      return '<button type="button" class="active-chip" onclick="clearFilter(\'' + kind + '\')" aria-label="' + attr(label) + ' 조건 해제">'
+        + '<span>' + label + '</span><span aria-hidden="true">✕</span></button>';
+    }
+    function renderActive() {
+      var chips = [];
+      if (searchQuery) chips.push(activeChip('검색: ' + attr(searchQuery).replace(/</g, '&lt;'), 'query'));
+      if (activeCategory !== 'all') chips.push(activeChip(activeCategory, 'category'));
+      if (activeType !== 'all') chips.push(activeChip(ArchiveCore.typeLabel(activeType), 'type'));
+      if (activeTag !== 'all') chips.push(activeChip('#' + activeTag, 'tag'));
+      if (activeSeries !== 'all') chips.push(activeChip(activeSeries, 'series'));
+      if (activeReadFilter !== 'all') chips.push(activeChip(activeReadFilter === 'read' ? '읽음' : '미읽음', 'read'));
+      if (starOnly) chips.push(activeChip('★ 즐겨찾기', 'star'));
+      byId('activeChips').innerHTML = chips.join('');
+      byId('activeRow').hidden = !chips.length;
+      return chips.length > 0;
+    }
     function renderCards() {
       var filtered = filterCards();
       var grid = byId('cardGrid');
-      var f = currentFilter();
-      var narrowed = f.category !== 'all' || f.type !== 'all' || f.tag !== 'all' || f.series !== 'all' || !!f.query;
 
       grid.innerHTML = filtered.map(function (k) {
         var isRead = !!readStatus[k.id];
+        var isStar = !!starred[k.id];
+        var id = attr(jsStr(k.id));
         var tags = (k.tags || []).slice(0, 3).map(function (t) { return '#' + t; }).join(' ');
         var series = k.series
           ? '<button type="button" class="series-link" onclick="filterSeries(\'' + attr(jsStr(k.series)) + '\')">' + k.series + '</button>'
           : '<span class="card-tags">' + tags + '</span>';
         return '<article class="ka-card' + (isRead ? ' is-read' : '') + '" role="listitem">'
+          + '<button type="button" class="star-btn' + (isStar ? ' on' : '') + '" onclick="toggleStar(\'' + id + '\')" aria-pressed="' + isStar + '"'
+          + ' aria-label="' + (isStar ? '즐겨찾기 해제' : '즐겨찾기에 추가') + '">' + STAR_SVG + '</button>'
           + '<a class="card-link" href="' + k.file + '">' + coverHtml(k)
           + '<span class="item-meta">' + metaLine(k) + '</span>'
           + '<span class="card-title">' + k.title + '</span>'
           + '<span class="card-summary">' + k.summary + '</span></a>'
           + '<div class="card-foot">' + series
           + (k.sourceType !== 'manual'
-            ? '<button type="button" class="del-btn" onclick="deleteCard(\'' + attr(jsStr(k.id)) + '\')">삭제</button>' : '')
-          + '<button type="button" class="read-btn" onclick="toggleRead(\'' + attr(jsStr(k.id)) + '\')" aria-pressed="' + isRead + '">'
-          + (isRead ? '읽음 ✓' : '읽음 표시') + '</button></div></article>';
+            ? '<button type="button" class="del-btn" onclick="deleteCard(\'' + id + '\')">삭제</button>' : '')
+          + '<button type="button" class="read-btn" onclick="toggleRead(\'' + id + '\')" aria-pressed="' + isRead + '"'
+          + ' aria-label="' + (isRead ? '읽음 해제' : '읽음 표시') + '"><span class="read-check" aria-hidden="true">✓</span>'
+          + '<span class="read-label">' + (isRead ? '읽음 ✓' : '읽음 표시') + '</span></button></div></article>';
       }).join('');
 
       ['list', 'card', 'grid'].forEach(function (v) {
         grid.classList.toggle('view-' + v, activeView === v);
         byId('viewBtn-' + v).setAttribute('aria-pressed', String(activeView === v));
       });
+      ['all', 'unread', 'read'].forEach(function (v) {
+        byId('readTab-' + v).className = 'text-tab' + (v === activeReadFilter ? ' active' : '');
+      });
+      byId('starTab').setAttribute('aria-pressed', String(starOnly));
       byId('emptyState').style.display = filtered.length ? 'none' : 'block';
-      byId('leadRow').style.display = narrowed ? 'none' : '';
       byId('listTitle').textContent = activeCategory === 'all' ? '전체 카드' : activeCategory;
       byId('resultsCount').textContent = filtered.length + '장';
 
-      var desc = [];
-      if (activeType !== 'all') desc.push(ArchiveCore.typeLabel(activeType));
-      if (activeSeries !== 'all') desc.push(activeSeries);
-      if (activeTag !== 'all') desc.push('#' + activeTag);
-      if (searchQuery) desc.push('"' + searchQuery + '"');
-      byId('activeFilters').textContent = desc.join(' · ');
+      // 찾는 중에는 '최근 추가'를 감추고 결과만 보여 준다.
+      var narrowed = renderActive();
+      byId('recentToggle').hidden = narrowed;
+      byId('fold-row-el').hidden = byId('recentToggle').hidden && byId('seriesToggle').hidden;
+      renderFolds();
     }
 
     // ============ DELETE (자동 스크랩 카드만) ============
@@ -2300,6 +2400,13 @@
       clearTimeout(searchTimer);
       var val = e.target.value;
       searchTimer = setTimeout(function () { searchQuery = val.trim(); renderCards(); }, 200);
+    });
+    byId('tagSearch').addEventListener('input', function (e) { tagQuery = e.target.value; renderTagFilters(); });
+    // 태그 검색에서 엔터를 누르면 맨 앞 태그를 고른다.
+    byId('tagSearch').addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter') return;
+      var first = ArchiveCore.pickTags(ArchiveCore.tagCounts(ALL_CARDS, activeCategory), tagQuery, TOP_TAGS)[0];
+      if (first && first.tag !== activeTag) filterTag(first.tag);
     });
 
     // ============ THEME ============
@@ -2541,7 +2648,7 @@
       if (!a) return;
       try {
         sessionStorage.setItem(RETURN_KEY, JSON.stringify({ y: window.scrollY, category: activeCategory, type: activeType,
-          tag: activeTag, series: activeSeries, read: activeReadFilter, query: searchQuery }));
+          tag: activeTag, series: activeSeries, read: activeReadFilter, query: searchQuery, star: starOnly }));
       } catch (err) {}
     });
     var returnState = null;
@@ -2558,7 +2665,8 @@
       activeSeries = returnState.series || 'all';
       searchQuery = returnState.query || '';
       byId('searchInput').value = searchQuery;
-      if (['all', 'unread', 'read'].indexOf(returnState.read) !== -1) filterRead(returnState.read);
+      if (['all', 'unread', 'read'].indexOf(returnState.read) !== -1) activeReadFilter = returnState.read;
+      starOnly = returnState.star === true;
     }
     // 뒤로 가기로 화면이 통째로 되살아난 경우에는 이미 보던 그대로이므로 적어 둔 것만 지운다.
     window.addEventListener('pageshow', function (e) {
@@ -2566,6 +2674,8 @@
     });
 
     loadReadStatus();
+    loadStarred();
+    try { foldOpen = Object.assign(foldOpen, JSON.parse(localStorage.getItem('ka-fold') || '{}')); } catch (e) {}
     renderAll();
     if (returnState) window.scrollTo(0, returnState.y || 0);
     Promise.all([loadJson('categories.json', []), loadJson('scraps.json', []), loadJson('card-images.json', {})]).then(function (res) {

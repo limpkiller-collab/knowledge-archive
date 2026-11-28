@@ -14,7 +14,7 @@
     return a.concat(b).sort(function (x, y) { return x.date < y.date ? 1 : x.date > y.date ? -1 : 0; });
   }
 
-  function filterCards(cards, f, readStatus) {
+  function filterCards(cards, f, readStatus, starred) {
     var q = (f.query || '').toLowerCase();
     return cards.filter(function (k) {
       var tags = k.tags || [];
@@ -22,6 +22,7 @@
       if (f.type !== 'all' && k.sourceType !== f.type) return false;
       if (f.tag !== 'all' && tags.indexOf(f.tag) === -1) return false;
       if (f.series !== 'all' && k.series !== f.series) return false;
+      if (f.starred && !(starred || {})[k.id]) return false;
       var isRead = !!readStatus[k.id];
       if (f.read === 'read' && !isRead) return false;
       if (f.read === 'unread' && isRead) return false;
@@ -30,6 +31,24 @@
         return (v || '').toLowerCase().indexOf(q) !== -1;
       });
     });
+  }
+
+  // 태그별 사용 횟수. 많이 쓴 순서(같으면 이름순)로 돌려준다. category를 주면 그 분류 안에서만 센다.
+  function tagCounts(cards, category) {
+    var counts = {};
+    cards.forEach(function (k) {
+      if (category && category !== 'all' && k.category !== category) return;
+      (k.tags || []).forEach(function (t) { counts[t] = (counts[t] || 0) + 1; });
+    });
+    return Object.keys(counts).map(function (t) { return { tag: t, count: counts[t] }; })
+      .sort(function (a, b) { return b.count - a.count || a.tag.localeCompare(b.tag, 'ko'); });
+  }
+
+  // 보여 줄 태그를 고른다. 검색어가 없으면 많이 쓴 태그 limit개, 있으면 이름에 검색어가 든 태그.
+  function pickTags(counts, query, limit, searchLimit) {
+    var q = String(query || '').replace(/^#/, '').trim().toLowerCase();
+    if (!q) return counts.slice(0, limit);
+    return counts.filter(function (c) { return c.tag.toLowerCase().indexOf(q) !== -1; }).slice(0, searchLimit || 24);
   }
 
   function countByCategory(cards, names) {
@@ -72,6 +91,7 @@
 
   return {
     mergeCards: mergeCards, filterCards: filterCards, countByCategory: countByCategory,
+    tagCounts: tagCounts, pickTags: pickTags,
     coverFor: coverFor, typeLabel: typeLabel, TYPE_LABELS: TYPE_LABELS,
     cardKey: cardKey, galleryFor: galleryFor, editManifest: editManifest
   };
