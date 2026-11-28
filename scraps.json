@@ -86,7 +86,8 @@
     "summary": "앱 화면에서 숫자를 시각화하는 막대 그래프, 도넛 차트, 스파크라인, 게이지, 히트맵 등 9가지 그래프의 이름과 생김새를 소개한다.",
     "category": "테크",
     "cover": "covers/scrap-20261126-app-chart-types-names.jpg",
-    "coverWord": "차트 이름"
+    "coverWord": "차트 이름",
+    "series": "UI디자인"
   },
   {
     "id": "scrap-20261126-mastering-claude-code-lecture",
